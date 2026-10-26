@@ -35,6 +35,8 @@ export interface PackageBuilderStepProps {
     readonly onContinue: () => void
     /** Handler for skipping to confirmation */
     readonly onSkip: () => void
+    /** The combination discount sentence, resolved on the server */
+    readonly comboDiscountSentence?: string
     /** Additional class names */
     readonly className?: string
 }
@@ -49,6 +51,7 @@ export function PackageBuilderStep({
     onToggleProcedure,
     onContinue,
     onSkip,
+    comboDiscountSentence,
     className,
 }: PackageBuilderStepProps) {
     const content = QUIZ_QUESTIONS.packageBuilder
@@ -189,8 +192,10 @@ export function PackageBuilderStep({
                             <p className='text-sm text-stone-700'>
                                 <span className='font-medium'>Pro tip:</span>{' '}
                                 Combining procedures in one surgery means one
-                                recovery period and often costs less than
-                                separate surgeries.
+                                recovery period.
+                                {comboDiscountSentence
+                                    ? ` ${comboDiscountSentence}`
+                                    : ''}
                             </p>
                         </motion.div>
                     )}

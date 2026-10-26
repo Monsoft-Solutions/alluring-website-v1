@@ -7,10 +7,13 @@ sweep (.claude/skills/blog-post/reference/{writing-standard,compliance}.md).
 
 Rules are read from the code they mirror wherever the code has them: the CTA
 ids and writer components from packages/shared/src/content/mdx-contract.constant.ts,
-the credentials sentence from apps/web/lib/data/surgeons/karlinsky-credentials.constant.ts,
+the credentials sentence from packages/shared/src/claims/surgeon.ts,
 redirect sources from apps/web/next.config.mjs, dollar figures from the
 cluster's facts file and docs/pricing/practice-price-list.md, cluster pages
-and anchors from blog/tools/clusters.json.
+and anchors from blog/tools/clusters.json. Alluring prices are claim tokens
+(#354): lib/claims_check.mjs runs packages/shared/src/claims over a post's
+fields, and a typed price-sheet figure is a problem even where the sheet
+licenses it.
 """
 
 from __future__ import annotations
@@ -161,10 +164,10 @@ def writer_components() -> list[str]:
 
 
 def credentials_sentence() -> str:
-    text = _read('apps/web/lib/data/surgeons/karlinsky-credentials.constant.ts')
+    text = _read('packages/shared/src/claims/surgeon.ts')
     m = re.search(r"export const KARLINSKY_CREDENTIALS\s*=\s*'([^']+)'", text, re.S)
     if not m:
-        die('KARLINSKY_CREDENTIALS not found in karlinsky-credentials.constant.ts')
+        die('KARLINSKY_CREDENTIALS not found in packages/shared/src/claims/surgeon.ts')
     return m.group(1)
 
 
@@ -525,7 +528,10 @@ SWEEP = {
         r'fact[\s-]checked by',
     ],
     'superlative': [
-        r'\bbest\b', r'\bsafest\b', r'guarantee\w*', r'\bnumber one\b', r'\bno\.? ?1\b', r'#1\b', r'world[\s-]class',
+        # No bare r'\bbest\b': generic advice ("the best way to sleep") is
+        # fine (claims canon, Decisions of 2026-10-25); the canon sweep's SU1
+        # flags every "best" for review instead.
+        r'\bsafest\b', r'guarantee\w*', r'\bnumber one\b', r'\bno\.? ?1\b', r'#1\b', r'world[\s-]class',
         r'top[\s-]rated', r'\bleading (?:surgeon|practice|clinic|provider|expert|center|centre|plastic|cosmetic)',
         r'industry[\s-]leading', r'cutting[\s-]edge', r'state[\s-]of[\s-]the[\s-]art', r'revolutionary',
         r'\bpainless\b', r'\bscarless\b',
@@ -589,6 +595,195 @@ def sweep(where: str, text: str, credentials: str, extra_rules: dict | None = No
                 out.append(f'{where}: {rule} "{m.group(0)}" … {ctx} …')
     return out
 
+
+
+# ── The claims canon (#354) ─────────────────────────────────────────────────
+#
+# docs/claims/canon.md §11 as data: packages/shared/src/claims/patterns.data.json
+# (generated from the canon; the site's own findClaimHits reads the same file).
+# It runs after SWEEP above and reports only what SWEEP did not already report,
+# so the two never print the same spot twice.
+
+# Rules that are allowed-set checks the figure checks in checks.py already run
+# against the facts files and the price sheet (PR16, PR17, MD10), or that
+# SWEEP's `phone` rule covers for posts (CO1).
+CANON_SKIP = frozenset({'PR16', 'PR17', 'MD10', 'CO1'})
+
+# A sentence that names one of these carries a source (canon §7).
+_SOURCE_RX = re.compile(
+    r'\b(?:asps|american society of plastic surgeons|aesthetic society|cleveland clinic|mayo clinic|medlineplus'
+    r'|fda|food and drug administration|pubmed|journal|review|study|studies|meta-analysis|trial|et al)\b', re.I)
+_STUDY_RX = re.compile(r'\b(?:study|studies|review|analysis|meta-analysis|trial|survey|registry|cohort|et al|journal'
+                       r'|data|researchers?)\b', re.I)
+_YEAR_RX = re.compile(r'\b20\d\d\b')
+# What follows a "best" that makes it a claim about Alluring (canon SU1 fails it).
+_BEST_OF_PRACTICE_RX = re.compile(
+    r'(?:\s+[\w-]+){0,2}?\s+(?:surgeons?|doctors?|clinics?|practices?|results?|outcomes?|prices?|value|care|choice'
+    r'|in (?:miami|florida|south florida|the (?:us|country|state)))\b', re.I)
+
+_CLAIM_PATTERNS: dict | None = None
+
+
+def claim_patterns() -> dict:
+    """The canon's §11 rules and neutralizers, compiled (case-insensitive, as the canon says)."""
+    global _CLAIM_PATTERNS
+    if _CLAIM_PATTERNS is None:
+        data = json.loads(_read('packages/shared/src/claims/patterns.data.json'))
+        flags = re.I if 'i' in (data.get('flags') or 'i') else 0
+        rules = []
+        for rule in data['rules']:
+            try:
+                rules.append({**rule, 'rx': re.compile(rule['pattern'], flags)})
+            except re.error as e:  # the canon promises Python re; say so if it ever breaks
+                die(f'patterns.data.json rule {rule["id"]} does not compile in Python: {e}')
+        neutral = [re.compile(n, flags) for n in [*data['neutralizers'], *NEUTRAL]]
+        _CLAIM_PATTERNS = {'rules': rules, 'neutralizers': neutral}
+    return _CLAIM_PATTERNS
+
+
+def _blank(m: re.Match) -> str:
+    return ' ' * len(m.group(0))
+
+
+def _span_of(t: str, start: int, end: int, seps: str) -> str:
+    """The sentence (seps '.\n') or block (seps '\n') around a match."""
+    i = max(t.rfind(c, 0, start) for c in seps) + 1
+    js = [j for j in (t.find(c, end) for c in seps) if j != -1]
+    return t[i:min(js) if js else len(t)]
+
+
+def _canon_verdict(rule: dict, m: re.Match, plain: str) -> str | None:
+    """'problem', 'warning' or None (passes) for one canon hit, applying the paired checks posts can run."""
+    rid, hit = rule['id'], m.group(0).lower()
+    sentence = _span_of(plain, m.start(), m.end(), '.\n')
+    if rid == 'CR9':
+        return 'warning' if 'shats' in hit else 'problem'      # D1: flag Dr. Shats, fail Dr. Lofman
+    if rid == 'SU1' and _BEST_OF_PRACTICE_RX.match(plain[m.end():]):
+        return 'problem'                                        # "best" said of the practice, surgeon, results or price
+    if rid == 'SU1' and (re.match(r'\s+(?:candidates?|practices?|ways?|time|to\b|for you\b)', plain[m.end():])
+                         or re.search(r'\b(?:at|as|your)\s+$', plain[max(0, m.start() - 6):m.start()])):
+        return None                                             # the canon's listed false positives: generic advice
+    if rid == 'CR5':
+        return 'problem'                                        # never in posts: the statement has no place
+    if rid == 'EX1':
+        return 'warning' if _STUDY_RX.search(sentence) else 'problem'
+    if rid == 'TR4':
+        return None if 'not affiliated' in sentence else 'problem'
+    if rid in ('MD2', 'MD3', 'MD6'):
+        if rid == 'MD6' and re.match(r'\s*old\b', plain[m.end():]):
+            return None                                         # "18+ years old" is an age, not longevity
+        return 'warning' if _SOURCE_RX.search(sentence) else 'problem'
+    if rid == 'PR15':
+        ok = (re.search(r'\basps\b|american society of plastic surgeons', sentence)
+              and re.search(r'anesthesia|operating room', sentence) and not _YEAR_RX.search(sentence))
+        return None if ok else 'problem'
+    if rid == 'CO2':
+        return None if hit == 'info@alluringplasticsurgery.com' else 'problem'
+    if rid == 'CO5':
+        return None if re.sub(r'\W', '', hit).startswith('8435sw24th') else 'problem'
+    if rule['severity'] == 'fail':
+        return 'problem'
+    return 'warning'                                            # review, and paired rules with no check here
+
+
+def canon_sweep(where: str, text: str, credentials: str, allow_vaser: bool = False,
+                extra_rules: dict | None = None) -> tuple[list[str], list[str]]:
+    """The canon's §11 rules over one field, as (problems, warnings).
+
+    Link and image targets are stripped (labels and alt text stay) and the
+    neutralizers blanked out, as §11 says. Spots SWEEP already reports are
+    skipped. `fail` rules are problems; `review` rules are warnings; the paired
+    rules apply the check a post can run (see _canon_verdict).
+    """
+    if not text:
+        return [], []
+    plain = re.sub(r'\]\([^)]*\)', ']', text)
+    plain = re.sub(r'https?://\S+', _blank, plain).lower()
+    t = plain
+    if credentials:
+        t = re.sub(re.escape(credentials.lower()), _blank, t)
+    cp = claim_patterns()
+    for n in cp['neutralizers']:
+        t = n.sub(_blank, t)
+
+    taken: list[tuple[int, int]] = []
+    for patterns in {**SWEEP, **(extra_rules or {})}.values():
+        for rx in patterns:
+            taken.extend((m.start(), m.end()) for m in re.finditer(rx, t))
+
+    order = {'fail': 0, 'paired': 1, 'review': 2}
+    problems, warnings = [], []
+    for rule in sorted(cp['rules'], key=lambda r: order.get(r['severity'], 3)):
+        if rule['id'] in CANON_SKIP:
+            continue
+        if rule['scope'] == 'title':
+            # CR13 reads a <title>/seo_title line in source; in a post it is the title field itself.
+            if where == 'title':
+                hit = re.search(r'karlinsky|board[\s-]*certifi', t)
+                if hit:
+                    problems.append(f'{where}: canon CR13 "{hit.group(0)}" (no surgeon name or board claim in a title)')
+            continue
+        for m in rule['rx'].finditer(t):
+            if m.end() == m.start() or any(m.start() < e and s < m.end() for s, e in taken):
+                continue
+            if allow_vaser and rule['id'] == 'FA5' and 'vaser' in m.group(0):
+                continue
+            verdict = _canon_verdict(rule, m, plain)
+            taken.append((m.start(), m.end()))
+            if not verdict:
+                continue
+            ctx = t[max(0, m.start() - 45):m.end() + 45].replace('\n', ' ')
+            line = f'{where}: canon {rule["id"]} ({rule["group"]}) "{m.group(0).strip()}" … {" ".join(ctx.split())} …'
+            (problems if verdict == 'problem' else warnings).append(line)
+    return problems, warnings
+
+
+# ── Claim token grammar (#354) ──────────────────────────────────────────────
+#
+# The shape rules of packages/shared/src/claims/tokens.ts (TOKEN_SCAN,
+# TOKEN_BODY) in Python, with the token names read from CLAIM_TOKEN_SPECS.
+# lib/claims_check.mjs runs the real validator (arguments, procedures, price
+# lines); this is what still runs when node or tsx cannot, and for the body
+# when validateGeneratedMdx is skipped (--no-mdx) or fails to run.
+
+_TOKEN_NAMES: list[str] | None = None
+_TOKEN_BODY = re.compile(r'^([a-z][a-z-]*)((?::[a-z0-9][a-z0-9-]*)*)$')
+
+
+def claim_token_names() -> list[str]:
+    global _TOKEN_NAMES
+    if _TOKEN_NAMES is None:
+        text = _read('packages/shared/src/claims/tokens.ts')
+        m = re.search(r'export const CLAIM_TOKEN_SPECS\s*=\s*\[(.*?)\]\s*as const', text, re.S)
+        if not m:
+            die('CLAIM_TOKEN_SPECS not found in packages/shared/src/claims/tokens.ts')
+        _TOKEN_NAMES = re.findall(r"^\s*name:\s*'([a-z-]+)'", m.group(1), re.M)
+    return _TOKEN_NAMES
+
+
+def token_shape_problems(where: str, text: str) -> list[str]:
+    """Claim tokens that would render as nothing: unknown name, wrong case or spacing, unclosed."""
+    if not text:
+        return []
+    names = claim_token_names()
+    alternation = '|'.join(sorted(names, key=len, reverse=True))
+    scan = re.compile(r'\[\[(\s*[A-Za-z][^\[\]\n]*)\]\]|\[\[\s*(?:' + alternation + r')(?![A-Za-z-])[A-Za-z0-9:-]*\]?', re.I)
+    out = []
+    for m in scan.finditer(text):
+        raw = m.group(0)
+        if m.group(1) is None:
+            out.append(f'{where}: claim token {raw} is not closed with "]]"')
+            continue
+        inner = m.group(1)
+        canonical = re.sub(r'\s+', '', inner).lower()
+        body = _TOKEN_BODY.match(inner)
+        name = (body or _TOKEN_BODY.match(canonical) or [None, canonical.split(':')[0]])[1]
+        if name not in names:
+            out.append(f'{where}: claim token {raw} has an unknown name; valid names: {", ".join(names)}')
+        elif not body:
+            fix = f' Did you mean [[{canonical}]]?' if _TOKEN_BODY.match(canonical) else ''
+            out.append(f'{where}: claim token {raw} is malformed (lowercase, no spaces).{fix}')
+    return out
 
 # ── Dates ───────────────────────────────────────────────────────────────────
 

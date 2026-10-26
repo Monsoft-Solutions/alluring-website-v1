@@ -334,7 +334,7 @@ import {
 ```tsx
 <CTASection
     heading='Ready to Get Started?'
-    description='Join thousands of satisfied customers today and transform your workflow'
+    description='Book a consultation and get your questions answered'
     primaryButton={{
         text: 'Sign Up Now',
         href: '/signup',

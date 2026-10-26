@@ -24,7 +24,7 @@ const fromContactPage = (category: string, question: string): FaqItem => {
 export const specialsFaqData: FaqItem[] = [
     {
         question: 'How do I claim a special offer?',
-        answer: `Answer the three quick questions in the message thread on this page, or call us at ${siteConfig.contact.phoneDisplay}. A patient coordinator texts you within 24 hours, books your free consultation and makes sure the current offer is applied to your written quote.`,
+        answer: `Answer the three quick questions in the message thread on this page, or call us at ${siteConfig.contact.phoneDisplay}. A patient coordinator texts you, books your free consultation and makes sure the current offer is applied to your written quote.`,
     },
     // Four in five visitors to this page are outside Florida (#274).
     fromContactPage('consultations', 'Do you offer virtual consultations?'),
@@ -35,15 +35,15 @@ export const specialsFaqData: FaqItem[] = [
     },
     {
         question: 'Can I combine special offers with financing?',
-        answer: `Yes. Special offers can be combined with our financing options through ${getFinancingPartnersString()}, so you can keep the promotional price and spread the payments over time.`,
+        answer: `Yes. Financing through ${getFinancingPartnersString()} can be used with a current offer, for qualified applicants. Approval and terms are set by the lender.`,
     },
     {
-        question: 'Are the promotional prices all-inclusive?',
-        answer: 'Your quote lists exactly what is included — surgeon fees, anesthesia, facility and standard follow-up care — in writing, so there are no surprises.',
+        question: 'What does a promotional price include?',
+        answer: `${KARLINSKY_SHORT_NAME} confirms your price, and what it covers, at your consultation.`,
     },
     {
         question: 'What if the offer expires before my surgery date?',
-        answer: 'The offer depends on when you sign, not when you have surgery. Sign your surgery contract and place your reservation deposit before the offer ends, and your price is locked in — even if your surgery date is months away.',
+        answer: 'Ask your Specialist how an offer applies to your surgery date.',
     },
     {
         question: 'Is the consultation really free?',

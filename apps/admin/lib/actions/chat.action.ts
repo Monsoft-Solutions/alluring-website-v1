@@ -13,12 +13,44 @@ import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 import { chatConfigSchema, type ChatConfigInput } from '@workspace/chat/types'
+import { validateClaimTokens } from '@workspace/shared/claims/tokens'
+import { findTypedPrices } from '@workspace/shared/claims/typed-prices'
+import { getPricingSnapshot } from '@/lib/queries/pricing.query'
 import { revalidateWebAppCache } from '@/lib/utils/revalidate-web.util'
 import { requireAuth, UnauthorizedError } from '@/lib/utils/auth.util'
 
 type ActionResult = {
     success: boolean
     error?: string
+}
+
+/**
+ * The save error for claim tokens in the prompt or welcome message that
+ * would resolve to nothing, or for an Alluring price typed instead of a
+ * token (#354); null when both are clean. The chat prompt names prices with
+ * tokens like every other DB text, so a price edit reaches Sofía too.
+ */
+async function claimTextError(
+    fields: Pick<ChatConfigInput, 'systemPrompt' | 'welcomeMessage'>
+): Promise<string | null> {
+    const pricing = await getPricingSnapshot()
+    const problems = (
+        [
+            ['System prompt', fields.systemPrompt],
+            ['Welcome message', fields.welcomeMessage],
+        ] as const
+    ).flatMap(([field, text]) => [
+        ...validateClaimTokens(text, { pricing }).errors.map(
+            (error) =>
+                `${field}: ${error.raw} — ${error.reason}${error.suggestion ? ` Did you mean ${error.suggestion}?` : ''}`
+        ),
+        ...findTypedPrices(text, { pricing }).map(
+            (issue) => `${field}: ${issue.raw} — ${issue.reason}`
+        ),
+    ])
+    return problems.length > 0
+        ? `Fix these claim tokens and typed prices before saving: ${problems.join('; ')}`
+        : null
 }
 
 /**
@@ -32,6 +64,9 @@ export async function updateChatConfig(
 
         // Validate input
         const validated = chatConfigSchema.parse(data)
+
+        const claimError = await claimTextError(validated)
+        if (claimError) return { success: false, error: claimError }
 
         // Get existing config
         const existingConfigs = await db.select().from(chatConfig).limit(1)

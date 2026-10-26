@@ -7,7 +7,7 @@
  * Design direction: Alluring Plastic Surgery blog imagery is *artistic*, never
  * a photorealistic "patient model in a luxury clinic". No person is ever the
  * main figure. Every preset renders in the brand's stone + gold palette with a
- * luxury-editorial mood.
+ * refined editorial mood.
  *
  * The human-subject path still exists but is opt-in only, driven explicitly by
  * an admin in the featured-image dialog. See
@@ -109,9 +109,9 @@ export const ARTISTIC_IMAGE_STYLES: readonly ArtisticImageStyleDefinition[] = [
         id: 'abstract-material-macro',
         name: 'Abstract Material Macro',
         description:
-            'Extreme-macro fine-art studies of luxurious inert materials — marble veining, silk drape, gold leaf, water and light. Pure texture and materiality with zero human affordance.',
+            'Extreme-macro fine-art studies of fine inert materials — marble veining, silk drape, gold leaf, water and light. Pure texture and materiality with zero human affordance.',
         promptBlock:
-            'Extreme-macro fine-art photography of luxurious inert materials. Subject vocabulary: honed Calacatta or travertine veining, a fractured stone edge catching light, heavy silk and crepe folding into shadow, gold leaf fragments and brushed-brass planes, a single bead of water refracting light across polished marble, poured resin and liquid glass, fine sand ripples, alabaster translucence. ' +
+            'Extreme-macro fine-art photography of fine inert materials. Subject vocabulary: honed Calacatta or travertine veining, a fractured stone edge catching light, heavy silk and crepe folding into shadow, gold leaf fragments and brushed-brass planes, a single bead of water refracting light across polished marble, poured resin and liquid glass, fine sand ripples, alabaster translucence. ' +
             'Treat the material as sculpture: one dominant gesture — a fold, a vein, an edge, a droplet — filling most of the frame, surrounded by generous quiet negative space. ' +
             'Palette is warm neutral: bone, cream, oat, taupe and warm greige, lifted by a single restrained gold or champagne highlight; no more than two hues plus the metal note. ' +
             'Light is soft and strongly directional, raking across the surface so texture reads as topography, falling off gently into deep warm shadow with no harsh speculars. Shallow depth of field, one crisp plane of focus. ' +
@@ -142,7 +142,7 @@ export const ARTISTIC_IMAGE_STYLES: readonly ArtisticImageStyleDefinition[] = [
             'Compose like a painter: one or two objects only, asymmetric placement, a large expanse of empty wall or table, and shadow used as a second subject. ' +
             'Palette is warm stone — plaster white, oat, clay, sand and warm gray — with muted sage or soft blush greens and one small brass or gold note. ' +
             'Light is late-afternoon daylight through a sheer curtain: soft key, long directional shadows, warm ambient bounce, air that feels completely still. Surfaces are matte and tactile: limewash plaster, raw linen, unpolished stone, aged brass. ' +
-            'Mood: restorative, unhurried, clean and quietly luxurious — spa-adjacent without a single spa cliché.',
+            'Mood: restorative, unhurried, clean and quietly refined — spa-adjacent without a single spa cliché.',
         negativeBlock:
             'no candles, rolled towels, hot stones or generic spa-flatlay props, no orchid-on-a-massage-table cliché, no tropical resort or beach scenery, no vivid saturated florals, no clinical white sterility, no potted-houseplant catalogue look',
         topicHints: [
@@ -169,7 +169,7 @@ export const ARTISTIC_IMAGE_STYLES: readonly ArtisticImageStyleDefinition[] = [
             'Subject vocabulary is abstract and diagrammatic: flowing contour lines that suggest form without depicting a body, nested arcs and concentric bands for stages and timelines, two overlapping translucent fields for comparisons, an ascending sequence of soft shapes for progression. ' +
             'Composition is graphic and generous: large calm areas, one clear focal gesture, deliberate asymmetry, plenty of paper white. ' +
             'Palette: warm paper white and bone ground, oat and clay washes, one muted accent of soft terracotta or sage, and a restrained gold line. ' +
-            'Mood: intelligent and editorial — a New York Times op-ed illustration crossed with luxury brand collateral, abstract enough that nothing ever resolves into a person.',
+            'Mood: intelligent and editorial — a New York Times op-ed illustration crossed with high-end brand collateral, abstract enough that nothing ever resolves into a person.',
         negativeBlock:
             'no lettering, labels, numbers, captioned arrows or chart axes, no infographic layout, no cartoon or vector-clipart look, no anatomical rendering of organs or body parts, no medical textbook diagram, no 3D render, no neon or high-saturation palette',
         topicHints: [

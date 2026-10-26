@@ -736,11 +736,11 @@ def main() -> int:
                'decides both together. Leaving it publishes the post with an author page that contradicts it.', '']
     if not_v2:
         md += ['## Before the production run: the v2 template (the user decides)', '',
-               'These posts render the old template, whose sidebar says "board-certified surgeons" and "5,000+ Happy '
-               'Patients", unless their slugs join BLOG_V2_SLUGS in apps/web/lib/blog/blog-v2.constant.ts:', '',
+               'These posts render the old template (its sidebar follows the claims canon since #354) unless their '
+               'slugs join BLOG_V2_SLUGS in apps/web/lib/blog/blog-v2.constant.ts:', '',
                *[f'- `{s}`' for s in not_v2], '',
                'Merge and deploy that line before the SQL runs: isBlogV2 is a Set lookup, so listing a slug before its '
-               'row exists is harmless. Declining v2 publishes the post next to claims compliance.md forbids.', '']
+               'row exists is harmless.', '']
     if news:
         md += ['## After the production run: keyword registry, one live entry per new post', '',
                'packages/shared/src/seo/keyword-ownership-blog.constant.ts, in BLOG_POST_ENTRIES:', '', '```ts',

@@ -122,7 +122,11 @@ describe('Dr. Karlinsky IG copy rules', () => {
             expect(copy.formHint).toMatch(/personal/)
             expect(copy.formHint).toMatch(/financ/)
             expect(copy.tilesNote).toBeTruthy()
-            expect(copy.financing.fine).toMatch(/Cherry/)
+            // No soft-credit-check claim (claims canon D10).
+            expect(copy.financing.fine).not.toMatch(
+                /Cherry|credit score|cr[eé]dito suave|puntaje/i
+            )
+            expect(copy.financing.fine).toMatch(/approval|aprobaci[oó]n/)
         }
         expect(DRK_COPY.en.faq.items[0]?.answer).toBe(
             'Your price is personal — I confirm it at your consultation, in writing, before you decide. No obligation.'

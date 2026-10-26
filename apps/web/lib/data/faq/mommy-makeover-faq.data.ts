@@ -8,6 +8,8 @@
  * - Recovery: Managing recovery with kids at home
  * - Results: What to expect, longevity
  */
+import { FINANCING_SENTENCE_SHORT } from '@workspace/shared/claims/financing'
+
 import { siteConfig } from '@/lib/data/site-config'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
@@ -29,38 +31,39 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
     timing: [
         {
             question: 'When should I have a mommy makeover?',
-            answer: `We recommend waiting at least 6 months after you've finished breastfeeding, and ideally when you're done having children. Your body needs time to stabilize after pregnancy and nursing before we can achieve optimal results. During your consultation, we'll evaluate your individual timeline.`,
+            answer: `Ideally, when you're done having children. We recommend waiting until your body has recovered from pregnancy, your weight is stable and you've finished breastfeeding. Your surgeon sets your timing at consultation.`,
         },
         {
             question: 'What if I get pregnant after my mommy makeover?',
-            answer: `While a future pregnancy won't harm you medically, it can affect your results—especially the tummy tuck portion. That's why we recommend waiting until you're confident you're done having children.`,
+            answer: `A future pregnancy is generally considered safe after a mommy makeover, but it can affect your results, especially the tummy tuck. That's why we recommend waiting until you're confident you're done having children.`,
         },
         {
             question: 'How long after breastfeeding should I wait?',
-            answer: `We typically recommend waiting 3-6 months after you've completely stopped breastfeeding. This allows your breast tissue to settle into its final shape and size, ensuring we can plan your breast procedure accurately.`,
+            answer: `We recommend waiting until your body has recovered from pregnancy, your weight is stable and you've finished breastfeeding. Your surgeon sets your timing at consultation.`,
         },
         {
             question: 'Can I have a mommy makeover if I had a C-section?',
-            answer: `Absolutely! In fact, having a C-section can be beneficial for your tummy tuck because the incision is often made in a similar location. We can revise the C-section scar and create a single, well-hidden incision.`,
+            answer: `Yes. A tummy tuck incision usually sits low, close to where a C-section scar is, so the old scar can often be removed with it, leaving one scar.`,
         },
     ],
     cost: [
         {
             question: 'How much does a mommy makeover cost in Miami?',
-            answer: `A mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at $3,000 (mini) or $4,500 (full), breast augmentation at $3,500 (saline) or $4,500 (silicone), and a breast lift at $5,000. Combining two procedures takes $500 off the total, and three take $1,000 off. Dr. Karlinsky confirms your exact price at your free consultation.`,
+            // Prices are claim tokens, resolved where the FAQ renders (#354).
+            answer: `A mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at [[price:tummy-tuck:mini]] (mini) or [[price:tummy-tuck:full]] (full), breast augmentation at [[price:breast-augmentation:saline]] (saline) or [[price:breast-augmentation:silicone]] (silicone), and a breast lift at [[price:breast-lift:modified]] (modified lift). Combining two procedures takes [[combo-discount:2]] off the total, and three take [[combo-discount:3]] off. Dr. Karlinsky confirms your exact price at your free consultation. [[discount-statement]]`,
         },
         {
             question: 'Does insurance cover a mommy makeover?',
-            answer: `No, mommy makeovers are elective cosmetic procedures and not covered by insurance. Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.`,
+            answer: `No, mommy makeovers are elective cosmetic procedures and not covered by insurance. ${FINANCING_SENTENCE_SHORT}`,
         },
         {
             question: 'What payment options are there?',
-            answer: `Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.`,
+            answer: `${FINANCING_SENTENCE_SHORT} Approval and terms are set by the lender.`,
         },
         {
             question:
                 'What is a mini mommy makeover and how much does it cost?',
-            answer: `A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. A mini tummy tuck is $3,000 on the practice price list, against $4,500 for a full one, so it costs less than a full mommy makeover. It suits mothers with moderate post-pregnancy changes who want targeted improvement.`,
+            answer: `A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. A mini tummy tuck is [[price:tummy-tuck:mini]] on the practice price list, against [[price:tummy-tuck:full]] for a full one, so it costs less than a full mommy makeover, and your surgeon confirms your price at consultation. It suits mothers with moderate post-pregnancy changes who want targeted improvement. [[discount-statement]]`,
         },
     ],
     procedures: [
@@ -74,7 +77,7 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Will a tummy tuck fix my separated muscles?',
-            answer: `Yes! Diastasis recti (separated abdominal muscles) is extremely common after pregnancy and cannot be fixed with exercise alone. During your tummy tuck, we repair the muscle wall, restoring core strength and creating a flatter, more defined abdomen.`,
+            answer: `Diastasis recti (separated abdominal muscles) is common after pregnancy, and exercise does not always close it. In most cases, ASPS says, a tummy tuck restores weakened or separated muscles; your surgeon decides at consultation whether you need it. During your tummy tuck, Dr. Karlinsky repairs the separated muscles, which tightens the abdominal wall and flattens the abdomen.`,
         },
         {
             question: 'Can I add other procedures to my mommy makeover?',
@@ -84,37 +87,37 @@ export const mommyMakeoverFaqData: Record<string, FaqItem[]> = {
     recovery: [
         {
             question: 'How long is recovery from a mommy makeover?',
-            answer: `Most patients take 2-3 weeks off from work and normal activities. You'll need help with childcare and household tasks for the first 1-2 weeks, especially lifting. By 6 weeks, most patients are back to their normal routine, though full healing continues for several months.`,
+            answer: `Most people take about 2 to 3 weeks off work and normal activities. Line up help with childcare: picking up children is strongly advised against for the first few weeks (Shahram Salemy, MD, on the ASPS website). Full healing continues for several months.`,
         },
         {
             question: 'How do I manage recovery with kids at home?',
-            answer: `This is the most common concern we hear! We recommend arranging for help—a partner, family member, or hired caregiver—for at least the first 2 weeks. You won't be able to lift children, do laundry, or perform strenuous activities. Many moms send their kids to stay with grandparents for the first week.`,
+            answer: `It's a common concern. We recommend arranging help (a partner, family member or hired caregiver) for the first few weeks, since picking up children is strongly advised against then (Shahram Salemy, MD, on the ASPS website). You won't be able to lift children, do laundry, or perform strenuous activities. Many moms send their kids to stay with grandparents for the first week.`,
         },
         {
             question: 'When can I pick up my kids again?',
-            answer: `Lifting restrictions are typically 10-15 pounds for the first 4-6 weeks. This means no picking up toddlers or young children during this time. We know this is challenging, but it's essential for proper healing and protecting your results.`,
+            answer: `Avoid running and lifting for 6 weeks (Cindy Wu, MD, on the ASPS website); heavy lifting waits until your surgeon clears it, usually 4 to 8 weeks after surgery (Cleveland Clinic). This means no picking up toddlers or young children during this time. We know this is challenging, but it's essential for proper healing and protecting your results.`,
         },
         {
             question: 'Is the recovery painful?',
-            answer: `Most patients describe the first few days as uncomfortable rather than severely painful. The tummy tuck portion typically causes the most discomfort due to muscle repair. We provide comprehensive pain management including prescription medication for the first week, and most patients transition to over-the-counter pain relievers within 7-10 days.`,
+            answer: `Most patients describe the first few days as uncomfortable rather than severely painful. The tummy tuck portion typically causes the most discomfort due to muscle repair. Your surgeon prescribes pain medication for the first days of recovery and tells you when to switch to over-the-counter pain relievers.`,
         },
     ],
     results: [
         {
             question: 'How long do mommy makeover results last?',
-            answer: `With stable weight and no future pregnancies, your mommy makeover results are long-lasting. The muscle repair and skin removal are permanent. Breast implants are not lifetime devices and may eventually need replacement, and natural aging will continue.`,
+            answer: `With stable weight and no future pregnancies, your mommy makeover results are long-lasting. The muscle repair and skin removal are long-lasting. The FDA says breast implants are not lifetime devices, and they may eventually need to be replaced. Natural aging will continue.`,
         },
         {
             question: 'Will I have visible scars?',
-            answer: `Yes, but they're strategically placed to be hidden by underwear and swimwear. Your tummy tuck scar runs along your bikini line, and breast scars are typically around the areola or in the breast crease. Scars fade significantly over time, and we provide scar care guidance to optimize healing.`,
+            answer: `Yes, but they're placed low, so most underwear and swimwear cover them. Your tummy tuck scar runs along your bikini line, and breast scars are typically around the areola or in the breast crease. Scars fade over time, and we provide scar care guidance.`,
         },
         {
             question: 'When will I see my final results?',
-            answer: `You'll see dramatic improvement immediately, but final results emerge over 6-12 months as swelling resolves. Breast results typically settle within 3-4 months, while abdominal results continue to refine for up to a year. We'll document your progress at each follow-up visit.`,
+            answer: `Your result settles over several months as swelling goes down. A tummy tuck shows its final result at up to about 3 months (Cleveland Clinic), and scars keep fading for a year or more. We'll document your progress at each follow-up visit.`,
         },
         {
             question: 'What if I gain or lose weight after my procedure?',
-            answer: `Moderate weight fluctuations (10-15 pounds) are normal and won't significantly affect your results. However, significant weight gain or loss can impact the appearance of your breasts and abdomen. We recommend reaching a stable, maintainable weight before your procedure.`,
+            answer: `Small weight changes usually have little effect on your results. Significant weight gain or loss can change how your breasts and abdomen look. We recommend reaching a stable, maintainable weight before your procedure.`,
         },
     ],
 }

@@ -1,21 +1,24 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const breastLiftMiami: Procedure = {
     title: 'Breast Lift Miami',
     slug: 'breast-lift-miami',
-    description:
-        'Enhance your confidence with a natural-looking breast lift in Miami. Restore youthful, perky breasts with expert mastopexy surgery and personalized care.',
+    // Every Alluring price in this file is a claim token, resolved from the
+    // admin's price list when the page renders (#354).
+    description: `A natural-looking breast lift (mastopexy) in Miami, performed by one surgeon, ${KARLINSKY_NAME}.`,
     shortDescription:
-        'Lift and reshape your breasts to restore a more youthful, perky appearance without implants using advanced mastopexy techniques.',
+        'Lift and reshape your breasts with a breast lift (mastopexy), with or without implants.',
     heroSubtitle: 'Enhance Your Confidence with a Natural-Looking Breast Lift',
     category: 'breast',
     bodyLocation: 'Breast',
     image: '/images/procedures/breast-lift.jpg',
     dateModified: '2026-01-21T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
-    priceFrom: '$6,500',
-    weeklyPaymentFrom: '$41/week with approved credit',
     keywords: [
         'breast lift miami',
         'mastopexy',
@@ -41,12 +44,12 @@ export const breastLiftMiami: Procedure = {
         {
             title: 'Natural-Looking Results',
             description:
-                'Achieve a firmer, more youthful breast shape without the need for implants, ensuring a natural look and feel.',
+                'A breast lift can give you a firmer, lifted shape that looks natural, often without implants.',
         },
         {
             title: 'Minimal Scarring',
             description:
-                'Advanced techniques ensure breast lift scars are kept minimal and strategically placed for subtle, long-term healing.',
+                'Breast lift incisions are placed where the scars are easiest to hide, and scars fade over time.',
         },
         {
             title: 'Restored Proportion',
@@ -59,7 +62,7 @@ export const breastLiftMiami: Procedure = {
             step: 1,
             title: 'Consultation & Assessment',
             description:
-                'Your plastic surgeon evaluates breast size, shape, skin quality, and nipple position to determine the best incision technique for your anatomy.',
+                'Your surgeon evaluates breast size, shape, skin quality, and nipple position to choose the incision technique that suits your anatomy.',
         },
         {
             step: 2,
@@ -83,14 +86,14 @@ export const breastLiftMiami: Procedure = {
             step: 5,
             title: 'Recovery & Reveal',
             description:
-                'Most patients return to light work within 7-10 days. Final breast shape settles around 3 months as swelling subsides and scars fade.',
+                'Most patients return to work within 1 to 2 weeks. Swelling eases over the following weeks, and scars keep fading over time.',
         },
     ],
     quickAnswer: {
         question: 'What is a breast lift?',
         answer: 'A breast lift (mastopexy) is a surgical procedure that raises and reshapes sagging breasts by removing excess skin and tightening surrounding tissue for a more youthful contour.',
         details:
-            'Unlike breast augmentation, a lift focuses on repositioning rather than adding volume. The nipple-areola complex is elevated to a more youthful position. Results are long-lasting, typically 10+ years with stable weight.',
+            'Unlike breast augmentation, a lift focuses on repositioning rather than adding volume. The nipple-areola complex is elevated to a more youthful position. Results are long-lasting, especially with a stable weight.',
     },
     content: `## Breast Lift Miami: Restore Your Youthful Contour
 
@@ -100,7 +103,7 @@ When gravity, pregnancy, weight fluctuations, or aging take their toll on your b
 
 A **breast lift surgery**, medically known as **mastopexy**, is a surgical **procedure** designed to raise and reshape sagging breasts by removing excess skin and tightening the surrounding tissue. Unlike **breast augmentation**, which increases volume with implants, a **breast lift** focuses on elevating the existing breast tissue to create a more youthful, perkier profile. The nipple and areola are often repositioned higher on the chest wall, and in some cases, the areola size can be reduced for improved proportion.
 
-The **procedure** addresses common concerns like downward-pointing nipples, stretched skin, and loss of firmness. Many women combine a **breast lift** with augmentation to restore both shape and volume, but **mastopexy** alone can deliver dramatic improvements for those who prefer their natural breast size.
+The **procedure** addresses common concerns like downward-pointing nipples, stretched skin, and loss of firmness. Many women combine a **breast lift** with augmentation to restore both shape and volume, but a **mastopexy** alone can lift and reshape the breasts for women who want to keep their natural size.
 
 ## Why Miami Women Choose Breast Lift Surgery
 
@@ -114,8 +117,6 @@ The **procedure** addresses common concerns like downward-pointing nipples, stre
 *   Improving comfort in bras and activewear
 *   Preparing for special life events like weddings or milestone birthdays
 
-South Florida's thriving **cosmetic surgery** community means access to **board-certified surgeons** with extensive **mastopexy** experience, making **Miami** an ideal location for this transformative **breast lift procedure**.
-
 ## Am I a Good Candidate for a Breast Lift?
 
 You may be an excellent candidate if you're in good overall health, maintain a stable weight, and feel bothered by sagging or loss of breast firmness. Ideal candidates have realistic expectations about what surgery can achieve and understand that a **breast lift** improves shape and position—not necessarily size.
@@ -128,15 +129,15 @@ You may be an excellent candidate if you're in good overall health, maintain a s
 *   One breast sitting noticeably lower than the other
 *   Areolas that have enlarged or stretched over time
 
-Women who plan future pregnancies should discuss timing with their **plastic surgeons**, as breastfeeding and hormonal changes can alter results. Nonsmokers heal more predictably, and patients who maintain a healthy lifestyle tend to enjoy longer-lasting outcomes.
+Women who plan future pregnancies should discuss timing with their **surgeon**, as breastfeeding and hormonal changes can alter results. Nonsmokers heal more predictably, and patients who maintain a healthy lifestyle tend to enjoy longer-lasting outcomes.
 
 ## What to Expect from a Miami Breast Lift
 
 ### Pre-Operative Preparation
-Your journey begins with a detailed consultation at **Alluring Plastic Surgery**, where your **plastic surgeon** evaluates breast size, shape, skin quality, and nipple position. You'll discuss your aesthetic goals, review before-and-after photos, and determine which incision technique best suits your anatomy. Pre-operative instructions typically include avoiding certain medications, arranging for post-surgery support, and confirming your medical clearance.
+Your journey begins with a detailed consultation at **Alluring Plastic Surgery**, where your **surgeon** evaluates breast size, shape, skin quality, and nipple position. You'll discuss your aesthetic goals, review before-and-after photos, and determine which incision technique best suits your anatomy. Pre-operative instructions typically include avoiding certain medications, arranging for post-surgery support, and confirming your medical clearance.
 
 ### Surgery Day
-A **breast lift** is performed under general anesthesia and usually takes two to three hours, depending on the extent of correction needed. Your **surgeon** will use one of several incision patterns based on your degree of sagging:
+At Alluring, a **breast lift** is performed under general anesthesia and usually takes two to three hours, depending on the extent of correction needed. Your **surgeon** will use one of several incision patterns based on your degree of sagging:
 
 #### Breast Lift Incision Techniques
 
@@ -152,24 +153,24 @@ You'll wake up wearing a surgical bra or compression garment to support healing.
 
 ## Recovery and Results: What You'll Experience
 
-For the first week, plan to rest and avoid lifting anything heavier than a gallon of milk. Most women return to light desk work within seven to ten days, though strenuous activity and heavy lifting should wait at least four to six weeks. Swelling subsides gradually over several weeks, and final breast shape settles around the three-month mark.
+For the first week, plan to rest and avoid heavy lifting, as your surgeon directs. At Alluring, most women return to work within one to two weeks; strenuous activity and heavy lifting wait until your surgeon clears you. Swelling subsides gradually over several weeks.
 
 ### Recovery Timeline Highlights:
 
 *   **Week 1**: Rest, minimal arm movement, wear your surgical bra
 *   **Weeks 2–3**: Gradual return to daily activities, continued avoidance of exercise
-*   **Weeks 4–6**: Resume cardio and light workouts with surgeon approval
-*   **Months 3–6**: Scars fade and soften, final results become apparent
+*   **Weeks 4–6**: Cardio and light workouts resume once your surgeon clears you
+*   **The months after**: Scars keep fading and softening over time
 
-Scarring is an inevitable part of any lift, but incisions are strategically placed to remain hidden under bras and swimwear. With proper care—including sun protection and scar treatments—most **breast lift scars** mature into thin, barely noticeable lines within a year.
+Scarring is an inevitable part of any lift, but incisions are strategically placed to remain hidden under bras and swimwear. With proper care—including sun protection and scar treatments—**breast lift scars** fade over time.
 
 Results are long-lasting, though natural aging, gravity, and lifestyle factors will continue to influence breast shape over time. Maintaining a stable weight and wearing supportive bras can help preserve your lifted contour for many years.
 
-## Why Trust Alluring Plastic Surgeons for Your Breast Lift
+## Why Choose Alluring for Your Breast Lift
 
-Choosing the right **plastic surgeons** is the most important decision you'll make. At **Alluring Plastic Surgery**, patients benefit from **board-certified expertise**, personalized care, and a deep understanding of **Miami's** aesthetic ideals. The team combines technical precision with an artistic eye, tailoring each **breast lift Miami** to complement your unique body shape and lifestyle goals.
+Choosing your surgeon is the most important decision you'll make. At **Alluring Plastic Surgery**, every **breast lift** is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} She tailors each **breast lift Miami** to complement your body shape and lifestyle goals.
 
-Located in the heart of South Florida, the practice offers state-of-the-art facilities, compassionate support, and a proven track record of beautiful, natural-looking results. Whether you're a busy mom reclaiming your pre-baby body or a professional seeking a confidence boost, you'll receive the individualized attention you deserve—from your first consultation through every stage of recovery.
+Whether you're a busy mom or a professional seeking a confidence boost, you'll receive individualized attention from your first consultation through every stage of recovery.
 
 ## Ready to Rediscover Your Confidence?
 
@@ -185,7 +186,7 @@ For those seeking additional volume restoration, **breast implants** or **breast
         },
         {
             question: 'How much is a breast lift?',
-            answer: 'The cost of a breast lift varies depending on factors like the complexity of the surgery and whether you choose to combine it with other procedures. We offer financing options to make it more affordable. Contact us for a personalized estimate.',
+            answer: 'At Alluring, a modified breast lift (skin below the areola only) is [[price:breast-lift:modified]], a breast lift without implants [[price:breast-lift:no-implants]], with saline implants [[price:breast-lift:saline]] and with silicone implants [[price:breast-lift:silicone]]. [[price-caveat]] [[financing]] [[discount-statement]]',
         },
         {
             question: 'Does insurance cover my breast lift?',
@@ -193,7 +194,7 @@ For those seeking additional volume restoration, **breast implants** or **breast
         },
         {
             question: 'Will there be visible breast lift scars?',
-            answer: 'Scars are typically placed around the areola or along the natural breast crease. Over time, they fade and become less noticeable, and we use advanced techniques to minimize scarring. Most scars mature into thin, barely visible lines within a year.',
+            answer: 'Scars are typically placed around the areola or along the natural breast crease. Over time, they fade and become less noticeable.',
         },
         {
             question: 'How long will the results last?',
@@ -201,19 +202,19 @@ For those seeking additional volume restoration, **breast implants** or **breast
         },
         {
             question: 'Can I combine a breast lift with other procedures?',
-            answer: 'Yes, many patients choose to combine their breast lift with procedures like breast augmentation (to add volume) or a tummy tuck for a complete transformation, often as part of a Mommy Makeover.',
+            answer: 'Yes, many patients choose to combine their breast lift with procedures like breast augmentation (to add volume) or a tummy tuck in the same surgery, often as part of a Mommy Makeover.',
         },
         {
             question: 'How long does recovery take?',
-            answer: 'Most patients return to normal activities within 1 to 2 weeks. You should avoid strenuous exercises for about 4 to 6 weeks for optimal healing. Final results become visible around 3 months.',
+            answer: 'At Alluring, most patients return to work within 1 to 2 weeks. Strenuous exercise waits until your surgeon clears you, swelling eases over a few weeks, and your surgeon tells you when to expect your final shape.',
         },
         {
             question: 'Can I see breast lift before and after pictures?',
-            answer: 'Absolutely! We encourage patients to review breast lift before and after photos during their consultation to help visualize potential results and set realistic expectations.',
+            answer: 'Yes. We encourage patients to review breast lift before and after photos during their consultation to help visualize potential results and set realistic expectations.',
         },
         {
             question: 'Will I lose nipple sensation after the surgery?',
-            answer: 'Some temporary loss of sensation is possible, but most patients regain full or near-full sensation over time as nerves heal. Permanent sensation changes are rare with modern techniques.',
+            answer: 'Some temporary loss of sensation is possible, but most patients regain full or near-full sensation over time as nerves heal. Permanent changes in sensation are possible, and your surgeon reviews this risk with you at consultation.',
         },
         {
             question: 'Can I breastfeed after a breast lift?',

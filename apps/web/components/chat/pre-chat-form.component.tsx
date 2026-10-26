@@ -12,6 +12,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CHAT_AGENT } from '@workspace/shared/claims/identity'
 import { cn } from '@workspace/ui/lib/utils'
 import { Loader2, MessageCircle, Phone, User, Sparkles } from 'lucide-react'
 
@@ -39,8 +40,8 @@ type PreChatFormProps = {
  */
 export function PreChatForm({
     onSubmit,
-    agentName = 'Alluring Assistant',
-    welcomeMessage = "Hello! I'm here to help answer your questions about our procedures. Please share your details to get started.",
+    agentName = CHAT_AGENT.name,
+    welcomeMessage = `Hi, I'm ${CHAT_AGENT.name}, ${CHAT_AGENT.title}. I can answer your questions about our procedures. Share your details to get started.`,
     agentImageUrl,
 }: PreChatFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false)

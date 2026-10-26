@@ -23,10 +23,11 @@ import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { MensHero } from '@/components/landing/mens-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import {
@@ -48,12 +49,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/mens-plastic-surgery-miami',
     title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
     description:
-        "Look as strong as you feel. Men's cosmetic surgery in Miami: gynecomastia surgery, liposuction, facelift. Board-certified surgeons. Discreet, professional care. Financing available.",
+        "Look as strong as you feel. Men's cosmetic surgery in Miami: gynecomastia surgery, liposuction, facelift. One surgeon: Victoria Karlinsky, MD, FACS. Discreet, professional care. Financing available.",
 
     openGraph: {
         title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
         description:
-            "Look as strong as you feel. Men's cosmetic surgery in Miami: gynecomastia surgery, liposuction, facelift. Board-certified surgeons.",
+            "Look as strong as you feel. Men's cosmetic surgery in Miami: gynecomastia surgery, liposuction, facelift. One surgeon: Victoria Karlinsky, MD, FACS.",
         url: `${seoConfig.siteUrl}/mens-plastic-surgery-miami`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -71,7 +72,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: "Men's Plastic Surgery Miami | Gynecomastia & Body Contouring",
         description:
-            "Look as strong as you feel. Men's cosmetic surgery in Miami. Board-certified surgeons. Free consultation.",
+            "Look as strong as you feel. Men's cosmetic surgery in Miami. One surgeon: Victoria Karlinsky, MD, FACS. Free consultation.",
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
@@ -80,8 +81,16 @@ export default async function MensPlasticSurgeryMiamiPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        mensFaqData,
+        'text',
+        'faq /mens-plastic-surgery-miami'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(mensFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -93,7 +102,7 @@ export default async function MensPlasticSurgeryMiamiPage() {
             <WebPageSchema
                 name={`Men's Plastic Surgery Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/mens-plastic-surgery-miami`}
-                description="Men's cosmetic surgery in Miami. Gynecomastia surgery, liposuction, facelift, and body contouring for men. Board-certified surgeons with expertise in male aesthetics."
+                description="Men's cosmetic surgery in Miami. Gynecomastia surgery, liposuction, facelift, and body contouring for men. One surgeon: Victoria Karlinsky, MD, FACS."
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -106,8 +115,8 @@ export default async function MensPlasticSurgeryMiamiPage() {
                 {/* Section 2: Fear Busters - Address objections */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 3: Weekly Payments - Make it affordable */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 3: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
@@ -115,7 +124,7 @@ export default async function MensPlasticSurgeryMiamiPage() {
                 {/* Section 5: Google Reviews */}
                 <GoogleReviews
                     title='What Our Patients Say'
-                    subtitle='Real reviews from men who invested in themselves'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 
@@ -123,7 +132,7 @@ export default async function MensPlasticSurgeryMiamiPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={mensFaqCategories}
-                    faqData={mensFaqData}
+                    faqData={faqData}
                     badge={mensFaqConfig.badge}
                     title={mensFaqConfig.title}
                     subtitle={mensFaqConfig.subtitle}
@@ -134,7 +143,7 @@ export default async function MensPlasticSurgeryMiamiPage() {
                     ctaConfig={{
                         title: 'Have questions about your options?',
                         description:
-                            'Our specialists provide confidential consultations for men.',
+                            'Dr. Karlinsky provides confidential consultations for men.',
                         buttonText: 'Call Us Now',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,
@@ -151,7 +160,7 @@ export default async function MensPlasticSurgeryMiamiPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Look as Strong as You Feel'
-                    description="You put in the work at the gym, in your career, and in life. But some things don't respond to effort alone. Our board-certified surgeons specialize in natural-looking results that enhance your masculine features. Confidential consultations available."
+                    description="You put in the work at the gym, in your career, and in life. But some things don't respond to effort alone. Victoria Karlinsky, MD, FACS, aims for natural-looking results that suit your build. Confidential consultations available."
                     primaryButton={{
                         text: 'Yes, I Want My Free Consultation',
                         href: '#hero-form',

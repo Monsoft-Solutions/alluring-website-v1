@@ -18,7 +18,10 @@ export const tummyTuckMiami: Procedure = {
     // landing page. Prices from the practice's price sheet of 2026-09-15
     // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
     // "$3,500" and "5,000+ procedures" this used to carry (#309).
-    description: `A tummy tuck (abdominoplasty) removes loose skin and fat from the abdomen and can repair separated abdominal muscles. At Alluring in Miami, one surgeon performs every tummy tuck: ${KARLINSKY_NAME}. A mini tummy tuck is ${tummyTuckFigure('price-mini')} and a full tummy tuck ${tummyTuckFigure('price-full')}.`,
+    //
+    // Every Alluring price in this file is a claim token, resolved from the
+    // admin's price list when the page renders (#354).
+    description: `A tummy tuck (abdominoplasty) removes loose skin and fat from the abdomen and can repair separated abdominal muscles. At Alluring in Miami, one surgeon performs every tummy tuck: ${KARLINSKY_NAME}. A mini tummy tuck is [[price:tummy-tuck:mini]] and a full tummy tuck [[price:tummy-tuck:full]], and your surgeon confirms your price at consultation.`,
 
     // Hand-written metadata (D4 of the wave-two brief). The generated title
     // ended "| Board-Certified Surgeons", a certification claim naming no
@@ -27,15 +30,15 @@ export const tummyTuckMiami: Procedure = {
     // day-28 read can tell a ranking change from a click-through change.
     // After the "|": the two prices most searches compare, mini and full.
     // No surgeon's name, so a staffing change doesn't touch it.
-    seoTitle: `Tummy Tuck Miami ${new Date().getFullYear()} | Mini From ${tummyTuckFigure('price-mini')}, Full From ${tummyTuckFigure('price-full')}`,
+    seoTitle: `Tummy Tuck Miami ${new Date().getFullYear()} | Mini From [[price:tummy-tuck:mini]], Full From [[price:tummy-tuck:full]]`,
     //
     // Written for the cost cluster, which the page now owns (D5): the whole
     // price range, which no Miami competitor publishes, and the one surgeon.
     // Under the 160 `clampMetaDescription` limit.
-    metaDescription: `Five tummy tucks, five prices: a mini at ${tummyTuckFigure('price-mini')} to a fleur-de-lis at ${tummyTuckFigure('price-fleur-de-lis')}. Every one performed by ${KARLINSKY_NAME}. Free consultation.`,
+    metaDescription: `Five tummy tucks, five prices: a mini at [[price:tummy-tuck:mini]] to a fleur-de-lis at [[price:tummy-tuck:fleur-de-lis]]. Every one performed by ${KARLINSKY_NAME}. Free consultation.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `Tummy tuck in Miami, from a mini at ${tummyTuckFigure('price-mini')} to a full tummy tuck at ${tummyTuckFigure('price-full')}. Every tummy tuck at Alluring is performed by ${KARLINSKY_NAME}.`,
+    shortDescription: `Tummy tuck in Miami, from a mini at [[price:tummy-tuck:mini]] to a full tummy tuck at [[price:tummy-tuck:full]]. Every tummy tuck at Alluring is performed by ${KARLINSKY_NAME}.`,
     heroSubtitle:
         'Loose skin removed and your abdomen tightened, by one surgeon',
     category: 'body',
@@ -48,45 +51,37 @@ export const tummyTuckMiami: Procedure = {
     dateModified: '2026-09-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // Paid-LP hero pricing: the mini tummy tuck, the lowest tummy tuck price
-    // on the price sheet. No weekly figure: financing is offered but never
-    // quoted as a number.
-    priceFrom: tummyTuckFigure('price-mini'),
-
-    // Published price table, from the practice's price sheet of 2026-09-15
-    // (`docs/pricing/practice-price-list.md`): five kinds of tummy tuck, each
-    // a row on the page and an `Offer` of its own in the graph. The notes
-    // keep the sheet's descriptions. What the price includes waits on the
-    // owner, so `includes` stays empty and the page asks readers to get any
-    // quote, ours included, itemized. Every tummy tuck price on the site —
-    // blog posts, the quiz — must match these.
+    // Five kinds of tummy tuck, each a row on the page and an `Offer` of its
+    // own in the graph, priced from the price-sheet line it names (the
+    // pricing resolver, #354). The notes keep the sheet's descriptions. What
+    // the price includes waits on the owner, so `includes` stays empty and
+    // the page asks readers to get any quote, ours included, itemized.
     pricing: {
-        startingAt: 3000,
         includes: [],
         options: [
             {
                 label: 'Mini tummy tuck',
-                startingAt: 3000,
+                line: 'mini',
                 note: 'Loose skin below the belly button. No muscle repair.',
             },
             {
                 label: 'Extended mini tummy tuck',
-                startingAt: 4000,
+                line: 'extended-mini',
                 note: 'A hip-to-hip incision. No muscle repair.',
             },
             {
                 label: 'Full tummy tuck',
-                startingAt: 4500,
+                line: 'full',
                 note: "Loose skin that doesn't extend to the hips.",
             },
             {
                 label: 'Extended tummy tuck',
-                startingAt: 5500,
+                line: 'extended',
                 note: 'A hip-to-hip incision, when loose skin reaches the hips.',
             },
             {
                 label: 'Fleur-de-lis tummy tuck',
-                startingAt: 10000,
+                line: 'fleur-de-lis',
                 note: 'Adds a vertical scar, usually after major weight loss.',
             },
         ],
@@ -98,11 +93,11 @@ export const tummyTuckMiami: Procedure = {
             },
             {
                 label: 'Liposuction added',
-                description: `Liposuction of the abdomen and flanks, added to a tummy tuck to shape the waist, is ${tummyTuckFigure('price-lipo-add-on')}.`,
+                description: `Liposuction of the abdomen and flanks, added to a tummy tuck to shape the waist, is [[price:lipo:abdomen-flanks]].`,
             },
             {
                 label: 'Combined procedures',
-                description: `When procedures are combined in one surgery, ${tummyTuckFigure('price-combination-discount')} comes off the total for two procedures and ${tummyTuckFigure('price-combination-discount', 1)} for three.`,
+                description: `When procedures are combined in one surgery, [[combo-discount:2]] comes off the total for two procedures and [[combo-discount:3]] for three.`,
             },
         ],
     },
@@ -119,9 +114,11 @@ export const tummyTuckMiami: Procedure = {
         'tummy tuck scar',
     ],
     quickStats: {
-        // Cleveland Clinic's range (`tummy-tuck.facts.ts` surgery-1-5-hours).
-        // How long each type takes at Alluring is an owner question.
-        duration: '1 to 5 Hours, Depending on Type',
+        // Cleveland Clinic's general range (`tummy-tuck.facts.ts`
+        // surgery-1-5-hours), not Alluring's per type: how long each type
+        // takes at Alluring is an owner question, and the surgeon tells you
+        // yours at consultation.
+        duration: '1 to 5 Hours (General Range)',
         anesthesia: 'General Anesthesia',
         // `tummy-tuck.facts.ts` work-about-2-weeks. Also the graph's
         // `followup`, the paid landing page's stats and `/llms-full.txt`.
@@ -133,7 +130,7 @@ export const tummyTuckMiami: Procedure = {
     benefits: [
         {
             title: 'Five types, five prices',
-            description: `From a mini tummy tuck at ${tummyTuckFigure('price-mini')} to a fleur-de-lis at ${tummyTuckFigure('price-fleur-de-lis')}, every type is on the practice's price list, so you can compare before you book.`,
+            description: `From a mini tummy tuck at [[price:tummy-tuck:mini]] to a fleur-de-lis at [[price:tummy-tuck:fleur-de-lis]], every type is on the practice's price list, so you can compare before you book.`,
         },
         {
             title: 'One surgeon you can check',
@@ -195,7 +192,7 @@ export const tummyTuckMiami: Procedure = {
     faqs: [
         {
             question: 'How much does a tummy tuck cost in Miami?',
-            answer: `At Alluring, a mini tummy tuck is ${tummyTuckFigure('price-mini')}, an extended mini ${tummyTuckFigure('price-extended-mini')}, a full tummy tuck ${tummyTuckFigure('price-full')}, an extended tummy tuck ${tummyTuckFigure('price-extended')} and a fleur-de-lis ${tummyTuckFigure('price-fleur-de-lis')}. Liposuction of the abdomen and flanks, added to a tummy tuck, is ${tummyTuckFigure('price-lipo-add-on')}. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Price ranges are estimates and may change. Financing is available, subject to credit approval.`,
+            answer: `At Alluring, a mini tummy tuck is [[price:tummy-tuck:mini]], an extended mini [[price:tummy-tuck:extended-mini]], a full tummy tuck [[price:tummy-tuck:full]], an extended tummy tuck [[price:tummy-tuck:extended]] and a fleur-de-lis [[price:tummy-tuck:fleur-de-lis]]. Liposuction of the abdomen and flanks, added to a tummy tuck, is [[price:lipo:abdomen-flanks]]. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Price ranges are estimates and may change. Financing is available, subject to credit approval. [[discount-statement]]`,
         },
         {
             question:
@@ -225,7 +222,7 @@ export const tummyTuckMiami: Procedure = {
         },
         {
             question: 'Can I combine a tummy tuck with liposuction or a BBL?',
-            answer: `Liposuction of the abdomen and flanks can be added to shape the waist. In a doctor's office, Florida allows at most ${tummyTuckFigure('florida-lipo-with-tummy-tuck-1000cc')} of fat to be removed by liposuction in the same operation as a tummy tuck, and a BBL takes its fat from liposuction, so your surgeon tells you whether to do both in one surgery or plan two. Combining adds some risk: in one large study, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone and ${tummyTuckFigure('major-complications', 2)} of those with liposuction.`,
+            answer: `Liposuction of the abdomen and flanks can be added to shape the waist. In a doctor's office, Florida allows at most ${tummyTuckFigure('florida-lipo-with-tummy-tuck-1000cc')} of fat to be removed by liposuction in the same operation as a tummy tuck, and a BBL takes its fat from liposuction, so your surgeon tells you whether to do both in one surgery or plan two. Combining adds some risk: in an insurance database of ${tummyTuckFigure('major-complications')}, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone and ${tummyTuckFigure('major-complications', 2)} of those with liposuction (Winocour and colleagues, Plastic and Reconstructive Surgery, 2015).`,
         },
         {
             question: 'Can I get pregnant after a tummy tuck?',
@@ -237,7 +234,7 @@ export const tummyTuckMiami: Procedure = {
         },
         {
             question: 'Will a tummy tuck remove stretch marks?',
-            answer: 'Only the ones on the skin it removes. ASPS says a tummy tuck cannot correct stretch marks, although those on the excess skin that is cut away go with it, and others may look somewhat better.',
+            answer: 'Only the ones on the skin it removes. ASPS says a tummy tuck cannot correct stretch marks, although those on the excess skin that is cut away may be removed or somewhat improved.',
         },
         {
             question:

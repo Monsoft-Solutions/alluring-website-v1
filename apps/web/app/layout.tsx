@@ -45,7 +45,8 @@ export const metadata = toNextMetadata(seoConfig, {
     // A plain string, not { default, template }: Next requires a template
     // alongside a default, and a bare string already serves as the fallback
     // title for any page that does not set its own.
-    title: 'Board-Certified Miami Plastic Surgery | Alluring Plastic Surgery',
+    // No "board-certified" in a title (claims canon §2, #354).
+    title: 'Miami Plastic Surgery | Alluring Plastic Surgery',
 })
 
 /**

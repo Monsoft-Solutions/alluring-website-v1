@@ -27,6 +27,8 @@ import { FAQComponent } from '@/components/shared/faq.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { contactPageFaqs } from '@/lib/data/faq/contact-faq-data'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
 import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -49,12 +51,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/contact-us',
     title: pageTitle,
     description:
-        'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back within 24 hours, your price in writing. Call, visit or message us.',
+        'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back from a patient coordinator, your price in writing. Call, visit or message us.',
 
     openGraph: {
         title: pageTitle,
         description:
-            'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back within 24 hours, your price in writing. Call, visit or message us.',
+            'Book your free, private consultation at Alluring Plastic Surgery in Miami. Three quick answers, a text back from a patient coordinator, your price in writing. Call, visit or message us.',
         url: `${seoConfig.siteUrl}/contact-us`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -72,14 +74,18 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            'Book your free consultation at Alluring Plastic Surgery in Miami. A reply within 24 hours and your price in writing.',
+            'Book your free consultation at Alluring Plastic Surgery in Miami. A reply by text and your price in writing.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
 
 export default async function ContactPage() {
-    // Fetch gallery images for visual proof section
-    const galleryImages = await getSpecialsFeaturedGalleryImages()
+    // Fetch gallery images for visual proof section, and the FAQ answers
+    // with their claim tokens resolved (#354) for the list and its schema
+    const [galleryImages, faqs] = await Promise.all([
+        getSpecialsFeaturedGalleryImages(),
+        resolveClaimsIn(contactPageFaqs, 'text', 'faq /contact-us'),
+    ])
 
     return (
         <>
@@ -121,7 +127,8 @@ export default async function ContactPage() {
                 }}
                 openingHoursSpecification={openingHoursSpecification()}
                 image={`${seoConfig.siteUrl}/og-image.jpg`}
-                medicalSpecialty={['PlasticSurgery']}
+                // No medicalSpecialty: "PlasticSurgery" is a specialty the
+                // surgeon is not certified in (claims canon §1, §2; #354).
                 isAcceptingNewPatients={true}
                 sameAs={[
                     ...siteConfig.social.map((s) => s.url),
@@ -137,7 +144,7 @@ export default async function ContactPage() {
             {/* Service Schema - Free Consultation offering */}
             <ServiceSchema
                 name='Free Plastic Surgery Consultation'
-                description='Free consultation with Dr. Victoria Karlinsky, MD, FACS. Discuss your goals and options and receive a personalized quote in writing, with no obligation.'
+                description='Free consultation with Victoria Karlinsky, MD, FACS. Discuss your goals and options and receive a personalized quote in writing, with no obligation.'
                 url={`${seoConfig.siteUrl}/contact-us`}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
@@ -145,7 +152,8 @@ export default async function ContactPage() {
                     name: siteConfig.business.name,
                     type: 'MedicalBusiness',
                 }}
-                areaServed={['Miami', 'Florida', 'United States']}
+                // US only (claims canon §1, §8): the shared list every page uses.
+                areaServed={[...AREA_SERVED]}
                 availableLanguage={['English', 'Spanish']}
                 offers={{
                     price: 0,
@@ -157,7 +165,7 @@ export default async function ContactPage() {
             />
 
             <FAQSchema
-                items={contactPageFaqs.map((faq) => ({
+                items={faqs.map((faq) => ({
                     question: faq.question,
                     answer: faq.answer,
                 }))}
@@ -171,8 +179,8 @@ export default async function ContactPage() {
                 <ContactChatHero />
 
                 <GoogleReviews
-                    title='Verified Google Reviews'
-                    subtitle='Real feedback from real patients'
+                    title='Google Reviews'
+                    subtitle='Real reviews from our patients on Google'
                     limit={3}
                     includeSchema={false}
                 />
@@ -183,7 +191,7 @@ export default async function ContactPage() {
 
                 <FAQComponent
                     id='faq'
-                    faqs={[...contactPageFaqs]}
+                    faqs={[...faqs]}
                     title='Before You Visit'
                     description='Straight answers to what patients ask before their consultation.'
                     variant='muted'
@@ -195,12 +203,12 @@ export default async function ContactPage() {
                     eyebrow='Free consultation'
                     fresh={{
                         heading: 'Ready when you are',
-                        body: 'Three questions, under a minute. A patient coordinator texts you within 24 hours to book your free consultation.',
+                        body: 'Three questions, under a minute. A patient coordinator texts you to book your free consultation.',
                         buttonLabel: 'Start my request',
                     }}
                     resume={{
                         heading: 'Pick up where you left off',
-                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you within 24 hours.',
+                        body: 'Your answers are saved in the thread at the top of the page. Finish it in under a minute and a patient coordinator texts you.',
                         buttonLabel: 'Finish my request',
                     }}
                 />

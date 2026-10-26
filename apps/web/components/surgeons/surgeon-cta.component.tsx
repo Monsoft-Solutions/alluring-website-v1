@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { SectionContainer } from '../shared/section-container.component'
 import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Button } from '@workspace/ui/components/button'
-import { getPhoneLink } from '@/lib/data/site-config'
+import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
 
 export const SurgeonCTA = () => {
     return (
@@ -31,7 +31,11 @@ export const SurgeonCTA = () => {
                         <Link href='/contact-us'>Schedule Consultation</Link>
                     </Button>
                     <Button variant='outline' size='lg' asChild>
-                        <Link href={getPhoneLink()}>Call (786) 305-8649</Link>
+                        <Link href={getPhoneLink()}>
+                            Call{' '}
+                            {siteConfig.contact.phoneDisplay ??
+                                siteConfig.contact.phone}
+                        </Link>
                     </Button>
                 </div>
             </ContentWrapper>

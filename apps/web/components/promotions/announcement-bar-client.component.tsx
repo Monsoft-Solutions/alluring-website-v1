@@ -160,7 +160,6 @@ export function AnnouncementBarClient({
                     <Sparkles className='text-gold-400 hidden h-3.5 w-3.5 sm:block' />
 
                     <span className='flex items-center gap-1.5 text-xs font-medium tracking-wide text-stone-300 uppercase md:gap-2 md:text-sm'>
-                        <span className='hidden sm:inline'>Limited Time:</span>
                         {discount && (
                             <span className='text-gold-400 font-bold'>
                                 {discount}

@@ -13,8 +13,9 @@ import { ImageResponse } from 'next/og'
 
 export const runtime = 'nodejs'
 
-export const alt =
-    'Dr. Victoria Karlinsky · Triple Board-Certified Miami Cosmetic Surgeon'
+// No board count (claims canon §2, #354): her name with MD, FACS, as Florida
+// Rule 64B8-11.001(7) asks of advertising.
+export const alt = 'Victoria Karlinsky, MD, FACS · Miami Cosmetic Surgeon'
 
 export const size = { width: 1200, height: 630 } as const
 
@@ -179,7 +180,7 @@ export default function OpenGraphImage() {
                             fontWeight: 400,
                         }}
                     >
-                        Triple Board-Certified · FACS Fellow
+                        MD, FACS · Cosmetic surgeon in Miami
                     </div>
 
                     {/* CTA pill */}

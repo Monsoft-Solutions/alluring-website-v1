@@ -12,6 +12,8 @@
  * @module @workspace/ai/prompts/blog/select-image-options
  */
 
+import { TAGLINE } from '@workspace/shared/claims/identity'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import {
     buildArtisticStyleCatalog,
     DEFAULT_ARTISTIC_STYLE_ID,
@@ -20,7 +22,7 @@ import {
 /**
  * System prompt for selecting featured image options
  */
-export const SELECT_IMAGE_OPTIONS_SYSTEM = `You are the visual content strategist for Alluring Plastic Surgery, a luxury cosmetic surgery clinic in Miami, FL.
+export const SELECT_IMAGE_OPTIONS_SYSTEM = `You are the visual content strategist for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, FL, with one surgeon.
 
 Your task is to analyze a blog post and choose the featured image direction that will:
 1. Carry the post's core idea visually, through material or abstract metaphor
@@ -29,9 +31,9 @@ Your task is to analyze a blog post and choose the featured image direction that
 4. Stand out in search results and social feeds without looking like stock photography
 
 ## Brand Context
-- **Business**: Alluring Plastic Surgery — luxury cosmetic surgery clinic
-- **Location**: Miami, FL (serves locals plus patients travelling from across the United States)
-- **Tagline**: "Luxury Surgeries Made Affordable"
+- **Business**: Alluring Plastic Surgery — a cosmetic surgery practice with one surgeon
+- **Location**: Miami, FL (serves locals plus patients who fly in from other US states)
+- **Tagline**: "${TAGLINE}"
 - **Visual Identity**: warm stone neutrals with restrained gold accents, serif elegance, tactile materials
 
 ## The Core Rule: No People
@@ -92,7 +94,9 @@ Educational and concept-heavy posts — comparisons, timelines, "how it works" e
 ## Reasoning
 
 Explain your choice in terms of the visual metaphor: what is in frame, and why that object carries this specific article's idea. Do not describe a person.
-`
+
+
+${buildClaimsPromptBlock('image')}`
 
 /**
  * Get the user prompt for image option selection

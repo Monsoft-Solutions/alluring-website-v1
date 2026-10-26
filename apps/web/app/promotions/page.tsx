@@ -19,7 +19,7 @@ const pageTitle = 'Special Offers & Promotions | Alluring Plastic Surgery'
 export const metadata: Metadata = {
     title: pageTitle,
     description:
-        'Discover current special offers on cosmetic surgery in Miami. Limited-time discounts, seasonal specials and exclusive package deals.',
+        'Current specials at Alluring Plastic Surgery in Miami. Your surgeon confirms your price at consultation.',
     openGraph: {
         title: pageTitle,
         description:
@@ -45,35 +45,37 @@ export default async function PromotionsPage() {
             <WebPageSchema
                 name='Special Offers & Promotions'
                 url={pageUrl}
-                description='Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.'
+                description='Current specials at Alluring Plastic Surgery in Miami. Your surgeon confirms your price at consultation.'
             />
 
             {/* SEO Schema - Breadcrumb */}
             <BreadcrumbSchema items={breadcrumbItems} />
 
-            {/* SEO Schema - OfferCatalog */}
-            <OfferCatalogSchema
-                name='Current Plastic Surgery Specials & Promotions'
-                url={pageUrl}
-                description='Discover our current special offers and promotions on cosmetic surgery procedures. Limited-time discounts, seasonal specials, and exclusive package deals in Miami.'
-                numberOfItems={promotions.length}
-                offeredBy={{
-                    '@id': `${seoConfig.siteUrl}/#organization`,
-                    type: 'MedicalBusiness',
-                    name: siteConfig.business.name,
-                    url: seoConfig.siteUrl,
-                }}
-                itemListElement={promotions.map((promo) => ({
-                    name: promo.title,
-                    url: `${seoConfig.siteUrl}/promotions/${promo.slug}`,
-                    description: promo.excerpt ?? promo.description,
-                    validThrough: promo.endsAt
-                        ? new Date(promo.endsAt).toISOString()
-                        : undefined,
-                    image: promo.imageUrl ?? undefined,
-                    category: promo.type,
-                }))}
-            />
+            {/* SEO Schema - OfferCatalog, only while a promotion is live */}
+            {promotions.length > 0 && (
+                <OfferCatalogSchema
+                    name='Current Plastic Surgery Specials & Promotions'
+                    url={pageUrl}
+                    description='Current specials at Alluring Plastic Surgery in Miami. Your surgeon confirms your price at consultation.'
+                    numberOfItems={promotions.length}
+                    offeredBy={{
+                        '@id': `${seoConfig.siteUrl}/#organization`,
+                        type: 'MedicalBusiness',
+                        name: siteConfig.business.name,
+                        url: seoConfig.siteUrl,
+                    }}
+                    itemListElement={promotions.map((promo) => ({
+                        name: promo.title,
+                        url: `${seoConfig.siteUrl}/promotions/${promo.slug}`,
+                        description: promo.excerpt ?? promo.description,
+                        validThrough: promo.endsAt
+                            ? new Date(promo.endsAt).toISOString()
+                            : undefined,
+                        image: promo.imageUrl ?? undefined,
+                        category: promo.type,
+                    }))}
+                />
+            )}
 
             <ContainerLayout as='div' noPadding size='full'>
                 <div className='container mx-auto px-4 py-16 sm:px-6 md:py-24 lg:px-8'>
@@ -82,7 +84,7 @@ export default async function PromotionsPage() {
                         <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-4 py-2'>
                             <Sparkles className='text-gold-500 h-4 w-4' />
                             <span className='text-sm font-medium tracking-wide text-stone-600 uppercase'>
-                                Limited Time Offers
+                                Current specials
                             </span>
                         </div>
 
@@ -96,9 +98,8 @@ export default async function PromotionsPage() {
                         <div className='bg-gold-500 mx-auto mb-6 h-1 w-24' />
 
                         <p className='mx-auto max-w-2xl text-lg leading-relaxed font-light text-stone-600'>
-                            Take advantage of our exclusive promotions and make
-                            your transformation journey more accessible. All
-                            offers are for a limited time.
+                            Current specials at Alluring Plastic Surgery. Your
+                            surgeon confirms your price at consultation.
                         </p>
                     </div>
 
@@ -119,8 +120,7 @@ export default async function PromotionsPage() {
                                 No Active Promotions
                             </h2>
                             <p className='text-stone-500'>
-                                Check back soon for new special offers and
-                                exclusive deals.
+                                Check back soon for new specials.
                             </p>
                         </div>
                     )}

@@ -14,12 +14,13 @@ import {
     ShieldCheck,
     Clock,
     CreditCard,
-    Quote,
     MapPin,
     Building2,
     Heart,
 } from 'lucide-react'
 import Image from 'next/image'
+
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
 import { siteConfig } from '@/lib/data/site-config'
@@ -64,7 +65,7 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
                                 <div className='flex items-center gap-2 text-white'>
                                     <MapPin className='text-gold-400 h-4 w-4' />
                                     <span className='text-sm font-medium'>
-                                        Coral Gables, Miami
+                                        Miami, FL
                                     </span>
                                 </div>
                             </div>
@@ -79,27 +80,27 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
                         <div className='mb-4 hidden items-center gap-2 lg:flex'>
                             <MapPin className='text-gold-400 h-4 w-4' />
                             <span className='text-sm font-medium text-stone-400'>
-                                Coral Gables, Miami
+                                Miami, FL
                             </span>
                             <span className='text-gold-400'>|</span>
                             <span className='text-sm font-medium text-stone-400'>
-                                Your Neighborhood Surgeons
+                                Your Neighborhood Surgeon
                             </span>
                         </div>
 
                         {/* Emotional Headline - Miami Focused */}
                         <div className='mb-6 text-center lg:text-left'>
                             <h1 className='mb-3 font-serif text-3xl leading-tight text-white md:text-4xl lg:text-5xl'>
-                                Miami&apos;s{' '}
+                                Your surgeon,{' '}
                                 <span className='text-gold-400 italic'>
-                                    Most Trusted
+                                    right here
                                 </span>{' '}
-                                Plastic Surgeons
+                                in Miami
                             </h1>
                             <p className='text-lg leading-relaxed text-stone-300'>
-                                Right here in your community. No travel, no
-                                strangers—just board-certified surgeons your
-                                neighbors trust. Hablamos Espa&ntilde;ol.
+                                Right here in your community. One surgeon
+                                performs every procedure at Alluring. Hablamos
+                                Espa&ntilde;ol.
                             </p>
                         </div>
 
@@ -108,13 +109,13 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
                                 <Building2 className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    15+ Years in Miami
+                                    {TRUST_BADGES.board}
                                 </span>
                             </div>
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
                                 <Heart className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    5,000+ Miami Patients
+                                    Hablamos español
                                 </span>
                             </div>
                         </div>
@@ -124,7 +125,7 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
                             <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2'>
                                 <CreditCard className='text-gold-400 h-4 w-4' />
                                 <span className='text-sm font-medium text-stone-300'>
-                                    From $27/week | 0% APR available
+                                    Financing available
                                 </span>
                             </div>
                         </div>
@@ -147,42 +148,26 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
 
                         {/* Trust Cluster */}
                         <div className='mt-8 space-y-6'>
-                            {/* Local Testimonial Quote */}
-                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
-                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
-                                <div>
-                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
-                                        &ldquo;I love that I didn&apos;t have to
-                                        travel. My surgeon is right here in
-                                        Miami, and the follow-up care was so
-                                        convenient.&rdquo;
-                                    </p>
-                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Isabella M., Brickell Resident
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Double Board-Certified'}{' '}
-                                        Accredited
+                                        One surgeon for every procedure
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Award className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Miami&apos;s Top Rated
+                                        {formatRatingBadge(
+                                            siteConfig.trustStats?.rating
+                                        )}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Clock className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Same-Week Consultations
+                                        In person or by video
                                     </span>
                                 </div>
                             </div>

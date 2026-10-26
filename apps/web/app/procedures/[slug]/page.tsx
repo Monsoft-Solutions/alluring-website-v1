@@ -2,13 +2,17 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { JsonLdGraph } from '@workspace/seo/react'
 
+import { resolveProcedureClaims } from '@/lib/claims/resolve-claims.server'
 import { procedures, getProcedureBySlug } from '@/lib/data/procedures.data'
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import { getProcedurePrices } from '@/lib/queries/pricing.query'
 import { getActivePromotionByProcedure } from '@/lib/queries/promotion.query'
 import {
     getProcedureSurgeonNode,
     renderProcedurePage,
 } from '@/lib/procedures/procedure-page-registry'
+import { fitResolvedTitle } from '@/lib/seo/fit-title.util'
 import { generateProcedureTitle } from '@/lib/seo/generate-title.util'
 import {
     buildProcedureGraph,
@@ -32,19 +36,28 @@ export function generateStaticParams() {
 }
 
 /**
- * Generate CTR-optimized meta description for procedure pages
- * Includes trust signals, financing mention, and clear CTA
+ * The meta description for a procedure page nobody has written one for. It
+ * states only what the claims canon verifies (issue #354): one surgeon,
+ * financing, real photos. No volume, tenure or superlative.
  */
 function generateProcedureDescription(procedureTitle: string): string {
-    const trustStats = siteConfig.trustStats
-    return `Get exceptional ${procedureTitle.toLowerCase()} results with Miami's top surgeons. ${trustStats?.patients ?? '5,000+'} procedures. Financing available. See real before & afters. Book free consultation.`
+    return `${procedureTitle} in Miami, performed by one surgeon: ${KARLINSKY_NAME}. Financing available. See real before and after photos and book a consultation.`
+}
+
+/**
+ * The procedure with its claim tokens resolved (`[[price:…]]` in its copy),
+ * so the metadata, the graph and the page body print the same prices.
+ */
+async function getResolvedProcedure(slug: string) {
+    const procedure = getProcedureBySlug(slug)
+    return procedure ? resolveProcedureClaims(procedure) : undefined
 }
 
 export async function generateMetadata(
     props: ProcedurePageProps
 ): Promise<Metadata> {
     const params = await props.params
-    const procedure = getProcedureBySlug(params.slug)
+    const procedure = await getResolvedProcedure(params.slug)
 
     if (!procedure) {
         return {
@@ -58,9 +71,14 @@ export async function generateMetadata(
 
     // A hand-written title always wins. The generated pattern is a floor for
     // pages nobody has written metadata for, not something to override an
-    // author who picked the head term deliberately.
-    const pageTitle =
-        procedure.seoTitle ?? generateProcedureTitle(procedure.title)
+    // author who picked the head term deliberately. A hand-written title can
+    // name prices (#354); a discount that pushes it past the limit drops its
+    // "(N% off $X)" suffixes, and the generated title takes over only if it
+    // still does not fit.
+    const generatedTitle = generateProcedureTitle(procedure.title)
+    const pageTitle = procedure.seoTitle
+        ? fitResolvedTitle(procedure.seoTitle, generatedTitle)
+        : generatedTitle
 
     // Same for the description. Clamping still applies either way — it is a
     // safety net against overrun, and a hand-written one under the limit
@@ -124,11 +142,14 @@ export async function generateMetadata(
 
 export default async function ProcedurePage(props: ProcedurePageProps) {
     const params = await props.params
-    const procedure = getProcedureBySlug(params.slug)
+    const procedure = await getResolvedProcedure(params.slug)
 
     if (!procedure) {
         notFound()
     }
+
+    // Every price on the page, and the graph's Offers, from the resolver.
+    const prices = await getProcedurePrices(params.slug)
 
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
     const pageUrl = `${siteUrl}/procedures/${params.slug}`
@@ -137,13 +158,18 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
     // client components, so whatever they receive is serialized into the RSC
     // payload — passing whole procedures put three other procedures' markdown
     // and FAQs on this page (#250).
-    const relatedProcedures = procedures
-        .filter(
-            (p) =>
-                p.category === procedure.category && p.slug !== procedure.slug
+    const relatedProcedures = (
+        await Promise.all(
+            procedures
+                .filter(
+                    (p) =>
+                        p.category === procedure.category &&
+                        p.slug !== procedure.slug
+                )
+                .slice(0, 3)
+                .map(resolveProcedureClaims)
         )
-        .slice(0, 3)
-        .map(toProcedureSummary)
+    ).map(toProcedureSummary)
 
     // Fetch related promotion for this procedure (for structured data)
     const relatedPromotion = await getActivePromotionByProcedure(params.slug)
@@ -198,6 +224,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                     breadcrumbs: breadcrumbItems,
                     offer: promotionOfferNode,
                     surgeon: getProcedureSurgeonNode(procedure.slug, siteUrl),
+                    prices,
                 })}
             />
 
@@ -208,6 +235,7 @@ export default async function ProcedurePage(props: ProcedurePageProps) {
                 relatedProcedures,
                 siteUrl,
                 pageUrl,
+                prices,
             })}
         </>
     )

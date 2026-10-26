@@ -7,6 +7,8 @@
  *
  * This helps LLMs verify expertise and improves SEO for medical content.
  */
+import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export type AuthorCredentials = {
     title: string
@@ -75,20 +77,18 @@ export const authors: AuthorExtended[] = [
     {
         slug: 'editorial-team',
         name: 'Alluring Plastic Surgery Editorial Team',
-        jobTitle: 'Medical Content Team',
+        jobTitle: 'Editorial Team',
         shortBio:
-            'Expert medical content written by board-certified plastic surgeons and reviewed by our editorial team.',
-        fullBio:
-            'The Alluring Plastic Surgery Editorial Team consists of board-certified plastic surgeons, medical writers, and healthcare professionals dedicated to providing accurate, trustworthy information about cosmetic procedures. All content is reviewed by our surgeons for medical accuracy.',
-        credentials: [
-            { title: 'Medical Content Review Board' },
-            { title: 'HIPAA Compliance Certified' },
-        ],
+            'Articles from Alluring Plastic Surgery, a cosmetic surgery practice in Miami, Florida.',
+        // The team has no reviewer panel or certification to claim (claims
+        // canon §2, §3, #354).
+        fullBio: `The Alluring Plastic Surgery editorial team writes these articles from published sources such as ASPS, The Aesthetic Society and Cleveland Clinic. Alluring is a cosmetic surgery practice in Miami, Florida, with one surgeon: ${KARLINSKY_NAME}.`,
+        credentials: [],
         affiliations: [
             {
                 organization: 'Alluring Plastic Surgery',
                 role: 'Editorial Team',
-                url: 'https://alluringmiami.com',
+                url: siteConfig.seo.siteUrl,
             },
         ],
         specialties: [

@@ -12,25 +12,20 @@ export const breastAugmentationMiami: Procedure = {
     // landing page. Prices from the practice's price sheet of 2026-09-15
     // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
     // page's old saline "$4,500–$6,500" and silicone "$5,500–$8,500" (#309).
-    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Saline implants are $3,500 and silicone implants $4,500.`,
+    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Saline implants are [[price:breast-augmentation:saline]] and silicone implants [[price:breast-augmentation:silicone]], and your surgeon confirms your price at consultation.`,
     shortDescription:
-        'Achieve the fuller, more balanced look you desire with natural-looking breast enhancement. Silicone, saline, and fat transfer options with flexible financing.',
+        'Achieve the fuller, more balanced look you desire with natural-looking breast enhancement. Silicone, saline, and fat transfer options, with financing available.',
     heroSubtitle: 'Implants sized to your frame, placed by one surgeon',
     // Hand-written meta description: the generated one claimed "Miami's top
     // surgeons. 5,000+ procedures" (#309). The title stays generated until
     // the page rebuild changes it.
-    metaDescription: `Breast augmentation in Miami: saline implants $3,500, silicone $4,500, performed by one surgeon, ${KARLINSKY_NAME}. Free consultation.`,
+    metaDescription: `Breast augmentation in Miami: saline implants [[price:breast-augmentation:saline]], silicone [[price:breast-augmentation:silicone]], performed by one surgeon, ${KARLINSKY_NAME}. Free consultation.`,
 
     category: 'breast',
     bodyLocation: 'Breast',
     image: '/images/procedures/breast-augmentation.jpg',
     dateModified: '2026-09-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
-
-    // Paid-LP hero pricing: saline implants, the lower of the two
-    // augmentation prices on the price sheet. No weekly figure: financing is
-    // offered but never quoted as a number.
-    priceFrom: '$3,500',
 
     // Inline content images for enhanced engagement
     contentImages: [
@@ -53,8 +48,7 @@ export const breastAugmentationMiami: Procedure = {
             id: 'natural-results',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/breast-augmentation/natural-results-alluring-plastic-surgery-miami.webp',
             alt: 'Woman in a champagne satin gown in a Miami living room at dusk',
-            caption:
-                'Our focus on natural-looking results enhances your beauty',
+            caption: 'Our focus is natural-looking results',
             section: 'content',
             variant: 'full-width',
         },
@@ -86,7 +80,7 @@ export const breastAugmentationMiami: Procedure = {
         {
             id: 'recovery-lifestyle',
             src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/breast-augmentation/recovery-lifestyle-alluring-plastic-surgery-miami.webp',
-            alt: 'Woman enjoying Miami beach lifestyle after breast augmentation recovery',
+            alt: 'Smiling woman in a white sundress at a railing by the beach',
             caption: 'Embrace your new confidence and the Miami lifestyle',
             section: 'recovery',
             variant: 'full-width',
@@ -117,14 +111,14 @@ export const breastAugmentationMiami: Procedure = {
         duration: '1 to 2 Hours',
         anesthesia: 'General Anesthesia',
         recovery: '1 Week to Light Activity',
-        results: 'Long-lasting (10-20+ years)',
+        results: 'Long-lasting',
         inpatientOutpatient: 'Outpatient',
     },
     benefits: [
         {
             title: 'Boosted Confidence',
             description:
-                "Whether filling out your favorite outfits or feeling comfortable at Miami's beaches, breast augmentation helps you feel empowered and confident in your body every day.",
+                "Whether filling out your favorite outfits or feeling comfortable at Miami's beaches, breast augmentation can help you feel more confident in your body.",
         },
         {
             title: 'Natural-Looking Results',
@@ -134,12 +128,12 @@ export const breastAugmentationMiami: Procedure = {
         {
             title: 'Balanced Proportions',
             description:
-                'Creates visual harmony between your bust, waist, and hips. Clothes fit better, swimwear looks amazing, and your silhouette feels complete.',
+                'Can bring your bust into better balance with your waist and hips, so clothes and swimwear fit the way you want.',
         },
         {
             title: 'Post-Pregnancy Restoration',
             description:
-                "Restores fullness and lift lost after pregnancy and breastfeeding, helping you reclaim your pre-baby body or achieve the figure you've always wanted.",
+                'Can restore the fullness lost after pregnancy and breastfeeding. If your breasts have also dropped, a breast lift may be needed as well; your surgeon decides at consultation.',
         },
     ],
     process: [
@@ -147,7 +141,7 @@ export const breastAugmentationMiami: Procedure = {
             step: 1,
             title: 'Consultation & Sizing',
             description:
-                'Your surgeon measures your chest, assesses symmetry, and uses sizing tools to help you visualize results. Together, you choose the perfect implant type, size, and placement.',
+                'Your surgeon measures your chest, assesses symmetry, and uses sizing tools to help you visualize results. Together, you choose the implant type, size, and placement that suit you.',
         },
         {
             step: 2,
@@ -171,20 +165,20 @@ export const breastAugmentationMiami: Procedure = {
             step: 5,
             title: 'Recovery & Results',
             description:
-                'Most patients return to light activities within a week. Final results emerge over 3-6 months as implants settle and swelling fully resolves.',
+                'Most patients return to light activities within about a week. Implants settle and swelling goes down over the following months, and your surgeon tells you when to expect your final result.',
         },
     ],
     quickAnswer: {
         question: 'What is breast augmentation?',
         answer: 'Breast augmentation is a surgical procedure that uses implants or fat transfer to increase breast size, enhance shape, and improve symmetry for a more balanced figure.',
         details:
-            'The procedure typically takes 1-2 hours under general anesthesia. Most patients return to light activities within 1 week, with final results visible after 3-6 months as implants settle into their natural position.',
+            'At Alluring, the procedure typically takes 1-2 hours under general anesthesia. Most patients return to light activities within about a week, and the implants settle into position over the following months.',
     },
     content: `## Breast Augmentation Miami: The Confidence You Deserve
 
-You've imagined it countless times—slipping into that dress that finally fits the way you want, feeling confident in a bikini without adjusting, catching your reflection and loving what you see. It's not vanity. It's about your body matching how you feel inside.
+You've imagined it: slipping into that dress that finally fits the way you want, feeling confident in a bikini without adjusting, catching your reflection and loving what you see. It's not vanity. It's about your body matching how you feel inside.
 
-Whether you've always desired fuller curves, want to restore volume lost after pregnancy and breastfeeding, or simply seek better proportion for your frame, **breast augmentation** can make that vision a reality. In **Miami**—where beach days are year-round and confidence is a lifestyle—many women choose breast enhancement to feel like the best version of themselves.
+Whether you've always desired fuller curves, want to restore volume lost after pregnancy and breastfeeding, or simply seek better proportion for your frame, **breast augmentation** can make that vision a reality. In **Miami**—where beach days are year-round and confidence is a lifestyle—many women choose breast enhancement to feel more like themselves.
 
 At **Alluring Plastic Surgery**, every breast augmentation is performed by one surgeon, ${KARLINSKY_NAME}, who plans for **natural-looking results** that suit your frame. ${KARLINSKY_CREDENTIALS}
 
@@ -204,27 +198,27 @@ Choosing the right implant is crucial to achieving your desired outcome. Here's 
 
 ### Silicone Implants
 
-**Silicone implants** are filled with a cohesive silicone gel that closely mimics the feel of natural breast tissue. They're the most popular choice for women seeking the most realistic look and feel.
+**Silicone implants** are filled with a cohesive silicone gel that closely mimics the feel of natural breast tissue.
 
 **Pros:**
-- Most natural feel and appearance
+- A feel closer to natural breast tissue
 - Less likely to show rippling
 - Available in various profiles (low, moderate, high)
-- Excellent for women with less natural breast tissue
+- Often suggested for women with less natural breast tissue
 
 **Cons:**
 - Requires screening for silent rupture: the FDA recommends an ultrasound or MRI 5 to 6 years after surgery, then every 2 to 3 years
 - Slightly larger incision than saline
-- Must be 22+ years old (FDA guideline)
+- FDA-approved for breast augmentation from age 22
 
 ### Saline Implants
 
-**Saline implants** are filled with sterile saltwater solution after placement. They can be adjusted during surgery for precise symmetry and are an excellent option for younger patients.
+**Saline implants** are filled with sterile saltwater solution after placement. They can be adjusted during surgery for symmetry and are FDA-approved for breast augmentation from age 18 (silicone implants from age 22).
 
 **Pros:**
 - Adjustable volume during surgery
 - If rupture occurs, saline is safely absorbed by body
-- Available to patients 18+
+- FDA-approved for breast augmentation from age 18
 - Smaller incision possible
 
 **Cons:**
@@ -238,18 +232,17 @@ Choosing the right implant is crucial to achieving your desired outcome. Here's 
 
 **Pros:**
 - Maintains shape over time
-- Less likely to leak or rupture
+- The gel holds together if the shell is damaged
 - Natural teardrop shape option
 - Long-lasting results
 
 **Cons:**
 - Firmer than traditional silicone
 - Requires slightly longer incision
-- Higher cost than standard silicone
 
 ### Implant Shapes: Round vs. Teardrop
 
-- **Round implants**: Most popular; provide fullness in upper and lower breast; look natural when lying down
+- **Round implants**: Provide fullness in upper and lower breast; look natural when lying down
 - **Teardrop (anatomical) implants**: Mimic natural breast shape; fuller at bottom; often used for reconstruction
 
 Your surgeon will help you compare options during your consultation, considering your natural breast tissue, chest width, and aesthetic preferences.
@@ -263,11 +256,11 @@ For women seeking enhancement without implants, **fat transfer breast augmentati
 1. **Liposuction** removes fat from areas like abdomen, thighs, or flanks
 2. Fat is purified and processed
 3. Purified fat is carefully injected into the breasts
-4. Some fat is naturally absorbed; results stabilize over 3-6 months
+4. Some of the fat is naturally absorbed over the following months, and your surgeon tells you when the result has settled
 
 ### Ideal Candidates for Fat Transfer
 
-- Women seeking modest enhancement (1-2 cup sizes maximum)
+- Women seeking a modest increase in size
 - Those with adequate donor fat
 - Patients wanting to avoid implants entirely
 - Women desiring a more natural feel
@@ -275,7 +268,7 @@ For women seeking enhancement without implants, **fat transfer breast augmentati
 ### Fat Transfer Limitations
 
 - Cannot achieve dramatic size increases
-- Not all transferred fat survives (about 50-80%, with surgeons interviewed by ASPS putting the average take near 60%)
+- Not all transferred fat survives; some is reabsorbed by the body
 - May require multiple sessions
 - Not suitable for women wanting significant enlargement
 
@@ -283,13 +276,12 @@ Fat transfer can also be combined with implants for women wanting both volume an
 
 ## Mini Boob Job: Subtle Enhancement
 
-Not everyone wants dramatic results. A **mini boob job** or **small breast augmentation** is perfect for women seeking subtle, natural-looking enhancement.
+Not everyone wants dramatic results. A **mini boob job** or **small breast augmentation** suits women seeking subtle, natural-looking enhancement.
 
 ### What Is a Mini Boob Job?
 
 A smaller augmentation typically involving:
-- Smaller implant sizes (150-250cc)
-- Often a half to one cup size increase
+- Smaller implants, chosen with your surgeon at consultation
 - Focus on proportion rather than dramatic change
 - Ideal for petite frames
 
@@ -329,25 +321,27 @@ One of the most common questions we hear: "Do I need a breast lift, implants, or
 - You want to restore youthful fullness and position
 - Your nipples sit below the breast crease but you also desire more size
 
-During your consultation, your surgeon will assess your anatomy and recommend the best approach for your goals. Many women benefit from combining procedures for optimal results.
+During your consultation, your surgeon will assess your anatomy and recommend the approach that fits your goals. Some women need both procedures.
 
 ## How Much Does a Boob Job Cost in Miami?
 
-At Alluring Plastic Surgery, breast augmentation is **$3,500 with saline implants** and **$4,500 with silicone implants**. These are the practice's list prices. Your exact price depends on the implants you choose and anything added to the surgery, and Dr. Karlinsky confirms it at your free consultation.
+At Alluring Plastic Surgery, breast augmentation is **[[price:breast-augmentation:saline]] with saline implants** and **[[price:breast-augmentation:silicone]] with silicone implants**. These are the practice's list prices. Your exact price depends on the implants you choose and anything added to the surgery, and Dr. Karlinsky confirms it at your free consultation.
 
 | Procedure | Price |
 |-----------|-------|
-| Breast augmentation, saline implants | $3,500 |
-| Breast augmentation, silicone implants | $4,500 |
-| Breast lift with saline implants | $6,000 |
-| Breast lift with silicone implants | $7,000 |
-| Fat grafting to the breasts, added to another procedure | $1,500 |
+| Breast augmentation, saline implants | [[price:breast-augmentation:saline]] |
+| Breast augmentation, silicone implants | [[price:breast-augmentation:silicone]] |
+| Breast lift with saline implants | [[price:breast-lift:saline]] |
+| Breast lift with silicone implants | [[price:breast-lift:silicone]] |
+| Fat grafting to the breasts, added to another procedure | [[price:breast-augmentation:fat-grafting-breasts]] |
+
+[[discount-statement]]
 
 What moves your price:
 
 - **Implant type**: silicone costs more than saline
 - **A lift**: a breast lift with implants is priced as its own procedure, as in the table
-- **Other procedures**: combining breast augmentation with a second procedure takes $500 off the total, and with a third, $1,000
+- **Other procedures**: [[combo-discount]]
 
 ### Does Insurance Cover Breast Augmentation?
 
@@ -355,7 +349,7 @@ No. **Breast augmentation** is an elective cosmetic procedure, so insurance does
 
 ### Breast Augmentation Financing
 
-Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.
+[[financing:long]]
 
 ## Am I a Good Candidate for Breast Augmentation?
 
@@ -398,46 +392,46 @@ Your journey begins with a comprehensive consultation. Your surgeon will:
 
 **Before surgery, you'll need to:**
 - Stop blood-thinning medications and supplements
-- Arrange transportation home and help for the first 24-48 hours
+- Arrange a ride home and someone to stay with you for at least the first night
 - Prepare your recovery space with essentials within reach
 - Fast as instructed before surgery day
 
 ### Surgery Day
 
-**Breast augmentation** typically takes 1-2 hours under general anesthesia. Your surgeon will make an incision in one of three locations:
+At Alluring, **breast augmentation** typically takes 1-2 hours under general anesthesia. Your surgeon will make an incision in one of three locations:
 
-- **Inframammary (under the breast fold)**: Most common; allows excellent access and minimal interference with breast tissue; scar hidden in natural crease
+- **Inframammary (under the breast fold)**: Most common; gives the surgeon direct access and avoids cutting through breast tissue; scar hidden in natural crease
 - **Periareolar (around the nipple)**: Conceals scar along natural border; slightly higher risk of nipple sensation changes
-- **Transaxillary (armpit)**: No visible breast scars; requires specialized equipment; less commonly used
+- **Transaxillary (armpit)**: No scar on the breast itself (the scar is in the armpit); usually done with an endoscope; less commonly used
 
 ### Implant Placement Options
 
-- **Submuscular (under the muscle)**: Most common; provides more natural slope; better mammogram imaging; lower capsular contracture risk
-- **Subglandular (over the muscle)**: Shorter recovery; more projection; best for patients with adequate natural tissue
+- **Submuscular (under the muscle)**: Most common; can give a more natural slope, may interfere less with mammograms and may lower the risk of capsular contracture
+- **Subglandular (over the muscle)**: Shorter recovery; more projection; suited to patients with adequate natural tissue
 
-Your surgeon will recommend the best combination of incision and placement based on your anatomy and goals.
+Your surgeon will recommend the combination of incision and placement that suits you based on your anatomy and goals.
 
 ### Immediately After Surgery
 
 You'll wake wearing a supportive surgical bra. Most patients go home the same day with:
 - Prescription pain medication
-- Antibiotics to prevent infection
+- Medications as your surgeon prescribes, which may include antibiotics
 - Detailed aftercare instructions
 - Scheduled follow-up appointments
 
 ## Breast Augmentation Recovery Week by Week
 
-Understanding **breast augmentation recovery** helps you plan your life around healing. Here's an honest timeline:
+Understanding **breast augmentation recovery** helps you plan your life around healing. Here's a general timeline; every recovery is different, and your surgeon sets yours:
 
 <ProcedureImage id="recovery-timeline" />
 
 ### Week 1: Rest Mode
 
-- **Help needed**: You shouldn't lift anything over 5 lbs
+- **Lifting**: No heavy lifting until your surgeon clears you
 - **Sleep position**: On your back, slightly elevated
 - **Activity**: Light walking encouraged; no raising arms above head
-- **Work**: Most patients take 5-7 days off
-- **Swelling/bruising**: Normal and expected; peaks around day 3
+- **Work**: Many patients take about a week off; your surgeon sets yours
+- **Swelling/bruising**: Normal and expected
 - **Pro tip**: Wear button-front shirts—pulling anything over your head is difficult
 
 ### Week 2-3: Light Activity Returns
@@ -445,7 +439,7 @@ Understanding **breast augmentation recovery** helps you plan your life around h
 - **Back to desk work**: Sedentary jobs can usually resume
 - **Driving**: Once off prescription pain medication
 - **Swelling**: Significantly improved but still present
-- **Support bra**: Worn 24/7 (except showering)
+- **Support bra**: Worn as your surgeon directs
 - **Exercise**: Light walking only; no bouncing or impact
 
 ### Week 4-6: Gradual Return to Normal
@@ -453,13 +447,13 @@ Understanding **breast augmentation recovery** helps you plan your life around h
 - **Resume most activities**: Shopping, light errands
 - **Light exercise**: Lower body workouts approved (no chest exercises)
 - **Implant settling**: Breasts start "dropping and fluffing"
-- **Intimacy**: Usually cleared around week 4
+- **Intimacy**: Once your surgeon clears you
 
-### Month 3-6: Final Results Emerge
+### The Months After: Your Result Settles
 
-- **All activities approved**: Including chest exercises
-- **Implants fully settled**: Final position achieved
-- **Swelling completely resolved**: True results visible
+- **More activities**: Including chest exercises, once your surgeon clears you
+- **Implants settle**: Into their final position
+- **Swelling**: Keeps going down
 - **Scars fading**: Continue scar care routine
 - **Enjoy your results**: Wear those bikinis and fitted tops confidently
 
@@ -485,15 +479,15 @@ We believe a good breast augmentation is one that enhances your natural beauty�
 
 Your relationship with us extends beyond surgery. From consultation through recovery and beyond, we provide ongoing support and accessible care.
 
-### Miami Lifestyle Expertise
+### Planned for Miami Life
 
 Living in South Florida means swimwear season never ends. Your plan accounts for how you'll wear your results, at the beach, the pool and everywhere in between.
 
 ## Your Transformation Starts Here
 
-You've spent enough time wishing for curves that match your confidence. Whether you want subtle enhancement or a more dramatic transformation, whether you're restoring what pregnancy took or creating what nature didn't provide—**breast augmentation** can help you feel like the best version of yourself.
+You've spent enough time wishing for curves that match your confidence. Whether you want subtle enhancement or a more dramatic transformation, whether you're restoring what pregnancy took or creating what nature didn't provide—**breast augmentation** can help you feel more like yourself.
 
-At **Alluring Plastic Surgery**, we combine surgical excellence with genuine care. From your first consultation through your final follow-up, we're committed to making your experience as seamless and rewarding as possible.
+At **Alluring Plastic Surgery**, one surgeon, ${KARLINSKY_NAME}, sees you from your first consultation through your final follow-up.
 
 **Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your free consultation. Discover how breast augmentation can help you embrace every beach day, every night out, and every moment of confidence you deserve.
 
@@ -501,15 +495,15 @@ Your journey to the body you've always envisioned starts with one phone call.`,
     faqs: [
         {
             question: 'How much does a boob job cost?',
-            answer: 'At Alluring Plastic Surgery, breast augmentation is $3,500 with saline implants and $4,500 with silicone implants. A breast lift with implants is $6,000 with saline and $7,000 with silicone. Dr. Karlinsky confirms your exact price at your free consultation, and financing is available with approved credit.',
+            answer: 'At Alluring Plastic Surgery, breast augmentation is [[price:breast-augmentation:saline]] with saline implants and [[price:breast-augmentation:silicone]] with silicone implants. A breast lift with implants is [[price:breast-lift:saline]] with saline and [[price:breast-lift:silicone]] with silicone. Dr. Karlinsky confirms your exact price at your free consultation, and financing is available with approved credit. [[discount-statement]]',
         },
         {
             question: 'How much is breast augmentation in Miami?',
-            answer: 'At Alluring Plastic Surgery in Miami, breast augmentation is $3,500 with saline implants and $4,500 with silicone implants. Combining it with a second procedure takes $500 off the total. Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.',
+            answer: 'At Alluring Plastic Surgery in Miami, breast augmentation is [[price:breast-augmentation:saline]] with saline implants and [[price:breast-augmentation:silicone]] with silicone implants, and Dr. Karlinsky confirms your price at consultation. Combining it with a second procedure takes [[combo-discount:2]] off the total. [[financing]] [[discount-statement]]',
         },
         {
             question: 'What is the recovery time for breast augmentation?',
-            answer: 'Most patients return to desk work within 5-7 days and light activities within 1-2 weeks. Full recovery, including exercise and final results, takes 3-6 months. You should avoid lifting anything over 5 lbs for the first week and chest exercises for 4-6 weeks.',
+            answer: 'Most patients return to light activity in about a week. Your surgeon tells you when you can go back to work, lift and exercise, and swelling keeps going down over the following months.',
         },
         {
             question: 'Do I need a breast lift or breast augmentation?',
@@ -517,11 +511,11 @@ Your journey to the body you've always envisioned starts with one phone call.`,
         },
         {
             question: 'What are the most natural looking breast implants?',
-            answer: 'Silicone implants typically provide the most natural look and feel because the gel mimics natural breast tissue. Gummy bear (cohesive gel) implants also look very natural and maintain their shape well. The key to natural results is proper sizing for your frame and skilled surgical technique—not just implant type.',
+            answer: 'Many patients find silicone implants look and feel more natural, because the gel is closer to breast tissue. Gummy bear (cohesive gel) implants also look very natural and maintain their shape well. The key to natural results is proper sizing for your frame and skilled surgical technique—not just implant type.',
         },
         {
             question: 'How long do breast implants last?',
-            answer: "Modern breast implants typically last 10-20 years or longer. They're not considered lifetime devices, and you may eventually need replacement due to normal wear, changes in preference, or complications.",
+            answer: 'Breast implants are long-lasting, but the FDA says they are not lifetime devices: the longer you have them, the more likely you are to need surgery to replace or remove them, because of normal wear, a change in preference or a complication.',
         },
         {
             question: 'Can you breastfeed after breast augmentation?',
@@ -529,24 +523,24 @@ Your journey to the body you've always envisioned starts with one phone call.`,
         },
         {
             question: 'What size breast implants should I get?',
-            answer: "Implant size depends on your natural anatomy, chest width, desired look, and lifestyle. During consultation, you'll try sizers and discuss goals with your surgeon. Most women choose between 300-450cc, but the 'right' size varies greatly. Focus on how you want to look in clothing rather than cup sizes.",
+            answer: "Implant size depends on your natural anatomy, chest width, desired look, and lifestyle. During consultation, you'll try sizers and discuss goals with your surgeon. The 'right' size varies greatly. Focus on how you want to look in clothing rather than cup sizes.",
         },
         {
             question: 'What is fat transfer breast augmentation?',
-            answer: "Fat transfer uses liposuction to harvest fat from areas like your abdomen or thighs, then injects it into your breasts for natural enhancement. It's ideal for women wanting modest increases (1-2 cup sizes) without implants. Not all transferred fat survives, so results are more subtle than implants.",
+            answer: 'Fat transfer uses liposuction to harvest fat from areas like your abdomen or thighs, then injects it into your breasts for natural enhancement. It suits women who want a modest increase without implants. Not all transferred fat survives, so results are more subtle than implants.',
         },
         {
             question: 'What is a mini boob job?',
-            answer: "A mini boob job refers to breast augmentation with smaller implants (typically 150-250cc) for subtle enhancement—usually a half to one cup size increase. The procedure is identical to standard augmentation; only the implant size differs. It's ideal for women wanting natural-looking results that aren't obviously 'done.'",
+            answer: "A mini boob job uses a smaller implant for a subtle change in size; your surgeon helps you choose the volume at consultation. The procedure is identical to standard augmentation; only the implant size differs. It's ideal for women wanting natural-looking results that aren't obviously 'done.'",
         },
         {
             question:
                 'What is the difference between saline and silicone implants?',
-            answer: 'Silicone implants are pre-filled with cohesive gel that feels like natural breast tissue—most popular for natural look and feel. Saline implants are filled with sterile saltwater during surgery, allowing adjustable volume but slightly firmer feel. Silicone requires age 22+; saline available at 18+.',
+            answer: 'Silicone implants are pre-filled with cohesive gel that feels closer to natural breast tissue. Saline implants are filled with sterile saltwater during surgery, allowing adjustable volume but a slightly firmer feel. The FDA approves silicone implants for breast augmentation from age 22 and saline implants from age 18.',
         },
         {
             question: 'Will breast augmentation leave scars?',
-            answer: 'Yes, but scars are strategically placed to be as inconspicuous as possible. Inframammary scars hide in the breast crease, periareolar scars blend with the nipple border, and transaxillary scars are in the armpit. Scars fade significantly over 12-18 months with proper care.',
+            answer: 'Yes, but scars are strategically placed to be as inconspicuous as possible. Inframammary scars hide in the breast crease, periareolar scars blend with the nipple border, and transaxillary scars are in the armpit. Scars fade over time with proper care.',
         },
         {
             question: 'How do I see boob job before and after results?',

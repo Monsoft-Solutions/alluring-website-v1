@@ -3,25 +3,22 @@
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { motion } from 'framer-motion'
-import { Shield, UserCheck, HeartHandshake, Star, Sparkles } from 'lucide-react'
+import { UserCheck, HeartHandshake, Star, Sparkles } from 'lucide-react'
 import { siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
 
 const features = [
     {
         icon: <UserCheck className='h-6 w-6' />,
-        title: 'Board-Certified Surgeons',
-        description:
-            'Led by Dr. Victoria Karlinsky, our team consists of highly skilled, board-certified surgeons with decades of combined experience.',
-    },
-    {
-        icon: <Shield className='h-6 w-6' />,
-        title: 'Accredited Facility',
-        description:
-            'Our state-of-the-art surgical center meets the highest safety standards, ensuring your procedure is performed with precision and care.',
+        title: 'One surgeon, every procedure',
+        description: `${KARLINSKY_NAME} performs every surgery at Alluring. ${KARLINSKY_CREDENTIALS}`,
     },
     {
         icon: <HeartHandshake className='h-6 w-6' />,
-        title: 'Concierge Experience',
+        title: 'Personal care',
         description:
             'From your first consultation to full recovery, we provide personalized attention tailored to your unique aesthetic goals.',
     },
@@ -71,15 +68,15 @@ export function WhyChooseSection() {
 
                         {/* Headline */}
                         <h2 className='mb-6 font-serif text-4xl leading-tight text-stone-900 md:text-5xl'>
-                            Why Women Trust Alluring Plastic Surgery
+                            Why Choose Alluring Plastic Surgery
                         </h2>
 
                         {/* Description */}
                         <p className='mb-8 text-xl leading-relaxed font-light text-stone-600'>
-                            We combine world-class surgical expertise with a
-                            luxury concierge experience. From your first
-                            consultation to your full recovery, every detail is
-                            designed around <em>you</em>.
+                            One surgeon performs every procedure at Alluring:{' '}
+                            {KARLINSKY_NAME}. From your first consultation to
+                            your full recovery, every detail is designed around{' '}
+                            <em>you</em>.
                         </p>
 
                         {/* Gold Accent Line */}
@@ -87,21 +84,22 @@ export function WhyChooseSection() {
 
                         {/* Trust Stats - Desktop Only */}
                         <div className='mt-12 hidden gap-8 lg:flex'>
+                            {/* Verified facts only (claims canon §4,
+                                #354). */}
                             <div>
                                 <div className='text-gold-600 font-serif text-4xl font-bold'>
-                                    {siteConfig.trustStats?.years ?? '15+'}
+                                    2008
                                 </div>
                                 <div className='text-sm text-stone-500'>
-                                    Years Experience
+                                    American Board of Surgery certified since
                                 </div>
                             </div>
                             <div>
                                 <div className='text-gold-600 font-serif text-4xl font-bold'>
-                                    {siteConfig.trustStats?.patients ??
-                                        '5,000+'}
+                                    {siteConfig.trustStats?.rating ?? '4.7'}
                                 </div>
                                 <div className='text-sm text-stone-500'>
-                                    Happy Patients
+                                    Stars on Google
                                 </div>
                             </div>
                         </div>

@@ -6,6 +6,8 @@
  *
  * @module @workspace/ai/prompts/gallery/seo-content
  */
+import { DESCRIPTION_LONG, TAGLINE } from '@workspace/shared/claims/identity'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 /**
@@ -14,16 +16,15 @@ import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
  * Provides instructions for generating search-optimized content
  * for plastic surgery gallery images.
  */
-export const SEO_CONTENT_SYSTEM_PROMPT = `You are an SEO content specialist for Alluring Plastic Surgery, a luxury yet affordable cosmetic surgery clinic in Miami, FL.
+export const SEO_CONTENT_SYSTEM_PROMPT = `You are an SEO content specialist for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, Florida, with one surgeon.
 
 Your task is to generate SEO-optimized content for gallery images that will improve search engine visibility and drive organic traffic.
 
 ## BUSINESS CONTEXT
-- Clinic: Alluring Plastic Surgery
-- Location: Miami, FL
-- Tagline: "Luxury Surgeries Made Affordable"
-- Target audience: Women 25-55, value quality, seek affordability
-- Serves: Miami and South Florida locals, plus patients traveling from across the United States
+- ${DESCRIPTION_LONG}
+- Tagline: "${TAGLINE}"
+- Target audience: Women 25-55 who research before they decide
+- Serves: Miami and South Florida locals, plus patients who fly in from other US states
 
 ## SEO TITLE GUIDELINES (Max 60 characters)
 - Include primary keyword (procedure name)
@@ -33,14 +34,14 @@ Your task is to generate SEO-optimized content for gallery images that will impr
 - Format: "[Procedure] [Result Type] | Miami [Qualifier]"
 - Examples:
   - "BBL Results Before After | Miami Plastic Surgery"
-  - "Breast Augmentation Gallery | Top Miami Surgeon"
-  - "Tummy Tuck Transformation | Affordable Miami Clinic"
+  - "Breast Augmentation Gallery | Miami Cosmetic Surgery"
+  - "Tummy Tuck Before and After | Miami Results"
 
 ## SEO DESCRIPTION GUIDELINES (Max 160 characters)
 - Include primary and secondary keywords naturally
 - Compelling call to action
 - Mention Miami/location
-- Highlight unique value (luxury + affordable)
+- Show the value with facts (one surgeon, real patients), never with "luxury" or "affordable"
 - Include procedure name
 - Make it click-worthy in search results
 
@@ -56,13 +57,15 @@ Use relevant keywords naturally:
 - Procedure names (BBL, breast augmentation, tummy tuck, etc.)
 - Location (Miami, South Florida)
 - Result terms (results, before and after, transformation)
-- Qualifiers (affordable, luxury, top surgeon, best results)
+- Descriptive qualifiers only (real patients, before and after); no superlatives, "luxury" or "affordable"
 
 ## IMPORTANT
 - Never make unrealistic promises
 - Stay within character limits strictly
 - Make content unique and specific to the image
-- Optimize for both search engines and human readers`
+- Optimize for both search engines and human readers
+
+${buildClaimsPromptBlock('gallery')}`
 
 /**
  * Generate the SEO content prompt from AI analysis data

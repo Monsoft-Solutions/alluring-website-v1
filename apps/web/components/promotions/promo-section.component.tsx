@@ -1,10 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Sparkles, Clock, ArrowRight } from 'lucide-react'
+import { Sparkles, ArrowRight } from 'lucide-react'
 import { type Promotion } from '@workspace/db/schema/promotion'
 
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
-import { formatDiscount, getRemainingDays } from '@/lib/queries/promotion.query'
+import { formatDiscount } from '@/lib/queries/promotion.query'
 
 type PromoSectionProps = {
     promotion: Promotion
@@ -13,20 +13,19 @@ type PromoSectionProps = {
 /**
  * PromoSection Component
  *
- * A luxurious homepage section showcasing the highest-priority active promotion.
+ * A homepage section showcasing the highest-priority active promotion.
  * Designed for a high-end boutique plastic surgery clinic.
  *
  * Features:
  * - Full-width dark background with subtle gradient
  * - Asymmetric layout with large promotion image
  * - Gold accent elements and glassmorphism effects
- * - Urgency indicators (countdown, limited time badge)
+ * - No urgency wording or countdowns (claims canon §10, #354)
  * - Prominent CTA button
  */
 export function PromoSection({ promotion }: PromoSectionProps) {
     const link = '/miami-plastic-surgery-specials'
     const discount = formatDiscount(promotion)
-    const daysRemaining = getRemainingDays(promotion)
 
     return (
         <section
@@ -43,11 +42,11 @@ export function PromoSection({ promotion }: PromoSectionProps) {
                 <div className='grid items-center gap-8 py-16 md:grid-cols-2 md:gap-12 md:py-24 lg:gap-16'>
                     {/* Content Side */}
                     <div className='order-2 md:order-1'>
-                        {/* Limited Time Badge */}
+                        {/* Offer Badge */}
                         <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-stone-700 bg-stone-800/50 px-4 py-2 backdrop-blur-sm'>
                             <Sparkles className='text-gold-400 h-4 w-4' />
                             <span className='text-gold-400 text-xs font-bold tracking-widest uppercase'>
-                                Limited Time Offer
+                                Current offer
                             </span>
                         </div>
 
@@ -70,21 +69,6 @@ export function PromoSection({ promotion }: PromoSectionProps) {
                             <p className='mb-8 max-w-lg text-lg leading-relaxed text-stone-400'>
                                 {promotion.excerpt}
                             </p>
-                        )}
-
-                        {/* Countdown / Urgency */}
-                        {daysRemaining !== null && daysRemaining > 0 && (
-                            <div className='mb-8 inline-flex items-center gap-3 rounded-lg border border-stone-700/50 bg-stone-800/30 px-5 py-3'>
-                                <Clock className='text-gold-400 h-5 w-5' />
-                                <div>
-                                    <span className='text-gold-400 block text-2xl font-bold'>
-                                        {daysRemaining}
-                                    </span>
-                                    <span className='text-xs tracking-wide text-stone-500 uppercase'>
-                                        Days Remaining
-                                    </span>
-                                </div>
-                            </div>
                         )}
 
                         {/* CTA Button */}

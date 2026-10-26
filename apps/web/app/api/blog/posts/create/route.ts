@@ -10,15 +10,48 @@ import {
     images,
 } from '@workspace/db/schema/blog'
 import { CACHE_TAGS } from '@workspace/shared/cache'
+import { validateClaimTokens } from '@workspace/shared/claims/tokens'
+import { findTypedPrices } from '@workspace/shared/claims/typed-prices'
 import { inArray } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { uploadImageToBlob as uploadImageToBlobFormUrl } from '@/lib/api/upload-image.util'
 import { withApiAuth } from '@/lib/api/withApiAuth.middleware'
+import { getPricing } from '@/lib/queries/pricing.query'
 
 // Infer transaction type from db client
 type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
+
+/**
+ * Every claim token in the post's reader-facing fields that cannot be
+ * resolved against the live pricing, as "field: [[token]] — reason", and
+ * every Alluring price typed instead of a token, as "field: $5,500 — reason".
+ */
+async function findClaimTokenErrors(
+    data: CreateResourceInput
+): Promise<string[]> {
+    const pricing = await getPricing()
+    const fields: [string, string | null | undefined][] = [
+        ['title', data.title],
+        ['content', data.content],
+        ['metaTitle', data.metaTitle],
+        ['metaDescription', data.metaDescription],
+        ['excerpt', data.excerpt],
+    ]
+    return fields.flatMap(([field, text]) =>
+        text
+            ? [
+                  ...validateClaimTokens(text, { pricing }).errors.map(
+                      (error) => `${field}: ${error.raw} — ${error.reason}`
+                  ),
+                  ...findTypedPrices(text, { pricing }).map(
+                      (issue) => `${field}: ${issue.raw} — ${issue.reason}`
+                  ),
+              ]
+            : []
+    )
+}
 
 /**
  * POST /api/blog/posts/create
@@ -49,6 +82,18 @@ async function postHandler(request: NextRequest) {
         }
 
         const data: CreateResourceInput = validationResult.data
+
+        // Claim tokens (`[[price:bbl]]`, #354) that would render as nothing
+        const tokenErrors = await findClaimTokenErrors(data)
+        if (tokenErrors.length > 0) {
+            return NextResponse.json(
+                {
+                    error: 'Invalid claim tokens or typed prices',
+                    details: tokenErrors,
+                },
+                { status: 400 }
+            )
+        }
 
         // Handle image upload if provided
         const featuredImageId = await handleImageUpload(data)

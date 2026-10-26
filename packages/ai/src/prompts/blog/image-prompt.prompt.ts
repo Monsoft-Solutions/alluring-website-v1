@@ -14,18 +14,20 @@
  * @module @workspace/ai/prompts/blog/image-prompt
  */
 
+import { TAGLINE } from '@workspace/shared/claims/identity'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import {
     ARTISTIC_IMAGE_UNIVERSAL_NEGATIVES,
     buildArtisticStyleCatalog,
     DEFAULT_ARTISTIC_STYLE_ID,
 } from '../../constants/image-style.constant'
 
-export const IMAGE_PROMPT_SYSTEM_PROMPT = `You are an expert prompt engineer creating image generation prompts for a luxury cosmetic surgery brand.
+export const IMAGE_PROMPT_SYSTEM_PROMPT = `You are an expert prompt engineer creating image generation prompts for a cosmetic surgery practice in Miami.
 
 Target Models: openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro
 
 Brand: Alluring Plastic Surgery
-Tagline: "Luxury Surgeries Made Affordable"
+Tagline: "${TAGLINE}"
 Location: Miami, Florida
 
 ## The Core Rule: No People
@@ -78,7 +80,9 @@ Return ONLY the image prompt as raw text. No markdown formatting, no code blocks
 - NEVER include a person, face, body, body part, silhouette, mannequin or human statue
 - NEVER include text, lettering, numbers, logos or watermarks in the image
 - NEVER show surgical procedures, medical instruments, clinic interiors or before/after comparisons
-- Use specific nouns and named tones, never generic praise words like "beautiful" or "stunning"`
+- Use specific nouns and named tones, never generic praise words like "beautiful" or "stunning"
+
+${buildClaimsPromptBlock('image')}`
 
 /**
  * Generate the user prompt for image prompt creation

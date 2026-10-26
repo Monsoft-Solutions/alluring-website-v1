@@ -14,8 +14,10 @@ import { getInlineImagesByPostId } from '@/lib/queries/blog/post-images.query'
 import { getBlogPrerenderSlugs } from '@/lib/queries/blog/prerender-slugs.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
+import { clampMetaDescription } from '@/lib/seo/meta-description.util'
 import { getBlogPostSeoTitle } from '@/lib/seo/blog-post-title.util'
 import { getContentModifiedDate } from '@/lib/utils/content-freshness.util'
+import { resolveListClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
@@ -72,7 +74,11 @@ export async function generateMetadata({
         title: getBlogPostSeoTitle(post),
         // metaDescription is authored for the SERP; excerpt is page copy and
         // only stands in when the dedicated field is empty.
-        description: post.metaDescription || post.excerpt || undefined,
+        // Clamped after the claim tokens resolve (#354): a discounted
+        // price is longer than the token the field was written with.
+        description: clampMetaDescription(
+            post.metaDescription || post.excerpt || undefined
+        ),
         openGraph: {
             type: 'article',
             images: post.featuredImage
@@ -149,7 +155,10 @@ export default async function BlogPostPage({ params }: PageProps) {
         )
     }
 
-    const relatedProcedures = getRelatedProcedures(post, 3)
+    const relatedProcedures = await resolveListClaimsIn(
+        getRelatedProcedures(post, 3),
+        `related procedures of ${post.slug}`
+    )
 
     return (
         <BlogPostContent

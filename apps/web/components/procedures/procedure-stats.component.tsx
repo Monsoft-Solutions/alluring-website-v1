@@ -1,6 +1,6 @@
 'use client'
 
-import { Clock, Syringe, Activity, Sparkles, Hotel } from 'lucide-react'
+import { Clock, Syringe, Activity, Sparkles, Home } from 'lucide-react'
 import type { ProcedureStats as ProcedureStatsType } from '@/lib/types/procedure.type'
 import { cn } from '@workspace/ui/lib/utils'
 import { ContainerLayout } from '@/components/container-layout.component'
@@ -39,7 +39,7 @@ export function ProcedureStats({ stats, className }: ProcedureStatsProps) {
         items.push({
             label: 'Setting',
             value: stats.inpatientOutpatient,
-            icon: Hotel,
+            icon: Home,
         })
     }
 

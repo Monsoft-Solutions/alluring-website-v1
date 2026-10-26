@@ -13,9 +13,9 @@ import { SURGEON_COPY } from './post-page.copy'
  * Who operates: her portrait with her name (`KARLINSKY_NAME`) and her
  * credentials exactly as the procedure pages print them
  * (`ModuleSurgeonCredentials`), each linked to the
- * issuing body's record, with the Florida statement beside the American Board
- * of Cosmetic Surgery line. It names no reviewer: she has not reviewed the
- * post.
+ * issuing body's record, minus the American Board of Cosmetic Surgery line:
+ * posts never mention that board (claims canon §2). It names no reviewer:
+ * she has not reviewed the post.
  */
 export function PostSurgeon() {
     return (
@@ -34,7 +34,7 @@ export function PostSurgeon() {
                     <em>{SURGEON_COPY.heading.em}</em>
                 </h2>
                 <div className='max-w-[52rem]'>
-                    <ModuleSurgeonCredentials />
+                    <ModuleSurgeonCredentials includeCosmeticBoard={false} />
                 </div>
                 <Link
                     href='/dr-karlinsky'

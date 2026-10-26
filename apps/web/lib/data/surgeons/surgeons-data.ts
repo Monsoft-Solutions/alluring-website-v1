@@ -1,17 +1,31 @@
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_CREDENTIALS_LONG,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
+
 import type { Surgeon } from '@/lib/types/surgeon.type'
+
+/**
+ * The surgeons' profiles. Dr. Karlinsky's credentials are the claims canon's
+ * approved sentences (§2, #354). Her two cosmetic boards are listed in the
+ * canon's wording; the surgeon components print the Florida statement next
+ * to them (`components/surgeons/florida-board-statement.ts`), and structured
+ * data uses `karlinskyPersonNode`, never this list. Her education lines are
+ * unverified (D9): they stay on her profile page only, never in posts,
+ * `llms*.txt`, chat or structured data.
+ */
 
 export const surgeons: Surgeon[] = [
     {
         id: 'dr-karlinsky',
         name: 'Dr. Victoria Karlinsky',
         slug: 'dr-karlinsky',
-        title: 'Board Certified Cosmetic Surgeon',
+        title: 'Cosmetic Surgeon',
         role: 'Medical Director',
         quote: "Cosmetic surgery is never just about a single feature. It's about how you feel when you walk into a room — and knowing we prioritized your safety at every step.",
-        shortBio:
-            'A board-certified cosmetic and general surgeon who combines technical precision with an artistic eye. Dr. Karlinsky is renowned for delivering natural, transformative results that enhance your unique beauty.',
-        fullBio:
-            "Dr. Victoria Karlinsky is a distinguished board-certified cosmetic and general surgeon who has shaped the landscape of aesthetic surgery in Miami. With a rigorous medical background from the esteemed Ross University School of Medicine and specialized fellowship training at the American Academy of Cosmetic Surgery, Dr. Karlinsky offers a level of expertise that patients trust implicitly.\n\nAs a Fellow of the American College of Surgeons (FACS), she upholds the highest standards of safety and care, but it is her artistic vision that truly sets her apart. She doesn't just perform procedures; she sculpts confidence. Whether it's a delicate facial rejuvenation or a comprehensive body contouring transformation, Dr. Karlinsky customizes every treatment to harmonize with your natural anatomy.\n\nHer patient-centric approach ensures that you are heard, understood, and supported from your very first consultation to your final reveal. With Dr. Karlinsky, you aren't just getting a surgeon; you're gaining a partner in your aesthetic journey.",
+        shortBio: `${KARLINSKY_NAME} performs every surgery at Alluring. ${KARLINSKY_CREDENTIALS}`,
+        fullBio: `${KARLINSKY_CREDENTIALS_LONG} She performs every surgery at Alluring.\n\nWhether it's a delicate facial rejuvenation or a body contouring procedure, Dr. Karlinsky tailors every treatment to your natural anatomy.\n\nYou are heard, understood and supported from your first consultation to your final follow-up. With Dr. Karlinsky, you aren't just getting a surgeon; you're gaining a partner in your aesthetic journey.`,
         images: {
             featured: '/images/surgeons/dr-karlinsky.webp',
             portrait: '/images/surgeons/dr-karlinsky.webp',
@@ -21,13 +35,13 @@ export const surgeons: Surgeon[] = [
             'Residency, Dept. of Surgery, Beth Israel Medical Center, NYC',
             'Fellowship, Facial Plastic & Cosmetic Surgical Center, Abilene, Texas',
         ],
+        // The AACS fellow and "Fellowship Director" lines are unverified or
+        // wrong (D9) and stay off until AACS confirms them.
         certifications: [
-            'Board Certified, American Board of Cosmetic Surgery',
-            'Board Certified, American Board of Facial Cosmetic Surgery',
-            'Board Certified, American Board of Surgery',
+            'Board Certified, American Board of Surgery (since 2008)',
             'Fellow, American College of Surgeons (FACS)',
-            'Fellow, American Academy of Cosmetic Surgery',
-            'Fellowship Director, American Board of Cosmetic Surgery',
+            'Certified, American Board of Cosmetic Surgery (2011, recertified 2021)',
+            'Listed in the directory of the American Board of Facial Cosmetic Surgery',
         ],
         certificationBadges: [
             {
@@ -46,14 +60,6 @@ export const surgeons: Surgeon[] = [
                 src: '/images/certifications/facs-fellow.svg',
                 alt: 'Fellow of the American College of Surgeons',
             },
-            {
-                src: '/images/certifications/aacs-fellow.png',
-                alt: 'American Academy of Cosmetic Surgery',
-            },
-            {
-                src: '/images/certifications/abcs-fellowship-director.png',
-                alt: 'American Board of Cosmetic Surgery - Fellowship Director',
-            },
         ],
         specialties: [
             'Facelift (Rhytidectomy)',
@@ -66,7 +72,7 @@ export const surgeons: Surgeon[] = [
             'Mommy Makeover',
         ],
         philosophy:
-            "Dr. Karlinsky believes that true beauty lies in confidence. Her philosophy is centered on three pillars: safety, personalization, and natural results. She rejects the 'one-size-fits-all' approach, instead tailoring every procedure to the individual's body and goals. By using state-of-the-art techniques and prioritizing patient comfort, she ensures that your transformation is as safe as it is stunning. She strives for results that don't just look good, but feel right—enhancing your self-esteem and letting your inner vibrancy shine through.",
+            "Dr. Karlinsky believes that true beauty lies in confidence. Her philosophy is centered on three pillars: safety, personalization, and natural results. She rejects the 'one-size-fits-all' approach, instead tailoring every procedure to the individual's body and goals. She strives for results that don't just look good, but feel right—enhancing your self-esteem and letting your inner vibrancy shine through.",
         social: {
             instagram: 'https://instagram.com/alluringplasticsurgery',
             facebook: 'https://facebook.com/alluringplasticsurgery',
@@ -80,17 +86,21 @@ export const surgeons: Surgeon[] = [
                 'https://www.realself.com/dr/victoria-karlinsky-bellini-manhattan-ny',
         },
     },
+    // D1 (open): Dr. Rita Shats is flagged, not removed. Her mentions stay
+    // as they were, minus the canon's banned wording ("leading authority",
+    // tenure, a bare "board certified"); add no new mentions. Her listed
+    // certifications await verification at ABOG and the issuing bodies.
     {
         id: 'dr-shats',
         name: 'Dr. Rita Shats',
         slug: 'dr-rita-shats',
-        title: 'Board Certified Cosmetic Gynecologist',
+        title: 'Cosmetic Gynecologist',
         role: 'Cosmetic Gynecologist',
         quote: "True confidence comes from within, but sometimes, it needs a little help to shine. I'm here to help you reclaim your comfort and embrace your most confident self.",
         shortBio:
-            'A board-certified cosmetic gynecologist known for her empathetic approach and advanced surgical skill. Dr. Shats specializes in intimate wellness and rejuvenation, offering personalized care that empowers women.',
+            'A cosmetic gynecologist known for her empathetic approach. Dr. Shats specializes in intimate wellness and rejuvenation, offering personalized care that empowers women.',
         fullBio:
-            "Dr. Rita Shats is a leading authority in cosmetic gynecology, blending exceptional medical expertise with a deeply empathetic approach to patient care. As a Board Certified Cosmetic Gynecologist and Associate Director of Gynecology at Richmond University Medical Center, she brings years of specialized experience to Alluring Plastic Surgery.\n\nDr. Shats understands that intimate aesthetic concerns can deeply affect a woman's quality of life and self-image. That's why she is dedicated to providing a safe, judgment-free space where women can openly discuss their goals. Whether performing a labiaplasty, vaginoplasty, or a comprehensive mommy makeover, Dr. Shats combines technical precision with an artistic touch to deliver results that improve both function and aesthetics.\n\nHer forward-thinking approach prioritizes your comfort and unique anatomy, ensuring that every treatment plan is as individual as you are. With Dr. Shats, you are choosing a partner who champions your well-being and empowers you to feel truly at home in your body.",
+            "Dr. Rita Shats practices cosmetic gynecology with a deeply empathetic approach to patient care. She is Associate Director of Gynecology at Richmond University Medical Center.\n\nDr. Shats understands that intimate aesthetic concerns can deeply affect a woman's quality of life and self-image. That's why she is dedicated to providing a safe, judgment-free space where women can openly discuss their goals. Whether performing a labiaplasty or a vaginoplasty, Dr. Shats combines technical precision with an artistic touch to deliver results that improve both function and aesthetics.\n\nHer forward-thinking approach prioritizes your comfort and unique anatomy, ensuring that every treatment plan is as individual as you are. With Dr. Shats, you are choosing a partner who champions your well-being and empowers you to feel truly at home in your body.",
         images: {
             featured: '/images/surgeons/dr-rita-shats.png',
             portrait: '/images/surgeons/dr-rita-shats.png',
@@ -112,7 +122,6 @@ export const surgeons: Surgeon[] = [
             'Clitoral Hood Reduction',
             'Perineoplasty',
             'Hymenoplasty',
-            'Mommy Makeover',
         ],
         philosophy:
             'Dr. Shats believes that every woman deserves to feel confident and comfortable in her own skin. Her philosophy focuses on holistic empowerment—addressing both physical and emotional well-being. She advocates for open, honest communication and takes the time to educate her patients, ensuring they feel supported and informed at every stage of their journey. For Dr. Shats, the most rewarding outcome is seeing her patients walk away with renewed self-assurance and a better quality of life.',

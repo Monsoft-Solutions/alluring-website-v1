@@ -18,28 +18,13 @@
 
 import Image from 'next/image'
 
-import { LP_SURGEON_PORTRAIT } from './lp-assets'
+import { LP_BADGES, LP_SURGEON_PORTRAIT } from './lp-assets'
 import type { LpDictionary } from './lp-copy'
 import { Rich } from './lp-primitives.component'
 
 interface LpSurgeonProps {
     readonly copy: LpDictionary['surgeon']
 }
-
-const SURGEON_BADGES = [
-    {
-        src: '/images/certifications/abs-board-certified.png',
-        alt: 'American Board of Surgery, Board Certified',
-        width: 1713,
-        height: 424,
-    },
-    {
-        src: '/images/certifications/facs-fellow.svg',
-        alt: 'Fellow, American College of Surgeons',
-        width: 237,
-        height: 74,
-    },
-] as const
 
 export function LpSurgeon({ copy }: LpSurgeonProps) {
     return (
@@ -68,7 +53,7 @@ export function LpSurgeon({ copy }: LpSurgeonProps) {
                         ))}
                     </ul>
                     <ul className='seals' aria-label={copy.badgesLabel}>
-                        {SURGEON_BADGES.map((badge) => (
+                        {LP_BADGES.map((badge) => (
                             <li key={badge.src}>
                                 <Image
                                     src={badge.src}

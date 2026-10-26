@@ -87,9 +87,9 @@ export function HomeFlyIn() {
                             'mt-6 max-w-[34rem] text-[var(--hp-fg-2)]'
                         )}
                     >
-                        Most people who write to us don’t live in Florida.
-                        Here’s how it works when you fly in, from the first
-                        video call to the day you’re cleared to fly home.
+                        Patients fly in from other US states. Here’s how it
+                        works when you fly in, from the first video call to the
+                        day you’re cleared to fly home.
                     </p>
 
                     <ol className='mt-12 grid gap-7'>
@@ -144,10 +144,9 @@ export function HomeFlyIn() {
                         </ol>
                         <p className='mt-6 text-sm leading-relaxed text-[var(--hp-fg-3)]'>
                             Yours comes in writing, with real dates, after your
-                            consultation. We don’t book flights, hotels,
-                            transport or recovery houses; you arrange your stay,
-                            and we give you the medical plan you can’t plan
-                            without.
+                            consultation. You arrange the travel itself, and we
+                            are not affiliated with any recovery house; we give
+                            you the medical plan you can’t plan without.
                         </p>
                         <div className='mt-7 flex flex-wrap items-center gap-x-5 gap-y-4'>
                             <a

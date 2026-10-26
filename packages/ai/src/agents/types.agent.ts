@@ -5,6 +5,7 @@
  *
  * @module @workspace/ai/agents/types
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 import { z } from 'zod'
 
 import type { MdxSanitizationAction } from '../functions/validate-generated-mdx.function'
@@ -110,6 +111,11 @@ export type ReviewAgentOptions = {
     modelId?: string
     /** How hard the agent should think (default: none) */
     reasoningEffort?: ReasoningEffort
+    /**
+     * The live price list (#354), for the claims block the canon-aware
+     * reviewers see. The 2026-09-15 sheet when omitted.
+     */
+    pricing?: PricingSnapshot
 }
 
 /**

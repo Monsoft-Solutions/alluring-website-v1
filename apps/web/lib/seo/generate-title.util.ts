@@ -17,7 +17,7 @@
  * Characters Google renders before truncating a title in search results.
  * Titles are built to fit this budget rather than being cut off mid-phrase.
  */
-const TITLE_LIMIT = 65
+export const TITLE_LIMIT = 65
 
 /**
  * Generate a page title with optional location optimization
@@ -27,8 +27,8 @@ const TITLE_LIMIT = 65
  * @returns Optimized page title
  *
  * @example
- * generatePageTitle('Board-Certified Plastic Surgeons', { includeLocation: true })
- * // Returns: "Board-Certified Plastic Surgeons in Miami"
+ * generatePageTitle('Cosmetic Surgery', { includeLocation: true })
+ * // Returns: "Cosmetic Surgery in Miami"
  *
  * @example
  * generatePageTitle('Schedule Your Consultation')
@@ -65,12 +65,11 @@ export function generatePageTitle(
  * that keeps the title inside {@link TITLE_LIMIT} wins — long procedure names
  * like "Blepharoplasty (Eyelid Surgery)" cannot carry the full phrase without
  * pushing the title past what Google renders.
+ *
+ * Verified facts only (claims canon §2, CR13): "board-certified" in a title
+ * names no board and "Surgeons" is plural, so both are gone.
  */
-const PROCEDURE_TRUST_SIGNALS = [
-    ' | Board-Certified Surgeons',
-    ' | Board-Certified',
-    '',
-] as const
+const PROCEDURE_TRUST_SIGNALS = [' | One Surgeon', ''] as const
 
 /**
  * Generate a procedure page title optimized for local SEO and CTR
@@ -78,7 +77,7 @@ const PROCEDURE_TRUST_SIGNALS = [
  * Appends "Miami {year}" plus the longest trust signal that still fits for:
  * - Local search optimization (Miami)
  * - Freshness signals (year)
- * - Trust signals (Board-Certified)
+ * - Trust signals (one surgeon)
  *
  * The procedure name and location are never trimmed — they are the query
  * terms. Only the trust signal shortens.
@@ -88,11 +87,11 @@ const PROCEDURE_TRUST_SIGNALS = [
  *
  * @example
  * generateProcedureTitle('Breast Augmentation')
- * // Returns: "Breast Augmentation Miami 2026 | Board-Certified Surgeons"
+ * // Returns: "Breast Augmentation Miami 2026 | One Surgeon"
  *
  * @example
  * generateProcedureTitle('Blepharoplasty (Eyelid Surgery)')
- * // Returns: "Blepharoplasty (Eyelid Surgery) Miami 2026 | Board-Certified"
+ * // Returns: "Blepharoplasty (Eyelid Surgery) Miami 2026 | One Surgeon"
  */
 export function generateProcedureTitle(procedureName: string): string {
     const currentYear = new Date().getFullYear()

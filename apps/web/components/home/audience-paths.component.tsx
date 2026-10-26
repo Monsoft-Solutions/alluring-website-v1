@@ -47,14 +47,14 @@ const AUDIENCE_PATHS: readonly AudiencePath[] = [
     {
         icon: <Plane className='h-5 w-5' />,
         situation: '“I’d be flying in from another state.”',
-        answer: 'Meet your surgeon by video first, then get your dates in writing so you can book travel around a confirmed schedule. Hablamos Español.',
+        answer: 'Meet your surgeon by video first, then get your dates in writing so you can book travel around a confirmed schedule. Hablamos español.',
         label: 'Flying In',
         href: '/fly-in-consultation',
     },
     {
         icon: <Sparkles className='h-5 w-5' />,
         situation: '“I’ve wanted this for years. I keep putting it off.”',
-        answer: 'Start with a free, no-pressure consultation. No commitment, no salespeople — just honest answers and a real number.',
+        answer: 'Start with a free, no-pressure consultation. No commitment — just honest answers and a real number.',
         label: 'Start the Conversation',
         href: '/free-consultation',
     },

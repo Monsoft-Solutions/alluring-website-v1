@@ -30,6 +30,7 @@ import { generateImageAlt } from '@workspace/ai/functions'
 import { validateInternalLinks } from '@workspace/ai/functions/validate-internal-links.function'
 import { extractImageConcept } from '@workspace/ai/prompts'
 
+import { getPricingSnapshot } from '@/lib/queries/pricing.query'
 import { calculateDuration } from '@/lib/utils/time.util'
 import { isTransientProviderError } from '@/lib/utils/transient-error.util'
 import { getBlogAiConfig } from '@/lib/queries/blog-ai-config.query'
@@ -419,6 +420,10 @@ export async function runGenerationPhaseForPost(
                   }
                 : undefined
 
+        // The live price list, for the writer's claim-token catalog and the
+        // validator that checks the tokens it writes (#354).
+        const pricing = await getPricingSnapshot()
+
         const { result, traceId } = await withPhaseSpan(
             'pipeline.generation',
             postId,
@@ -427,6 +432,7 @@ export async function runGenerationPhaseForPost(
                     contentModelId: aiConfig.contentModelId,
                     contentEffort: aiConfig.contentEffort,
                     linkableBlogPosts,
+                    pricing,
                     input: {
                         title: post.title,
                         topic: planningData.topic,
@@ -602,6 +608,11 @@ export async function runReviewPhaseForPost(
             currentPostSlug = original?.slug || currentPostSlug
         }
 
+        // The live price list (#354): the orchestrator's check is the last
+        // before extraction and publish, so it validates the revision's
+        // tokens against the lines the admin has, as generation does.
+        const pricing = await getPricingSnapshot()
+
         const { result, traceId } = await withPhaseSpan(
             'pipeline.review',
             postId,
@@ -620,6 +631,7 @@ export async function runReviewPhaseForPost(
                     orchestratorEffort: aiConfig.orchestratorEffort,
                     currentPostSlug,
                     pagesForQuery: createPagesForQueryAdapter(),
+                    pricing,
                 }),
             { model: aiConfig.reviewModelId, effort: aiConfig.reviewEffort }
         )
@@ -762,6 +774,9 @@ export async function runExtractPhaseForPost(
 
         // Admin-configured extraction model wins over the code default
         const aiConfig = await getBlogAiConfig()
+        // Claim tokens in the extracted fields are checked against the live
+        // prices (#354).
+        const extractionPricing = await getPricingSnapshot()
 
         // Run extraction phase
         const { result, traceId } = await withPhaseSpan(
@@ -774,6 +789,7 @@ export async function runExtractPhaseForPost(
                     primaryKeyword: post.primaryKeyword || undefined,
                     modelId: aiConfig.extractionModelId,
                     reasoningEffort: aiConfig.extractionEffort,
+                    pricing: extractionPricing,
                 }),
             {
                 model: aiConfig.extractionModelId,

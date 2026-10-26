@@ -42,7 +42,7 @@ On a 390 × 844 phone, above the fold:
   profile, `data-copy-check="data"`).
 - **Chips**: starting price, "Financing available", "Hablamos español"
   (`lang="es"`).
-- **Buttons**: "Book a free consultation" (gold) and Call ("Call us" below
+- **Buttons**: "Book a consultation" (gold) and Call ("Call us" below
   `sm`, the number itself from `sm` up, because `tel:` does nothing on most
   desktops).
 - Microline: "Live in another state? Start with a virtual consultation" →
@@ -76,8 +76,8 @@ patient." caption and one glass rating card over it.
   name, phone, consent), `showProcedureBadge={false}`,
   `defaultProcedure={getProcedureFormValue(slug)}`, its own
   `analyticsFormName` (`procedure_<slug>_results_form`), `redirectOnSuccess`
-  `/thank-you`. One sentence on what happens next, and "Complimentary and
-  confidential. Hablamos español."
+  `/thank-you`. One sentence on what happens next, and "Confidential, no
+  obligation. Hablamos español."
 - **Book** at the end: the full form with `showPreferredContactTime={false}`,
   three steps of what happens after submitting, then "Where you'll be seen":
   address and hours from `siteConfig` (never hard-coded), a Maps directions
@@ -89,7 +89,8 @@ patient." caption and one glass rating card over it.
 ## Fact rail and bands
 
 From `lg`, the white bands run a sticky fact rail beside the reading column:
-starting price, typical range, both buttons, the surgeon, "Last updated".
+starting price (BBL adds its typical range), both buttons, the surgeon,
+"Last updated".
 Each rail is a landmark with its own `aria-label`. Phones get the sticky bar
 instead.
 
@@ -103,10 +104,15 @@ only in her own words, once she has written or approved it.
 
 ## Cost
 
-`PriceRange` from `procedure.pricing` (the same numbers feed the `Offer` in
-the graph). Then:
+The price from the pricing resolver, never typed: `getProcedurePrices` on
+the server, rendered with `<PriceTag>` (struck through while an admin
+discount is on) and one `<DiscountStatement>`, next to the price caveat
+(the same resolved prices feed the `Offer` in the graph). Only BBL shows a
+"most patients pay" range. Then:
 
-- What the price includes, as a list.
+- What the price includes, as a list: BBL only, until the practice confirms
+  one inclusion list for every procedure (canon D4). Never "all-inclusive"
+  or "no hidden fees".
 - What moves the price.
 - Why some offers cost less (what they leave out), without naming anyone.
 - A sourced national comparator when one exists (BBL used ASPS's average

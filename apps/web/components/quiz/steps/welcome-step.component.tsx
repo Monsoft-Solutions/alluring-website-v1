@@ -10,6 +10,7 @@
 import { cn } from '@workspace/ui/lib/utils'
 import { motion } from 'framer-motion'
 import { ArrowRight, Sparkles, Shield, Clock } from 'lucide-react'
+import { formatRatingBadge } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
 
@@ -33,7 +34,7 @@ export function WelcomeStep({ onStart, className }: WelcomeStepProps) {
         },
         {
             icon: Shield,
-            text: '100% confidential',
+            text: 'Private, never sold',
         },
         {
             icon: Sparkles,
@@ -134,8 +135,7 @@ export function WelcomeStep({ onStart, className }: WelcomeStepProps) {
                 className='mt-12 flex flex-col items-center gap-4'
             >
                 <p className='text-sm text-stone-500'>
-                    Trusted by {siteConfig.trustStats?.patients ?? '5,000+'}{' '}
-                    patients in Miami
+                    One surgeon for every procedure, in Miami
                 </p>
                 <div className='flex items-center gap-1'>
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -149,7 +149,7 @@ export function WelcomeStep({ onStart, className }: WelcomeStepProps) {
                         </svg>
                     ))}
                     <span className='ml-2 text-sm font-medium text-stone-700'>
-                        {siteConfig.trustStats?.rating ?? '4.7'}/5 rating
+                        {formatRatingBadge(siteConfig.trustStats?.rating)}
                     </span>
                 </div>
             </motion.div>

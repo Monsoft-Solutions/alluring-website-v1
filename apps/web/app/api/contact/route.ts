@@ -204,7 +204,8 @@ function getSuccessMessage(
         case CONTACT_SOURCES.BLOG_LEAD:
         case CONTACT_SOURCES.EXIT_INTENT:
         case CONTACT_SOURCES.LEAD_FORM:
-            return "Thank you! We'll call you within 24 hours."
+            // No promised response time (claims canon §9, #354).
+            return 'Thank you. A patient coordinator will text you to book your consultation.'
 
         case CONTACT_SOURCES.CONTACT_PAGE:
         case CONTACT_SOURCES.CONTACT_HERO:

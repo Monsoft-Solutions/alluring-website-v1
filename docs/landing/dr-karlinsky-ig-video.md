@@ -17,6 +17,7 @@ captions burned in.
 | 4    | same v5                                                               | 54.78–59.66 | "If you would like more information, please tap below and we will be here to help you."            |
 
 - The v5 sentence "which please remember is completely free of charge" (24.2–27.2 in the source) is **cut out**: counsel has not cleared "free". A whisper pass on the final file confirms it is gone.
+- **Open claims in the stopgap (claims canon, `docs/claims/canon.md`).** Part 2 promises "24/7" access and her "personal cell phone number", which the canon lists as an unverified owner claim (§3, "24/7 surgeon access"). Part 1's "18 years" is a tenure figure the canon doesn't publish (§4: state the year, never a tenure). Spoken words are tolerated in existing clips, but these two are claims, not word choices: recut part 2 (and part 1, if the tenure line goes) for the new recording, or record the owner's written confirmation here before the stopgap keeps running. Never repeat either in page text, captions written as copy, titles or ads.
 - Joins: 0.2 s video and audio crossfades (0.12 s at the last join, so "that" and "If" are not faded).
 - Known rough edges: the "#2 How do I know what is the right procedure for me?" title card from the original ad stays in (it matches what she says), and the two scenes (diploma wall, then the studio chair) look different.
 - Encode: 720×1280, H.264 High CRF 25 (veryslow), AAC 128k 48 kHz, loudness -16 LUFS / -1.5 dBTP, `+faststart`, 6.7 MB.
@@ -75,7 +76,7 @@ Optional extra line for either language, only if she wants it (it already appear
 
 If Sarah stops being the rep for this source, re-record the third paragraph or say "my team will text you" / "mi equipo te va a escribir".
 
-**Compliance check:** US only. No travel help. No prices. No "free" or "gratis". No credential claims. No "luxury" or "affordable".
+**Compliance check** (the claims canon, `docs/claims/canon.md`): US only. No travel help. No prices. No "free" or "gratis". No credential claims. No tenure ("18 years") or volume figures. No "24/7" or personal-phone promise. No "luxury" or "affordable".
 
 ---
 

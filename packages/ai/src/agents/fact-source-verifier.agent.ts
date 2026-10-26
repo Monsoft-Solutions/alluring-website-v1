@@ -7,6 +7,8 @@
  *
  * @module @workspace/ai/agents/fact-source-verifier
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import { generateText, Output, isStepCount } from 'ai'
 import { z } from 'zod'
 
@@ -100,9 +102,11 @@ Prefer Tier 1 sources when available. Only use consumer health sites if no bette
 
 /**
  * Unified system prompt for fact verification
- * Combines claim identification, research, and verification into a single flow
+ * Combines claim identification, research, and verification into a single flow.
+ * Built per run, so its claims block lists the live price list (#354).
  */
-const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a luxury plastic surgery clinic's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
+function buildFactVerificationPrompt(pricing?: PricingSnapshot): string {
+    return `You are a medical fact-checker for a cosmetic surgery practice's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
 
 ## Your Process
 
@@ -116,7 +120,7 @@ const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a l
 **Statistics and Numbers:**
 - Percentages (e.g., "90% of patients...")
 - Specific numbers (e.g., "over 300,000 procedures...")
-- Rates or ratios (e.g., "1 in 3,000 mortality rate...")
+- Rates or ratios (e.g., "1 in 20 patients...")
 - Time periods (e.g., "recovery takes 6-8 weeks")
 
 **Medical Facts:**
@@ -216,7 +220,12 @@ For each issue, provide:
 3. The original claim text
 4. A complete suggestedFix with the exact markdown citation to add
 
-If all claims are already cited, return a score of 100 with no issues.`
+If all claims are already cited, return a score of 100 with no issues.
+
+Claim tokens such as [[price:bbl]] are the practice's own figures, filled in from its price list: they need no citation, and a suggestedFix never replaces one. A typed dollar figure for an Alluring price is a "critical" issue: its fix is the matching token.
+
+${buildClaimsPromptBlock('blog-reviewer', pricing)}`
+}
 
 /**
  * Run the fact and source verification agent
@@ -237,6 +246,7 @@ export async function runFactSourceVerifier(
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
         reasoningEffort,
+        pricing,
     } = options
 
     console.log('[Fact Verifier] Starting fact and source verification...')
@@ -284,7 +294,7 @@ Begin by using the think tool to identify all claims and plan your search querie
     const result = await generateText({
         model: getModel(modelId),
         output: Output.object({ schema: verificationResultSchema }),
-        instructions: UNIFIED_FACT_VERIFICATION_PROMPT,
+        instructions: buildFactVerificationPrompt(pricing),
         prompt: userPrompt,
         maxOutputTokens: 16000,
         stopWhen: isStepCount(MAX_SEARCH_STEPS),

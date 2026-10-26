@@ -86,7 +86,7 @@ export function ProcedureLandingMidCTA({
                     <h2 className='-mt-4 font-serif text-3xl leading-[1.15] text-white italic md:text-4xl lg:text-[2.75rem]'>
                         A personalized{' '}
                         <span className='not-italic'>{cleanTitle}</span> plan,
-                        texted to you in under 24 hours.
+                        texted to you.
                     </h2>
 
                     <span

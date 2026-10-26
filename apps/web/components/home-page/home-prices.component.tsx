@@ -1,9 +1,18 @@
 import Link from 'next/link'
 import { cn } from '@workspace/ui/lib/utils'
 
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
-import { getLipoFact, lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
+import {
+    PriceRangeText,
+    PriceTag,
+} from '@/components/shared/price-tag.component'
+import {
+    buildProcedurePrices,
+    isSingleAreaAddOn,
+    linePriceExtremes,
+} from '@/lib/claims/procedure-prices.util'
 import { FINANCING_PARTNERS } from '@/lib/data/site-config'
+import { getPricing } from '@/lib/queries/pricing.query'
 
 import { HomeEyebrow } from './home-eyebrow.component'
 import {
@@ -27,32 +36,55 @@ type HomePricesProps = {
 
 /**
  * Prices, stated where they are settled and promised in writing where they
- * are not. Only two starting prices are settled (BBL, decided 2026-09-15;
- * Lipo 360, from the practice's price sheet); every other procedure waits on
- * #232, so the third card says how the quote arrives instead of guessing.
- * Figures and their wording come from the facts files.
+ * are not: BBL and Lipo 360 starting prices, and a third card that says how
+ * every other quote arrives. The figures come from the pricing resolver
+ * (#354), struck through while a discount is on, with the 456.062 statement
+ * under the caveat.
  *
  * Only two of thirteen competitor homepages show a dollar figure at all.
  */
-export function HomePrices({ promotion }: HomePricesProps) {
+export async function HomePrices({ promotion }: HomePricesProps) {
+    const pricing = await getPricing()
+    const lipo = buildProcedurePrices(pricing, 'lipo')
+    const bbl = buildProcedurePrices(pricing, 'bbl')
+    const addedArea = linePriceExtremes(lipo, isSingleAreaAddOn)
+    const statement = lipo.discountStatement ?? bbl.discountStatement
+
     const cards = [
         {
             key: 'lipo',
             name: HOME_PROCEDURES.lipo.name,
-            price: lipoFigure('price-starting-at'),
-            note: getLipoFact('price-added-area').statement,
+            price: lipo.starting,
+            note: addedArea ? (
+                <>
+                    Liposuction of one area added to another procedure is{' '}
+                    <PriceTag price={addedArea.min} /> to{' '}
+                    <PriceTag price={addedArea.max} />, depending on the area.
+                </>
+            ) : null,
             href: HOME_PROCEDURES.lipo.href,
             chat: HOME_PROCEDURES.lipo.chat,
         },
         {
             key: 'bbl',
             name: HOME_PROCEDURES.bbl.name,
-            price: bblFigure('price-starting-at'),
-            note: `Most patients pay ${bblFigure('price-most-patients')}. Every price is set for the patient, and your surgeon confirms yours at consultation.`,
+            price: bbl.starting,
+            note: (
+                <>
+                    {bbl.range && (
+                        <>
+                            <PriceRangeText range={bbl.range} capitalized />
+                            .{' '}
+                        </>
+                    )}
+                    Every price is set for the patient, and your surgeon
+                    confirms yours at consultation.
+                </>
+            ),
             href: HOME_PROCEDURES.bbl.href,
             chat: HOME_PROCEDURES.bbl.chat,
         },
-    ] as const
+    ].filter((card) => card.price !== null)
 
     return (
         <section
@@ -110,7 +142,7 @@ export function HomePrices({ promotion }: HomePricesProps) {
                                     From
                                 </span>
                                 <span className='hp-display mt-2 block text-[4.25rem] leading-[0.9] font-normal tracking-[-0.02em] lg:text-[4.5rem] xl:text-[5.25rem]'>
-                                    {card.price}
+                                    <PriceTag price={card.price} />
                                 </span>
                             </p>
                             <p className='mt-5 flex-1 border-t border-[var(--hp-line)] pt-5 text-[0.9375rem] leading-relaxed text-[var(--hp-ink-2)]'>
@@ -161,6 +193,10 @@ export function HomePrices({ promotion }: HomePricesProps) {
                 <p className='mt-5 text-sm text-[var(--hp-ink-2)]'>
                     {PRICE_VARIABLES}
                 </p>
+                <DiscountStatement
+                    statement={statement}
+                    className='mt-2 text-[var(--hp-ink-2)]'
+                />
 
                 <div className='mt-8 flex flex-col items-start justify-between gap-4 border-y border-[var(--hp-line)] py-6 md:flex-row md:items-center'>
                     <p className='text-[var(--hp-ink-2)]'>

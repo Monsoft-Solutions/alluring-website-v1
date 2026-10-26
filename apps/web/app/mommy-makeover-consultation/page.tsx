@@ -24,10 +24,11 @@ import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { MommyMakeoverHero } from '@/components/landing/mommy-makeover-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import {
@@ -82,8 +83,16 @@ export default async function MommyMakeoverConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, #354), resolved once for both
+    // the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        mommyMakeoverFaqData,
+        'text',
+        'faq /mommy-makeover-consultation'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(mommyMakeoverFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -108,16 +117,16 @@ export default async function MommyMakeoverConsultationPage() {
                 {/* Section 2: Fear Busters - Address objections */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 3: Weekly Payments - Make it affordable */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 3: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
                 {/* Section 5: Google Reviews */}
                 <GoogleReviews
-                    title='What Moms Are Saying'
-                    subtitle='Real reviews from mothers who reclaimed their confidence'
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 
@@ -125,7 +134,7 @@ export default async function MommyMakeoverConsultationPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={mommyMakeoverFaqCategories}
-                    faqData={mommyMakeoverFaqData}
+                    faqData={faqData}
                     badge={mommyMakeoverFaqConfig.badge}
                     title={mommyMakeoverFaqConfig.title}
                     subtitle={mommyMakeoverFaqConfig.subtitle}
@@ -136,7 +145,7 @@ export default async function MommyMakeoverConsultationPage() {
                     ctaConfig={{
                         title: 'Have more questions?',
                         description:
-                            'Our patient coordinators specialize in helping moms plan their transformation.',
+                            'Our patient coordinators help moms plan their consultation and surgery dates.',
                         buttonText: 'Call Us Now',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,

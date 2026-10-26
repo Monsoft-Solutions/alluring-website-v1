@@ -13,6 +13,7 @@ export {
     getIntentClassificationPrompt,
     // System Prompts
     DEFAULT_CHAT_SYSTEM_PROMPT,
+    buildChatSystemPrompt,
     generateSystemPrompt,
     type SystemPromptParams,
     // Quick Questions
@@ -67,6 +68,11 @@ export {
     getFeaturedImagePrompt,
     extractImageConcept,
     type FeaturedImagePromptInput,
+    // Writer, outline and topics (each carries the claims canon, #354)
+    buildAgenticSystemPrompt,
+    GENERATE_OUTLINE_SYSTEM_PROMPT,
+    GENERATE_TOPICS_SYSTEM_PROMPT,
+    CLAIM_TOKEN_RULE,
 } from './blog'
 
 export {

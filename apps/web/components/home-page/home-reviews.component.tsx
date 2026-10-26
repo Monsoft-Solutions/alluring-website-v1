@@ -109,9 +109,8 @@ export function HomeReviews({
                         )}
                     </h2>
                     <p className={cn(homeLead, 'mt-6 text-[var(--hp-fg-2)]')}>
-                        A selection of what patients wrote on Google, including
-                        many who flew in from other states. Read them all on our
-                        reviews page.
+                        A selection of what patients wrote on Google. Read them
+                        all on our reviews page.
                     </p>
                 </div>
                 <div className='flex items-center gap-5'>

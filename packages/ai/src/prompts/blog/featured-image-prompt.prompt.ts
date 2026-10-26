@@ -17,16 +17,18 @@
  * @module @workspace/ai/prompts/blog/featured-image-prompt
  */
 
+import { TAGLINE } from '@workspace/shared/claims/identity'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import {
     getArtisticStyleNegatives,
     resolveArtisticStyle,
     type ArtisticImageAspectRatio,
 } from '../../constants/image-style.constant'
 
-export const FEATURED_IMAGE_PROMPT_SYSTEM = `You are the art director for Alluring Plastic Surgery, a luxury cosmetic surgery clinic in Miami, FL. You write image-generation briefs for openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro.
+export const FEATURED_IMAGE_PROMPT_SYSTEM = `You are the art director for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, FL. You write image-generation briefs for openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro.
 
 ## Brand Context
-- **Tagline**: "Luxury Surgeries Made Affordable"
+- **Tagline**: "${TAGLINE}"
 - **Palette**: warm stone neutrals (bone, cream, oat, taupe, warm greige) with restrained gold or champagne accents
 - **Register**: sophisticated, editorial, calm, tactile — the visual language of Kinfolk, Cereal and high-end brand collateral
 - **Audience**: women 25-55 researching a high-consideration elective procedure
@@ -77,7 +79,9 @@ When a Human Subject section is present, use these five headings instead:
 
 ## Output Format
 Return ONLY the structured markdown brief with its five level-2 headings.
-No preamble, no code fences, no commentary.`
+No preamble, no code fences, no commentary.
+
+${buildClaimsPromptBlock('image')}`
 
 /**
  * Featured image customization options for prompt generation

@@ -7,8 +7,7 @@
  * Features:
  * - Dark background section styling
  * - Procedure-specific title
- * - Trust indicators (Board-Certified, Patient count, 24hr Response)
- * - Testimonial quote for social proof
+ * - Trust indicators (verified facts only, claims canon §2, §4)
  * - Pre-populated procedure field
  */
 'use client'
@@ -16,6 +15,7 @@
 import { Award, Clock, Users } from 'lucide-react'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     CONTACT_SOURCES,
@@ -29,18 +29,20 @@ export type ProcedureConsultationFormProps = {
     readonly procedureTitle: string
 }
 
+// Verified facts only: no board count, patient count or response-time
+// promise (claims canon §2, §4, §9; #354).
 const TRUST_INDICATORS = [
     {
         icon: Award,
-        label: 'Board-Certified Surgeons',
+        label: TRUST_BADGES.surgeon,
     },
     {
         icon: Users,
-        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+        label: formatRatingBadge(siteConfig.trustStats?.rating),
     },
     {
         icon: Clock,
-        label: '24hr Response Time',
+        label: TRUST_BADGES.spanish,
     },
 ] as const
 
@@ -85,18 +87,6 @@ export function ProcedureConsultationForm({
                         redirectOnSuccess='/thank-you'
                         defaultProcedure={defaultProcedure}
                     />
-                </div>
-
-                {/* Testimonial Quote */}
-                <div className='mx-auto mt-12 max-w-2xl text-center'>
-                    <blockquote className='text-stone-400 italic'>
-                        &ldquo;The entire experience exceeded my expectations.
-                        From the first consultation to my final follow-up, I
-                        felt cared for every step of the way.&rdquo;
-                    </blockquote>
-                    <p className='text-gold-500 mt-3 text-sm font-medium'>
-                        — Verified Patient
-                    </p>
                 </div>
             </div>
         </section>

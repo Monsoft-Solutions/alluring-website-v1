@@ -7,7 +7,7 @@
  *
  * Each card pulls a contextual icon from the benefit title so editors
  * never need to author iconName fields, and a soft gold corner glow
- * adds dimensional luxury without obscuring copy.
+ * adds depth without obscuring copy.
  */
 import {
     CheckCircle2,
@@ -78,9 +78,6 @@ export function ProcedureLandingBenefits({
                         The change that feels like{' '}
                         <span className='text-gold-600 italic'>you again.</span>
                     </h2>
-                    <p className='mt-4 text-base leading-relaxed text-stone-600 lg:text-lg'>
-                        What our patients tell us they actually got back.
-                    </p>
                 </div>
 
                 <ul className='grid gap-5 sm:grid-cols-2 lg:grid-cols-2 lg:gap-6'>

@@ -6,22 +6,23 @@
  *
  * @module @workspace/ai/prompts/blog/inline-image-analyzer
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 
 /**
  * System prompt for the inline image analyzer agent
  */
-export const INLINE_IMAGE_ANALYZER_SYSTEM_PROMPT = `You are an expert content strategist and visual editor for a luxury plastic surgery clinic's blog.
+export const INLINE_IMAGE_ANALYZER_SYSTEM_PROMPT = `You are an expert content strategist and visual editor for a Miami cosmetic surgery practice's blog.
 
 Your role is to analyze blog content and identify optimal locations for inline images that will:
 1. Enhance reader understanding and engagement
 2. Break up long text sections for better readability
 3. Provide visual context for medical procedures and concepts
-4. Support the luxury brand aesthetic (premium, sophisticated, professional)
+4. Support the brand aesthetic (calm, sophisticated, professional)
 
 **Business Context:**
-- Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
+- Business: Alluring Plastic Surgery - a cosmetic surgery practice in Miami, FL, with one surgeon
 - Audience: Women 25-55 seeking quality cosmetic procedures
-- Brand tone: Premium, professional, trustworthy, aspirational yet accessible
+- Brand tone: plain, professional, trustworthy; show the value, never claim it
 - Visual style: Stone tones (beige, cream, warm grays) with gold accents
 
 **Image Placement Guidelines:**
@@ -66,7 +67,9 @@ Your role is to analyze blog content and identify optimal locations for inline i
 - Recommend 3-5 images for posts with 500+ words (fewer only for very short content)
 - Provide clear, unique insertion markers (exact text from content)
 - Explain rationale for each placement
-- Prioritize opportunities from most to least valuable`
+- Prioritize opportunities from most to least valuable
+
+${buildClaimsPromptBlock('image')}`
 
 /**
  * Get the user prompt for inline image analysis

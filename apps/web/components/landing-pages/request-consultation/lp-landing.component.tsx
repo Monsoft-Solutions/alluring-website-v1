@@ -37,6 +37,8 @@
 
 import { Fragment, type ReactNode, useEffect, useRef } from 'react'
 
+import { RATING_FALLBACK } from '@workspace/shared/claims/trust'
+
 import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
 import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 
@@ -80,9 +82,11 @@ const STICKY_PLACEMENTS: Readonly<Record<string, string>> = {
     consult_sticky_chip: 'cta-sticky-chip',
 }
 
-/** The published figures, for when the live ones are unavailable. */
-const FALLBACK_RATING = '4.7'
-const FALLBACK_REVIEW_COUNT = '80+'
+/**
+ * The published rating, for when the live one is unavailable. A review count
+ * is never typed (claims canon §4): without the live count, none shows.
+ */
+const FALLBACK_RATING = RATING_FALLBACK
 
 /**
  * Sections that report `lp_section_view` the first time a quarter of them is
@@ -141,9 +145,7 @@ export function LpLanding({
     const variant = AD_VARIANT_COPY[lang][adVariant]
     const title = lpTitle(lang, adVariant)
     const rating = proof.rating ?? FALLBACK_RATING
-    const reviewCount = proof.reviewCount
-        ? String(proof.reviewCount)
-        : FALLBACK_REVIEW_COUNT
+    const reviewCount = proof.reviewCount ? String(proof.reviewCount) : null
 
     const procedures = chat.copy[lang].procedures
     const adProcedure = VARIANT_PROCEDURE[adVariant]
@@ -302,7 +304,8 @@ export function LpLanding({
             <LpFaq
                 copy={copy.faq}
                 prices={chat.prices}
-                tummyTuck={prices?.tummyTuck}
+                priceStatement={chat.priceStatement}
+                tummyTuck={prices ?? undefined}
             />
         ),
     }
@@ -350,6 +353,7 @@ export function LpLanding({
                         <LpPriceList
                             copy={copy.prices}
                             prices={prices.tummyTuck}
+                            statement={prices.statement}
                         />
                     )}
                     {orderLpSections(focusSection).map((section) => (

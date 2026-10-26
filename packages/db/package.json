@@ -55,6 +55,11 @@
             "import": "./dist/schema/gsc/index.js",
             "default": "./dist/schema/gsc/index.js"
         },
+        "./schema/pricing": {
+            "types": "./dist/schema/pricing/index.d.ts",
+            "import": "./dist/schema/pricing/index.js",
+            "default": "./dist/schema/pricing/index.js"
+        },
         "./schema/social-media": {
             "types": "./dist/schema/social-media/index.d.ts",
             "import": "./dist/schema/social-media/index.js",

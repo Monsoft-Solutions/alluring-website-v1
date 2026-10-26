@@ -57,7 +57,7 @@ export function SpecialsPromotionsGrid({
                     <div className='mb-6 inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2'>
                         <Sparkles className='text-gold-500 h-4 w-4' />
                         <span className='text-sm font-medium tracking-wide text-stone-600 uppercase'>
-                            More Exclusive Offers
+                            More Offers
                         </span>
                     </div>
 
@@ -68,13 +68,7 @@ export function SpecialsPromotionsGrid({
                         </span>
                     </h2>
 
-                    <div className='bg-gold-500 mx-auto mb-6 h-1 w-24' />
-
-                    <p className='mx-auto max-w-2xl text-lg leading-relaxed font-light text-stone-600'>
-                        Explore all our limited-time offers. Each promotion is
-                        designed to make your transformation more accessible
-                        without compromising on quality.
-                    </p>
+                    <div className='bg-gold-500 mx-auto h-1 w-24' />
                 </div>
 
                 {/* Promotions Grid */}
@@ -93,9 +87,8 @@ export function SpecialsPromotionsGrid({
                         <span className='font-semibold text-stone-700'>
                             Not sure which offer is right for you?
                         </span>{' '}
-                        Our team will help you find the perfect option during
-                        your free consultation — no pressure, just honest
-                        guidance.
+                        Our team will help you choose during your free
+                        consultation — no pressure, just honest guidance.
                     </p>
                     <a
                         href='#specials-form'

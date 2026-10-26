@@ -111,6 +111,13 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
 }
 
 export interface QuizContainerProps {
+    /**
+     * The combination discount sentence, resolved on the server from the
+     * pricing resolver (`formatComboDiscountSentence(await getPricing())`).
+     * The quiz types no price (claims canon, #354); without it the package
+     * builder names no discount.
+     */
+    readonly comboDiscountSentence?: string
     /** Additional class names */
     readonly className?: string
 }
@@ -118,7 +125,10 @@ export interface QuizContainerProps {
 /**
  * QuizContainer - Main quiz orchestration component
  */
-export function QuizContainer({ className }: QuizContainerProps) {
+export function QuizContainer({
+    comboDiscountSentence,
+    className,
+}: QuizContainerProps) {
     const [state, dispatch] = useReducer(quizReducer, initialQuizState)
     const [submitError, setSubmitError] = useState<string | undefined>()
     const { track } = useAnalyticsEvent()
@@ -421,6 +431,7 @@ export function QuizContainer({ className }: QuizContainerProps) {
                         onToggleProcedure={handlePackageToggle}
                         onContinue={() => goToStep('confirmation')}
                         onSkip={() => goToStep('confirmation')}
+                        comboDiscountSentence={comboDiscountSentence}
                     />
                 )
 

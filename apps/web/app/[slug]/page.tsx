@@ -2,6 +2,7 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import {
     BreadcrumbSchema,
+    JsonLdGraph,
     PhysicianSchema,
     ProfilePageSchema,
     WebPageSchema,
@@ -10,6 +11,8 @@ import { cache } from 'react'
 
 // Surgeon imports
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
 import { siteConfig } from '@/lib/data/site-config'
 import { SurgeonHero } from '@/components/surgeons/surgeon-hero.component'
 import { SurgeonBio } from '@/components/surgeons/surgeon-bio.component'
@@ -33,6 +36,7 @@ import { toNextMetadata } from '@/lib/seo/metadata'
 import { getBlogPostSeoTitle } from '@/lib/seo/blog-post-title.util'
 import { getContentModifiedDate } from '@/lib/utils/content-freshness.util'
 import { clampMetaDescription } from '@/lib/seo/meta-description.util'
+import { resolveListClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { getRelatedProcedures } from '@/lib/queries/blog/related-procedures.query'
 import { extractTableOfContents } from '@/lib/utils/extract-toc.util'
 import { findCTAInsertionPoint } from '@/lib/utils/inject-cta-marker.util'
@@ -117,8 +121,13 @@ function generateSurgeonMetadata(
         : `${siteUrl}${surgeon.images.featured}`
 
     // Brand the title: these are pages people reach by searching the surgeon's
-    // name alongside the practice, and the name alone is a thin <title>.
-    const pageTitle = `${surgeon.name} | ${siteConfig.business.name}`
+    // name alongside the practice. The no-name-in-titles rule (canon §2) is
+    // for procedure pages; a profile's name is its subject. Florida Rule
+    // 64B8-11.001(7) wants "MD" with the name, so Dr. Karlinsky's title uses
+    // her advertising name.
+    const titleName =
+        surgeon.id === 'dr-karlinsky' ? KARLINSKY_NAME : surgeon.name
+    const pageTitle = `${titleName} | ${siteConfig.business.name}`
     // shortBio is written for the page, not the SERP, so it needs clamping.
     const pageDescription = clampMetaDescription(surgeon.shortBio)
 
@@ -135,7 +144,7 @@ function generateSurgeonMetadata(
         openGraph: {
             type: 'profile',
             url: pageUrl,
-            title: `${pageTitle} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description: pageDescription,
             siteName: siteConfig.business.name,
             locale: 'en_US',
@@ -144,7 +153,7 @@ function generateSurgeonMetadata(
                     url: ogImage,
                     width: 1200,
                     height: 630,
-                    alt: `${surgeon.name} - Board Certified Plastic Surgeon at ${siteConfig.business.name}`,
+                    alt: `${surgeon.name}, ${siteConfig.business.name}`,
                 },
             ],
         },
@@ -152,7 +161,7 @@ function generateSurgeonMetadata(
         // Twitter Card tags
         twitter: {
             card: 'summary_large_image',
-            title: `${pageTitle} | ${siteConfig.business.name}`,
+            title: pageTitle,
             description: pageDescription,
             images: [ogImage],
         },
@@ -186,7 +195,11 @@ function generateBlogPostMetadata(
         title: getBlogPostSeoTitle(post),
         // metaDescription is authored for the SERP; excerpt is page copy and
         // only stands in when the dedicated field is empty.
-        description: post.metaDescription || post.excerpt || undefined,
+        // Clamped after the claim tokens resolve (#354): a discounted
+        // price is longer than the token the field was written with.
+        description: clampMetaDescription(
+            post.metaDescription || post.excerpt || undefined
+        ),
         openGraph: {
             type: 'article',
             images: post.featuredImage
@@ -274,7 +287,10 @@ export default async function DynamicPage({ params }: PageProps) {
         }
 
         // Get related procedures for cross-linking (SEO benefit)
-        const relatedProcedures = getRelatedProcedures(post, 3)
+        const relatedProcedures = await resolveListClaimsIn(
+            getRelatedProcedures(post, 3),
+            `related procedures of ${post.slug}`
+        )
 
         return (
             <BlogPostContent
@@ -307,10 +323,18 @@ function SurgeonContent({
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
     const pageUrl = `${siteUrl}/${slug}`
 
+    // Dr. Karlinsky's structured data names only her verified credentials
+    // (claims canon §2, #354): the Person node the home and procedure pages
+    // publish. It has no award list (that carried the cosmetic boards, which
+    // need the Florida statement beside them), no education (D9) and no
+    // medical specialty. Other profiles keep their node as it was (D1).
+    const karlinsky =
+        surgeon.id === 'dr-karlinsky' ? karlinskyPersonNode(siteUrl) : null
+
     // Breadcrumb items for schema
     const breadcrumbItems = [
         { name: 'Home', item: siteUrl },
-        { name: 'Our Surgeons', item: `${siteUrl}/about` },
+        { name: 'About', item: `${siteUrl}/about` },
         { name: surgeon.name, item: pageUrl },
     ]
 
@@ -332,15 +356,17 @@ function SurgeonContent({
                 name={`${surgeon.name} | ${siteConfig.business.name}`}
                 description={surgeon.shortBio}
                 mainEntity={{
-                    '@type': 'Physician',
-                    '@id': `${siteUrl}/#physician-${slug}`,
-                    name: surgeon.name,
+                    '@type': karlinsky ? 'Person' : 'Physician',
+                    '@id': karlinsky
+                        ? karlinsky['@id']
+                        : `${siteUrl}/#physician-${slug}`,
+                    name: karlinsky ? KARLINSKY_NAME : surgeon.name,
                     url: pageUrl,
                     image: surgeon.images.featured.startsWith('http')
                         ? surgeon.images.featured
                         : `${siteUrl}${surgeon.images.featured}`,
                     description: surgeon.shortBio,
-                    jobTitle: surgeon.title,
+                    jobTitle: karlinsky ? 'Surgeon' : surgeon.title,
                     worksFor: {
                         '@type': 'Organization',
                         name: siteConfig.business.name,
@@ -369,53 +395,57 @@ function SurgeonContent({
             />
 
             {/* Structured Data - Physician Schema for E-E-A-T */}
-            <PhysicianSchema
-                id={`${siteUrl}/#physician-${slug}`}
-                name={surgeon.name}
-                url={pageUrl}
-                image={
-                    surgeon.images.featured.startsWith('http')
-                        ? surgeon.images.featured
-                        : `${siteUrl}${surgeon.images.featured}`
-                }
-                description={surgeon.fullBio}
-                jobTitle={surgeon.title}
-                medicalSpecialty={surgeon.specialties}
-                award={surgeon.certifications}
-                alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
-                worksFor={{
-                    '@id': `${siteUrl}/#organization`,
-                    name: siteConfig.business.name,
-                    url: siteUrl,
-                    address: {
+            {karlinsky ? (
+                <JsonLdGraph nodes={[karlinsky]} />
+            ) : (
+                <PhysicianSchema
+                    id={`${siteUrl}/#physician-${slug}`}
+                    name={surgeon.name}
+                    url={pageUrl}
+                    image={
+                        surgeon.images.featured.startsWith('http')
+                            ? surgeon.images.featured
+                            : `${siteUrl}${surgeon.images.featured}`
+                    }
+                    description={surgeon.fullBio}
+                    jobTitle={surgeon.title}
+                    medicalSpecialty={surgeon.specialties}
+                    award={surgeon.certifications}
+                    alumniOf={surgeon.education.map((edu) => ({ name: edu }))}
+                    worksFor={{
+                        '@id': `${siteUrl}/#organization`,
+                        name: siteConfig.business.name,
+                        url: siteUrl,
+                        address: {
+                            streetAddress: siteConfig.contact.address,
+                            addressLocality: siteConfig.contact.city,
+                            addressRegion: siteConfig.contact.state,
+                            postalCode: siteConfig.contact.postalCode,
+                            addressCountry: siteConfig.contact.country,
+                        },
+                    }}
+                    address={{
                         streetAddress: siteConfig.contact.address,
                         addressLocality: siteConfig.contact.city,
                         addressRegion: siteConfig.contact.state,
                         postalCode: siteConfig.contact.postalCode,
                         addressCountry: siteConfig.contact.country,
-                    },
-                }}
-                address={{
-                    streetAddress: siteConfig.contact.address,
-                    addressLocality: siteConfig.contact.city,
-                    addressRegion: siteConfig.contact.state,
-                    postalCode: siteConfig.contact.postalCode,
-                    addressCountry: siteConfig.contact.country,
-                }}
-                telephone={siteConfig.contact.phone}
-                // Enhanced sameAs with external profiles for E-E-A-T authority signals
-                sameAs={[
-                    // Social profiles
-                    ...Object.values(surgeon.social ?? {}).filter(
-                        (v): v is string => Boolean(v)
-                    ),
-                    // External medical directory profiles (Healthgrades, RealSelf, etc.)
-                    ...Object.values(surgeon.externalProfiles ?? {}).filter(
-                        (v): v is string => Boolean(v)
-                    ),
-                ]}
-                knowsAbout={surgeon.specialties}
-            />
+                    }}
+                    telephone={siteConfig.contact.phone}
+                    // Enhanced sameAs with external profiles for E-E-A-T authority signals
+                    sameAs={[
+                        // Social profiles
+                        ...Object.values(surgeon.social ?? {}).filter(
+                            (v): v is string => Boolean(v)
+                        ),
+                        // External medical directory profiles (Healthgrades, RealSelf, etc.)
+                        ...Object.values(surgeon.externalProfiles ?? {}).filter(
+                            (v): v is string => Boolean(v)
+                        ),
+                    ]}
+                    knowsAbout={surgeon.specialties}
+                />
+            )}
 
             <main className='min-h-screen bg-stone-950'>
                 <SurgeonHero surgeon={surgeon} />

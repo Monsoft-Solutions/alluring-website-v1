@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/prompts/seo/content-brief
  */
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 
 export const CONTENT_BRIEF_SYSTEM_PROMPT = `You are an expert SEO content strategist specializing in medical and cosmetic surgery content.
 
@@ -23,13 +24,13 @@ Guidelines:
 For plastic surgery content, consider:
 - Patient concerns and questions at each stage of their journey
 - Medical accuracy and appropriate disclaimers
-- Trust-building elements (credentials, testimonials mentions)
+- Trust-building elements (the surgeon's verified credentials, real reviews)
 - Conversion opportunities (consultation CTAs)
 - Local SEO elements (Miami, Florida focus)
 
 Content Types:
 - Informational: Educational content about procedures, recovery, costs
-- Commercial: Comparison content, "best" lists, decision guides
+- Commercial: Comparison content, cost guides, decision guides
 - Transactional: Service pages, booking-focused content
 - Navigational: Brand-specific searches
 
@@ -37,7 +38,9 @@ Always provide:
 - Clear, scannable structure with logical heading hierarchy
 - Key points that address searcher questions
 - Meta description that encourages clicks
-- Strong CTA aligned with the content intent`
+- Strong CTA aligned with the content intent
+
+${buildClaimsPromptBlock('blog-planner')}`
 
 /**
  * Generate the prompt for content brief generation

@@ -139,8 +139,8 @@ export function TummyTuckRecovery() {
             </h3>
             <p className={cn(moduleBody, 'mt-3')}>
                 You can, but ASPS advises postponing a tummy tuck if you may
-                want to be pregnant again, because weight changes can undo much
-                of the result. For safety, a 2023 review of{' '}
+                want to be pregnant again, and a later pregnancy can change the
+                result. For safety, a 2023 review of{' '}
                 {tummyTuckFigure('pregnancy-after')} and{' '}
                 {tummyTuckFigure('pregnancy-after', 1)} who became pregnant
                 after a tummy tuck found no deaths of mothers or babies and

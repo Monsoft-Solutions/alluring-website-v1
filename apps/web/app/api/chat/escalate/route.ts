@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
             sessionId,
             role: 'assistant',
             content:
-                "I'm connecting you with a team member who can better assist you. They typically respond within a few minutes during business hours. In the meantime, feel free to share any additional details about your question.",
+                "I'm connecting you with a team member who can better assist you. They reply during business hours. In the meantime, feel free to share any additional details about your question.",
         })
 
         return NextResponse.json({

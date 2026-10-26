@@ -113,9 +113,8 @@ python3 .claude/skills/blog-post/scripts/served_check.py "$BASE$P" <slug>
   template, not with a fixed number.
 - **Claims, split post vs template.** A hit whose surrounding words are in
   `content.md` is the post's, and it fails. A hit elsewhere is the
-  template's (nav phone number, the old sidebar's "board-certified surgeons"
-  and "5,000+ Happy Patients", the injected CTA block), so it is reported,
-  not failed. Old-template hits are the reason for the v2 allowlist
+  template's (the nav phone number, the old template's sidebar, the
+  injected CTA block), so it is reported, not failed. Old-template hits are the reason for the v2 allowlist
   decision ([publishing](publishing.md#7-the-code-pr)).
 
 It exits 1 on a post claim, a missing part, or a wrong JSON-LD count. For a

@@ -9,11 +9,11 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/privacy',
     title: pageTitle,
     description:
-        'Privacy policy for Alluring Plastic Surgery explaining how we collect, use, and protect your personal information. Learn about HIPAA compliance, photo privacy, and your data rights.',
+        'Privacy policy for Alluring Plastic Surgery explaining how we collect, use, and protect your personal information, including photo privacy and your data rights.',
     openGraph: {
         title: pageTitle,
         description:
-            'Learn how Alluring Plastic Surgery handles your personal data, protects patient privacy, and complies with HIPAA and Florida privacy laws.',
+            'Learn how Alluring Plastic Surgery handles your personal data and protects patient privacy.',
         type: 'website',
     },
     twitter: {

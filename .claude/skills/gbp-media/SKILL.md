@@ -31,6 +31,11 @@ post text.
 
     For a post:
     - the text has no phone number, link, %, "OFF", price or surgeon name;
+    - it makes no claim the claims canon (`docs/claims/canon.md`) removes:
+      no credentials or board names, accreditation, volume or tenure,
+      superlatives, "luxury" or "affordable", payment figures, travel
+      help or market outside the US, and no "free" that the post didn't
+      already carry;
     - it's 1,500 characters or fewer;
     - the button link carries `utm_campaign=gbp-post` and its own
       `utm_content`.

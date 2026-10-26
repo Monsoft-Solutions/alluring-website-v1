@@ -7,8 +7,6 @@ export interface SurgeonExternalProfiles {
     healthgrades?: string
     /** RealSelf physician profile */
     realself?: string
-    /** American Board of Plastic Surgery lookup */
-    abps?: string
     /** LinkedIn professional profile */
     linkedin?: string
     /** WebMD physician profile */

@@ -13,12 +13,13 @@ import {
     ShieldCheck,
     Clock,
     CreditCard,
-    Quote,
     Heart,
     Baby,
     Sparkles,
 } from 'lucide-react'
 import Image from 'next/image'
+
+import { TRUST_BADGES } from '@workspace/shared/claims/trust'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
@@ -49,7 +50,7 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                         <div className='shadow-gold-500/20 relative h-full w-full overflow-hidden rounded-2xl shadow-2xl sm:rounded-none sm:shadow-none'>
                             <Image
                                 src='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/mommy-makeover-hero.jpg'
-                                alt='Confident mother embracing her transformation after mommy makeover'
+                                alt='Confident mother smiling'
                                 fill
                                 className='object-cover object-top lg:object-contain lg:object-center'
                                 priority
@@ -145,22 +146,6 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
 
                         {/* Trust Cluster */}
                         <div className='mt-8 space-y-6'>
-                            {/* Testimonial Quote */}
-                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
-                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
-                                <div>
-                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
-                                        &ldquo;For years, I avoided the beach
-                                        and hid my body in loose clothes. After
-                                        my mommy makeover at Alluring, I finally
-                                        feel like myself again.&rdquo;
-                                    </p>
-                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Jennifer M., Mother of 3
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
@@ -172,13 +157,13 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Award className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        15+ Years Experience
+                                        {TRUST_BADGES.board}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Clock className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Same-Week Consultations
+                                        In person or by video
                                     </span>
                                 </div>
                             </div>
@@ -186,7 +171,7 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                             {/* Risk Reversal Message */}
                             <p className='text-center text-sm text-stone-500 lg:text-left'>
                                 ✓ Free consultation • ✓ Customized procedure
-                                plan • ✓ Flexible financing
+                                plan • ✓ Financing available
                             </p>
                         </div>
                     </div>

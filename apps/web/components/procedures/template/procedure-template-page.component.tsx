@@ -7,6 +7,7 @@ import { QuickAnswer } from '@/components/shared/quick-answer.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
 import { ProcedureMarkdown } from '@/components/procedures/procedure-markdown.component'
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
 import { ProcedureDetailHero } from '@/components/procedures/procedure-detail-hero.component'
 import { ProcedureStats } from '@/components/procedures/procedure-stats.component'
 import { ProcedureBenefits } from '@/components/procedures/procedure-benefits.component'
@@ -46,6 +47,7 @@ const procedureToBlogCategory: Record<string, string> = {
 export function ProcedureTemplatePage({
     procedure,
     relatedProcedures,
+    prices,
 }: ProcedurePageModuleProps) {
     return (
         <>
@@ -109,6 +111,7 @@ export function ProcedureTemplatePage({
                 <ProcedurePricing
                     procedureTitle={procedure.title}
                     pricing={procedure.pricing}
+                    prices={prices}
                 />
             )}
 
@@ -131,8 +134,8 @@ export function ProcedureTemplatePage({
 
             {/* Google Reviews - Social Proof */}
             <GoogleReviews
-                title={`What Our ${procedure.title} Patients Say`}
-                subtitle='Real reviews from real patients'
+                title='What patients say on Google'
+                subtitle='Unedited reviews from our Google Business Profile'
                 limit={3}
                 featuredOnly={true}
                 showGoogleLink={false}
@@ -171,14 +174,11 @@ export function ProcedureTemplatePage({
                         <div className='mx-auto max-w-3xl'>
                             <p className='text-muted-foreground text-lg leading-relaxed'>
                                 At {siteConfig.business.name}, we take pride in
-                                delivering life-changing results that enhance
-                                our patients&apos; natural beauty. Explore our
-                                gallery of real patient transformations to see
-                                the incredible outcomes from procedures like
-                                Brazilian Butt Lift, Breast Augmentation,
-                                Facelift, and more. Each photo reflects the
-                                personalized care and attention to detail we
-                                bring to every surgery.
+                                results that enhance our patients&apos; natural
+                                beauty. Explore our gallery of real patient
+                                results from procedures like Brazilian Butt
+                                Lift, Breast Augmentation, Facelift, and more.
+                                Individual results vary.
                             </p>
                         </div>
                     </ContainerLayout>
@@ -228,8 +228,8 @@ export function ProcedureTemplatePage({
 
             {/* CTA Section */}
             <CTASection
-                heading='Ready to Transform Your Look?'
-                description='Schedule a free consultation with our expert surgeons to discuss your goals and create a personalized treatment plan.'
+                heading='Ready to Talk About Your Goals?'
+                description={`Schedule a free consultation with ${KARLINSKY_NAME} to discuss your goals and create a personalized treatment plan.`}
                 backgroundImage={procedure.image}
                 primaryButton={{
                     text: 'Schedule Consultation',

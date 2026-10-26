@@ -40,7 +40,7 @@ export function GalleryGroupsSection({
                 <SectionHeader
                     badge='Browse by Category'
                     title='Explore Our Collections'
-                    description='Discover transformative results organized by procedure type. Each gallery showcases the artistry and precision of our board-certified surgeons.'
+                    description='Before and after results, organized by procedure. Individual results vary.'
                     align='center'
                     className='mb-12 md:mb-16'
                 />

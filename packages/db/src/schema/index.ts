@@ -210,6 +210,20 @@ export {
     type InsertPromotion,
 } from './promotion'
 
+// Pricing schema (issue #354)
+export {
+    PRICE_LINE_UNITS,
+    priceLine,
+    procedurePricing,
+    pricingSettings,
+    type PriceLineRow,
+    type InsertPriceLineRow,
+    type ProcedurePricingRow,
+    type InsertProcedurePricingRow,
+    type PricingSettingsRow,
+    type InsertPricingSettingsRow,
+} from './pricing'
+
 // Gallery schema
 export {
     galleryMediaType,

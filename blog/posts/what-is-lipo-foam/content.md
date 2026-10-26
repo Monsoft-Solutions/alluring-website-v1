@@ -111,7 +111,7 @@ Foam and boards are easier when you know the plan ahead of time. Ask at your pre
 
 ### Does lipo foam help with swelling?
 
-It may, as part of compression. Foam spreads the garment's pressure so the whole treated area is compressed evenly, and a 1993 report described less bruising and bleeding when foam was used under a pressure garment. No controlled study has measured swelling with and without foam. Walking, your garment and time do most of the work: The Aesthetic Society says swelling peaks around 48 hours after surgery.
+It may, as part of compression. Foam spreads the garment's pressure so the whole treated area is compressed evenly, and a 1993 report described less bruising and bleeding when foam was used under a pressure garment. We found no controlled study that measured swelling with and without foam. Walking, your garment and time do most of the work: The Aesthetic Society says swelling peaks around 48 hours after surgery.
 
 ### Can lipo foam tighten loose skin?
 

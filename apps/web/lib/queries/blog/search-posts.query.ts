@@ -4,6 +4,8 @@ import { db } from '@workspace/db/client'
 import { blogPost, images } from '@workspace/db/schema/blog'
 import { and, desc, eq, isNotNull, or, ilike } from 'drizzle-orm'
 
+import { resolvePostListClaims } from '@/lib/claims/resolve-claims.server'
+
 /**
  * Search result item for blog posts
  */
@@ -107,7 +109,7 @@ export const searchPosts = (
             tags: ['blog-posts', 'blog-search'],
             revalidate: 86400,
         }
-    )()
+    )().then(resolvePostListClaims)
 }
 
 /**
@@ -152,5 +154,5 @@ export const getSearchIndex = (): Promise<SearchIndexPost[]> => {
     return unstable_cache(() => fetchSearchIndex(), ['blog-search-index'], {
         tags: ['blog-posts', 'blog-search-index'],
         revalidate: 86400,
-    })()
+    })().then(resolvePostListClaims)
 }

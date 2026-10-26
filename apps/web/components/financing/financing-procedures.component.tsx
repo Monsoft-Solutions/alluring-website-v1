@@ -4,8 +4,8 @@
  * FinancingProcedures Component
  *
  * Displays available procedures organized by category (Face, Body, Breast)
- * with links to individual procedure pages. Beautiful card design with
- * elegant hover effects and category icons.
+ * with links to individual procedure pages, with hover effects and
+ * category icons.
  */
 import { motion } from 'framer-motion'
 import {
@@ -23,6 +23,7 @@ import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { SectionHeader } from '@/components/shared/section-header.component'
 import type { FinancingProceduresProps } from '@/lib/types/financing.type'
+import { getFinancingPartnersString } from '@workspace/shared/claims/financing'
 
 /**
  * Map icon names to Lucide components
@@ -225,11 +226,12 @@ export function FinancingProcedures({
                     )}
                 >
                     <p className='text-gold-400 text-lg font-semibold'>
-                        All procedures are eligible for financing
+                        Financing is available through{' '}
+                        {getFinancingPartnersString()} for qualified applicants
                     </p>
                     <p className='mx-auto mt-2 max-w-md text-sm text-stone-400'>
-                        Contact us to discuss a customized payment plan for your
-                        specific procedure
+                        Approval and terms are set by the lender. Contact us to
+                        talk through financing for your procedure.
                     </p>
                 </motion.div>
             </ContentWrapper>

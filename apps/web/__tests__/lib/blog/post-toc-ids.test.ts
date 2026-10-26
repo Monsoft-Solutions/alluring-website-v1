@@ -242,3 +242,27 @@ describe('rehypeFaqSections', () => {
         expect(await renderPost(source)).toBe(await renderPost(source, false))
     })
 })
+
+describe('a discounted price in a heading (#354)', () => {
+    const body = [
+        '## BBL from ~~$5,500~~ $4,400',
+        '',
+        'Text.',
+        '',
+        '## Recovery ~~in stages~~',
+        '',
+        'More text.',
+    ].join('\n')
+
+    it('lists the price the reader pays, not both figures', () => {
+        expect(extractTableOfContents(body).map((h) => h.text)).toEqual([
+            'BBL from $4,400',
+            'Recovery in stages',
+        ])
+    })
+
+    it('keeps the id the rendered heading carries', async () => {
+        const html = await renderPost(body)
+        expect(unresolvedTocIds(body, html)).toEqual([])
+    })
+})

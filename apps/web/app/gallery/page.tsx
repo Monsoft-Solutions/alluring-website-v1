@@ -5,6 +5,7 @@ import { GalleryMediaGrid } from '@/components/gallery/gallery-media-grid.compon
 import { GalleryIndexHero } from '@/components/gallery-page/gallery-index-hero.component'
 import { GalleryProcedureCards } from '@/components/gallery-page/gallery-procedure-nav.component'
 import { CTASection } from '@/components/shared/cta-section.component'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import { getGalleryOverview } from '@/lib/queries/gallery/gallery-overview.query'
 import { seoConfig } from '@/lib/seo-config'
@@ -125,8 +126,8 @@ export default async function GalleryPage() {
                             <p
                                 className={`${lead} mt-5 text-[var(--gp-ink-2)]`}
                             >
-                                The latest before-and-afters from every
-                                procedure. Tap one to see it full size.
+                                The latest before-and-afters across our
+                                procedures. Tap one to see it full size.
                             </p>
                         </div>
                         <GalleryMediaGrid
@@ -184,15 +185,15 @@ export default async function GalleryPage() {
                 trustBadges={[
                     {
                         icon: <Award className='h-5 w-5' />,
-                        label: 'Board-certified surgeons',
+                        label: TRUST_BADGES.surgeon,
                     },
                     {
                         icon: <Users className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} patients`,
+                        label: formatRatingBadge(siteConfig.trustStats?.rating),
                     },
                     {
                         icon: <Building2 className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.years ?? '15+'} years of experience`,
+                        label: TRUST_BADGES.board,
                     },
                 ]}
             />

@@ -8,6 +8,7 @@
  */
 'use client'
 
+import { CHAT_AGENT } from '@workspace/shared/claims/identity'
 import { memo } from 'react'
 import Image from 'next/image'
 import { cn } from '@workspace/ui/lib/utils'
@@ -42,7 +43,7 @@ export const ChatMessage = memo(function ChatMessage({
     content,
     createdAt,
     isStreaming,
-    agentName = 'Assistant',
+    agentName = CHAT_AGENT.name,
     agentImageUrl,
 }: ChatMessageProps) {
     const isUser = role === 'user'

@@ -8,16 +8,37 @@
  */
 import { NextResponse } from 'next/server'
 
-import { procedures } from '@/lib/data/procedures.data'
-import { siteConfig, getFullAddress } from '@/lib/data/site-config'
+import { getResolvedProcedures } from '@/lib/data/procedures.resolved.server'
+import { siteConfig } from '@/lib/data/site-config'
+import {
+    absoluteUrl,
+    financingSection,
+    hoursLines,
+    LLMS_INTRO,
+    LLMS_SUMMARY,
+    newestDate,
+    practiceLines,
+    pricesSection,
+    surgeonSection,
+    trustLines,
+} from '@/lib/llms/llms-sections.server'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
+import { getPricing } from '@/lib/queries/pricing.query'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
- * Generate comprehensive llms-full.txt content
+ * Generate comprehensive llms-full.txt content. Practice facts, the surgeon,
+ * prices and financing come from the claims canon and the pricing resolver
+ * (`lib/llms/llms-sections.server.ts`, #354); every procedure's copy is
+ * resolved for claim tokens first.
  */
 async function generateLlmsFullTxt(): Promise<string> {
-    // Fetch recent blog posts
+    const [resolvedProcedures, pricing] = await Promise.all([
+        getResolvedProcedures(),
+        getPricing(),
+    ])
+
+    // Fetch recent blog posts (titles arrive with claim tokens resolved)
     let recentPosts: Array<{
         title: string
         slug: string
@@ -36,91 +57,61 @@ async function generateLlmsFullTxt(): Promise<string> {
         // Blog posts fetch failed, continue without them
     }
 
-    // The newest real date across the content this file describes. It used to
-    // print the request date, which made every fetch look like a fresh edit
-    // (#250). No dates at all means no claim: the line is omitted.
-    const lastUpdated = [
-        ...procedures.map((p) => p.dateModified),
-        ...recentPosts.map((p) => p.publishedAt),
-    ]
-        .filter((date): date is string => Boolean(date))
-        .map((date) => date.slice(0, 10))
-        .sort()
-        .at(-1)
+    // The newest real date across the content this file describes, the
+    // pricing edit included. It used to print the request date, which made
+    // every fetch look like a fresh edit (#250). No dates at all means no
+    // claim: the line is omitted.
+    const lastUpdated = newestDate(
+        [
+            ...resolvedProcedures.map((p) => p.dateModified),
+            ...recentPosts.map((p) => p.publishedAt),
+        ],
+        pricing
+    )
 
     const content = `# ${siteConfig.business.name} - Comprehensive Information Guide
 
-> ${siteConfig.business.description}
+> ${LLMS_SUMMARY}
 
-This is the comprehensive information file for ${siteConfig.business.name}, a premier plastic surgery clinic in Miami, Florida. This document provides detailed information about our procedures, surgeons, and services for AI assistants and language models.
+${LLMS_INTRO}
+
+This document describes the practice's procedures, surgeon, prices and services for AI assistants and language models.
 
 ---
 
 ## Business Overview
 
-**Name**: ${siteConfig.business.name}${
-        siteConfig.business.legalName
-            ? `
-**Legal Name**: ${siteConfig.business.legalName}`
-            : ''
-    }${
-        siteConfig.business.organizationType
-            ? `
-**Type**: ${siteConfig.business.organizationType}`
-            : ''
-    }${
-        siteConfig.business.tagline
-            ? `
-**Tagline**: "${siteConfig.business.tagline}"`
-            : ''
-    }
-
-**Location**: ${getFullAddress()}${
+${practiceLines()}${
         siteConfig.contact.coordinates
             ? `
 **Coordinates**: ${siteConfig.contact.coordinates.lat}, ${siteConfig.contact.coordinates.lng}`
             : ''
-    }
-**Phone**: ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}
-**Email**: ${siteConfig.contact.email}${
+    }${
         siteConfig.contact.timezone
             ? `
 **Timezone**: ${siteConfig.contact.timezone}`
             : ''
     }
-${
-    siteConfig.trustStats
-        ? `
-### Trust & Credentials${
-              siteConfig.trustStats.accreditation
-                  ? `
-- **Accreditation**: ${siteConfig.trustStats.accreditation}`
-                  : ''
-          }
-- **Procedures Performed**: ${siteConfig.trustStats.patients}
-- **Years in Practice**: ${siteConfig.trustStats.years}
-- **Patient Rating**: ${siteConfig.trustStats.rating}/5 stars
-- **Board Certification**: ${siteConfig.trustStats.certified}`
-        : ''
-}
-${
-    siteConfig.contact.businessHours &&
-    siteConfig.contact.businessHours.length > 0
-        ? `
+
+### Verified Facts
+${trustLines()}
+
 ### Business Hours
-${siteConfig.contact.businessHours.map((h) => `- ${h.days}: ${h.open === 'Closed' ? 'Closed' : `${h.open} - ${h.close}`}${h.note ? ` (${h.note})` : ''}`).join('\n')}`
-        : ''
-}
+${hoursLines()}
+
+---
+
+${surgeonSection()}
 
 ---
 
 ## Procedures Offered
 
-${procedures
+${resolvedProcedures
     .map(
         (p) => `### ${p.title}
 
-**URL**: /procedures/${p.slug}
+**URL**: ${absoluteUrl(`/procedures/${p.slug}`)}
 **Category**: ${p.category || 'General'}
 **Description**: ${p.description}
 
@@ -165,62 +156,37 @@ A: ${faq.answer}
     )
     .join('\n')}
 
+${pricesSection(pricing)}
+
+---
+
+${financingSection()}
+
+---
+
 ## Patient Resources
 
 ### Consultation
-- **Free Consultation**: /free-consultation
-- No-obligation consultations available with our board-certified surgeons
-- Virtual consultations available for out-of-town patients
-
-### Financing Options
-- **URL**: /plastic-surgery-financing-miami
-- **Partners**: Cherry, CareCredit, United Credit
-- 0% APR financing plans available
-- Flexible payment schedules
-- Instant approval process
+- **URL**: ${absoluteUrl('/free-consultation')}
+- In person in Miami or by video
+- Your surgeon confirms your price at consultation
 
 ### Before & After Gallery
-- **URL**: /gallery
+- **URL**: ${absoluteUrl('/gallery')}
 - Real patient results
-- Categorized by procedure type
-- High-resolution images
+- Categorized by procedure
 
 ### Educational Blog
-- **URL**: /blog
-- Expert plastic surgery guides
-- Recovery tips and advice
-- Procedure comparisons
-- Patient stories
+- **URL**: ${absoluteUrl('/blog')}
+- Procedure guides, recovery and cost articles
 
 ${
     recentPosts.length > 0
         ? `### Recent Articles
-${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.publishedAt)})`).join('\n')}
+${recentPosts.map((post) => `- [${post.title}](${absoluteUrl(getBlogPostUrl(post.slug, post.publishedAt))})`).join('\n')}
 `
         : ''
 }
-
----
-
-## Why Choose ${siteConfig.business.name}
-
-1. **Double Board-Certified Surgeons**: Our surgeons hold certifications from both the American Board of Plastic Surgery and the American Board of Surgery, demonstrating the highest level of training and expertise.
-${
-    siteConfig.trustStats
-        ? `
-2. **Extensive Experience**: With ${siteConfig.trustStats.patients} procedures performed, our surgical team has the experience necessary to deliver exceptional results.
-
-3. **Patient-Centered Care**: Our ${siteConfig.trustStats.rating}-star rating reflects our commitment to patient satisfaction and care throughout the entire surgical journey.
-`
-        : ''
-}
-4. **Affordable Luxury**: We believe everyone deserves access to quality cosmetic surgery. Our flexible financing options make procedures accessible.
-
-5. **Bilingual Services**: Our English and Spanish speaking staff ensures clear communication with our diverse patient base.
-
-6. **Accredited Facility**: Our AAASF-accredited surgical center meets the highest standards for safety and quality.
-
-7. **Miami Location**: Located in the heart of Miami, we serve patients from South Florida and across the United States.
 
 ---
 
@@ -238,9 +204,11 @@ ${
 - West Palm Beach
 - Boca Raton
 
-**Fly-In Patients**: We welcome patients travelling in from other US
-states. Care is available in English and Spanish. The practice does not
-book travel or lodging and is not affiliated with any recovery house.
+**Patients Flying In**: Patients fly in from other US states. If you're
+flying in, Alluring confirms your surgery, pre-op and follow-up dates in
+writing and tells you how many nights to stay in Miami before you're cleared
+to fly home. You arrange the travel itself. The practice is not affiliated
+with any recovery house. Care is available in English and Spanish.
 
 ---
 
@@ -248,7 +216,7 @@ book travel or lodging and is not affiliated with any recovery house.
 
 **Phone**: ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}
 **Email**: ${siteConfig.contact.email}
-**Address**: ${getFullAddress()}
+**Address**: ${siteConfig.contact.address}, ${siteConfig.contact.city}, ${siteConfig.contact.state} ${siteConfig.contact.postalCode}
 
 **Social Media**:
 ${siteConfig.social.map((s) => `- ${s.label ?? s.platform}: ${s.url}`).join('\n')}
@@ -257,9 +225,9 @@ ${siteConfig.social.map((s) => `- ${s.label ?? s.platform}: ${s.url}`).join('\n'
 
 ## Legal
 
-- [Privacy Policy](/privacy)
-- [Terms of Service](/terms)
-- [Sitemap](/sitemap.xml)
+- [Privacy Policy](${absoluteUrl('/privacy')})
+- [Terms of Service](${absoluteUrl('/terms')})
+- [Sitemap](${absoluteUrl('/sitemap.xml')})
 
 ---
 
@@ -276,7 +244,12 @@ export async function GET() {
         return new NextResponse(content, {
             headers: {
                 'Content-Type': 'text/plain; charset=utf-8',
-                'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+                // A short CDN cache (#354): revalidateTag('pricing') does not
+                // purge a response Vercel's edge holds for its s-maxage, so a
+                // day-long one kept a price edit off this file for a day.
+                // Ten minutes, then served stale while it refreshes.
+                'Cache-Control':
+                    'public, max-age=600, s-maxage=600, stale-while-revalidate=3600',
             },
         })
     } catch (error) {

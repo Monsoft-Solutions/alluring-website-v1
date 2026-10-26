@@ -13,13 +13,16 @@
  * ---------------------------------------------------------------------
  * CLAIMS
  * ---------------------------------------------------------------------
- * Every practice claim is one the site already publishes (see the header of
- * `request-consultation/lp-copy.ts`): the surgeon named as an MD with the
- * boards `karlinsky-credentials.constant.ts` allows, the AAAASF-accredited
- * facility, board-certified anesthesiologists, the 4.7
- * Google rating, the procedure counts, the all-inclusive figure in writing,
- * the confirmed dates, the 24-hour response, no commission. Nothing here
- * offers travel coordination — what the practice provides is dates in
+ * Every practice claim follows the claims canon (`docs/claims/canon.md`,
+ * #354) and the header of `request-consultation/lp-copy.ts`: the surgeon
+ * named as an MD with the American Board of Surgery and the American College
+ * of Surgeons only, the 4.7 Google rating, the price and the confirmed dates
+ * in writing, no commission. Removed and not to come back: facility
+ * accreditation, anesthesiologist claims, "double board-certified",
+ * procedure counts and years in practice, a typed review count, an
+ * "all-inclusive" price, a reply time and a week-by-week recovery plan.
+ * "Free consultation" stays where it stood (D7); new copy doesn't add
+ * "free". Nothing here offers travel coordination — what the practice provides is dates in
  * writing and how many nights to stay in Miami before being cleared to fly.
  *
  * The consent wording, the reviews, the surgeon's credentials and the
@@ -27,7 +30,11 @@
  * deck, so the legal text lives in exactly one place.
  */
 
-import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import {
+    KARLINSKY_ABS_CERTIFIED_YEAR,
+    KARLINSKY_NAME,
+} from '@workspace/shared/claims/surgeon'
+import { RATING_FALLBACK, TRUST_BADGES } from '@workspace/shared/claims/trust'
 
 import { LP_COPY, type RichText } from '../request-consultation/lp-copy'
 
@@ -161,8 +168,7 @@ export interface MjDictionary {
 const en: MjDictionary = {
     meta: {
         title: 'Melissa Juvier · Your Patient Coordinator | Alluring Plastic Surgery',
-        description:
-            'Message Melissa, your patient coordinator at Alluring Plastic Surgery in Miami. Free consultation with double board-certified Dr. Karlinsky — your price and dates in writing. Hablamos español.',
+        description: `Message Melissa, your patient coordinator at Alluring Plastic Surgery in Miami. Free consultation with Dr. ${KARLINSKY_NAME} — your price and dates in writing. Hablamos español.`,
     },
     header: {
         practice: 'Alluring Plastic Surgery',
@@ -182,16 +188,15 @@ const en: MjDictionary = {
     },
     trust: [
         'Free consultation',
-        '4.7★ on Google',
-        'Double board-certified surgeon',
-        'AAAASF-accredited facility',
+        `${RATING_FALLBACK}★ on Google`,
+        TRUST_BADGES.board,
         'Virtual or in person',
         'Hablamos español',
     ],
     chat: {
         title: 'Message Melissa',
         role: 'Patient coordinator',
-        status: 'Replies by text within 24 hours',
+        status: 'Replies by text',
         greeting: 'Hi! I’m so glad you’re here.',
         qProcedure: 'What are you thinking about doing?',
         procedures: [
@@ -250,12 +255,12 @@ const en: MjDictionary = {
                 body: 'Thirty seconds, right on this page. Tell me what you’re thinking about — no commitment.',
             },
             {
-                title: 'I reach out within 24 hours',
+                title: 'I text you back',
                 body: 'By text. I answer your first questions and book your free consultation with Dr. Karlinsky — in person in Miami, or by video from anywhere in the U.S.',
             },
             {
                 title: 'You leave with a plan, in writing',
-                body: 'A straight answer on whether you’re a candidate, your all-inclusive price, and your surgery, pre-op and follow-up dates — in writing, so you can decide in your own time.',
+                body: 'A straight answer on whether you’re a candidate, your price, and your surgery, pre-op and follow-up dates — in writing, so you can decide in your own time.',
             },
         ],
         after: 'And I don’t disappear once you book. I’m your point of contact through surgery day and every follow-up.',
@@ -267,9 +272,11 @@ const en: MjDictionary = {
         role: `${KARLINSKY_NAME} · Medical Director`,
         body: 'Your consultation is with the surgeon who operates — not an advisor, not a closer. Dr. Karlinsky tells you honestly what she can do for you, and what she won’t.',
         stats: [
-            { value: '5,000+', label: 'Procedures' },
-            { value: '15+', label: 'Years in practice' },
-            { value: '4.7★', label: 'Google, 80+ reviews' },
+            {
+                value: `Since ${KARLINSKY_ABS_CERTIFIED_YEAR}`,
+                label: 'Board certified in general surgery, American Board of Surgery',
+            },
+            { value: `${RATING_FALLBACK}★`, label: 'Google rating' },
         ],
         credentials: LP_COPY.en.surgeon.credentials,
         portraitAlt: LP_COPY.en.surgeon.portraitAlt,
@@ -298,7 +305,7 @@ const en: MjDictionary = {
             },
             {
                 question: 'How much will it cost me?',
-                answer: 'It depends on your body and your goals, which is why your price comes out of your consultation: all-inclusive, in writing, with no surprise fees. Financing is available, and I’ll walk you through your options.',
+                answer: 'It depends on your body and your goals, which is why your price comes out of your consultation, in writing. Financing is available, and I’ll walk you through your options.',
             },
             {
                 question: 'I don’t live in Miami. Can I still do this?',
@@ -306,11 +313,11 @@ const en: MjDictionary = {
             },
             {
                 question: 'Is it safe?',
-                answer: 'Surgery happens in an AAAASF-accredited facility with board-certified anesthesiologists, not an office suite. Every patient has pre-op lab work before they’re cleared, and your surgeon is double board-certified.',
+                answer: `Every patient has pre-op lab work before they’re cleared for surgery. Your surgeon, ${KARLINSKY_NAME}, is board certified in general surgery by the American Board of Surgery. She performs your surgery herself and sees you at follow-up.`,
             },
             {
                 question: 'What is recovery like?',
-                answer: 'It depends on the procedure. You get a written, week-by-week recovery plan before you book, so you can plan work and family around it — and you can message me with questions the whole way through.',
+                answer: 'It depends on the procedure. Alluring confirms your surgery, pre-op and follow-up dates in writing, so you can plan work and family around them — and you can message me with questions the whole way through.',
             },
             {
                 question: 'What if I’m not ready yet?',
@@ -320,7 +327,7 @@ const en: MjDictionary = {
     },
     closing: {
         heading: ['Your turn. ', { em: 'I’ve got you.' }],
-        body: 'One message. I reach out within 24 hours, and we take it from there — together.',
+        body: 'One message. I text you back, and we take it from there — together.',
         cta: 'Message Melissa',
     },
     footer: {
@@ -334,7 +341,7 @@ const en: MjDictionary = {
         eyebrow: 'Message sent',
         headingNamed: 'Got it, {name}.',
         heading: 'Got it.',
-        body: 'I’ll text you within 24 hours. Keep an eye on your messages — it’ll be me.',
+        body: 'I’ll text you. Keep an eye on your messages — it’ll be me.',
         nextTitle: 'What happens next',
         next: [
             'I reach out and answer your first questions.',
@@ -349,8 +356,7 @@ const en: MjDictionary = {
 const es: MjDictionary = {
     meta: {
         title: 'Melissa Juvier · Tu coordinadora de pacientes | Alluring Plastic Surgery',
-        description:
-            'Escríbele a Melissa, tu coordinadora de pacientes en Alluring Plastic Surgery en Miami. Consulta gratis con la Dra. Karlinsky, cirujana con doble certificación. Tu precio y tus fechas, por escrito.',
+        description: `Escríbele a Melissa, tu coordinadora de pacientes en Alluring Plastic Surgery en Miami. Consulta gratis con la Dra. ${KARLINSKY_NAME}. Tu precio y tus fechas, por escrito.`,
     },
     header: {
         practice: 'Alluring Plastic Surgery',
@@ -370,16 +376,15 @@ const es: MjDictionary = {
     },
     trust: [
         'Consulta gratis',
-        '4.7★ en Google',
-        'Cirujana con doble certificación',
-        'Clínica acreditada AAAASF',
+        `${RATING_FALLBACK}★ en Google`,
+        `Certificada por el American Board of Surgery desde ${KARLINSKY_ABS_CERTIFIED_YEAR}`,
         'Virtual o en persona',
         'Hablamos español',
     ],
     chat: {
         title: 'Escríbele a Melissa',
         role: 'Coordinadora de pacientes',
-        status: 'Te responde por texto en 24 horas',
+        status: 'Te responde por texto',
         greeting: '¡Hola! Qué alegría que estés aquí.',
         qProcedure: '¿Qué te gustaría hacerte?',
         procedures: [
@@ -441,12 +446,12 @@ const es: MjDictionary = {
                 body: 'Treinta segundos, aquí mismo. Cuéntame qué tienes en mente, sin compromiso.',
             },
             {
-                title: 'Te contacto en menos de 24 horas',
+                title: 'Te escribo por texto',
                 body: 'Por mensaje de texto. Respondo tus primeras preguntas y te agendo tu consulta gratis con la Dra. Karlinsky: en persona en Miami o por video desde cualquier lugar de EE. UU.',
             },
             {
                 title: 'Sales con un plan por escrito',
-                body: 'Una respuesta clara sobre si eres candidata, tu precio todo incluido y tus fechas de cirugía, preoperatorio y controles, por escrito, para que decidas a tu ritmo.',
+                body: 'Una respuesta clara sobre si eres candidata, tu precio y tus fechas de cirugía, preoperatorio y controles, por escrito, para que decidas a tu ritmo.',
             },
         ],
         after: 'Y no desaparezco cuando reservas. Soy tu persona de contacto hasta el día de tu cirugía y en cada control.',
@@ -458,9 +463,11 @@ const es: MjDictionary = {
         role: `${KARLINSKY_NAME} · Directora médica`,
         body: 'Tu consulta es con la cirujana que opera, no con una asesora ni con un vendedor. La Dra. Karlinsky te dice con honestidad lo que puede hacer por ti, y lo que no.',
         stats: [
-            { value: '5,000+', label: 'Procedimientos' },
-            { value: '15+', label: 'Años de experiencia' },
-            { value: '4.7★', label: 'Google, más de 80 reseñas' },
+            {
+                value: `Desde ${KARLINSKY_ABS_CERTIFIED_YEAR}`,
+                label: 'Certificada en cirugía general por el American Board of Surgery',
+            },
+            { value: `${RATING_FALLBACK}★`, label: 'Calificación en Google' },
         ],
         credentials: LP_COPY.es.surgeon.credentials,
         portraitAlt: LP_COPY.es.surgeon.portraitAlt,
@@ -489,7 +496,7 @@ const es: MjDictionary = {
             },
             {
                 question: '¿Cuánto me va a costar?',
-                answer: 'Depende de tu cuerpo y de lo que quieras lograr, por eso tu precio sale de tu consulta: todo incluido, por escrito y sin sorpresas. Hay financiamiento, y yo te explico tus opciones.',
+                answer: 'Depende de tu cuerpo y de lo que quieras lograr, por eso tu precio sale de tu consulta, por escrito. Hay financiamiento, y yo te explico tus opciones.',
             },
             {
                 question: 'No vivo en Miami. ¿Igual puedo hacerlo?',
@@ -497,11 +504,11 @@ const es: MjDictionary = {
             },
             {
                 question: '¿Es seguro?',
-                answer: 'La cirugía se realiza en una clínica acreditada por la AAAASF con anestesiólogos certificados, no en un consultorio. Toda paciente pasa por exámenes de laboratorio antes de ser aprobada, y tu cirujana tiene doble certificación.',
+                answer: `Toda paciente pasa por exámenes de laboratorio antes de ser aprobada para la cirugía. Tu cirujana, la Dra. ${KARLINSKY_NAME}, está certificada en cirugía general por el American Board of Surgery. Ella realiza tu cirugía y te ve en tus controles.`,
             },
             {
                 question: '¿Cómo es la recuperación?',
-                answer: 'Depende del procedimiento. Recibes un plan de recuperación semana a semana por escrito antes de reservar, para que organices tu trabajo y tu familia, y puedes escribirme con cualquier duda en todo el proceso.',
+                answer: 'Depende del procedimiento. Alluring te confirma por escrito las fechas de tu cirugía, preoperatorio y controles, para que organices tu trabajo y tu familia, y puedes escribirme con cualquier duda en todo el proceso.',
             },
             {
                 question: '¿Y si todavía no estoy lista?',
@@ -511,7 +518,7 @@ const es: MjDictionary = {
     },
     closing: {
         heading: ['Te toca a ti. ', { em: 'Yo te acompaño.' }],
-        body: 'Un mensaje. Te contacto en menos de 24 horas y seguimos juntas desde ahí.',
+        body: 'Un mensaje. Te escribo por texto y seguimos juntas desde ahí.',
         cta: 'Escríbele a Melissa',
     },
     footer: {
@@ -525,7 +532,7 @@ const es: MjDictionary = {
         eyebrow: 'Mensaje enviado',
         headingNamed: 'Listo, {name}.',
         heading: 'Listo.',
-        body: 'Te escribo en menos de 24 horas. Pendiente a tus mensajes, que voy a ser yo.',
+        body: 'Te escribo por texto. Pendiente a tus mensajes, que voy a ser yo.',
         nextTitle: 'Lo que sigue',
         next: [
             'Te contacto y respondo tus primeras preguntas.',

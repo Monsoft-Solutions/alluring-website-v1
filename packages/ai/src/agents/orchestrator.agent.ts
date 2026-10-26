@@ -9,6 +9,8 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import { generateText, isStepCount } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
@@ -60,14 +62,21 @@ export type OrchestratorOptions = {
     estimatedWordCount?: number
     /** Blog domain for internal link detection */
     blogDomain?: string
+    /**
+     * The live price list (#354): the claims block's token catalog and the
+     * validator that checks the revision's tokens and typed prices. This is
+     * the last check before extraction and publish, so it must see the
+     * lines the admin has, not the 2026-09-15 sheet.
+     */
+    pricing?: PricingSnapshot
 }
 
 /**
  * Build the structured system prompt for content editing
  */
-function buildSystemPrompt(): string {
+function buildSystemPrompt(pricing?: PricingSnapshot): string {
     return `<role>
-You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a luxury plastic surgery clinic.
+You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a cosmetic surgery practice.
 Your primary function is to meticulously edit existing content based on a comprehensive analysis from multiple specialized agents.
 Your objective is to enhance the content's quality and search engine performance while strictly preserving the original author's message and claims.
 </role>
@@ -175,11 +184,11 @@ Your prioritization of these fixes should be based on their impact on the SEO sc
 
 <medical_content_guidelines>
 E-E-A-T for Medical Content (Google Quality Signals):
-- Experience: Include real-world examples ("In our practice, we typically see...", "Patients often tell us...")
-- Expertise: Reference surgeon credentials and specialized training naturally where relevant
+- Experience: State only verified practice facts (one surgeon, [[surgeon:name]]; the practice figures in the procedure facts, stated as Alluring's). Never invent practice observations such as "In our practice, we typically see..." or "Patients often tell us..."
+- Expertise: Name the surgeon and her credentials only as the claim tokens below ([[surgeon:name]], [[surgeon:credentials]])
 - Authoritativeness: Cite Tier 1 medical sources (ASPS, FDA, NIH) - covered by fact-verifier
 - Trustworthiness: Include appropriate disclaimers, avoid overpromising results
-- Be specific: Replace vague claims ("many patients") with concrete details ("most patients see results within 2-4 weeks")
+- Be specific only with sourced figures: replace a vague claim with a number from the procedure facts or a cited source, and name the source. Never invent a number.
 - Show depth: Demonstrate comprehensive understanding of the topic beyond surface-level information
 </medical_content_guidelines>
 
@@ -223,7 +232,12 @@ Before producing output, verify:
 - [ ] The post does not contain a # header or the title within the body
 - [ ] The post is properly formatted in Markdown
 - [ ] External links are ≤6 total
-</validation_checklist>`
+- [ ] Every claim token from the draft is still there, character for character, and no Alluring price is typed
+</validation_checklist>
+
+<claims_canon>
+${buildClaimsPromptBlock('blog-reviewer', pricing)}
+</claims_canon>`
 }
 
 /**
@@ -497,6 +511,7 @@ export async function runOrchestrator(
         contentType,
         estimatedWordCount,
         blogDomain = DEFAULT_BLOG_DOMAIN,
+        pricing,
     } = options
 
     // Calculate content metrics
@@ -526,7 +541,7 @@ export async function runOrchestrator(
     )
 
     // Build prompts
-    const systemPrompt = buildSystemPrompt()
+    const systemPrompt = buildSystemPrompt(pricing)
     const userPrompt = buildUserPrompt({
         title,
         primaryKeyword,
@@ -568,7 +583,7 @@ export async function runOrchestrator(
 
     // The orchestrator rewrites the whole body, so it can reintroduce a hazard
     // the generation phase already cleared. Validate its output too.
-    const validation = validateGeneratedMdx(result.text)
+    const validation = validateGeneratedMdx(result.text, { pricing })
     const processingTimeMs = Date.now() - startTime
 
     if (!validation.clean) {

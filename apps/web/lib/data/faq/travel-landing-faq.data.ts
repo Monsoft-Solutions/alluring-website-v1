@@ -9,11 +9,12 @@
  * - Recovery: Staying in Miami for recovery
  *
  * IMPORTANT: the practice does not book travel or lodging and is not
- * partnered with any recovery house. Answers here must stay limited to
+ * affiliated with any recovery house. Answers here must stay limited to
  * clinical scheduling and medical guidance. Do not reintroduce claims
  * about arranging accommodation, transport or "recommended" recovery
  * houses.
  */
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
 /**
@@ -37,11 +38,11 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How far in advance should I book?',
-            answer: `We recommend booking 4-6 weeks in advance to allow time for your consultation and pre-operative planning, and to give you room to make your own travel arrangements once your dates are confirmed. However, we can often accommodate shorter timelines for patients with flexible schedules. Our team will work with you to find the best dates.`,
+            answer: `Plan ahead: allow time for your consultation and pre-operative planning, and book your own travel once your dates are confirmed. Our team will work with you to find dates that suit you.`,
         },
         {
             question: 'What if I need to reschedule my trip?',
-            answer: `We understand travel plans can change. Our team will work with you to reschedule your surgery date. We ask for at least 2 weeks notice when possible so we can accommodate your new schedule.`,
+            answer: `We understand travel plans can change. Our team will work with you to reschedule your surgery date. Let us know as early as you can.`,
         },
         {
             question: 'Can I combine my surgery with a vacation?',
@@ -51,7 +52,7 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
     virtual: [
         {
             question: 'How does the initial consultation work?',
-            answer: `Your consultation is with our experienced patient specialists. You'll discuss your goals, learn about procedures and what to expect, and get an all-inclusive price quote. This consultation is completely free with no obligation.`,
+            answer: `Your consultation is with our patient specialists. You'll discuss your goals, learn about procedures and what to expect, and get a personalized price quote, which your surgeon confirms when she examines you. This consultation is free with no obligation.`,
         },
         {
             question: 'What do I need for my consultation?',
@@ -59,11 +60,11 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'When do I meet my surgeon?',
-            answer: `You'll meet your board-certified surgeon in person when you arrive in Miami for your pre-op appointment. During this meeting, you'll have a detailed consultation where the surgeon examines you, confirms your surgical plan, and answers any final questions.`,
+            answer: `You'll meet your surgeon, ${KARLINSKY_NAME}, in person when you arrive in Miami for your pre-op appointment. During this meeting, she examines you, confirms your surgical plan, and answers any final questions.`,
         },
         {
             question: 'Can I get an accurate quote before traveling?',
-            answer: `Absolutely. Based on the photos you provide and your goals, our specialists can give you a comprehensive, all-inclusive quote. This quote includes surgeon fees, anesthesia, facility costs, and standard follow-up care. There are no surprise fees.`,
+            answer: `Yes. From your photos and goals, our specialists can give you an estimate before you travel. Your price is set after an exam, estimates may change, and Dr. Karlinsky confirms your price at consultation.`,
         },
     ],
     logistics: [
@@ -73,33 +74,33 @@ export const travelLandingFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: 'How long do I need to stay in Miami?',
-            answer: `Most procedures require a 7-14 day stay in Miami, depending on the surgery. This allows time for your pre-op appointment, the procedure itself, initial recovery, and your first follow-up appointments. Our team will give you a specific timeline based on your procedure.`,
+            answer: `After a BBL, plan on 7 to 10 days in Miami. For other procedures, your surgeon tells you how many nights to stay before you're cleared to fly home. The stay covers your pre-op appointment, the procedure itself, initial recovery, and your first follow-up appointments.`,
         },
         {
             question: "What about transportation while I'm in Miami?",
-            answer: `You arrange your own — we don't provide transport or airport pickup. Most patients use rideshare services for appointments. Plan on not driving yourself for the first week or so after surgery, and while you're taking prescription pain medication.`,
+            answer: `You arrange your own — we don't provide transport or airport pickup. Rideshare works for appointments. Plan on not driving yourself for the first week or so after surgery, and while you're taking prescription pain medication.`,
         },
         {
             question: 'What should I look for in a place to stay?',
-            answer: `Practical things: somewhere quiet, a bed you can get in and out of without straining, and no stairs if you can avoid them. Some patients book a recovery house — accommodation aimed at post-surgical guests — and others book a normal hotel or rental. We have no affiliation with any of them and don't take referral fees, so research and book whichever suits you.`,
+            answer: `Practical things: somewhere quiet, a bed you can get in and out of without straining, and no stairs if you can avoid them. We are not affiliated with any recovery house, hotel or rental, so research and book whichever suits you.`,
         },
     ],
     recovery: [
         {
             question: 'How will I be cared for during recovery in Miami?',
-            answer: `You'll have scheduled follow-up appointments with your surgeon while you're here, written post-op instructions, and a number to call if something doesn't look right. To be clear about the limits: we provide clinical care and follow-up, not in-person daily care where you're staying. Arrange for someone to be with you for at least the first 24-48 hours.`,
+            answer: `You'll have scheduled follow-up appointments with your surgeon while you're here, written post-op instructions, and a number to call if something doesn't look right. To be clear about the limits: we provide clinical care and follow-up, not in-person daily care where you're staying. Arrange for an adult to stay with you for at least the first 24 to 48 hours, or longer if your surgeon advises.`,
         },
         {
             question: "What if something goes wrong while I'm recovering?",
-            answer: `Your safety is our top priority. You'll have direct access to our medical team 24/7. If any concerns arise, we can see you immediately at our facility. This is one of the major benefits of recovering near your surgical team rather than flying home immediately.`,
+            answer: `You'll have a number to call if something doesn't look right, and follow-up visits with your surgeon while you're in Miami. That is why you stay near your surgeon rather than flying home right after surgery.`,
         },
         {
             question: 'When can I fly home after surgery?',
-            answer: `Flight clearance depends on your specific procedure. Generally, patients can fly 7-14 days after surgery once cleared by their surgeon. We'll give you specific guidelines and ensure you're medically ready before your return flight. Some patients choose to extend their stay for a more relaxed recovery.`,
+            answer: `Flight clearance depends on your procedure. After a BBL, most people fly home after 7 to 10 days in Miami, once cleared at follow-up; for other procedures, your surgeon tells you when you're cleared to fly. Some patients choose to extend their stay for a more relaxed recovery.`,
         },
         {
             question: 'What follow-up care will I need after returning home?',
-            answer: `We'll schedule virtual follow-up appointments to monitor your healing after you return home. If you need to be seen in person, we can send your operative details to a physician you choose. Most patients only need virtual check-ins, but we're always available if you need to return to Miami for any reason.`,
+            answer: `We'll schedule virtual follow-up appointments to monitor your healing after you return home. If you need to be seen in person, we can send your operative details to a physician you choose. You can also come back to Miami to be seen.`,
         },
     ],
 }

@@ -29,8 +29,6 @@ export function ProcedureLandingFinalCTA({
 }: ProcedureLandingFinalCTAProps) {
     const cleanTitle = procedureTitle.replace(/\s*Miami\s*$/i, '')
     const rating = siteConfig.trustStats?.rating
-    const patients = siteConfig.trustStats?.patients
-    const years = siteConfig.trustStats?.years
 
     return (
         <SectionContainer
@@ -86,7 +84,7 @@ export function ProcedureLandingFinalCTA({
 
                     <p className='mx-auto mb-10 max-w-lg font-serif text-base text-stone-300 italic md:text-lg'>
                         A free quote for your {cleanTitle}. An honest plan.
-                        Texted to you in under 24 hours.
+                        Texted to you.
                     </p>
 
                     <a
@@ -108,44 +106,16 @@ export function ProcedureLandingFinalCTA({
                                 Google rating
                             </li>
                         )}
-                        {patients && (
-                            <>
-                                <li
-                                    aria-hidden='true'
-                                    className='h-3 w-px bg-amber-200/30'
-                                />
-                                <li className='inline-flex items-center gap-2'>
-                                    <span className='font-serif text-base leading-none tracking-tight text-amber-200 tabular-nums'>
-                                        {patients}
-                                    </span>
-                                    Patients
-                                </li>
-                            </>
-                        )}
-                        {years && (
-                            <>
-                                <li
-                                    aria-hidden='true'
-                                    className='h-3 w-px bg-amber-200/30'
-                                />
-                                <li className='inline-flex items-center gap-2'>
-                                    <span className='font-serif text-base leading-none tracking-tight text-amber-200 tabular-nums'>
-                                        {years}
-                                    </span>
-                                    Years
-                                </li>
-                            </>
-                        )}
                         <li
                             aria-hidden='true'
                             className='h-3 w-px bg-amber-200/30'
                         />
-                        <li>Board-Certified</li>
+                        <li>One surgeon</li>
                         <li
                             aria-hidden='true'
                             className='h-3 w-px bg-amber-200/30'
                         />
-                        <li>Hablamos Español</li>
+                        <li>Hablamos español</li>
                     </ul>
                 </div>
             </ContentWrapper>

@@ -5,10 +5,19 @@
  * Organized by categories to address common concerns at the top of funnel:
  * - Consultation: What to expect from the free consultation
  * - Safety: Addressing safety concerns
- * - Financing: Payment and affordability questions
+ * - Financing: Payment and financing questions
  * - Recovery: What to expect during recovery
  */
+import {
+    FINANCING_SENTENCE_LONG,
+    FINANCING_SENTENCE_SHORT,
+} from '@workspace/shared/claims/financing'
+
 import { siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
 /**
@@ -28,69 +37,61 @@ export const landingFaqData: Record<string, FaqItem[]> = {
     consultation: [
         {
             question: 'Is the consultation really free?',
-            answer: `Yes, your initial consultation is completely complimentary with no obligation. You will meet with a board-certified surgeon who will assess your goals, explain your options, and provide a personalized quote—all at no cost to you.`,
+            answer: `Yes, your initial consultation is completely complimentary with no obligation. You will meet ${KARLINSKY_NAME}, who will assess your goals, explain your options, and provide a personalized quote—all at no cost to you.`,
         },
         {
             question: 'What happens during the consultation?',
-            answer: `During your consultation, you will discuss your aesthetic goals with a board-certified surgeon. They will evaluate your anatomy, explain suitable procedures, show you before/after photos of similar cases, and provide a detailed, all-inclusive quote. There's no pressure to make any decisions.`,
+            answer: `During your consultation, you will discuss your aesthetic goals with ${KARLINSKY_NAME}. She will evaluate your anatomy, explain suitable procedures, show you before/after photos of similar cases, and confirm your price. There's no pressure to make any decisions.`,
         },
         {
             question: 'Can I do a virtual consultation first?',
-            answer: `Absolutely! We offer virtual consultations for patients who prefer to start from home or are traveling from out of state. You can discuss your goals, see preliminary recommendations, and get a quote estimate before visiting in person.`,
+            answer: `Yes. We offer virtual consultations for patients who prefer to start from home or are traveling from out of state. You can discuss your goals, see preliminary recommendations, and get a quote estimate before visiting in person.`,
         },
         {
             question: 'How soon can I schedule my consultation?',
-            answer: `We typically have consultation appointments available within 1-2 weeks. Call us at ${siteConfig.contact.phoneDisplay} or fill out the form above, and our patient concierge will work with your schedule to find a convenient time.`,
+            answer: `Call us at ${siteConfig.contact.phoneDisplay} or fill out the form above, and a patient coordinator will find a time that works for you.`,
         },
     ],
     safety: [
         {
-            question: 'Are your surgeons board-certified?',
-            answer: `Yes, all of our surgeons are double board-certified by the American Board of Plastic Surgery and have extensive experience in cosmetic procedures. They maintain the highest standards of patient care and safety.`,
+            question: "What are your surgeon's credentials?",
+            answer: `${KARLINSKY_NAME} performs every surgery at Alluring. ${KARLINSKY_CREDENTIALS}`,
         },
         {
             question: 'Is plastic surgery safe?',
-            answer: `When performed by board-certified surgeons in an accredited facility, plastic surgery is very safe. We use hospital-grade protocols, advanced monitoring equipment, and follow strict safety standards. Our surgeons have performed over 5,000 procedures with an exceptional safety record.`,
-        },
-        {
-            question: 'What accreditations does your facility have?',
-            answer: `Our surgical facility is fully accredited and meets the highest standards for patient safety. We use state-of-the-art equipment, maintain rigorous sterilization protocols, and have a dedicated anesthesiology team for every procedure.`,
+            answer: `Every surgery carries risk. Your surgeon, ${KARLINSKY_NAME}, is board certified in general surgery by the American Board of Surgery, every patient has pre-op lab work before being cleared, and an anesthesia provider monitors you throughout surgery. She goes through the risks that apply to you at consultation.`,
         },
         {
             question: 'How do you ensure natural-looking results?',
-            answer: `Our surgeons specialize in creating subtle, natural-looking enhancements. During your consultation, you will review before/after photos and discuss your goals in detail. The objective is always "you, enhanced"—never overdone or artificial.`,
+            answer: `Dr. Karlinsky plans for subtle, natural-looking enhancements. During your consultation, you will review before/after photos and discuss your goals in detail. The objective is always "you, enhanced"—never overdone or artificial.`,
         },
     ],
     financing: [
         {
             question: 'What financing options do you offer?',
-            answer: `We partner with Cherry, CareCredit, and United Credit to offer flexible financing options. Many patients qualify for 0% APR for 12-24 months, with monthly payments as low as $27/week depending on the procedure.`,
+            answer: FINANCING_SENTENCE_LONG,
         },
         {
-            question: 'Can I get pre-approved before my consultation?',
-            answer: `Yes! You can apply for financing pre-approval through our website. This gives you a clear picture of your budget before your consultation, helping you make informed decisions about your treatment plan.`,
-        },
-        {
-            question: 'Are there any hidden fees?',
-            answer: `No hidden fees, ever. Your quote includes surgeon fees, anesthesia, facility costs, and standard follow-up care. We believe in complete transparency—what we quote is what you pay.`,
+            question: 'How is my price set?',
+            answer: `Your price is set for you after an exam, estimates may change, and Dr. Karlinsky confirms your price at consultation.`,
         },
         {
             question: 'Do you offer payment plans?',
-            answer: `Yes, we offer various payment plans through our financing partners. You can spread your investment over 12, 24, 36, or even 60 months depending on your preference and approval. Our team will help you find the option that best fits your budget.`,
+            answer: `Yes. ${FINANCING_SENTENCE_SHORT} Approval and terms are set by the lender.`,
         },
     ],
     recovery: [
         {
             question: 'How long is the typical recovery?',
-            answer: `Recovery varies by procedure. Most patients return to desk work within 1-2 weeks and resume full activities in 4-6 weeks. During your consultation, your surgeon will provide a detailed recovery timeline specific to your procedure.`,
+            answer: `Recovery varies by procedure. Most people are back at desk work in about 1 to 3 weeks; exercise waits about 4 to 6 weeks after liposuction, 4 to 8 weeks after a tummy tuck and 8 weeks after a BBL, once your surgeon clears you. Your surgeon gives you a timeline for your procedure at consultation.`,
         },
         {
             question: 'Will I have support during recovery?',
-            answer: `Absolutely. We provide detailed post-operative instructions, schedule your follow-up appointments, and give you a direct number to call if something does not look right during your recovery.`,
+            answer: `Yes. We provide detailed post-operative instructions, schedule your follow-up appointments, and give you a direct number to call if something does not look right during your recovery.`,
         },
         {
             question: 'What if I am traveling from out of state?',
-            answer: `We welcome patients travelling in from out of state. You start with a virtual consultation, then come to Miami for your pre-op appointment and surgery. Plan on staying 7-14 days depending on the procedure so you can be seen for follow-up before flying home. You arrange your own flights and lodging — we're not affiliated with any recovery house.`,
+            answer: `We welcome patients travelling in from out of state. You start with a virtual consultation, then come to Miami for your pre-op appointment and surgery. After a BBL, plan on 7 to 10 days in Miami; for other procedures, your surgeon tells you how many nights to stay so you can be seen for follow-up and cleared to fly home. You arrange your own flights and lodging — we're not affiliated with any recovery house.`,
         },
         {
             question: 'When will I see my final results?',

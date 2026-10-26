@@ -4,13 +4,12 @@
  * A section highlighting the benefits of choosing a local Miami surgeon
  * over traveling for surgery. Addresses common concerns about:
  * - Convenience and accessibility
- * - Community trust and references
  * - Follow-up care proximity
- * - Emergency access
+ * - Who to call during recovery
  *
  * Server component for SEO optimization.
  */
-import { MapPin, Users, Heart, Shield } from 'lucide-react'
+import { MapPin, Heart, Shield } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
@@ -20,15 +19,8 @@ const LOCAL_BENEFITS = [
         icon: MapPin,
         title: 'Minutes, Not Miles Away',
         description:
-            "No flights, no hotels, no time away from family. Your surgeon's office is right here in Coral Gables—convenient for consultations, surgery, and follow-ups.",
+            "Your surgeon's office is right here in Miami, close to home for your consultation, surgery and follow-ups.",
         highlight: 'Local Convenience',
-    },
-    {
-        icon: Users,
-        title: 'Ask Your Neighbors',
-        description:
-            "We've served Miami families for 15+ years. Ask around—chances are someone you know has trusted us. Real results you can see in your own community.",
-        highlight: 'Community Trust',
     },
     {
         icon: Heart,
@@ -41,8 +33,8 @@ const LOCAL_BENEFITS = [
         icon: Shield,
         title: 'Always Here for You',
         description:
-            "If you ever have a concern during recovery, we're nearby. No waiting for emergency appointments across the country—your surgical team is right here in Miami.",
-        highlight: '24/7 Support',
+            'If you have a concern during recovery, call the practice. Your surgeon is here in Miami, not across the country.',
+        highlight: 'Close to Home',
     },
 ] as const
 
@@ -80,13 +72,13 @@ export function WhyLocal({ id = 'why-local' }: WhyLocalProps) {
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
                         When it comes to plastic surgery, there&apos;s no place
-                        like home. Here&apos;s why your neighbors trust their
-                        local Miami surgeons.
+                        like home. Here&apos;s why staying close to home makes
+                        sense.
                     </p>
                 </div>
 
                 {/* Benefits Grid */}
-                <div className='grid gap-8 md:grid-cols-2'>
+                <div className='grid gap-8 md:grid-cols-3'>
                     {LOCAL_BENEFITS.map((benefit) => (
                         <article
                             key={benefit.title}
@@ -121,8 +113,8 @@ export function WhyLocal({ id = 'why-local' }: WhyLocalProps) {
                         <span className='font-semibold text-stone-900'>
                             Ready to meet your local surgeon?
                         </span>{' '}
-                        Schedule your free consultation at our Coral Gables
-                        office today.
+                        Schedule your free consultation at our Miami office
+                        today.
                     </p>
                     <a
                         href='#hero-form'

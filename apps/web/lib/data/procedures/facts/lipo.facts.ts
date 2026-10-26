@@ -22,6 +22,9 @@
 import {
     createFactLookups,
     formatProcedureFigure,
+    formatSheetUsd,
+    sheetUsd,
+    sheetUsdRange,
     type ProcedureFact,
     type ProcedureSource,
 } from './procedure-facts'
@@ -157,6 +160,15 @@ export const lipoSources: readonly LipoSource[] = [
 ]
 
 export type LipoFact = ProcedureFact<LipoSourceId>
+
+/** Lipo 360's list price on the 2026-09-15 sheet (`lipo:lipo360`). */
+const LIPO_360_USD = sheetUsd('lipo', 'lipo360')
+
+/** The single-area add-ons, chin to abdomen and flanks (J-Plasma aside). */
+const LIPO_AREA_USD = sheetUsdRange(
+    'lipo',
+    (key) => key !== 'lipo360' && !key.startsWith('j-plasma')
+)
 
 export const lipoFacts = [
     // ── Recovery ─────────────────────────────────────────────────────────
@@ -390,18 +402,19 @@ export const lipoFacts = [
         id: 'price-starting-at',
         topic: 'price',
         concepts: ['start', 'price', 'lipo 360'],
-        figures: [{ value: 4000, unit: 'usd' }],
-        statement: 'Lipo 360 at Alluring starts at $4,000.',
+        figures: [{ value: LIPO_360_USD, unit: 'usd' }],
+        statement: `Lipo 360 at Alluring starts at ${formatSheetUsd(LIPO_360_USD)}.`,
         sourceIds: ['alluring-practice'],
-        caveat: 'From the 2026-09-15 price sheet. Never $4,500 (the old figure) or a weekly figure. Mirrors `pricing.startingAt`. Whether the sheet is before or after its handwritten "20% off" is still open with the owner.',
+        caveat: 'Never $4,500 (the old figure) or a weekly figure. Read from the price sheet line `lipo:lipo360`; pages print the live price through the pricing resolver.',
     },
     {
         id: 'price-added-area',
         topic: 'price',
         concepts: ['add', 'area'],
-        figures: [{ min: 500, max: 1500, unit: 'usd' }],
-        statement:
-            'Liposuction of one area added to another procedure is $500 to $1,500, depending on the area.',
+        figures: [
+            { min: LIPO_AREA_USD.min, max: LIPO_AREA_USD.max, unit: 'usd' },
+        ],
+        statement: `Liposuction of one area added to another procedure is ${formatSheetUsd(LIPO_AREA_USD.min)} to ${formatSheetUsd(LIPO_AREA_USD.max)}, depending on the area.`,
         sourceIds: ['alluring-practice'],
         caveat: 'Add-on prices from the price sheet: chin $500 up to abdomen and flanks or back and flanks $1,500. Not a standalone surgery price.',
     },

@@ -389,7 +389,7 @@ export function ConsultationForm({
                         {/* Privacy Note */}
                         <p className='text-center text-xs text-stone-500'>
                             {footerNote ??
-                                'Your information is private and secure. We respond within 24 hours.'}
+                                'Your information is private and secure.'}
                         </p>
                     </form>
                 </Form>

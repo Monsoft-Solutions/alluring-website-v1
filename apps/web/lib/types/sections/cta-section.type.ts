@@ -22,33 +22,15 @@ export interface CTATrustBadge {
 }
 
 /**
- * Trust statistics for Premium Stats Card in luxury CTA variant
+ * Trust statistics for the stats card in the luxury CTA variant: the Google
+ * rating only. Patient counts, years and certification percentages are
+ * retired (claims canon §4, #354).
  */
 export interface CTAStats {
     /**
-     * Number of patients (e.g., "5,000+")
-     */
-    readonly patients: string
-
-    /**
-     * Years of experience (e.g., "15+")
-     */
-    readonly years: string
-
-    /**
-     * Certification percentage (e.g., "100%")
-     */
-    readonly certified: string
-
-    /**
-     * Star rating (e.g., "4.9" or "5.0")
+     * Star rating, kept in step with the synced Google figure (e.g. "4.7")
      */
     readonly rating: string
-
-    /**
-     * Accreditation/certification (e.g., "Double Board-Certified")
-     */
-    readonly accreditation?: string
 }
 
 /**
@@ -164,7 +146,8 @@ export interface CTASectionProps {
 
     /**
      * Trust badges to display (only applicable to luxury variant)
-     * Shows credibility indicators like "Board-Certified", "15+ Years Experience"
+     * Verified facts only (claims canon §2/§4), e.g. "One surgeon" or the
+     * American Board of Surgery credential with the board named
      */
     readonly trustBadges?: readonly CTATrustBadge[]
 

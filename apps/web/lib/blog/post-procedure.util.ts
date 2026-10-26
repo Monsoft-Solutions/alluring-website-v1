@@ -12,8 +12,17 @@
  *
  * @module lib/blog/post-procedure
  */
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
-import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import {
+    formatLineName,
+    getDiscountStatement,
+    getPriceDisplay,
+    getTypicalRange,
+    type PriceDisplay,
+    type PricingSnapshot,
+    type TypicalRange,
+} from '@workspace/shared/claims/pricing'
+import { FALLBACK_PRICING } from '@workspace/shared/claims/prices'
+
 import { blepharoplastyMiami } from '@/lib/data/procedures/blepharoplasty-miami.data'
 import { brazilianButtLiftBblMiami } from '@/lib/data/procedures/brazilian-butt-lift-bbl-miami.data'
 import { breastAugmentationMiami } from '@/lib/data/procedures/breast-augmentation-miami.data'
@@ -36,16 +45,21 @@ export type PostProcedure = {
     /** `quickStats.recovery` in sentence case: '10-14 days off work'. */
     recovery: string
     /**
-     * The settled starting price, from the facts files only. `priceFrom` in
-     * the procedure data disagrees with the practice's price sheet, so the
-     * seven procedures without a facts file get no price.
+     * The starting price from the pricing resolver (#354), for BBL and Lipo
+     * 360 only: the two procedures whose page publishes a price the strip
+     * and the rail can point at.
      */
     price: {
         /** The name the price is quoted for: 'BBL', 'Lipo 360'. */
         label: string
-        startingAt: string
-        /** The line under the price, as the procedure page prints it. */
+        /** The resolved price; struck through while a discount is on. */
+        display: PriceDisplay
+        /** BBL's "most patients pay" range, or null. */
+        range: TypicalRange | null
+        /** The line under the price when there is no range. */
         note: string
+        /** The 456.062 statement while this price is discounted, else null. */
+        statement: string | null
     } | null
 }
 
@@ -53,7 +67,14 @@ type ProcedureRule = {
     procedure: Procedure
     pattern: RegExp
     shortName: string
-    price?: PostProcedure['price']
+    /**
+     * Which price the post shows: a claim procedure's starting price, or one
+     * named line (`line`), whose own label then names it, so the name always
+     * matches the figure. `label` and `note` are for the starting price.
+     */
+    price?:
+        | { claim: string; label: string; note: string; line?: undefined }
+        | { claim: string; line: string }
 }
 
 /**
@@ -70,11 +91,7 @@ const RULES: readonly ProcedureRule[] = [
         procedure: brazilianButtLiftBblMiami,
         pattern: /\bbbls?\b|brazilian butt/,
         shortName: 'BBL',
-        price: {
-            label: 'BBL',
-            startingAt: bblFigure('price-starting-at'),
-            note: `Most patients ${bblFigure('price-most-patients')}, set for each patient`,
-        },
+        price: { claim: 'bbl', label: 'BBL', note: 'Set for each patient' },
     },
     {
         procedure: tummyTuckMiami,
@@ -104,11 +121,8 @@ const RULES: readonly ProcedureRule[] = [
         procedure: liposuctionMiami,
         pattern: /\blipo\b|lipo ?360|liposuction|lipo foam/,
         shortName: 'lipo',
-        price: {
-            label: 'Lipo 360',
-            startingAt: lipoFigure('price-starting-at'),
-            note: 'Lipo 360, set for each patient after an exam',
-        },
+        // The Lipo 360 line by name, whatever liposuction's starting line is.
+        price: { claim: 'lipo', line: 'lipo360' },
     },
     {
         procedure: faceliftMiami,
@@ -127,16 +141,53 @@ function toSentenceCase(text: string): string {
     return text.charAt(0) + text.slice(1).toLowerCase()
 }
 
+/** A rule's price, resolved against the pricing snapshot. */
+function resolvePrice(
+    price: ProcedureRule['price'],
+    pricing: PricingSnapshot
+): PostProcedure['price'] {
+    if (!price) return null
+    const display = getPriceDisplay(pricing, price.claim, price.line)
+    if (!display) return null
+    const name = formatLineName(display.label, {
+        short: true,
+        capitalized: true,
+    })
+    const statement = display.discounted ? getDiscountStatement(pricing) : null
+    if (price.line === undefined) {
+        return {
+            label: price.label,
+            display,
+            range: getTypicalRange(pricing, price.claim),
+            note: price.note,
+            statement,
+        }
+    }
+    // A named line has no range; the range belongs to the starting price.
+    return {
+        label: name,
+        display,
+        range: null,
+        note: `${name}, set for each patient after an exam`,
+        statement,
+    }
+}
+
 /**
  * The procedure a post is about: the rule whose match starts earliest in the
  * title, so a comparison ("What Is More Painful BBL or Tummy Tuck?") maps to
  * the procedure it names first.
  *
  * @param title - The post's title
+ * @param pricing - The live pricing snapshot (`getPricing()`); the
+ *   2026-09-15 sheet when omitted
  * @returns The procedure, or null for the general posts (choosing a surgeon,
  * costs and financing), which get the template's general variant
  */
-export function getPostProcedure(title: string): PostProcedure | null {
+export function getPostProcedure(
+    title: string,
+    pricing: PricingSnapshot = FALLBACK_PRICING
+): PostProcedure | null {
     const lowered = title.toLowerCase()
     let best: { rule: ProcedureRule; index: number } | null = null
 
@@ -154,6 +205,6 @@ export function getPostProcedure(title: string): PostProcedure | null {
         chatValue: getProcedureFormValue(procedure.slug),
         shortName,
         recovery: toSentenceCase(procedure.quickStats?.recovery ?? ''),
-        price: price ?? null,
+        price: resolvePrice(price, pricing),
     }
 }

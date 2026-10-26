@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Calendar, Clock, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Calendar, Sparkles } from 'lucide-react'
 
 import { Button } from '@workspace/ui/components/button'
 import { OfferSchema } from '@workspace/seo/react'
@@ -11,16 +11,14 @@ import {
     formatDiscount,
     getPromotionBySlug,
     getPromotionLink,
-    getRemainingDays,
-    isExpiringSoon,
 } from '@/lib/queries/promotion.query'
 import { PromotionViewTracker } from '@/components/promotions/promotion-view-tracker.component'
 import { PromotionMarkdown } from '@/components/promotions/promotion-markdown.component'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import { seoConfig } from '@/lib/seo-config'
 
-// 10 minutes, not the day the content routes use: the page renders a
-// getRemainingDays countdown, which changes without any write. A promotion
+// 10 minutes, not the day the content routes use. A promotion
 // starting or ending is handled by the admin's hourly promotion-boundaries
 // cron, which clears the promotion tags (#337).
 export const revalidate = 600
@@ -78,13 +76,11 @@ export default async function PromotionDetailPage({
     }
 
     const link = getPromotionLink(promotion)
-    const daysRemaining = getRemainingDays(promotion)
-    const expiringSoon = isExpiringSoon(promotion)
 
     const typeLabels = {
-        discount: 'Limited Time Discount',
+        discount: 'Discount',
         seasonal: 'Seasonal Special',
-        bundle: 'Package Deal',
+        bundle: 'Combination Special',
         financing: 'Financing Offer',
     }
 
@@ -231,18 +227,8 @@ export default async function PromotionDetailPage({
                                                     {typeLabels[promotion.type]}
                                                 </span>
 
-                                                {expiringSoon &&
-                                                    daysRemaining !== null && (
-                                                        <span className='flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 py-1.5 text-sm font-medium text-red-700'>
-                                                            <Clock className='h-4 w-4' />
-                                                            {daysRemaining === 0
-                                                                ? 'Ends Today!'
-                                                                : daysRemaining ===
-                                                                    1
-                                                                  ? '1 Day Left'
-                                                                  : `${daysRemaining} Days Left`}
-                                                        </span>
-                                                    )}
+                                                {/* No days-left countdown (claims canon §1,
+                                                    §10: no countdowns or urgency). */}
                                             </div>
 
                                             <h1 className='mb-4 font-serif text-3xl text-stone-900 md:text-4xl lg:text-5xl'>
@@ -361,33 +347,30 @@ export default async function PromotionDetailPage({
                                                 <h4 className='mb-4 text-sm font-medium tracking-wide text-stone-500 uppercase'>
                                                     Why Choose Us
                                                 </h4>
+                                                {/* Verified facts only (claims canon §2, §4, §6;
+                                                    #354): no board count, no
+                                                    typed rating. */}
                                                 <ul className='space-y-3 text-sm text-stone-700'>
-                                                    <li className='flex items-start gap-2'>
-                                                        <span className='text-gold-500'>
-                                                            ✓
-                                                        </span>
-                                                        Board-Certified Surgeons
-                                                    </li>
-                                                    <li className='flex items-start gap-2'>
-                                                        <span className='text-gold-500'>
-                                                            ✓
-                                                        </span>
-                                                        Double Board-Certified
-                                                        Surgeons
-                                                    </li>
-                                                    <li className='flex items-start gap-2'>
-                                                        <span className='text-gold-500'>
-                                                            ✓
-                                                        </span>
-                                                        Flexible Financing
-                                                        Options
-                                                    </li>
-                                                    <li className='flex items-start gap-2'>
-                                                        <span className='text-gold-500'>
-                                                            ✓
-                                                        </span>
-                                                        5-Star Patient Reviews
-                                                    </li>
+                                                    {[
+                                                        TRUST_BADGES.surgeon,
+                                                        TRUST_BADGES.board,
+                                                        'Financing available',
+                                                        formatRatingBadge(
+                                                            siteConfig
+                                                                .trustStats
+                                                                ?.rating
+                                                        ),
+                                                    ].map((item) => (
+                                                        <li
+                                                            key={item}
+                                                            className='flex items-start gap-2'
+                                                        >
+                                                            <span className='text-gold-500'>
+                                                                ✓
+                                                            </span>
+                                                            {item}
+                                                        </li>
+                                                    ))}
                                                 </ul>
                                             </div>
 

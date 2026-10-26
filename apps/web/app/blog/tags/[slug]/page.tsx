@@ -58,7 +58,7 @@ export async function generateMetadata({
     return {
         ...toNextMetadata(seoConfig, {
             title: `${tag.name} Articles`,
-            description: `Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`,
+            description: `Explore articles tagged with ${tag.name}. Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami.`,
             canonical: `/blog/tags/${tag.slug}`,
         }),
         robots: { index: false, follow: true },
@@ -132,7 +132,7 @@ export default async function TagDetailPage({ params }: PageProps) {
             <WebPageSchema
                 name={`${tag.name} Articles`}
                 url={`${seoConfig.siteUrl}/blog/tags/${tag.slug}`}
-                description={`Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`}
+                description={`Explore articles tagged with ${tag.name}. Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami.`}
             />
 
             {/* Breadcrumb Schema for navigation signals */}
@@ -142,7 +142,7 @@ export default async function TagDetailPage({ params }: PageProps) {
             <CollectionPageSchema
                 url={`${seoConfig.siteUrl}/blog/tags/${tag.slug}`}
                 name={`${tag.name} Articles`}
-                description={`Explore articles tagged with ${tag.name}. Expert insights and guides from our board-certified surgeons.`}
+                description={`Explore articles tagged with ${tag.name}. Guides from Alluring Plastic Surgery, a cosmetic surgery practice in Miami.`}
                 about={{
                     '@type': 'Thing',
                     name: tag.name,

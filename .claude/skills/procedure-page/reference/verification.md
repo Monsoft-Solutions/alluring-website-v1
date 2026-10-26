@@ -45,12 +45,20 @@ port is in `.worktree-meta`), in the background.
 - `/landing/procedure/<slug>`: 200; FAQ count = page FAQs minus the ones the
   sweep says it drops; hero image and stats read the new data.
 - `/llms.txt`, `/llms-full.txt`: the new summary, benefits, stats and FAQs;
-  no retired copy; no credential wording the page wouldn't use.
+  no retired copy; no credential wording the page wouldn't use; every
+  claim token resolved (no `[[` in the output, no price missing from a
+  sentence that names one).
 - JSON-LD: exactly one `<script type="application/ld+json">` with the
   page's `@graph` (count tags, not strings: the RSC payload repeats them).
   Check the `Person` node, `bodyLocation`, `howPerformed` (no `..`), the
-  `Service` name (no "Miami in Miami"), the `Offer` range, and a real
-  `dateModified`.
+  `Service` name (no "Miami in Miami"), the `Offer` (the resolved starting
+  price, no `maxPrice`), and a real `dateModified`.
+- **Prices follow the admin.** On the worktree database, change the
+  procedure's price or discount on the admin Pricing page (or in
+  `procedure_pricing`), revalidate the `pricing` tag, and check that the
+  page, its meta description, JSON-LD and `llms*.txt` all show the new
+  figure (struck through with the 456.062 statement while discounted).
+  Restore it after. A figure that didn't move was typed.
 - Served HTML **including the RSC payload**: grep for other procedures'
   prices and figures; none may appear.
 - One template page (for example `/procedures/facelift-miami`) still renders

@@ -22,10 +22,13 @@ import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.componen
 import { FearBusters } from '@/components/shared/fear-busters.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { Journey } from '@/components/home/journey.component'
 import { WhyUs } from '@/components/home/why-us.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
+import { FINANCING_SENTENCE_SHORT } from '@workspace/shared/claims/financing'
 import { CTASection } from '@/components/shared/cta-section.component'
 import {
     landingFaqCategories,
@@ -47,12 +50,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/free-consultation',
     title: 'Free Consultation Miami | Alluring Plastic Surgery',
     description:
-        'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Financing from $27/week.',
+        'Claim your free, no-obligation consultation with one Miami surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, mommy makeover & more. Financing available.',
 
     openGraph: {
         title: 'Free Consultation Miami | Alluring Plastic Surgery',
         description:
-            'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Financing from $27/week.',
+            'Claim your free, no-obligation consultation with one Miami surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, mommy makeover & more. Financing available.',
         url: `${seoConfig.siteUrl}/free-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -70,7 +73,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: 'Free Consultation Miami | Alluring Plastic Surgery',
         description:
-            'Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. Financing from $27/week.',
+            'Claim your free, no-obligation consultation with one Miami surgeon, Victoria Karlinsky, MD, FACS. Financing available.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 
@@ -88,8 +91,16 @@ export default async function FreeConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        landingFaqData,
+        'text',
+        'faq /free-consultation'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(landingFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -101,7 +112,7 @@ export default async function FreeConsultationPage() {
             <WebPageSchema
                 name={`Free Consultation - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/free-consultation`}
-                description='Claim your free, no-obligation consultation with board-certified Miami plastic surgeons. BBL, breast augmentation, mommy makeover & more. Flexible financing available.'
+                description='Claim your free, no-obligation consultation with one Miami surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, mommy makeover & more. Financing available.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -109,7 +120,7 @@ export default async function FreeConsultationPage() {
             {/* Structured Data - Service Schema for consultation offering */}
             <ServiceSchema
                 name='Free Plastic Surgery Consultation'
-                description='Complimentary, no-obligation consultation with board-certified plastic surgeons. Discuss your aesthetic goals, explore surgical and non-surgical options, and receive personalized recommendations.'
+                description='Complimentary, no-obligation consultation with Victoria Karlinsky, MD, FACS. Discuss your aesthetic goals, explore surgical and non-surgical options, and receive personalized recommendations.'
                 url={`${seoConfig.siteUrl}/free-consultation`}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
@@ -119,7 +130,8 @@ export default async function FreeConsultationPage() {
                     type: 'MedicalBusiness',
                     logo: seoConfig.organization?.logo,
                 }}
-                areaServed={['Miami', 'Florida', 'United States']}
+                // US only (claims canon §1, §8): the shared list every page uses.
+                areaServed={[...AREA_SERVED]}
                 availableLanguage={['English', 'Spanish']}
                 offers={{
                     price: 0,
@@ -141,8 +153,8 @@ export default async function FreeConsultationPage() {
                 {/* Section 3: Fear Busters - Address objections */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 4: Weekly Payments - Smart investment positioning */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 4: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 5: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
@@ -150,7 +162,7 @@ export default async function FreeConsultationPage() {
                 {/* Section 6: Google Reviews - Real Google reviews for trust */}
                 <GoogleReviews
                     title='What Patients Say on Google'
-                    subtitle='Verified reviews from real patients'
+                    subtitle='Real reviews from our patients on Google'
                     limit={3}
                     includeSchema={false}
                 />
@@ -165,7 +177,7 @@ export default async function FreeConsultationPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={landingFaqCategories}
-                    faqData={landingFaqData}
+                    faqData={faqData}
                     badge={landingFaqConfig.badge}
                     title={landingFaqConfig.title}
                     subtitle={landingFaqConfig.subtitle}
@@ -176,7 +188,7 @@ export default async function FreeConsultationPage() {
                     ctaConfig={{
                         title: 'Still have questions?',
                         description:
-                            'Our patient concierge is ready to help — no pressure, just honest answers.',
+                            'Our patient coordinators are ready to help — no pressure, just honest answers.',
                         buttonText: 'Call Now',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,
@@ -193,7 +205,7 @@ export default async function FreeConsultationPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Your Transformation Starts Today'
-                    description="You've dreamed about it. You've researched it. Now it's time to take the first step. Board-certified surgeons, luxury care, and flexible financing are waiting for you."
+                    description={`You've dreamed about it. You've researched it. Now it's time to take the first step. One surgeon, Victoria Karlinsky, MD, FACS, performs every procedure. ${FINANCING_SENTENCE_SHORT}`}
                     primaryButton={{
                         text: 'Yes, I Want My Free Consultation',
                         href: '#hero-form',

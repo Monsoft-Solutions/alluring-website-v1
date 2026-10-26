@@ -29,10 +29,19 @@ import { ModuleStarSprite } from '@/components/procedures/module-kit/module-star
 import { ConsultStickyBar } from '@/components/shared/consult-chat/consult-sticky-bar.component'
 import { env } from '@/env'
 import { homePageFaqs } from '@/lib/data/faq/home-page-faqs.data'
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
-import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
+import {
+    getLinePriceText,
+    getStartingPriceText,
+} from '@/lib/claims/price-text.server'
+import {
+    getDiscountStatementText,
+    getLinePrice,
+    getStartingPrice,
+} from '@/lib/queries/pricing.query'
 import { getSmsLink, siteConfig } from '@/lib/data/site-config'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 import {
     formatDiscount,
@@ -56,46 +65,64 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
  * staffing change would break it); the description names her, as an MD.
  */
 const title = 'Alluring Plastic Surgery Miami | Real Prices, Reviews & Results'
-const description = `Lipo 360 from ${lipoFigure('price-starting-at')} and BBL from ${bblFigure('price-starting-at')}, by ${KARLINSKY_NAME}. Financing, Google reviews and a free consult in Miami or by video.`
+/**
+ * The two prices come from the pricing resolver (#354), in plain text:
+ * "$4,400 (20% off $5,500)" while a discount is on. The copy says "Lipo
+ * 360", so it reads the `lipo360` line by name rather than liposuction's
+ * starting line, which the admin may point elsewhere.
+ */
+async function getHomeDescription(): Promise<string> {
+    const [lipo, bbl] = await Promise.all([
+        getLinePriceText('lipo', 'lipo360'),
+        getStartingPriceText('bbl'),
+    ])
+    const prices = [lipo && `Lipo 360 from ${lipo}`, bbl && `BBL from ${bbl}`]
+        .filter(Boolean)
+        .join(' and ')
+    return `${prices ? `${prices}, by` : 'Cosmetic surgery by'} ${KARLINSKY_NAME}. Financing, Google reviews and a free consult in Miami or by video.`
+}
 
-export const metadata: Metadata = toNextMetadata(seoConfig, {
-    canonical: '/',
-    title,
-    description,
-    openGraph: {
-        type: 'website',
-        url: siteUrl,
+export async function generateMetadata(): Promise<Metadata> {
+    const description = await getHomeDescription()
+    return toNextMetadata(seoConfig, {
+        canonical: '/',
         title,
         description,
-        siteName: siteConfig.business.name,
-        locale: 'en_US',
-        images: [
-            {
-                url: `${siteUrl}/og-image.jpg`,
-                width: 1200,
-                height: 630,
-                alt: `${siteConfig.business.name}, Miami`,
-            },
-        ],
-    },
-    twitter: {
-        card: 'summary_large_image',
-        title,
-        description,
-        images: [`${siteUrl}/og-image.jpg`],
-    },
-    robots: {
-        index: true,
-        follow: true,
-        googleBot: {
+        openGraph: {
+            type: 'website',
+            url: siteUrl,
+            title,
+            description,
+            siteName: siteConfig.business.name,
+            locale: 'en_US',
+            images: [
+                {
+                    url: `${siteUrl}/og-image.jpg`,
+                    width: 1200,
+                    height: 630,
+                    alt: `${siteConfig.business.name}, Miami`,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [`${siteUrl}/og-image.jpg`],
+        },
+        robots: {
             index: true,
             follow: true,
-            'max-video-preview': -1,
-            'max-image-preview': 'large',
-            'max-snippet': -1,
+            googleBot: {
+                index: true,
+                follow: true,
+                'max-video-preview': -1,
+                'max-image-preview': 'large',
+                'max-snippet': -1,
+            },
         },
-    },
-})
+    })
+}
 
 /**
  * Home page, rebuilt around the visitor it actually gets: someone who has
@@ -111,13 +138,26 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
  * consultation thread, and every CTA jumps to it.
  */
 export default async function Page() {
-    const [featuredPromotion, reviewsResult, galleryImages] = await Promise.all(
-        [
-            getFeaturedPromotion(),
-            getPublishedGoogleReviews(14),
-            getSpecialsFeaturedGalleryImages(),
-        ]
-    )
+    const [
+        featuredPromotion,
+        reviewsResult,
+        galleryImages,
+        description,
+        heroPrices,
+    ] = await Promise.all([
+        getFeaturedPromotion(),
+        getPublishedGoogleReviews(14),
+        getSpecialsFeaturedGalleryImages(),
+        getHomeDescription(),
+        // The hero says "Lipo 360 from", so it names that line (#354).
+        Promise.all([getLinePrice('lipo', 'lipo360'), getStartingPrice('bbl')]),
+    ])
+    const heroStatement = heroPrices.some((price) => price?.discounted)
+        ? await getDiscountStatementText()
+        : null
+    // The FAQ's prices are claim tokens (#354), resolved once for the list
+    // and its FAQPage schema.
+    const faqs = await resolveClaimsIn(homePageFaqs, 'text', 'faq /')
     const { reviews, averageRating, totalCount } = reviewsResult
 
     return (
@@ -165,7 +205,8 @@ export default async function Page() {
                 }}
                 openingHoursSpecification={openingHoursSpecification()}
                 image={`${siteUrl}/og-image.jpg`}
-                medicalSpecialty={['PlasticSurgery']}
+                // No medicalSpecialty: "PlasticSurgery" is a specialty the
+                // surgeon is not certified in (claims canon §1, §2; #354).
                 isAcceptingNewPatients={true}
                 priceRange='$$$'
                 availableLanguage={['English', 'Spanish']}
@@ -184,7 +225,8 @@ export default async function Page() {
                         : []),
                 ]}
                 hasMap={siteConfig.business.googleMapsUrl}
-                areaServed={['Miami, FL', 'South Florida', 'United States']}
+                // US only (claims canon §1, §8): the shared list every page uses.
+                areaServed={[...AREA_SERVED]}
                 hasOfferCatalog={{
                     name: 'Cosmetic Surgery Procedures',
                     itemListElement: [
@@ -195,16 +237,8 @@ export default async function Page() {
                         'Breast Augmentation',
                     ],
                 }}
-                {...(averageRating && totalCount > 0
-                    ? {
-                          aggregateRating: {
-                              ratingValue: averageRating,
-                              reviewCount: totalCount,
-                              bestRating: 5,
-                              worstRating: 1,
-                          },
-                      }
-                    : {})}
+                // No aggregateRating here (claims canon D12): it lives on
+                // /reviews only, built from the synced Google figures.
             />
 
             {/* The surgeon, from the verified-credentials constant: the node
@@ -213,7 +247,7 @@ export default async function Page() {
             <JsonLdGraph nodes={[karlinskyPersonNode(siteUrl)]} />
 
             <FAQSchema
-                items={homePageFaqs.map((faq) => ({
+                items={faqs.map((faq) => ({
                     question: faq.question,
                     answer: faq.answer,
                 }))}
@@ -257,7 +291,12 @@ export default async function Page() {
 
             <div className='hp-page'>
                 <ModuleStarSprite />
-                <HomeHero rating={averageRating} reviewCount={totalCount} />
+                <HomeHero
+                    rating={averageRating}
+                    reviewCount={totalCount}
+                    prices={{ lipo: heroPrices[0], bbl: heroPrices[1] }}
+                    discountStatement={heroStatement}
+                />
                 <HomeProofTicker
                     rating={averageRating}
                     reviewCount={totalCount}
@@ -283,7 +322,7 @@ export default async function Page() {
                     rating={averageRating}
                     reviewCount={totalCount}
                 />
-                <HomeFaq />
+                <HomeFaq faqs={faqs} />
                 <HomeClose />
             </div>
 

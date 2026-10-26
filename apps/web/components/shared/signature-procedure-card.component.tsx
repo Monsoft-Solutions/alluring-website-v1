@@ -1,4 +1,5 @@
 import { ImageObjectSchema, ServiceSchema } from '@workspace/seo/react'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
 import type { ProcedureSummary } from '@/lib/data/procedure-summary.util'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
@@ -87,7 +88,7 @@ export function SignatureProcedureCard({
                             name: siteConfig.business.name,
                             type: 'MedicalBusiness',
                         }}
-                        areaServed='Miami, FL'
+                        areaServed={[...AREA_SERVED]}
                         serviceType='Cosmetic Surgery'
                         category={categoryDisplay}
                     />

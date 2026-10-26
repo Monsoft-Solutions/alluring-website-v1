@@ -6,6 +6,8 @@
  *
  * @module @workspace/ai/functions/extract-metadata
  */
+import { CLAIM_TOKEN_RULE } from '../prompts/blog/claim-tokens.prompt'
+
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
@@ -79,7 +81,9 @@ export type ExtractMetadataOptions = {
 /**
  * System prompt for metadata extraction
  */
-const METADATA_EXTRACTOR_SYSTEM_PROMPT = `You are an SEO metadata expert for a luxury plastic surgery clinic in Miami.
+const METADATA_EXTRACTOR_SYSTEM_PROMPT = `You are an SEO metadata expert for a cosmetic surgery practice in Miami.
+
+${CLAIM_TOKEN_RULE}
 
 Extract optimized metadata from blog post content:
 
@@ -129,7 +133,7 @@ Extract optimized metadata from blog post content:
  * })
  *
  * console.log(metadata.metaDescription)
- * // "Learn what to expect during BBL recovery week by week. Our Miami surgeons share..."
+ * // "Learn what to expect during BBL recovery, week by week, with sourced timelines..."
  * ```
  */
 export async function extractMetadata(

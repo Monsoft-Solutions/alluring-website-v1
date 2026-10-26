@@ -3,6 +3,8 @@ import { Button } from '@workspace/ui/components/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
+
 import { getBeforeAfterPairsByProcedure } from '@/lib/queries/gallery/before-after.query'
 
 import { ContentWrapper } from './content-wrapper.component'
@@ -104,10 +106,9 @@ export async function ProcedureBeforeAfterSection({
 
                         {/* Description */}
                         <p className='text-lg leading-relaxed font-light text-stone-600'>
-                            Drag the slider to see the remarkable
-                            transformations achieved by our expert surgeons.
-                            These authentic results showcase the precision and
-                            artistry we bring to every procedure.
+                            Drag the slider to see real patient results by{' '}
+                            {KARLINSKY_NAME}. These authentic results show the
+                            precision and artistry behind every procedure.
                         </p>
                     </div>
                 </div>

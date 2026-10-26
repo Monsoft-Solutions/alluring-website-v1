@@ -58,7 +58,7 @@ const tailwindConfig = {
  *
  * Provides responsive container, consistent styling with Tailwind CSS, and proper HTML structure.
  * All email templates should use this as the root wrapper.
- * Uses Alluring Plastic Surgery brand palette for luxury aesthetic.
+ * Uses the Alluring Plastic Surgery brand palette.
  *
  * @example
  * ```tsx

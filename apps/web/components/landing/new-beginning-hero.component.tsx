@@ -13,15 +13,15 @@ import {
     ShieldCheck,
     Clock,
     CreditCard,
-    Quote,
     Sunrise,
     Heart,
     Sparkles,
 } from 'lucide-react'
 import Image from 'next/image'
 
+import { TRUST_BADGES } from '@workspace/shared/claims/trust'
+
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type NewBeginningHeroProps = {
@@ -128,7 +128,7 @@ export function NewBeginningHero({ id = 'hero' }: NewBeginningHeroProps) {
                             <div className='inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2'>
                                 <CreditCard className='text-gold-400 h-4 w-4' />
                                 <span className='text-sm font-medium text-stone-300'>
-                                    From $35/week | 0% APR available
+                                    Financing available
                                 </span>
                             </div>
                         </div>
@@ -151,44 +151,24 @@ export function NewBeginningHero({ id = 'hero' }: NewBeginningHeroProps) {
 
                         {/* Trust Cluster */}
                         <div className='mt-8 space-y-6'>
-                            {/* Testimonial Quote */}
-                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
-                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
-                                <div>
-                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
-                                        &ldquo;After my divorce, I wanted to do
-                                        something for myself. The facelift was
-                                        the best investment I&apos;ve ever made
-                                        in myself. I look refreshed, not
-                                        different—and I feel like I have a whole
-                                        new life ahead of me.&rdquo;
-                                    </p>
-                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Linda S., 52
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Board-Certified'}{' '}
-                                        Surgeons
+                                        One surgeon for every procedure
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Award className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Natural Results Specialists
+                                        {TRUST_BADGES.board}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <Clock className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        Same-Week Consultations
+                                        In person or by video
                                     </span>
                                 </div>
                             </div>
@@ -196,7 +176,7 @@ export function NewBeginningHero({ id = 'hero' }: NewBeginningHeroProps) {
                             {/* Risk Reversal Message */}
                             <p className='text-center text-sm text-stone-500 lg:text-left'>
                                 ✓ Free consultation • ✓ No judgment, just
-                                support • ✓ Flexible financing
+                                support • ✓ Financing available
                             </p>
                         </div>
                     </div>

@@ -96,20 +96,20 @@ export async function generateMetadata({
     return toNextMetadata(seoConfig, {
         title: pageTitle,
         description:
-            "Follow Alluring Plastic Surgery on Instagram. See real patient transformations, behind-the-scenes content, and the latest in cosmetic surgery from Miami's top plastic surgeons.",
+            'Follow Alluring Plastic Surgery on Instagram. See real patient transformations, behind-the-scenes content, and cosmetic surgery news from our Miami practice.',
         keywords: [
             'alluring plastic surgery instagram',
             'plastic surgery before after instagram',
             'cosmetic surgery miami instagram',
             'bbl transformation instagram',
-            'plastic surgeon social media',
+            'cosmetic surgeon social media',
         ],
         openGraph: {
             type: 'website',
             url: pageUrl,
             title: pageTitle,
             description:
-                "Follow Alluring Plastic Surgery on Instagram. See real patient transformations, behind-the-scenes content, and the latest in cosmetic surgery from Miami's top plastic surgeons.",
+                'Follow Alluring Plastic Surgery on Instagram. See real patient transformations, behind-the-scenes content, and cosmetic surgery news from our Miami practice.',
             siteName: siteConfig.business.name,
             images: [
                 {
@@ -124,7 +124,7 @@ export async function generateMetadata({
             card: 'summary_large_image',
             title: pageTitle,
             description:
-                "Follow Alluring Plastic Surgery on Instagram. See real patient transformations and the latest in cosmetic surgery from Miami's top plastic surgeons.",
+                'Follow Alluring Plastic Surgery on Instagram. See real patient transformations and cosmetic surgery news from our Miami practice.',
             images: [`${siteUrl}/og-image.jpg`],
         },
         alternates: alternates as Metadata['alternates'],
@@ -196,7 +196,7 @@ export default async function InstagramPage({ searchParams }: PageProps) {
                 variant='luxury'
                 eyebrow='Start Your Transformation'
                 heading='Ready to Make a Change?'
-                description='Every transformation starts with a single conversation. Schedule your free consultation with our board-certified surgeons.'
+                description='Every transformation starts with a single conversation. Schedule your free consultation with Victoria Karlinsky, MD, FACS.'
                 primaryButton={{
                     text: 'Schedule Your Consultation',
                     href: '/contact-us',

@@ -84,7 +84,7 @@ function getStyles(status: FormFeedbackStatus, variant: FormFeedbackVariant) {
  * // Success message with dark theme
  * <FormFeedback
  *   status="success"
- *   message="Thank you! We'll contact you within 24 hours."
+ *   message="Thank you! We'll text you soon."
  *   variant="dark"
  * />
  *

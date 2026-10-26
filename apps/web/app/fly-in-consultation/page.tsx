@@ -32,10 +32,11 @@ import { WhyTravelMiami } from '@/components/landing/why-travel-miami.component'
 import { TravelJourney } from '@/components/landing/travel-journey.component'
 import { TravelMiniCapture } from '@/components/landing/travel-mini-capture.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import {
     travelLandingFaqCategories,
@@ -56,12 +57,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/fly-in-consultation',
     title: 'Fly-In Plastic Surgery Miami | Virtual Consultation',
     description:
-        'Board-certified plastic surgery in Miami for out-of-state patients. Start with a virtual consultation and get your surgery and follow-up dates in writing before you book travel. BBL, breast augmentation, mommy makeover. Financing available.',
+        'Cosmetic surgery in Miami for patients flying in from other US states. Start with a virtual consultation and get your surgery and follow-up dates in writing before you book travel. BBL, breast augmentation, mommy makeover. Financing available.',
 
     openGraph: {
         title: 'Fly-In Plastic Surgery Miami | Virtual Consultation',
         description:
-            'Board-certified plastic surgery in Miami for out-of-state patients. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
+            'Cosmetic surgery in Miami for patients flying in from other US states. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
         url: `${seoConfig.siteUrl}/fly-in-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -80,7 +81,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: 'Fly-In Plastic Surgery Miami | Virtual Consultation',
         description:
-            'Board-certified plastic surgery in Miami for out-of-state patients. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
+            'Cosmetic surgery in Miami for patients flying in from other US states. Virtual consultation first, with your surgery and follow-up dates confirmed before you book travel.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
@@ -89,8 +90,16 @@ export default async function FlyInConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        travelLandingFaqData,
+        'text',
+        'faq /fly-in-consultation'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(travelLandingFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -102,7 +111,7 @@ export default async function FlyInConsultationPage() {
             <WebPageSchema
                 name={`Fly-In Plastic Surgery - ${siteConfig.business.name} Miami`}
                 url={`${seoConfig.siteUrl}/fly-in-consultation`}
-                description='Board-certified plastic surgery in Miami for patients flying in. Start with a virtual consultation, then get your surgery, pre-op and follow-up dates in writing so you can book travel around a confirmed schedule.'
+                description='Cosmetic surgery in Miami for patients flying in from other US states, with one surgeon: Victoria Karlinsky, MD, FACS. Start with a virtual consultation, then get your surgery, pre-op and follow-up dates in writing so you can book travel around a confirmed schedule.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -121,16 +130,16 @@ export default async function FlyInConsultationPage() {
                 {/* Section 4: Fear Busters - Universal objection handling */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 5: Weekly Payments - Financing options */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 5: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 6: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
                 {/* Section 7: Google Reviews */}
                 <GoogleReviews
-                    title='What Our Fly-In Patients Say'
-                    subtitle='Real reviews from patients who traveled to Miami for their transformation'
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 
@@ -138,7 +147,7 @@ export default async function FlyInConsultationPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={travelLandingFaqCategories}
-                    faqData={travelLandingFaqData}
+                    faqData={faqData}
                     badge={travelLandingFaqConfig.badge}
                     title={travelLandingFaqConfig.title}
                     subtitle={travelLandingFaqConfig.subtitle}

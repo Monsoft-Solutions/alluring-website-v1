@@ -30,8 +30,8 @@
  *
  *   1. Say what she searched. The headline names the procedure and Miami
  *      (`lp-variants.ts`); the second line repeats the ad's promise.
- *   2. Answer the money question plainly: the settled starting prices, one
- *      all-inclusive figure in writing, and financing by partner name. Never
+ *   2. Answer the money question plainly: the settled starting prices, your
+ *      price in writing, and financing by partner name. Never
  *      a payment amount, an APR or a term — those trigger Truth in Lending
  *      disclosures (Reg Z) — and never "affordable" or "luxury": show the
  *      value, don't claim it.
@@ -51,9 +51,14 @@
  * CLAIMS
  * ---------------------------------------------------------------------
  * Every factual claim here is already published on the site: the Google
- * rating, the starting prices (read from the facts files by the server), the three financing partners and Cherry's soft
- * check, the written recovery plan, the confirmed dates, and that nobody
- * here earns a commission. Reword freely, invent nothing.
+ * rating, the starting prices (read from the pricing resolver by the server), the
+ * three financing partners, the confirmed dates, and that nobody here earns
+ * a commission. Reword freely, invent nothing.
+ *
+ * Removed under the claims canon (#354) and not to come back: an
+ * "all-inclusive" price or "no surprise fees" (what a price includes is open,
+ * D4), Cherry's soft credit check (D10), a reply time ("within 24 hours"),
+ * and a typed review count (the count comes from the synced Google figures).
  *
  * No facility-accreditation claim (AAAASF or any other) and no
  * anesthesiologist claim: the practice has not confirmed either in writing,
@@ -141,6 +146,8 @@ export interface LpDictionary {
          * (`{count}` is the Google review count), who operates, financing.
          */
         readonly trustGoogle: string
+        /** The same, when the live count is unavailable: no typed count. */
+        readonly trustGoogleNoCount: string
         readonly trustSurgeon: string
         readonly trustFinancing: string
         /** The "prefer the other language?" nudge under the thread. */
@@ -187,7 +194,7 @@ export interface LpDictionary {
     readonly reviews: {
         readonly eyebrow: string
         readonly heading: RichText
-        /** Static count, for pages without the live one (Melissa's). */
+        /** No count, for pages without the live one (Melissa's). */
         readonly source: string
         /** `{count}` is the live Google review count. */
         readonly sourceLive: string
@@ -300,7 +307,7 @@ function partners(conjunction: string): string {
 const en: LpDictionary = {
     meta: {
         title: '{title} · Financing Available | Alluring Plastic Surgery',
-        description: `A consultation with ${KARLINSKY_NAME}, in Miami or by video. Real before-and-after results, one all-inclusive price in writing, and financing through ${partners('and')}. Hablamos Español.`,
+        description: `A consultation with ${KARLINSKY_NAME}, in Miami or by video. Real before-and-after results, your price in writing, and financing through ${partners('and')}. Hablamos español.`,
     },
     header: {
         langLabel: 'Language / Idioma',
@@ -310,6 +317,7 @@ const en: LpDictionary = {
     hero: {
         eyebrow: 'In person or by video · Miami',
         trustGoogle: '· {count} reviews',
+        trustGoogleNoCount: 'on Google',
         trustSurgeon: 'Your surgeon operates',
         trustFinancing: 'Financing',
         nudge: {
@@ -317,7 +325,7 @@ const en: LpDictionary = {
             action: 'Ver esta página en español',
         },
         callAlt: 'Prefer to talk? Call',
-        badgesLabel: 'Board certifications',
+        badgesLabel: 'Certification and fellowship',
     },
     surgeon: {
         eyebrow: 'Your surgeon',
@@ -329,7 +337,7 @@ const en: LpDictionary = {
             'Fellow of the American College of Surgeons (FACS)',
             `Florida medical license ${KARLINSKY_FLORIDA_LICENSE}, clear and active`,
         ],
-        badgesLabel: 'Board certification and fellowship',
+        badgesLabel: 'Certification and fellowship',
         portraitAlt: 'Dr. Victoria Karlinsky',
     },
     results: {
@@ -366,15 +374,15 @@ const en: LpDictionary = {
     financing: {
         eyebrow: 'Price & financing',
         heading: ['Your price in writing. ', { em: 'Your payments, planned.' }],
-        body: 'One all-inclusive figure in writing before you decide. Pay in full, monthly through a financing partner, or both.',
+        body: 'Your price in writing before you decide. Pay in full, monthly through a financing partner, or both.',
         partnersLabel: 'Financing partners',
         cta: 'Ask about financing',
-        fine: 'Checking with Cherry won’t affect your credit score. Financing is offered by third-party lenders and is subject to credit approval.',
+        fine: 'Financing is offered by third-party lenders and is subject to credit approval.',
     },
     reviews: {
         eyebrow: 'Google reviews',
         heading: ['What patients ', { em: 'actually' }, ' say'],
-        source: '80+ reviews on Google',
+        source: 'Reviews on Google',
         sourceLive: '{count} reviews on Google',
         items: [
             {
@@ -411,12 +419,12 @@ const en: LpDictionary = {
         items: [
             {
                 question: 'How much will it cost?',
-                answer: 'It depends on your body and your goals, so your figure comes after your consultation: one all-inclusive price, in writing, with no surprise fees. {prices} Financing is available if you’d rather pay monthly.',
-                tag: 'All-inclusive · In writing',
+                answer: 'It depends on your body and your goals, so your surgeon confirms your price at your consultation, in writing. {prices} Financing is available if you’d rather pay monthly.',
+                tag: 'In writing',
             },
             {
                 question: 'Can I finance it?',
-                answer: `Yes. We work with ${partners('and')}. You can check your options before you choose a date, and checking with Cherry won’t affect your credit score. Financing is subject to the lender’s approval.`,
+                answer: `Yes. We work with ${partners('and')}. You can check your options before you choose a date. Financing is subject to the lender’s approval.`,
                 tag: FINANCING_PARTNERS.join(' · '),
             },
             {
@@ -467,7 +475,7 @@ const en: LpDictionary = {
                 note: 'Adds a vertical scar, usually after major weight loss.',
             },
         ],
-        fine: 'Starting prices from the practice’s price list. Your surgeon tells you which tummy tuck you need at your consultation, and your price comes in writing before you decide.',
+        fine: 'Starting prices from the practice’s price list. At your consultation, your surgeon tells you which tummy tuck you need and confirms your price in writing before you decide.',
         cta: 'Ask about your price',
     },
     closing: {
@@ -505,7 +513,7 @@ const en: LpDictionary = {
 const es: LpDictionary = {
     meta: {
         title: '{title} · Con financiamiento | Alluring Plastic Surgery',
-        description: `Una consulta con la Dra. ${KARLINSKY_NAME}, en Miami o por video. Resultados reales de antes y después, un solo precio todo incluido por escrito y financiamiento con ${partners('y')}.`,
+        description: `Una consulta con la Dra. ${KARLINSKY_NAME}, en Miami o por video. Resultados reales de antes y después, tu precio por escrito y financiamiento con ${partners('y')}.`,
     },
     header: {
         langLabel: 'Idioma / Language',
@@ -515,6 +523,7 @@ const es: LpDictionary = {
     hero: {
         eyebrow: 'En persona o por video · Miami',
         trustGoogle: '· {count} reseñas',
+        trustGoogleNoCount: 'en Google',
         trustSurgeon: 'Tu cirujana opera',
         trustFinancing: 'Financiamiento',
         nudge: {
@@ -522,7 +531,7 @@ const es: LpDictionary = {
             action: 'View this page in English',
         },
         callAlt: '¿Prefieres hablar? Llama al',
-        badgesLabel: 'Certificaciones',
+        badgesLabel: 'Certificación y fellowship',
     },
     surgeon: {
         eyebrow: 'Tu cirujana',
@@ -575,15 +584,15 @@ const es: LpDictionary = {
             'Tu precio, por escrito. ',
             { em: 'Tus pagos, planificados.' },
         ],
-        body: 'Una sola cifra todo incluido por escrito antes de decidir. Paga completo, en pagos mensuales con una financiera, o una combinación.',
+        body: 'Tu precio por escrito antes de decidir. Paga completo, mes a mes con una financiera, o una combinación.',
         partnersLabel: 'Financieras',
         cta: 'Preguntar por financiamiento',
-        fine: 'Consultar con Cherry no afecta tu puntaje de crédito. El financiamiento lo ofrecen prestamistas externos y está sujeto a aprobación de crédito.',
+        fine: 'El financiamiento lo ofrecen prestamistas externos y está sujeto a aprobación de crédito.',
     },
     reviews: {
         eyebrow: 'Reseñas de Google',
         heading: ['Lo que dicen ', { em: 'nuestras pacientes' }],
-        source: 'Más de 80 reseñas en Google',
+        source: 'Reseñas en Google',
         sourceLive: '{count} reseñas en Google',
         items: [
             {
@@ -620,17 +629,17 @@ const es: LpDictionary = {
         items: [
             {
                 question: '¿Cuánto me va a costar?',
-                answer: 'Depende de tu cuerpo y de tus metas, así que tu cifra llega después de tu consulta: un solo precio todo incluido, por escrito y sin cargos sorpresa. {prices} Hay financiamiento disponible si prefieres pagar mes a mes.',
-                tag: 'Todo incluido · Por escrito',
+                answer: 'Depende de tu cuerpo y de tus metas, así que tu cirujana confirma tu precio en tu consulta, por escrito. {prices} Hay financiamiento disponible si prefieres pagar mes a mes.',
+                tag: 'Por escrito',
             },
             {
                 question: '¿Puedo financiarlo?',
-                answer: `Sí. Trabajamos con ${partners('y')}. Puedes revisar tus opciones antes de elegir la fecha, y consultar con Cherry no afecta tu puntaje de crédito. El financiamiento está sujeto a la aprobación del prestamista.`,
+                answer: `Sí. Trabajamos con ${partners('y')}. Puedes revisar tus opciones antes de elegir la fecha. El financiamiento está sujeto a la aprobación del prestamista.`,
                 tag: FINANCING_PARTNERS.join(' · '),
             },
             {
                 question: 'No vivo en Miami. ¿Cómo funciona?',
-                answer: 'Empieza con una consulta por video desde casa. Tus fechas de cirugía, preoperatorio y controles te llegan por escrito antes de comprar vuelos, junto con cuántas noches quedarte en Miami antes de que te autoricen a volar a casa. Todo el equipo habla español.',
+                answer: 'Empieza con una consulta por video desde casa. Tus fechas de cirugía, preoperatorio y controles te llegan por escrito antes de comprar vuelos, junto con cuántas noches quedarte en Miami antes de que te autoricen a volar a casa. Nuestro equipo habla inglés y español.',
                 tag: 'Consulta por video · Fechas por escrito',
             },
             {
@@ -676,7 +685,7 @@ const es: LpDictionary = {
                 note: 'Suma una cicatriz vertical, por lo general después de una gran pérdida de peso.',
             },
         ],
-        fine: 'Precios iniciales de la lista de precios de la práctica. Tu cirujana te dice qué abdominoplastia necesitas en tu consulta, y tu precio llega por escrito antes de que decidas.',
+        fine: 'Precios iniciales de la lista de precios de la práctica. En tu consulta, tu cirujana te dice qué abdominoplastia necesitas y confirma tu precio por escrito antes de que decidas.',
         cta: 'Pregunta por tu precio',
     },
     closing: {

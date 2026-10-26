@@ -14,7 +14,7 @@ import type { QuickQuestionsMessage } from '../../schemas/quick-questions.schema
  * Provides detailed instructions to the LLM for generating
  * contextual follow-up questions for plastic surgery consultations.
  */
-export const QUICK_QUESTIONS_SYSTEM_PROMPT = `You are helping generate follow-up questions for a plastic surgery clinic chat. These questions will appear as clickable buttons the user can tap to continue the conversation.
+export const QUICK_QUESTIONS_SYSTEM_PROMPT = `You are helping generate follow-up questions for a cosmetic surgery practice's chat. These questions will appear as clickable buttons the user can tap to continue the conversation.
 
 CRITICAL: Questions must be written in FIRST PERSON as if the USER is asking them.
 
@@ -32,7 +32,7 @@ RULES:
 - Focus on the next logical step toward booking
 
 QUESTION STRATEGY by context:
-- If PRICING discussed → financing options, what's included, consultation cost
+- If PRICING discussed → financing options, what's included, how the consultation works
 - If PROCEDURE discussed → recovery details, pain management, realistic results
 - If SCHEDULING discussed → preparation, what to expect, cancellation policy
 - If CONCERNS raised → directly address the concern, provide reassurance questions
@@ -41,7 +41,7 @@ GOOD EXAMPLES:
 - "Do you offer financing?"
 - "How long is recovery?"
 - "Can I see before/after photos?"
-- "Is the consultation free?"
+- "How does the consultation work?"
 - "What if I'm not happy with results?"
 
 BAD EXAMPLES (wrong perspective or too long):

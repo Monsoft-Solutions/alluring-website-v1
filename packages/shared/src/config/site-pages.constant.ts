@@ -1,3 +1,5 @@
+import { FINANCING_SENTENCE_SHORT } from '../claims/financing'
+import { KARLINSKY_NAME } from '../claims/surgeon'
 import type { SitePage } from '../types/site-pages.type'
 
 /**
@@ -106,13 +108,9 @@ export const PROCEDURE_PAGES: SitePage[] = [
             'droopy eyelids',
         ],
     },
-    {
-        url: '/procedures/rhinoplasty-miami',
-        title: 'Rhinoplasty Miami',
-        description: 'Reshape and refine your nose for facial harmony',
-        type: 'procedure',
-        keywords: ['rhinoplasty', 'nose job', 'nose surgery', 'nose reshaping'],
-    },
+    // No rhinoplasty entry: there is no page (next.config redirects the URL
+    // to /procedures) and rhinoplasty is not on the practice price sheet, so
+    // offering it to the AI link lists claimed a service nobody verified.
 ]
 
 /**
@@ -132,16 +130,16 @@ export const WEBSITE_PAGES: SitePage[] = [
     {
         url: '/about',
         title: 'About Alluring Plastic Surgery',
-        description: 'Learn about our surgeons and commitment to excellence',
+        description: `Meet ${KARLINSKY_NAME}, the one surgeon at Alluring Plastic Surgery in Miami`,
         type: 'page',
-        keywords: ['about', 'surgeons', 'team', 'clinic', 'experience'],
+        keywords: ['about', 'surgeon', 'dr karlinsky', 'practice', 'miami'],
     },
     {
         url: '/plastic-surgery-financing-miami',
         title: 'Plastic Surgery Financing Miami',
-        description: 'Flexible financing options for your procedure',
+        description: FINANCING_SENTENCE_SHORT,
         type: 'page',
-        keywords: ['financing', 'payment plans', 'cost', 'affordable', 'price'],
+        keywords: ['financing', 'payment plans', 'cost', 'price'],
     },
     {
         url: '/gallery',
@@ -166,7 +164,7 @@ export const WEBSITE_PAGES: SitePage[] = [
     {
         url: '/blog',
         title: 'Blog',
-        description: 'Expert insights on plastic surgery',
+        description: 'Guides to cosmetic surgery, recovery and cost',
         type: 'page',
         keywords: ['blog', 'articles', 'news', 'insights'],
     },
@@ -180,9 +178,10 @@ export const WEBSITE_PAGES: SitePage[] = [
     {
         url: '/miami-plastic-surgery-specials',
         title: 'Miami Plastic Surgery Specials',
-        description: 'Check our latest promotions and special offers',
+        description:
+            'Current specials from Alluring Plastic Surgery, when one is running',
         type: 'page',
-        keywords: ['specials', 'promotions', 'discounts', 'offers'],
+        keywords: ['specials', 'promotions', 'offers'],
     },
 ]
 
@@ -192,15 +191,22 @@ export const WEBSITE_PAGES: SitePage[] = [
 export const SURGEON_PAGES: SitePage[] = [
     {
         url: '/dr-karlinsky',
-        title: 'Dr. Victoria Karlinsky-Bellini',
-        description: 'Board-certified cosmetic surgeon in Miami',
+        title: KARLINSKY_NAME,
+        description:
+            'Surgeon in Miami, board certified in general surgery by the American Board of Surgery and a Fellow of the American College of Surgeons',
         type: 'surgeon',
-        keywords: ['surgeon', 'dr karlinsky', 'female plastic surgeon'],
+        keywords: [
+            'surgeon',
+            'dr karlinsky',
+            'female surgeon',
+            'female cosmetic surgeon',
+        ],
     },
     {
         url: '/dr-rita-shats',
+        // D1 (claims canon): flag only. Keep the entry, claim no credential.
         title: 'Dr. Rita Shats',
-        description: 'Board-certified plastic surgeon',
+        description: 'Cosmetic gynecology at Alluring Plastic Surgery',
         type: 'surgeon',
         keywords: ['surgeon', 'dr shats'],
     },

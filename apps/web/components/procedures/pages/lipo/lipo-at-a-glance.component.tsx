@@ -1,11 +1,19 @@
 import { moduleSectionPad } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import {
     FactTable,
     type Fact,
 } from '@/components/procedures/sections/fact-table.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import { formatLineName } from '@workspace/shared/claims/pricing'
+import {
+    isSingleAreaAddOn,
+    linePriceExtremes,
+} from '@/lib/claims/procedure-prices.util'
 import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
+import type { ProcedurePrices } from '@/lib/claims/procedure-prices.util'
 
 /**
  * "What is liposuction?" and the at-a-glance table: every figure a reader
@@ -15,16 +23,43 @@ import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.consta
  * The answer is the site's one definition of liposuction: `quickAnswer` in
  * the data file says the same thing.
  */
-export function LipoAtAGlance() {
+export function LipoAtAGlance({ prices }: { prices: ProcedurePrices }) {
+    // The two price rows read the pricing resolver (#354); a figure it
+    // can't publish drops its row rather than showing a typed one.
+    const addedArea = linePriceExtremes(prices, isSingleAreaAddOn)
+    const priceFacts: Fact[] = [
+        ...(prices.starting
+            ? [
+                  {
+                      label: 'Starting price',
+                      value: (
+                          <>
+                              {formatLineName(prices.starting.label, {
+                                  capitalized: true,
+                              })}{' '}
+                              from <PriceTag price={prices.starting} />
+                          </>
+                      ),
+                  },
+              ]
+            : []),
+        ...(addedArea
+            ? [
+                  {
+                      label: 'Added to another procedure',
+                      value: (
+                          <>
+                              <PriceTag price={addedArea.min} /> to{' '}
+                              <PriceTag price={addedArea.max} /> per area,
+                              depending on the area
+                          </>
+                      ),
+                  },
+              ]
+            : []),
+    ]
     const facts: Fact[] = [
-        {
-            label: 'Starting price',
-            value: `Lipo 360 from ${lipoFigure('price-starting-at')}`,
-        },
-        {
-            label: 'Added to another procedure',
-            value: `${lipoFigure('price-added-area')} per area, depending on the area`,
-        },
+        ...priceFacts,
         {
             label: 'Surgery time',
             value: `${lipoFigure('surgery-1-3-hours')}, depending on the areas treated`,
@@ -44,7 +79,7 @@ export function LipoAtAGlance() {
         },
         {
             label: 'Exercise',
-            value: `Walking right away; strenuous exercise after ${lipoFigure('exercise-4-6-weeks')}`,
+            value: `Walking right away (MedlinePlus); strenuous exercise after ${lipoFigure('exercise-4-6-weeks')} (The Aesthetic Society)`,
         },
         {
             label: 'Final shape',
@@ -68,6 +103,12 @@ export function LipoAtAGlance() {
                 caption='Liposuction at Alluring, at a glance'
                 facts={facts}
                 className='mt-10 md:mt-11'
+            />
+            {/* The table prints the price, so a discount's 456.062
+                statement sits right under it (#354). */}
+            <DiscountStatement
+                statement={prices.discountStatement}
+                className='mt-4'
             />
         </AnswerBlock>
     )

@@ -24,11 +24,11 @@ const milestones = [
     },
     {
         when: 'Weeks 1–2',
-        body: 'The strictest stretch: no sitting or lying on your buttocks for at least 2 weeks, and sleep on your stomach or side. Most people need some pain medication for the first 4 to 5 days, and Cleveland Clinic says pain eases after 1 to 2 weeks.',
+        body: 'The strictest stretch: no sitting or lying on your buttocks for at least 2 weeks, and sleep on your stomach or side (Cleveland Clinic). Most people need some pain medication for the first 4 to 5 days, according to a plastic surgeon interviewed by ASPS, and Cleveland Clinic says pain eases after 1 to 2 weeks.',
     },
     {
         when: 'Days 10–14',
-        body: 'Back to a desk job and driving, sitting on a BBL pillow. Some surgeons allow work between days 7 and 10; a job that involves lifting needs longer.',
+        body: 'Back to a desk job and driving, sitting on a BBL pillow, according to Cleveland Clinic and The Aesthetic Society. ASPS says some patients go back between days 7 and 10; a job that involves lifting needs longer.',
     },
     {
         when: 'Month 1',
@@ -48,7 +48,7 @@ const milestones = [
     },
     {
         when: 'Months 3–6',
-        body: 'Your final shape shows. About 50% to 80% of the grafted fat survives.',
+        body: 'Your final shape shows. About 50% to 80% of the grafted fat survives, according to a 2020 review in Seminars in Plastic Surgery.',
     },
 ]
 
@@ -87,7 +87,7 @@ export function BblRecoveryTimeline() {
             id='recovery'
             question='What does BBL recovery look like, week by week?'
             className={moduleSectionPad}
-            answer="Most people return to a desk job 10 to 14 days after a BBL, sit normally and exercise again at about 8 weeks, and feel recovered at 2 to 3 months, though it can take up to 6 months. The final shape shows at 3 to 6 months. Your surgeon's instructions come first."
+            answer="Most people return to a desk job 10 to 14 days after a BBL, and some surgeons allow 7 to 10; they sit normally and exercise again at about 8 weeks, and feel recovered at 2 to 3 months, though it can take up to 6 months. The final shape shows at 3 to 6 months. Your surgeon's instructions come first."
         >
             <ModuleTimeline
                 label='BBL recovery timeline'

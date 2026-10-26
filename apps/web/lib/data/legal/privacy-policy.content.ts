@@ -435,7 +435,7 @@ We do not collect sensitive personal information (as defined by CCPA) through ou
 ### 13.6 Right to Non-Discrimination
 We will not discriminate against you for exercising your privacy rights.
 
-To exercise these rights, contact us using the information in Section 9 or call our toll-free number: +1 (786) 305-8649.
+To exercise these rights, contact us using the information in Section 9 or call us at +1 (786) 305-8649.
 
 ## 14. International Users (GDPR)
 

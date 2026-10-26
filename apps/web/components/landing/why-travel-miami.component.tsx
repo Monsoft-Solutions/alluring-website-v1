@@ -1,51 +1,44 @@
 /**
  * WhyTravelMiami Component
  *
- * A section highlighting why patients travel to Miami for plastic surgery:
- * - World-class surgeons at competitive prices
- * - Recovery in a beautiful destination
+ * A section for patients flying in from other US states:
+ * - Recovery in Miami's weather
  * - Surgery and follow-up dates confirmed before travel is booked
  * - Privacy away from home
  *
  * SCOPE: the practice coordinates no travel — no flights, lodging or
  * transport, and no recovery-house affiliation. Do not add "concierge"
- * support claims here.
+ * support claims here, and no claims about Miami's surgeons or facilities
+ * (claims canon §2, §3, §10).
  *
  * Server component for SEO optimization.
  */
-import { Plane, Sun, Shield, Eye } from 'lucide-react'
+import { Plane, Sun, Eye } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 
 const TRAVEL_BENEFITS = [
     {
-        icon: Shield,
-        title: 'World-Class Surgeons, Better Value',
-        description:
-            'Miami has a deep concentration of board-certified plastic surgeons and accredited surgical facilities. You get that experience without the premium the same care carries in many other major cities.',
-        highlight: 'Premium Results',
-    },
-    {
         icon: Sun,
         title: 'Recover in Paradise',
         description:
-            'Trade gray skies for Miami sunshine. Recover in a beautiful oceanside setting with warm weather, fresh air, and a relaxed atmosphere that promotes healing.',
+            'Trade gray skies for Miami sunshine. Recover with warm weather and a relaxed pace.',
         highlight: 'Sunny Recovery',
     },
     {
         icon: Plane,
         title: 'Your Dates, Before You Book',
         description:
-            'You get your surgery, pre-op and follow-up dates in writing first, plus the number of nights you need to stay before your surgeon clears you to fly home. You book your own flights and lodging around a schedule that is already fixed.',
+            'You get your surgery, pre-op and follow-up dates in writing first, plus the number of nights you need to stay before your surgeon clears you to fly home. You arrange the travel itself, around a schedule that is already fixed.',
         highlight: 'No Guesswork',
     },
     {
         icon: Eye,
         title: 'Privacy & Discretion',
         description:
-            'Recover away from prying eyes. No running into coworkers or neighbors. Return home fully healed, refreshed, and ready to reveal your new look on your own terms.',
-        highlight: 'Total Privacy',
+            'Recover away from prying eyes. No running into coworkers or neighbors. Return home and reveal your new look on your own terms.',
+        highlight: 'Privacy',
     },
 ] as const
 
@@ -78,20 +71,18 @@ export function WhyTravelMiami({ id = 'why-travel' }: WhyTravelMiamiProps) {
                         Why Miami?
                     </div>
                     <h2 className='mb-4 font-serif text-3xl text-stone-900 md:text-4xl'>
-                        Thousands Fly to Miami for{' '}
+                        Flying in from{' '}
                         <span className='text-gold-600 italic'>
-                            This Experience
+                            another state?
                         </span>
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
-                        There&apos;s a reason Miami is a top destination for
-                        cosmetic surgery. Here&apos;s what makes the trip worth
-                        it.
+                        Here&apos;s what to expect if you fly in.
                     </p>
                 </div>
 
                 {/* Benefits Grid */}
-                <div className='grid gap-8 md:grid-cols-2'>
+                <div className='grid gap-8 md:grid-cols-3'>
                     {TRAVEL_BENEFITS.map((benefit) => (
                         <article
                             key={benefit.title}
@@ -126,7 +117,8 @@ export function WhyTravelMiami({ id = 'why-travel' }: WhyTravelMiamiProps) {
                         <span className='font-semibold text-stone-900'>
                             Ready to plan your trip?
                         </span>{' '}
-                        Start with a free virtual consultation from anywhere.
+                        Start with a free virtual consultation from anywhere in
+                        the U.S.
                     </p>
                     <a
                         href='#hero-form'

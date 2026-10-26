@@ -4,8 +4,9 @@ import { cn } from '@workspace/ui/lib/utils'
 import { HeroVideo } from '@/components/home/hero-video.component'
 import { HomeMotionToggle } from './home-motion-toggle.component'
 import { ModuleStars } from '@/components/procedures/module-kit/module-stars.component'
-import { bblFigure } from '@/lib/data/procedures/facts/bbl.facts'
-import { lipoFigure } from '@/lib/data/procedures/facts/lipo.facts'
+import type { PriceDisplay } from '@workspace/shared/claims/pricing'
+
+import { PriceTag } from '@/components/shared/price-tag.component'
 import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 import {
@@ -35,6 +36,10 @@ const HERO_CHIPS = [
 type HomeHeroProps = {
     rating: number | null
     reviewCount: number
+    /** The two settled starting prices, from the pricing resolver (#354). */
+    prices: { lipo: PriceDisplay | null; bbl: PriceDisplay | null }
+    /** The 456.062 statement, while either price is discounted. */
+    discountStatement?: string | null
 }
 
 /**
@@ -48,7 +53,16 @@ type HomeHeroProps = {
  * The headline never moves: only the photograph settles and, where
  * scroll-driven animation exists, drifts as the hero leaves.
  */
-export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
+export function HomeHero({
+    rating,
+    reviewCount,
+    prices,
+    discountStatement,
+}: HomeHeroProps) {
+    // The asterisk and its caveat belong to the prices: with neither one
+    // published, the line and the footnote carry no price claim at all.
+    const hasPrice = Boolean(prices.lipo || prices.bbl)
+
     preload(HOME_MEDIA.heroPosterMobile, {
         as: 'image',
         media: '(width < 48rem)',
@@ -117,10 +131,26 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
 
                     <p className='mt-6 max-w-[31rem] text-[1.0625rem] leading-relaxed text-[var(--hp-ink-2)] md:text-lg'>
                         Body contouring by {KARLINSKY_NAME}.{' '}
-                        <strong className='font-semibold text-[var(--hp-ink)]'>
-                            Lipo 360 from {lipoFigure('price-starting-at')}. BBL
-                            from {bblFigure('price-starting-at')}.*
-                        </strong>{' '}
+                        {hasPrice && (
+                            <>
+                                <strong className='font-semibold text-[var(--hp-ink)]'>
+                                    {prices.lipo && (
+                                        <>
+                                            Lipo 360 from{' '}
+                                            <PriceTag price={prices.lipo} />
+                                            .{' '}
+                                        </>
+                                    )}
+                                    {prices.bbl && (
+                                        <>
+                                            BBL from{' '}
+                                            <PriceTag price={prices.bbl} />.
+                                        </>
+                                    )}
+                                    *
+                                </strong>{' '}
+                            </>
+                        )}
                         Financing available.
                     </p>
 
@@ -192,7 +222,15 @@ export function HomeHero({ rating, reviewCount }: HomeHeroProps) {
             <div className='absolute inset-x-0 bottom-3 flex items-center justify-between gap-4 px-4 md:px-8'>
                 <HomeMotionToggle />
                 <p className='max-w-[34rem] text-right text-[0.6875rem] leading-snug text-[var(--hp-mute)]'>
-                    *{PRICE_VARIABLES} {MODEL_DISCLOSURE}
+                    {hasPrice && (
+                        <>
+                            *{PRICE_VARIABLES}
+                            {discountStatement
+                                ? ` ${discountStatement}`
+                                : ''}{' '}
+                        </>
+                    )}
+                    {MODEL_DISCLOSURE}
                 </p>
             </div>
         </section>

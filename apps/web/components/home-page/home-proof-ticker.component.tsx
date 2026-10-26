@@ -81,7 +81,9 @@ export function HomeProofTicker({
                 </span>
             </span>
         )),
-        <span key='bbl'>Ultrasound-guided BBL, as Florida law requires</span>,
+        <span key='bbl'>
+            Florida law requires ultrasound guidance for a BBL
+        </span>,
         <span key='price'>Your price in writing, before you book</span>,
         ...quotes.slice(2).map(({ review, quote }) => (
             <span

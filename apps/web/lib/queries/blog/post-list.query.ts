@@ -13,6 +13,7 @@ import {
 import { and, desc, eq, isNotNull, lt, ne, or } from 'drizzle-orm'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 
+import { resolvePostListClaims } from '@/lib/claims/resolve-claims.server'
 import type { BlogPostCard } from '@/types/blog/post-card.type'
 
 const PAGE_SIZE_DEFAULT = 12
@@ -191,6 +192,9 @@ export async function getPublishedPostCardsPage(options?: {
     // Create a new result object to avoid mutating the cached value
     return {
         ...result,
+        // Claim tokens in titles and excerpts (#354), resolved after the
+        // cache so a price edit needs no blog revalidation.
+        items: await resolvePostListClaims(result.items),
         nextCursor:
             result.nextCursor &&
             typeof result.nextCursor.publishedAt === 'string'

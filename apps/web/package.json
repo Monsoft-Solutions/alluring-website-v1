@@ -18,6 +18,7 @@
         "check:bbl-copy": "tsx scripts/check-procedure-copy.ts --slug brazilian-butt-lift-bbl-miami",
         "check:procedure-copy": "tsx scripts/check-procedure-copy.ts",
         "audit:procedure-assets": "tsx scripts/audit-procedure-assets.ts",
+        "claims:code-tokens": "tsx scripts/generate-code-claim-tokens.ts",
         "test": "vitest run"
     },
     "dependencies": {

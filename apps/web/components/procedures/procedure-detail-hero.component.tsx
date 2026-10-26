@@ -71,7 +71,7 @@ export function ProcedureDetailHero({
                                 <div className='animate-fade-in-up animate-delay-300 mb-6 flex items-center gap-4'>
                                     <span className='bg-gold-400 h-[1px] w-12'></span>
                                     <span className='text-gold-400 text-xs font-bold tracking-[0.3em] uppercase drop-shadow-sm'>
-                                        Premium Procedure
+                                        Cosmetic Surgery in Miami
                                     </span>
                                 </div>
 

@@ -88,7 +88,7 @@ export function PostSchema({
                               // with the organization node
                               '@id': `${authorProfileUrl}#author`,
                               url: authorProfileUrl,
-                              jobTitle: 'Medical Content Team',
+                              jobTitle: 'Editorial Team',
                           }
                         : (seoConfig.organization?.name ?? seoConfig.siteName)
                 }

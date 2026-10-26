@@ -5,16 +5,18 @@
 
 Always: counts the <script type="application/ld+json"> tags by @type (count
 tags, not string mentions: the RSC payload repeats them) and greps the
-visible text for claims (board-certified, 5,000+, ABPS, the American Board
-of Cosmetic Surgery, AAAASF/accredited, "medically reviewed", phone numbers).
+visible text for claims: every `fail` rule of the claims canon's section 11
+(docs/claims/canon.md, read from packages/shared/src/claims/patterns.data.json
+after its neutralizers; CR9 only for Dr. Lofman, since Dr. Shats is flag-only
+under D1), plus phone numbers. Without that file it falls back to a short
+built-in list.
 
 With the post's text (<slug> reads blog/posts/<slug>/; a content.md path
 reads that file and the meta.json beside it, e.g. a scratch copy for a
 review), it also checks that the page serves the quick answer, every H2,
 the FAQ section and Sources, and splits each claim hit into:
   post      the words around it are in content.md: the post says it
-  template  they aren't: nav, sidebar, the injected CTA block, footer (the old
-            template's "board-certified surgeons" and "5,000+ Happy Patients")
+  template  they aren't: nav, sidebar, the injected CTA block, footer
 
 Exit 1 on a post claim, a part not served, or BreadcrumbList / MedicalWebPage /
 BlogPosting not exactly once (FAQPage once when there is an FAQ section);
@@ -33,15 +35,44 @@ from collections import Counter
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[4]
-CLAIMS = {
+PATTERNS = REPO / 'packages' / 'shared' / 'src' / 'claims' / 'patterns.data.json'
+PHONE = r'\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b'
+FALLBACK_CLAIMS = {
     'board-certified': r'board[\s-]certified(?! in general surgery by the american board of surgery)',
     '5,000': r'5,000\+?|thousands of (?:patients|procedures)',
     'ABPS': r'\babps\b|american board of plastic surgery',
     'ABCS': r'american board of cosmetic surgery',
     'AAAASF/accredited': r'aaaasf|accredit',
     'medically reviewed': r'medically reviewed',
-    'phone': r'\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b',
 }
+
+
+def load_claims() -> tuple[dict[str, str], list[str]]:
+    """The canon's `fail` text rules and neutralizers (claims canon section 11)."""
+    try:
+        data = json.loads(PATTERNS.read_text(encoding='utf-8'))
+    except (OSError, json.JSONDecodeError):
+        return {**FALLBACK_CLAIMS, 'phone': PHONE}, []
+    claims = {}
+    for r in data['rules']:
+        if r['severity'] != 'fail' or r.get('scope', 'text') != 'text':
+            continue
+        # CR9 fails Dr. Lofman and only flags Dr. Shats (D1).
+        claims[r['id']] = r'\blofman\b' if r['id'] == 'CR9' else r['pattern']
+    # EX1 is a paired rule (study counts are allowed); the retired volume
+    # claim itself is always a defect.
+    claims['5,000+'] = r'\b5,000\s*\+'
+    claims['phone'] = PHONE
+    return claims, data.get('neutralizers', [])
+
+
+CLAIMS, NEUTRALIZERS = load_claims()
+
+
+def neutralize(text: str) -> str:
+    for n in NEUTRALIZERS:
+        text = re.sub(n, ' ', text, flags=re.I)
+    return norm(text).lower()
 
 
 def norm(s: str) -> str:
@@ -103,7 +134,7 @@ def main() -> int:
         arg = sys.argv[2]
         cpath = Path(arg) if arg.endswith('.md') else REPO / 'blog' / 'posts' / arg / 'content.md'
         content = cpath.read_text(encoding='utf-8')
-        content_norm = md_text(content)
+        content_norm = neutralize(md_text(content))
         meta_path = cpath.parent / 'meta.json'
         h2s = [norm(h) for h in re.findall(r'^## (.+)$', content, re.M)]
         served = {norm(re.sub(r'<[^>]+>', '', m.group(2)))
@@ -122,15 +153,17 @@ def main() -> int:
             if not ok:
                 problems.append('quick answer not served')
 
-    text = visible(page).lower()
+    text = neutralize(visible(page))
     for label, rx in CLAIMS.items():
         post, template = [], 0
-        for m in re.finditer(rx, text):
+        for m in re.finditer(rx, text, re.I):
             a, b = words_around(text, m)
             if content_norm is not None and (a in content_norm or b in content_norm):
                 post.append(text[max(0, m.start() - 60):m.end() + 40])
             else:
                 template += 1
+        if not post and not template:
+            continue
         if content_norm is None:
             print(f'{label:18} page {template}')
             continue

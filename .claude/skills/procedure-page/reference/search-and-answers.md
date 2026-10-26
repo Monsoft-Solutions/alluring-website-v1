@@ -34,13 +34,19 @@ Keep the numbers in the brief and the PR, so day 28/56 can be compared.
 - **No surgeon's name in `seoTitle`.** A staffing change would break every
   title that carries it. Head term first, then what wins the click for the
   cluster the page ranks best for, usually the price (liposuction:
-  `Liposuction Miami {year} | Lipo 360 From $4,000 + Financing`, the price
-  read from the facts file). The name belongs in the meta description.
+  `Liposuction Miami {year} | Lipo 360 From [[price:lipo:lipo360]] + Financing`,
+  the price a claim token that `resolveProcedureClaims` fills from the live
+  price list; never a typed figure). The name belongs in the meta
+  description. Never "board-certified" in a title.
 - **Meta description** (`metaDescription`, ≤ 160 characters, clamped by
   `clampMetaDescription`): written for the click on the cluster the page is
-  closest to page one for (for BBL, cost). Price, the named surgeon with MD,
-  the one safety fact competitors can't claim, "Free consultation". No
-  "board-certified". It also feeds `og:description` and `twitter:description`.
+  closest to page one for (for BBL, cost). Price (a claim token), the named
+  surgeon with MD, one verified safety fact (for example "one surgeon
+  performs every [procedure]", or a Florida-law fact from the facts file),
+  and "Consultation in person or by video". No "board-certified", no ABCS,
+  no comparison with other practices, and no "free" added where the live
+  meta doesn't already say it (canon D7). It also feeds `og:description` and
+  `twitter:description`.
 - **H2s are the questions people search**, word for word where the query is
   natural ("How much does a tummy tuck cost in Miami?").
 - **Answer first**: a 40–60-word direct answer under every question H2
@@ -82,7 +88,7 @@ with stable `@id`s:
 | `BreadcrumbList`                 | the route                                                                                                                                                             |
 | `FAQPage`                        | `procedure.faqs`                                                                                                                                                      |
 | `SurgicalProcedure` `#procedure` | `bodyLocation` (set it per procedure), `howPerformed` from `process`, `followup` from `quickStats.recovery`                                                           |
-| `Service` `#service`             | `provider` = the clinic and, when the page names her, the surgeon; `Offer` with `minPrice`/`maxPrice` from `pricing`                                                  |
+| `Service` `#service`             | `provider` = the clinic and, when the page names her, the surgeon; `Offer` with `price`/`minPrice` (the resolved starting price); no `maxPrice`                       |
 | `MedicalClinic` `#organization`  | `siteConfig`; `employee` = the surgeon                                                                                                                                |
 | `Person` `/dr-karlinsky#person`  | `karlinskyPersonNode`: MD, FACS, `hasCredential` for ABS, FACS and the Florida license; no ABCS node (its Florida statement has nowhere to go), no `medicalSpecialty` |
 
@@ -137,7 +143,9 @@ sweep saw in AI answers:
 - Engines repeat whichever page states **one crisp number** (a price, a
   recovery time). State yours, sourced, in a sentence that stands alone.
 - The pages AI answers cite have a **dated, named medical reviewer** and a
-  real update date. Add the reviewer only when the review is real.
+  real update date. Alluring has no medical reviewer, so the page never
+  claims one ("medically reviewed by" is forbidden by the claims canon);
+  add one only when a real review exists and the canon records it.
 - **Entities**: the named surgeon as a `Person` with credentials, linked to
   the clinic.
 - **Consistency** across the page, `llms*.txt`, FAQs, the landing page and the

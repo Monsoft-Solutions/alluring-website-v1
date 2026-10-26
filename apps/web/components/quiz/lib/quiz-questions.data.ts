@@ -7,8 +7,6 @@
  * @module components/quiz/lib/quiz-questions.data
  */
 
-import { getFinancingPartnersString } from '@/lib/data/site-config'
-
 import type {
     BodyArea,
     BodyConcern,
@@ -118,7 +116,7 @@ export const BODY_CONCERN_OPTIONS: readonly QuizOption<BodyConcern>[] = [
     {
         value: 'multiple-body',
         label: 'Multiple Areas',
-        description: 'Comprehensive body transformation',
+        description: 'Treat several areas in one surgery',
     },
 ] as const
 
@@ -170,28 +168,29 @@ export const LIFE_EVENT_OPTIONS: readonly QuizOption<LifeEvent>[] = [
 ] as const
 
 /**
- * Budget range options (monthly payment comfort)
+ * Budget range options: how big a change, never a dollar or payment figure,
+ * "affordable" or "all-inclusive" (claims canon D6, §10)
  */
 export const BUDGET_RANGE_OPTIONS: readonly QuizOption<BudgetRange>[] = [
     {
         value: 'low',
-        label: 'Budget-friendly',
-        description: 'Looking for affordable options',
+        label: 'One focused change',
+        description: 'A single, targeted procedure',
     },
     {
         value: 'medium',
-        label: 'Moderate investment',
-        description: 'Comfortable monthly plan',
+        label: 'A noticeable change',
+        description: 'One procedure, or two combined',
     },
     {
         value: 'high',
-        label: 'Premium investment',
-        description: 'Ready to invest in my goals',
+        label: 'A bigger change',
+        description: 'Two or more areas in one plan',
     },
     {
         value: 'premium',
-        label: 'All-inclusive',
-        description: 'Comprehensive transformation',
+        label: 'Several changes at once',
+        description: 'Several procedures together',
     },
 ] as const
 
@@ -200,9 +199,9 @@ export const BUDGET_RANGE_OPTIONS: readonly QuizOption<BudgetRange>[] = [
  */
 export const QUIZ_QUESTIONS = {
     welcome: {
-        title: 'Discover Your Perfect Transformation',
+        title: 'Find the Procedure That Fits Your Goals',
         subtitle:
-            "Answer a few questions and we'll recommend the ideal procedure for your goals",
+            "Answer a few questions and we'll suggest procedures to ask about at your consultation",
         ctaText: 'Start Your Journey',
     },
     bodyArea: {
@@ -230,8 +229,8 @@ export const QUIZ_QUESTIONS = {
         subtitle: 'Optional - helps us understand your timeline',
     },
     budget: {
-        title: 'What Investment Level Feels Right for You?',
-        subtitle: `We offer flexible financing through ${getFinancingPartnersString()}`,
+        title: 'How Big a Change Do You Have in Mind?',
+        subtitle: 'Your surgeon confirms your price at consultation',
     },
     leadCapture: {
         title: 'Your Personalized Plan Is Ready!',
@@ -240,19 +239,19 @@ export const QUIZ_QUESTIONS = {
     },
     results: {
         title: 'Your Recommended Procedure',
-        subtitle: 'Based on your goals, we think this is perfect for you',
+        subtitle:
+            'Based on your answers, this may suit your goals. Your surgeon decides at consultation.',
     },
     packageBuilder: {
         title: 'Enhance Your Results',
-        subtitle:
-            'Consider these complementary procedures for optimal transformation',
+        subtitle: 'Procedures that are often combined with this one',
     },
     confirmation: {
         title: 'Thank You!',
         subtitle: 'Your personalized consultation request has been received',
         nextSteps: [
-            'A consultation coordinator will call you within 24 hours',
-            'Check your email for a confirmation with your recommended procedures',
+            'A patient coordinator will text you to book your consultation',
+            'Check your email for a confirmation',
             "Prepare any questions you'd like to ask during your consultation",
         ],
     },
@@ -267,9 +266,9 @@ export const SOCIAL_PROOF_MESSAGES = {
     'breast-lift': 'Lifts and reshapes without adding size',
     'breast-reduction': 'Smaller, lighter breasts in proportion to your frame',
     liposuction: 'Lipo 360 treats your whole midsection in one surgery',
-    bbl: 'Our most requested body procedure',
-    'tummy-tuck': 'Perfect for post-pregnancy restoration',
+    bbl: 'Fat from your midsection, moved to shape your buttocks',
+    'tummy-tuck': 'Often chosen after pregnancy',
     'mommy-makeover': 'A tummy tuck and breast surgery, planned as one surgery',
     facelift: 'Face and neck lifted together in one surgery',
-    blepharoplasty: 'Quick recovery, dramatic results',
+    blepharoplasty: 'Most people are back at work in 7 to 10 days',
 } as const

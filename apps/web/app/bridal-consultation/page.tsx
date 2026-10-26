@@ -23,10 +23,11 @@ import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 import { ContainerLayout } from '@/components/container-layout.component'
 import { BridalHero } from '@/components/landing/bridal-hero.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { MiniLeadCapture } from '@/components/landing/mini-lead-capture.component'
 import {
@@ -48,12 +49,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/bridal-consultation',
     title: 'Bridal Plastic Surgery Miami | Wedding Ready | Free Consultation',
     description:
-        'Look radiant on your wedding day. Bridal plastic surgery consultations with wedding timeline planning. Breast augmentation, body contouring, rhinoplasty. Board-certified surgeons. Free consultation.',
+        'Look radiant on your wedding day. Bridal plastic surgery consultations with wedding timeline planning. Breast augmentation and body contouring. One surgeon: Victoria Karlinsky, MD, FACS. Free consultation.',
 
     openGraph: {
         title: 'Bridal Plastic Surgery Miami | Wedding Ready | Free Consultation',
         description:
-            'Look radiant on your wedding day. Bridal plastic surgery consultations with wedding timeline planning. Board-certified surgeons.',
+            'Look radiant on your wedding day. Bridal plastic surgery consultations with wedding timeline planning. One surgeon: Victoria Karlinsky, MD, FACS.',
         url: `${seoConfig.siteUrl}/bridal-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -80,8 +81,16 @@ export default async function BridalConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        bridalFaqData,
+        'text',
+        'faq /bridal-consultation'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(bridalFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -93,7 +102,7 @@ export default async function BridalConsultationPage() {
             <WebPageSchema
                 name={`Bridal Plastic Surgery Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/bridal-consultation`}
-                description='Look radiant on your wedding day with bridal plastic surgery consultations. Expert wedding timeline planning for breast augmentation, body contouring, rhinoplasty, and more.'
+                description='Look radiant on your wedding day with bridal plastic surgery consultations. Wedding timeline planning for breast augmentation, body contouring and more.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -106,8 +115,8 @@ export default async function BridalConsultationPage() {
                 {/* Section 2: Fear Busters - Address objections */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 3: Weekly Payments - Make it affordable */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 3: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 4: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
@@ -115,7 +124,7 @@ export default async function BridalConsultationPage() {
                 {/* Section 5: Google Reviews */}
                 <GoogleReviews
                     title='What Our Patients Say'
-                    subtitle='Real reviews from patients who looked radiant on their special day'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 
@@ -123,7 +132,7 @@ export default async function BridalConsultationPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={bridalFaqCategories}
-                    faqData={bridalFaqData}
+                    faqData={faqData}
                     badge={bridalFaqConfig.badge}
                     title={bridalFaqConfig.title}
                     subtitle={bridalFaqConfig.subtitle}
@@ -134,7 +143,7 @@ export default async function BridalConsultationPage() {
                     ctaConfig={{
                         title: 'Questions about your wedding timeline?',
                         description:
-                            'Our bridal specialists will help you plan the perfect timing.',
+                            "We'll help you plan your surgery around your wedding date.",
                         buttonText: 'Call Us Now',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,
@@ -151,7 +160,7 @@ export default async function BridalConsultationPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Look Radiant on Your Special Day'
-                    description='Every detail of your wedding is planned to perfection. Let us help you feel just as confident about yourself. Our bridal specialists will create a customized plan that fits your wedding timeline.'
+                    description='Every detail of your wedding is planned to perfection. Let us help you feel just as confident about yourself. Dr. Karlinsky will create a plan that fits your wedding timeline.'
                     primaryButton={{
                         text: 'Yes, I Want My Bridal Consultation',
                         href: '#hero-form',

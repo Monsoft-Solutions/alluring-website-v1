@@ -39,7 +39,7 @@ const primaryLinks = [
     {
         href: '/miami-plastic-surgery-specials',
         title: 'Specials',
-        description: 'Limited Time Offers',
+        description: 'Current specials',
         icon: <Tag className='h-5 w-5' />,
         badge: 'New',
         analyticsId: 'links-specials',
@@ -47,14 +47,15 @@ const primaryLinks = [
     {
         href: '/plastic-surgery-financing-miami',
         title: 'Financing',
-        description: 'From $99/mo',
+        // Partners named, no payment figure (claims canon D6).
+        description: 'Cherry, CareCredit, United Credit',
         icon: <CreditCard className='h-5 w-5' />,
         analyticsId: 'links-financing',
     },
     {
         href: '/about',
-        title: 'Our Surgeons',
-        description: 'Meet the Team',
+        title: 'Our Surgeon',
+        description: 'Meet Dr. Karlinsky',
         icon: <Users className='h-5 w-5' />,
         analyticsId: 'links-about',
     },

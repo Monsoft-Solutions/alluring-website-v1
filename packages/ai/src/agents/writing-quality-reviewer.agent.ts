@@ -6,6 +6,8 @@
  *
  * @module @workspace/ai/agents/writing-quality-reviewer
  */
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
+import { buildClaimsPromptBlock } from '@workspace/shared/claims/prompt'
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
@@ -96,7 +98,8 @@ const writingQualityReviewSchema = z.object({
 /**
  * System prompt for writing quality reviewer
  */
-const WRITING_QUALITY_REVIEW_SYSTEM_PROMPT = `You are an expert medical content editor for a luxury plastic surgery clinic in Miami.
+function buildWritingQualityReviewPrompt(pricing?: PricingSnapshot): string {
+    return `You are an expert medical content editor for a cosmetic surgery practice in Miami.
 
 Your role is to review blog posts for writing quality across these dimensions:
 
@@ -119,8 +122,8 @@ The brand voice should be:
 - Confident, not arrogant: "Here's how we approach this" not "The only way"
 - Active voice preferred
 
-✅ Good phrases: "Here's how...", "We typically see...", "In our experience..."
-❌ Avoid: "Revolutionary", "Game-changing", "World-class", "Seamlessly"
+✅ Good phrases: "Here's how...", "Your surgeon will...", "According to [named source]..."
+❌ Avoid: "Revolutionary", "Game-changing", "World-class", "Seamlessly", and invented practice experience ("We typically see...", "In our experience...")
 
 **4. Structure (15%)**
 - Logical heading hierarchy (H2 > H3)
@@ -157,7 +160,12 @@ Example issues array:
 [
   {"severity": "warning", "location": "Paragraph 2", "description": "Sentence is too long at 45 words", "suggestedFix": "Break into 2-3 shorter sentences", "originalText": "The exact long sentence here..."},
   {"severity": "suggestion", "location": "Conclusion", "description": "Missing call-to-action", "suggestedFix": "Add a clear next step for readers", "originalText": null}
-]`
+]
+
+A claim the canon below forbids (a typed Alluring price, an unverified credential, plural surgeons, "luxury") is a "critical" issue, with the canon's wording as the suggestedFix.
+
+${buildClaimsPromptBlock('blog-reviewer', pricing)}`
+}
 
 /**
  * Run the writing quality reviewer agent
@@ -172,6 +180,7 @@ export async function runWritingQualityReviewer(
         primaryKeyword,
         modelId = DEFAULT_MODEL_ID,
         reasoningEffort,
+        pricing,
     } = options
 
     // Calculate basic metrics
@@ -213,7 +222,7 @@ Review this content for writing quality, brand voice alignment, readability, and
         modelId,
         reasoningEffort,
         schema: writingQualityReviewSchema,
-        system: WRITING_QUALITY_REVIEW_SYSTEM_PROMPT,
+        system: buildWritingQualityReviewPrompt(pricing),
         prompt,
     })
 

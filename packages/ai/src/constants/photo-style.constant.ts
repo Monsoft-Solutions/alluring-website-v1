@@ -43,7 +43,7 @@ export const PHOTO_STYLES: readonly PhotoStyleDefinition[] = [
             'Refined, classy imagery showcasing body with artistic elegance',
         label: 'Artistic/Sensual',
         promptGuidelines:
-            'High-end artistic photography, tasteful sensuality, refined and classy aesthetic, elegant composition showing skin and body contours, soft dramatic lighting, luxurious atmosphere, celebration of feminine beauty, sophisticated boudoir-inspired style, premium fashion photography aesthetic, body confidence imagery, warm skin tones, artistic shadows and highlights',
+            'High-end artistic photography, tasteful sensuality, refined and classy aesthetic, elegant composition showing skin and body contours, soft dramatic lighting, refined atmosphere, celebration of feminine beauty, sophisticated boudoir-inspired style, premium fashion photography aesthetic, body confidence imagery, warm skin tones, artistic shadows and highlights',
     },
     {
         id: 'lifestyle',
@@ -61,7 +61,7 @@ export const PHOTO_STYLES: readonly PhotoStyleDefinition[] = [
             'Sexy (non-explicit) editorial cover vibe with Miami glamour',
         label: 'Miami Publication Cover (Sexy Editorial)',
         promptGuidelines:
-            'Sexy (non-explicit) Miami publication cover-style editorial photography, high-fashion styling, tasteful skin showing (swimwear/lingerie-inspired), confident pose and body confidence, glamorous hair and makeup, glossy magazine lighting, South Beach / Art Deco vibe, vibrant Miami color accents, premium luxury aesthetic, cinematic highlights and shadows, cover-ready composition with negative space for masthead/headlines, NO explicit nudity (no nipples/genitals), adult-only',
+            'Sexy (non-explicit) Miami publication cover-style editorial photography, high-fashion styling, tasteful skin showing (swimwear/lingerie-inspired), confident pose and body confidence, glamorous hair and makeup, glossy magazine lighting, South Beach / Art Deco vibe, vibrant Miami color accents, premium aesthetic, cinematic highlights and shadows, cover-ready composition with negative space for masthead/headlines, NO explicit nudity (no nipples/genitals), adult-only',
     },
 ] as const
 

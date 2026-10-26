@@ -234,8 +234,8 @@ export function LeadCaptureStep({
                 transition={{ delay: 0.4 }}
                 className='text-center text-sm text-stone-500'
             >
-                Your information is used only to provide personalized
-                recommendations. We never share or sell your data.
+                We use your details to send your recommendations and to contact
+                you about a consultation. We never sell your data.
             </motion.p>
         </motion.div>
     )

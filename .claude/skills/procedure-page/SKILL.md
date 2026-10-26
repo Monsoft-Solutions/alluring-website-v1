@@ -20,16 +20,17 @@ Alluring's price, safety standard, surgeon and recovery for this procedure.
 
 ## Read first
 
-| What                                                                  | Where                                                                |
-| --------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Who she is, what she fears, what moves her                            | [reference/audience-psychology.md](reference/audience-psychology.md) |
-| Section order, first screen, calls to action, forms                   | [reference/page-blueprint.md](reference/page-blueprint.md)           |
-| Immersive design system, motion, performance                          | [reference/immersive-design.md](reference/immersive-design.md)       |
-| Search Console, titles, answers, FAQ, JSON-LD, llms.txt, AI citations | [reference/search-and-answers.md](reference/search-and-answers.md)   |
-| Florida advertising rules, credentials, prices, photos, reviews       | [reference/compliance.md](reference/compliance.md)                   |
-| Builds, sweeps, browser pass, measurements                            | [reference/verification.md](reference/verification.md)               |
-| Review artifact structure                                             | [reference/review-mode.md](reference/review-mode.md)                 |
-| Per-procedure inventory and research questions (dated)                | [reference/starting-points.md](reference/starting-points.md)         |
+| What                                                                  | Where                                                                   |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Who she is, what she fears, what moves her                            | [reference/audience-psychology.md](reference/audience-psychology.md)    |
+| Section order, first screen, calls to action, forms                   | [reference/page-blueprint.md](reference/page-blueprint.md)              |
+| Immersive design system, motion, performance                          | [reference/immersive-design.md](reference/immersive-design.md)          |
+| Search Console, titles, answers, FAQ, JSON-LD, llms.txt, AI citations | [reference/search-and-answers.md](reference/search-and-answers.md)      |
+| Florida advertising rules, credentials, prices, photos, reviews       | [reference/compliance.md](reference/compliance.md)                      |
+| Every claim the site may make (governs all of the above)              | `docs/claims/canon.md`; as code, `packages/shared/src/claims/README.md` |
+| Builds, sweeps, browser pass, measurements                            | [reference/verification.md](reference/verification.md)                  |
+| Review artifact structure                                             | [reference/review-mode.md](reference/review-mode.md)                    |
+| Per-procedure inventory and research questions (dated)                | [reference/starting-points.md](reference/starting-points.md)            |
 
 The worked examples, `apps/web/`: the BBL and liposuction pages, built on
 the shared module kit.
@@ -137,8 +138,12 @@ genuine forks only.
    `procedure-facts.ts`: every figure with its unit, the concept words that
    license it, the verbatim-safe statement, source ids and the attribution
    the copy must use. Read each source yourself; record what it does _not_
-   say in `caveat`. The practice's own figures (price, surgery length) get the
-   `alluring-practice` source.
+   say in `caveat`. The practice's own figures (surgery length) get the
+   `alluring-practice` source. Alluring's prices are not copy figures: they
+   come from the pricing resolver or a claim token (`[[price:<procedure>]]`),
+   never typed and never read from a facts file's `price-*` fact, so an
+   admin price edit or discount reaches the page
+   ([compliance](reference/compliance.md#prices)).
 2. **Copy lives in the section components** that lay it out, not in a content
    object. Data files keep only what other surfaces read.
 3. Every question-phrased H2 opens with a 40–60-word direct answer
@@ -147,7 +152,9 @@ genuine forks only.
 4. Update the data file fields other surfaces read: `metaDescription`,
    `shortDescription`, `benefits`, `quickStats`, `quickAnswer`, `faqs`,
    `process`, `bodyLocation`, `dateModified`. New fields go into
-   `procedureSchema` too, or zod drops them silently.
+   `procedureSchema` too, or zod drops them silently. A price in any of
+   them is a claim token, and every surface that prints the field (page,
+   metadata, JSON-LD, `llms*.txt`) resolves it.
 
 Show the user the copy (the rendered page is best) before moving on.
 
@@ -258,7 +265,9 @@ fast-follow that doesn't need the owner, in a PR on the branch they name.
 - Publish an AI image of a person without "Model shown. Not a patient.", or
   any AI image as a result, as the surgeon, or as staff.
 - Say "board-certified plastic surgeon", ABPS, "best", "safest", guarantee,
-  travel coordination, or any market outside the US.
+  travel coordination, any market outside the US, or anything else the
+  claims canon (`docs/claims/canon.md`) removes. Type an Alluring price or a
+  weekly or monthly payment figure.
 - Change the URL, and don't change the title or H1 in the same deploy as the
   redesign unless the evidence says to (then say why in the PR).
 - Write to the production database, run `db:seed`, or push to `master`.

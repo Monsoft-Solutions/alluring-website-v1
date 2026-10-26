@@ -4,6 +4,8 @@ import { db } from '@workspace/db/client'
 import { blogPost, images } from '@workspace/db/schema/blog'
 import { and, desc, eq, gt, isNotNull, lt, asc, ne, or } from 'drizzle-orm'
 
+import { resolvePostListClaims } from '@/lib/claims/resolve-claims.server'
+
 /**
  * Minimal post data for prev/next navigation
  */
@@ -160,5 +162,13 @@ export const getAdjacentPosts = (
             tags: ['blog-posts', `blog-adjacent-${postId}`],
             revalidate: 86400, // publishing fires revalidateTag('blog-posts'); see #337
         }
-    )()
+    )().then(async ({ previousPost, nextPost }) => {
+        // Claim tokens in the two titles (#354)
+        const [previous = null, next = null] = await Promise.all(
+            [previousPost, nextPost].map(async (post) =>
+                post ? ((await resolvePostListClaims([post]))[0] ?? null) : null
+            )
+        )
+        return { previousPost: previous, nextPost: next }
+    })
 }

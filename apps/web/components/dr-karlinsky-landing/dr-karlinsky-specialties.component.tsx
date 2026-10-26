@@ -23,7 +23,7 @@ const SPECIALTIES: readonly SpecialtyCard[] = [
     },
     {
         title: 'Mommy Makeover',
-        tagline: 'Pre-pregnancy silhouette, restored.',
+        tagline: 'Breast and tummy changes after pregnancy, treated together.',
     },
     {
         title: 'Tummy Tuck',
@@ -31,7 +31,7 @@ const SPECIALTIES: readonly SpecialtyCard[] = [
     },
     {
         title: 'Lipo 360',
-        tagline: 'Full-body contouring, precise.',
+        tagline: 'A slimmer waist, all the way around.',
     },
     {
         title: 'Breast Augmentation & Lift',
@@ -39,7 +39,7 @@ const SPECIALTIES: readonly SpecialtyCard[] = [
     },
     {
         title: 'Facelift',
-        tagline: 'Refreshed — never overdone.',
+        tagline: 'A refreshed look, not an overdone one.',
     },
 ] as const
 
@@ -115,8 +115,8 @@ export function DrKarlinskySpecialties({
                 {/* Bottom redirect to form */}
                 <div className='mt-12 flex flex-col items-center gap-2 text-center'>
                     <p className='text-stone-600'>
-                        Combining two? Dr. Karlinsky does that, safely, all the
-                        time.
+                        Combining two? Ask Dr. Karlinsky about doing both in one
+                        surgery.
                     </p>
                     <Link
                         href={formAnchor}

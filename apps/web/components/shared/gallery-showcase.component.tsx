@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
+import { KARLINSKY_NAME } from '@workspace/shared/claims/surgeon'
+
 import { getFeaturedGalleryMedia } from '@/lib/queries/gallery/gallery-list.query'
 
 import { SectionContainer } from './section-container.component'
@@ -41,7 +43,7 @@ export async function GalleryShowcase({
     id = 'gallery',
     badge = 'The Evidence',
     title = 'Real Results.',
-    description = 'See the artistry of our board-certified surgeons. Browse our verified patient transformations.',
+    description = `See the work of ${KARLINSKY_NAME}. Browse our verified patient transformations.`,
     limit = 6,
     variant = 'default',
     showCta = true,

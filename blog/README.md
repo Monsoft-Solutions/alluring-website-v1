@@ -145,9 +145,9 @@ Start from Search Console, not guesses: the `search-console` MCP
 9. **The v2 line, before the run.** If the slug isn't in `BLOG_V2_SLUGS`
    (`apps/web/lib/blog/blog-v2.constant.ts`), the user decides; merge and
    deploy that one line before the production run (listing a slug whose row
-   doesn't exist yet is harmless). Declining v2 publishes the post beside the
-   old sidebar's "board-certified surgeons" and "5,000+ Happy Patients",
-   which compliance.md forbids. In the same pre-run PR, propose the fix for the
+   doesn't exist yet is harmless). Declining v2 publishes the post in the old
+   template (its sidebar follows the claims canon since #354). In the same
+   pre-run PR, propose the fix for the
    editorial-team author page every post links, v2 included
    (`apps/web/lib/data/authors.data.ts`; `code-changes.md` lists its claims).
 10. **Production.** With the user's OK, rebuild against production into a new
@@ -261,8 +261,7 @@ Start from Search Console, not guesses: the `search-console` MCP
   body must answer 200: on a stale local copy, related-post cards can point
   at posts folded since.
 - The served HTML has the quick answer, every H2, the FAQ section and Sources,
-  and no "board-certified", "5,000", ABPS, AAAASF or phone digits in the body
-  (the old template's sidebar is a known issue; the v2 allowlist avoids it).
+  and no "board-certified", "5,000", ABPS, AAAASF or phone digits in the body.
 - Count `<script type="application/ld+json">` tags, not mentions (the RSC
   payload repeats them): BreadcrumbList, MedicalWebPage, BlogPosting, FAQPage
   when there are FAQs, ImageObject only for images in the body.
@@ -384,7 +383,7 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
   of Cosmetic Surgery, double/triple board, "plastic surgeon(s)" outside a
   society's name, "our surgeons"; AAAASF, "accredited", anesthesiologist,
   VASER, 24/7, "5,000+", "thousands of patients", tenure claims, HIPAA;
-  "medically reviewed"; best, safest, guarantee, number one, world-class,
+  "medically reviewed"; safest, guarantee, number one, world-class,
   top-rated, leading, cutting-edge, state-of-the-art, revolutionary, painless,
   scarless; luxury, affordable; concierge, hotels, lodging, recovery houses,
   airport, packages, international, Latin America, the Caribbean, medical
@@ -392,6 +391,25 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
   from $2,500, $3,000–$5,000 per area, tummy tuck $8,000+, $6,500 for a lift);
   financing figures; fake urgency; phone numbers; filler words; and the
   cluster's retired figures (`clusters.json`).
+- **The claims canon** (`docs/claims/canon.md` §11, read from
+  `packages/shared/src/claims/patterns.data.json`, over the same fields): each
+  `fail` rule the sweep above doesn't already report is a problem. That adds,
+  among others, every retired price in canon §5 (PR1–PR8: BBL $3,000–$15,000
+  figures, the old augmentation ranges, $11,500, mommy makeover totals),
+  "1 in N" mortality, wrong contracture and complication rates, longevity
+  claims without a source, ratings other than 4.7 and typed review counts.
+  Dr. Lofman fails; Dr. Shats is a warning (D1). `review` rules are warnings:
+  "best" said of the practice, surgeon, results or price is a problem, generic
+  advice ("the best way to sleep", "best candidates") passes, and any other
+  "best" is a warning.
+- **Claim tokens** (#354): every Alluring price is a token (`[[price:bbl]]`),
+  never a typed figure. `lib/claims_check.mjs` runs the site's own validator
+  over the title, meta, excerpt, quick answer and image text, and
+  `validateGeneratedMdx` over the body: a token that would render as nothing
+  (unknown name, bad argument, unknown line, malformed, unclosed) or a typed
+  Alluring price is a problem. When node or tsx can't run (or with
+  `--no-mdx`), the token grammar of `packages/shared/src/claims/tokens.ts` is
+  still checked in Python.
 - **Figures:** every `$` amount is in the cluster's facts file or in a quote
   verified against `docs/pricing/practice-price-list.md`. A paragraph, list
   or table that states a practice price says the surgeon confirms it at
@@ -443,9 +461,8 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
   (`reuse_url`) keeps the `images` row, and the generation prompt, it was
   made with.
 - **The old template.** A post outside `BLOG_V2_SLUGS` renders the old
-  template, whose sidebar says "board-certified surgeons" and "5,000+ Happy
-  Patients". Merge the slug's v2 line before the production run (the user
-  decides), or fix the old template.
+  template. Its sidebar follows the claims canon since #354; merge the slug's
+  v2 line before the production run when the user wants the v2 template.
 - **MDX crashes.** A second CTA marker, any other HTML comment, `{}` in prose
   or an unknown component takes the page down. The lint runs the pipeline's
   own validator, and a render on `next start` is the final check.
@@ -459,19 +476,7 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
   inserts posts as `published` with an explicit `published_at`.
 - **Sitemap lag.** `/sitemap/blog.xml` is cached for up to 3 hours and no
   revalidation tag reaches it; wait, or redeploy.
-
-## Known issues outside the kit
-
-- The editorial-team author page that every post's schema and byline link
-  claims "board-certified plastic surgeons", review by "our surgeons", a
-  "Medical Content Review Board" and "HIPAA Compliance Certified"
-  (`apps/web/lib/data/authors.data.ts`, the editorial-team entry).
-  `build_sql.py` lists those lines in `code-changes.md` under "Before the
-  production run", next to the v2 line, so the user decides both in one
-  pre-run PR.
-- The root layout's fallback title says "Board-Certified Miami Plastic
-  Surgery" (`apps/web/app/layout.tsx`), and the surgeon OG alt says "Board
-  Certified Plastic Surgeon" (`apps/web/app/[slug]/page.tsx`).
-- The procedure route's generated meta description says "Miami's top surgeons"
-  and "5,000+ procedures" for pages without a hand-written one
-  (`apps/web/app/procedures/[slug]/page.tsx`).
+- **Author page claims.** Every post's schema and byline link the
+  editorial-team author page (`apps/web/lib/data/authors.data.ts`). Issue #354
+  cleared its claims; if one comes back, `build_sql.py` lists the line in
+  `code-changes.md` under "Before the production run".

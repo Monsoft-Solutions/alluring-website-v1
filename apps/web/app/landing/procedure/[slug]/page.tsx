@@ -43,7 +43,7 @@ import { ProcedureLandingStickyMobileCTA } from '@/components/procedure-landing/
 import { FAQComponent } from '@/components/shared/faq.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { ProcedureBeforeAfterSection } from '@/components/shared/procedure-before-after-section.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { env } from '@/env'
 import { getProcedureBySlug, procedures } from '@/lib/data/procedures.data'
 import {
@@ -51,6 +51,9 @@ import {
     procedureImageUrl,
 } from '@/lib/seo/procedure-graph.util'
 import { siteConfig } from '@/lib/data/site-config'
+import { AREA_SERVED } from '@workspace/shared/claims/identity'
+import { resolveProcedureClaims } from '@/lib/claims/resolve-claims.server'
+import { getProcedurePrices } from '@/lib/queries/pricing.query'
 import { getActivePromotionByProcedure } from '@/lib/queries/promotion.query'
 import { seoConfig } from '@/lib/seo-config'
 import type { ProcedureFAQ } from '@/lib/types/procedure.type'
@@ -121,7 +124,8 @@ export async function generateMetadata(
     const ogImage = procedureImageUrl(procedure, siteUrl)
 
     const title = `Get Your ${cleanTitle} Quote · Free Consult · Miami`
-    const description = `Free ${cleanTitle.toLowerCase()} quote in Miami. Board-certified surgeons, honest pricing, financing available. We'll text you within 24 hours — no pressure.`
+    // Rewritten copy adds no "free" (canon D7).
+    const description = `${cleanTitle} quote in Miami, from one surgeon. Honest pricing, financing available, no pressure.`
 
     return {
         title,
@@ -172,11 +176,18 @@ export default async function ProcedureLandingPage(
     props: ProcedureLandingPageProps
 ) {
     const params = await props.params
-    const procedure = getProcedureBySlug(params.slug)
+    const rawProcedure = getProcedureBySlug(params.slug)
 
-    if (!procedure) {
+    if (!rawProcedure) {
         notFound()
     }
+
+    // Claim tokens in the procedure's copy, and the hero's starting price,
+    // from the pricing resolver (#354).
+    const [procedure, prices] = await Promise.all([
+        resolveProcedureClaims(rawProcedure),
+        getProcedurePrices(params.slug),
+    ])
 
     const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? seoConfig.siteUrl
     const pageUrl = `${siteUrl}/landing/procedure/${params.slug}`
@@ -232,7 +243,7 @@ export default async function ProcedureLandingPage(
 
             <ServiceSchema
                 name={`${procedure.title} Consultation`}
-                description={`Free ${procedure.title.toLowerCase()} consultation with board-certified Miami surgeons. Honest pricing, financing available.`}
+                description={`${procedure.title.replace(/\s*Miami\s*$/i, '')} consultation in Miami, with one surgeon. Honest pricing, financing available.`}
                 url={pageUrl}
                 serviceType='Cosmetic Surgery Consultation'
                 provider={{
@@ -240,7 +251,8 @@ export default async function ProcedureLandingPage(
                     name: siteConfig.business.name,
                     type: 'MedicalBusiness',
                 }}
-                areaServed={['Miami', 'Florida', 'United States']}
+                // US only (claims canon §1, §8): the shared list every page uses.
+                areaServed={[...AREA_SERVED]}
                 availableLanguage={['English', 'Spanish']}
                 offers={{
                     price: 0,
@@ -256,7 +268,16 @@ export default async function ProcedureLandingPage(
 
             <ContainerLayout as='main' noPaddingTop noPadding size='full'>
                 {/* Hero — form-first conversion */}
-                <ProcedureLandingHero id='hero' procedure={procedure} />
+                <ProcedureLandingHero
+                    id='hero'
+                    procedure={procedure}
+                    startingPrice={prices.starting}
+                    discountStatement={
+                        prices.starting?.discounted
+                            ? prices.discountStatement
+                            : null
+                    }
+                />
 
                 {/* Procedure-targeted promotion — only when one is
                     active. Sits directly under the hero so the strongest
@@ -275,8 +296,8 @@ export default async function ProcedureLandingPage(
                     procedure facts land before the testimonials. */}
                 {promotion && (
                     <GoogleReviews
-                        title={`What ${procedure.title.replace(/\s*Miami\s*$/i, '')} patients say`}
-                        subtitle='Verified Google reviews'
+                        title='What our patients say'
+                        subtitle='Real reviews from our patients on Google'
                         limit={3}
                         showGoogleLink={false}
                         showViewAllButton={false}
@@ -291,8 +312,8 @@ export default async function ProcedureLandingPage(
 
                 {!promotion && (
                     <GoogleReviews
-                        title={`What ${procedure.title.replace(/\s*Miami\s*$/i, '')} patients say`}
-                        subtitle='Verified Google reviews'
+                        title='What our patients say'
+                        subtitle='Real reviews from our patients on Google'
                         limit={3}
                         showGoogleLink={false}
                         showViewAllButton={false}
@@ -328,7 +349,10 @@ export default async function ProcedureLandingPage(
                 />
 
                 {/* Financing — addresses the #1 objection */}
-                <WeeklyPayments id='financing' formAnchor={HERO_FORM_ANCHOR} />
+                <FinancingSection
+                    id='financing'
+                    formAnchor={HERO_FORM_ANCHOR}
+                />
 
                 {/* Honest answers — pricing FAQs are filtered out
                     because this LP captures leads with a custom quote

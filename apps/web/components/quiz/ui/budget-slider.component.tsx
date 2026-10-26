@@ -1,7 +1,8 @@
 /**
  * Budget Slider Component
  *
- * Custom range slider for selecting monthly payment comfort level.
+ * Custom range slider for how big a change the visitor has in mind. No
+ * dollar or payment figure (claims canon D6).
  * Includes visual feedback and financing preview.
  *
  * @module components/quiz/ui/budget-slider
@@ -9,8 +10,8 @@
 'use client'
 
 import { cn } from '@workspace/ui/lib/utils'
+import { FINANCING_SENTENCE_SHORT } from '@workspace/shared/claims/financing'
 import { motion } from 'framer-motion'
-import { getFinancingPartnersString } from '@/lib/data/site-config'
 import type { BudgetRange } from '../lib/quiz-types'
 import { BUDGET_RANGE_OPTIONS } from '../lib/quiz-questions.data'
 
@@ -134,8 +135,7 @@ export function BudgetSlider({
                         {options.find((o) => o.value === value)?.description}
                     </p>
                     <p className='mt-2 text-sm text-stone-500'>
-                        Financing available through{' '}
-                        {getFinancingPartnersString()}
+                        {FINANCING_SENTENCE_SHORT}
                     </p>
                 </motion.div>
             )}
@@ -220,39 +220,6 @@ export function BudgetCards({ value, onChange, className }: BudgetCardsProps) {
                     </motion.button>
                 )
             })}
-        </div>
-    )
-}
-
-/**
- * Coffee comparison display
- */
-export interface CoffeeComparisonProps {
-    readonly monthlyPayment: number
-    readonly className?: string
-}
-
-export function CoffeeComparison({
-    monthlyPayment,
-    className,
-}: CoffeeComparisonProps) {
-    const dailyAmount = (monthlyPayment / 30).toFixed(2)
-
-    return (
-        <div
-            className={cn(
-                'flex items-center justify-center gap-3 rounded-lg bg-stone-50 p-4',
-                className
-            )}
-        >
-            <span className='text-2xl'>☕</span>
-            <p className='text-sm text-stone-600'>
-                That&apos;s less than{' '}
-                <span className='font-semibold text-stone-800'>
-                    ${dailyAmount}
-                </span>{' '}
-                per day — about the cost of a coffee
-            </p>
         </div>
     )
 }

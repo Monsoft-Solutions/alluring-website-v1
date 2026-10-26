@@ -38,6 +38,10 @@
 import type { BlogCtaId } from '@workspace/shared/content'
 
 import { getPhoneLink, siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { BlogCTAContent } from '@/lib/types/blog/blog-cta.type'
 
 /**
@@ -47,8 +51,7 @@ export const blogCTAContents = [
     {
         id: 'default',
         heading: 'Considering Your Transformation?',
-        description:
-            'Our board-certified surgeons at Alluring Plastic Surgery combine artistry with precision to help you achieve your aesthetic goals. Schedule your free consultation today.',
+        description: `${KARLINSKY_NAME} performs every surgery at Alluring Plastic Surgery. ${KARLINSKY_CREDENTIALS} Schedule your free consultation today.`,
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -61,7 +64,7 @@ export const blogCTAContents = [
         id: 'consultation',
         heading: 'Ready for Your Free Consultation?',
         description:
-            'Take the first step toward your transformation. Our Miami specialists will create a personalized plan tailored to your unique goals.',
+            'Take the first step. At your consultation, Dr. Karlinsky makes a plan for your goals.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -77,9 +80,8 @@ export const blogCTAContents = [
     },
     {
         id: 'bbl',
-        heading: 'Transform Your Curves with BBL',
-        description:
-            "Miami's premier Brazilian Butt Lift specialists. Our signature technique combines liposuction with precise fat transfer for natural, stunning results.",
+        heading: 'Considering a BBL?',
+        description: `A BBL uses liposuction to take fat from areas like the abdomen and flanks, then transfers it to the buttocks. One surgeon performs every BBL at Alluring: ${KARLINSKY_NAME}.`,
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -96,8 +98,7 @@ export const blogCTAContents = [
     {
         id: 'breast',
         heading: 'Enhance Your Confidence',
-        description:
-            'From augmentation to lift and reduction, our board-certified surgeons deliver natural-looking results that complement your body.',
+        description: `From augmentation to lift and reduction, every breast procedure at Alluring is performed by one surgeon, ${KARLINSKY_NAME}.`,
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -113,9 +114,8 @@ export const blogCTAContents = [
     },
     {
         id: 'body',
-        heading: 'Sculpt Your Dream Body',
-        description:
-            "Whether it's liposuction, tummy tuck, or mommy makeover — our Miami surgeons combine precision techniques with artistic vision.",
+        heading: 'Sculpt Your Shape',
+        description: `Whether it's liposuction, tummy tuck, or mommy makeover, ${KARLINSKY_NAME}, our Miami surgeon, plans every procedure around your goals.`,
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -131,9 +131,9 @@ export const blogCTAContents = [
     },
     {
         id: 'facial',
-        heading: 'Reveal Your Best Self',
+        heading: 'Considering Facial Surgery?',
         description:
-            'Expert facial procedures including facelift and blepharoplasty. Turn back the clock with natural-looking rejuvenation.',
+            'Facial procedures including facelift and blepharoplasty, planned for natural-looking rejuvenation.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -169,9 +169,9 @@ export const footerCTAConfig = {
     heading: 'Start Your Journey Today',
     subheading: 'Get a Free Consultation at Alluring Plastic Surgery',
     description:
-        "Leave your name and phone number. We'll call you within 24 hours to discuss your goals.",
-    submitButtonText: 'Request Callback',
-    trustBadge: '5,000+ Happy Patients • Board-Certified Surgeons',
+        'Leave your name and phone number, and a patient coordinator will text you to talk about your goals.',
+    submitButtonText: 'Send Request',
+    trustBadge: `One surgeon: ${KARLINSKY_NAME}`,
     phoneNumber: siteConfig.contact.phoneDisplay,
 }
 

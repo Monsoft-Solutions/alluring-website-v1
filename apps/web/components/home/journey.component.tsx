@@ -18,12 +18,12 @@ export const Journey = () => {
         {
             num: '02',
             title: 'The Custom Plan',
-            desc: 'From body contouring to facial rejuvenation, we map out your anatomy, recovery timeline, and all-inclusive financing options together.',
+            desc: 'From body contouring to facial rejuvenation, we map out your anatomy, recovery timeline, and financing options together.',
         },
         {
             num: '03',
-            title: 'The Transformation',
-            desc: 'From surgery day to your final follow-up, your dedicated concierge team is by your side—ensuring your results exceed expectations.',
+            title: 'Surgery & Recovery',
+            desc: 'From surgery day to your final follow-up, the same team looks after you.',
         },
     ]
 

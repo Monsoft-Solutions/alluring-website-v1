@@ -19,12 +19,15 @@ import {
     SITE_CHAT_THANK_YOU_PATH,
 } from '@/components/shared/consult-chat/site-chat.constants'
 import { CONTACT_CHAT } from '@/components/shared/consult-chat/site-chat-copy'
+import { withChatPrices } from '@/components/shared/consult-chat/site-chat-prices.server'
 import { LEAD_PAGE_CHAT_IDS } from '@/lib/constants/standalone-routes'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export const CONTACT_CHAT_ID = LEAD_PAGE_CHAT_IDS['/contact-us']
 
-export function ContactChatHero() {
+export async function ContactChatHero() {
+    // Starting prices from the pricing resolver (#354).
+    const chat = await withChatPrices(CONTACT_CHAT)
     return (
         <section
             id='contact-hero'
@@ -58,15 +61,15 @@ export function ContactChatHero() {
                     </p>
                     <p className='mt-4 hidden max-w-lg text-base leading-relaxed text-stone-300 sm:block sm:text-lg'>
                         Three quick answers and a patient coordinator texts you
-                        back within 24 hours — in person in Miami, or by video
-                        from anywhere in the U.S.
+                        back to book a consultation — in person in Miami, or by
+                        video from anywhere in the U.S.
                     </p>
 
                     <div className='mt-6'>
                         <SiteConsultChat
                             id={CONTACT_CHAT_ID}
-                            copy={CONTACT_CHAT.copy}
-                            staff={CONTACT_CHAT.staff}
+                            copy={chat.copy}
+                            staff={chat.staff}
                             source={CONTACT_SOURCES.CONTACT_PAGE}
                             formName='contact_chat'
                             thankYouPath={SITE_CHAT_THANK_YOU_PATH}

@@ -28,7 +28,7 @@
 'use client'
 
 import { cn } from '@workspace/ui/lib/utils'
-import { ArrowRight, Check, Clock, Lock, X } from 'lucide-react'
+import { ArrowRight, Check, Lock, X } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
@@ -391,7 +391,7 @@ export function LeadPopupDialog({
                     ) : (
                         <>
                             {offer ? (
-                                <PromoRecap offer={offer} copy={copy} />
+                                <PromoRecap offer={offer} />
                             ) : (
                                 <Coordinator copy={copy} />
                             )}
@@ -729,17 +729,10 @@ function OfferArch({
     )
 }
 
-function DaysLeft({ days, copy }: { days: number | null; copy: Copy }) {
-    if (days === null || days <= 0) return null
-    return (
-        <p className='border-gold-300/35 text-gold-200 mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.8125rem] font-medium'>
-            <Clock className='size-3.5' aria-hidden='true' />
-            {copy.promo.daysLeft(days)}
-        </p>
-    )
-}
-
-/** Step 1 with a promotion: the offer, its deadline and its details. */
+/**
+ * Step 1 with a promotion: the offer and its details. No countdown: the
+ * claims canon bars countdowns and urgency (§1, §10, #354).
+ */
 function PromoOffer({
     offer,
     copy,
@@ -790,7 +783,6 @@ function PromoOffer({
                     >
                         {offer.title}
                     </h2>
-                    <DaysLeft days={offer.daysRemaining} copy={copy} />
                 </div>
             </div>
 
@@ -832,13 +824,7 @@ function PromoOffer({
 }
 
 /** Step 2 with a promotion: which offer the number is for. */
-function PromoRecap({
-    offer,
-    copy,
-}: {
-    offer: LeadPopupPromotion
-    copy: Copy
-}) {
+function PromoRecap({ offer }: { offer: LeadPopupPromotion }) {
     return (
         <div className='flex items-center gap-3 pr-12'>
             <OfferArch offer={offer} className='h-14 w-11' sizes='44px' />
@@ -849,12 +835,6 @@ function PromoRecap({
                 >
                     {offer.title}
                 </p>
-                {offer.daysRemaining !== null && offer.daysRemaining > 0 && (
-                    <p className='text-gold-200 mt-0.5 flex items-center gap-1.5 text-[0.8125rem]'>
-                        <Clock className='size-3.5' aria-hidden='true' />
-                        {copy.promo.daysLeft(offer.daysRemaining)}
-                    </p>
-                )}
             </div>
         </div>
     )

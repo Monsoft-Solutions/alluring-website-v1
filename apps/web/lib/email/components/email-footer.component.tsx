@@ -17,7 +17,7 @@ import { getFullAddress, siteConfig } from '@/lib/data/site-config'
 const quickLinks = [
     { label: 'Our Procedures', path: '/procedures' },
     { label: 'Financing Options', path: '/plastic-surgery-financing-miami' },
-    { label: 'About Our Surgeons', path: '/about' },
+    { label: 'Meet Dr. Karlinsky', path: '/dr-karlinsky' },
     { label: 'Read Our Blog', path: '/blog' },
 ]
 

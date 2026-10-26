@@ -129,6 +129,12 @@ export type MdxSanitizationAction = {
         | 'duplicate-cta-marker'
         | 'invalid-cta-id'
         | 'stray-expression'
+        // A claim token (`[[price:bbl]]`, #354) that would render as nothing,
+        // rewritten to its canonical form or removed.
+        | 'invalid-claim-token'
+        | 'typed-price'
+        // A price token in a heading, reported for a person to move.
+        | 'price-token-in-heading'
         // Not an MDX hazard — a link to one of our own pages that does not
         // exist. Recorded alongside the rest so the admin card shows every
         // change made to the generated body in one place.

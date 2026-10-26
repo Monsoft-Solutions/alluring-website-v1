@@ -21,6 +21,14 @@ const CODE_FENCE_PATTERN = /^\s*(```|~~~)/
 const TOC_LEVELS = [2, 3]
 
 /**
+ * A struck-through list price, as a claim token resolves a discounted price
+ * in markdown ("~~$5,500~~ $4,400", #354). The rendered heading keeps it in
+ * a `<del>`, so the id slugs it, but the contents list shows the price the
+ * reader pays only, not both figures run together.
+ */
+const STRUCK_LIST_PRICE = /~~\s*\$[\d,]+(?:\.\d{2})?\s*~~\s*/g
+
+/**
  * Reduces markdown heading source to the plain text a reader sees.
  *
  * `rehype-slug` slugs the text content of the rendered heading, so formatting
@@ -83,14 +91,17 @@ export function extractTableOfContents(content: string): TOCHeading[] {
         const match = HEADING_PATTERN.exec(line)
         if (!match?.[1] || !match[2]) continue
 
-        const text = toPlainHeadingText(match[2])
-        if (!text) continue
+        const slugText = toPlainHeadingText(match[2])
+        if (!slugText) continue
 
         // Consume a slug for every heading so duplicate suffixes line up
-        const id = slugger.slug(text)
+        const id = slugger.slug(slugText)
         const level = match[1].length
 
         if (TOC_LEVELS.includes(level)) {
+            const text =
+                toPlainHeadingText(match[2].replace(STRUCK_LIST_PRICE, '')) ||
+                slugText
             headings.push({ id, text, level })
         }
     }

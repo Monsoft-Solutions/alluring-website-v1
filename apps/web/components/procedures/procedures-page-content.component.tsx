@@ -5,25 +5,36 @@ import { useState, useRef } from 'react'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { SignatureProcedureCard } from '@/components/shared/signature-procedure-card.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { DiscountStatement } from '@/components/shared/discount-statement.component'
 import { CategoryNav } from './category-nav.component'
 import { ProcedureCard } from './procedure-card.component'
 import { ProcedureHero } from './procedure-hero.component'
 import { WhyChooseSection } from './why-choose-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
+import { formatRatingBadge, TRUST_BADGES } from '@workspace/shared/claims/trust'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     faqCategoriesProcedures,
-    faqDataProcedures,
+    type faqDataProcedures,
 } from '@/lib/data/faq/procedures-faq-data'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Shield, Award, Users, Building2 } from 'lucide-react'
 
 interface ProceduresPageContentProps {
     procedures: ProcedureSummary[]
+    /** The FAQ with its claim tokens resolved on the server (#354). */
+    faqData: typeof faqDataProcedures
+    /**
+     * The 456.062 statement while a discount is on: the cards print the
+     * discounted starting prices (#354).
+     */
+    discountStatement: string | null
 }
 
 export function ProceduresPageContent({
     procedures,
+    faqData,
+    discountStatement,
 }: ProceduresPageContentProps) {
     const [activeCategory, setActiveCategory] = useState('all')
     const targetRef = useRef<HTMLDivElement>(null)
@@ -113,8 +124,8 @@ export function ProceduresPageContent({
                                     you feel confident, beautiful, and
                                     empowered. Whether you&apos;re looking for
                                     subtle enhancements or transformative
-                                    changes, our expert team guides you every
-                                    step of the way.
+                                    changes, our team guides you every step of
+                                    the way.
                                 </p>
                             </div>
                         </ContentWrapper>
@@ -146,13 +157,19 @@ export function ProceduresPageContent({
                 </div>
             </section>
 
+            {discountStatement && (
+                <div className='mx-auto max-w-7xl px-6 py-6'>
+                    <DiscountStatement statement={discountStatement} />
+                </div>
+            )}
+
             {/* Why Choose Us Section */}
             <WhyChooseSection />
 
             {/* FAQ Section */}
             <CategorizedFAQ
                 categories={faqCategoriesProcedures}
-                faqData={faqDataProcedures}
+                faqData={faqData}
                 title='Questions About'
                 subtitle='Your Transformation'
                 description='We understand that considering plastic surgery is a significant decision. Browse our comprehensive FAQ organized by topic, or call us directly for personalized guidance.'
@@ -162,7 +179,7 @@ export function ProceduresPageContent({
                 ctaConfig={{
                     title: 'Still have questions?',
                     description:
-                        'Our Specialists are ready to guide you through every step of your journey.',
+                        'Our team is ready to guide you through every step of your journey.',
                     buttonText: 'Call Now',
                     phoneNumber: siteConfig.contact.phone.replace(/\D/g, ''),
                 }}
@@ -173,7 +190,7 @@ export function ProceduresPageContent({
                 variant='luxury'
                 eyebrow='Your Journey Starts Here'
                 heading='Your Confidence Deserves This'
-                description="Taking this step takes courage. Our board-certified surgeons and dedicated specialists are here to guide you through a personalized consultation — completely free, with no pressure. Just clarity on your options and what's possible for you."
+                description="Taking this step takes courage. One surgeon, Victoria Karlinsky, MD, FACS, and our team guide you through a personalized consultation, completely free, with no pressure. Just clarity on your options and what's possible for you."
                 primaryButton={{
                     text: 'Schedule Your Free Consultation',
                     href: '/contact-us',
@@ -186,19 +203,19 @@ export function ProceduresPageContent({
                 trustBadges={[
                     {
                         icon: <Award className='h-5 w-5' />,
-                        label: 'Board-Certified Surgeons',
+                        label: TRUST_BADGES.surgeon,
                     },
                     {
                         icon: <Shield className='h-5 w-5' />,
-                        label: 'Accredited Facility',
+                        label: TRUST_BADGES.board,
                     },
                     {
                         icon: <Users className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+                        label: formatRatingBadge(siteConfig.trustStats?.rating),
                     },
                     {
                         icon: <Building2 className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                        label: TRUST_BADGES.spanish,
                     },
                 ]}
             />

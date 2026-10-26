@@ -4,6 +4,8 @@ import { db } from '@workspace/db/client'
 import { blogPost, images } from '@workspace/db/schema/blog'
 import { and, desc, eq, isNotNull } from 'drizzle-orm'
 
+import { resolvePostListClaims } from '@/lib/claims/resolve-claims.server'
+
 /**
  * Popular post data for widget display
  */
@@ -91,5 +93,5 @@ export const getPopularPosts = (limit = 5): Promise<PopularPost[]> => {
             tags: ['blog-posts', 'blog-popular-posts'],
             revalidate: 86400, // view counts can lag a day; see #337
         }
-    )()
+    )().then(resolvePostListClaims)
 }

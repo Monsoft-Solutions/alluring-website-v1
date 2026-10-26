@@ -14,6 +14,7 @@ export {
 
 export {
     DEFAULT_CHAT_SYSTEM_PROMPT,
+    buildChatSystemPrompt,
     generateSystemPrompt,
     type SystemPromptParams,
 } from './system-prompt.prompt'

@@ -57,7 +57,7 @@ export type ImagePromptResult = {
  *   keywords: 'plastic surgery, recovery, Miami',
  * })
  * console.log(promptResult.prompt)
- * // 'Elegant private recovery suite in a luxury Miami plastic surgery clinic...'
+ * // 'Fine-art still life of honed travertine and folded silk in warm stone tones...'
  * ```
  */
 export async function generateImagePrompt(

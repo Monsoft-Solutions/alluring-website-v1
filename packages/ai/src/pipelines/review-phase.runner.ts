@@ -22,6 +22,7 @@ import { runFactSourceVerifier } from '../agents/fact-source-verifier.agent'
 import type { AgenticPipelineProgressCallback } from '../types/pipeline/agentic-pipeline-progress-callback.type'
 import type { ReasoningEffort } from '../models/reasoning-effort.constant'
 import { sumCosts } from '../models/openrouter-usage.util'
+import type { PricingSnapshot } from '@workspace/shared/claims/pricing'
 
 /**
  * Default configuration for review phase
@@ -71,6 +72,12 @@ export type ReviewPhaseOptions = {
      * injected by the caller. Registry-only mode when absent.
      */
     pagesForQuery?: (query: string) => Promise<RankingPage[]>
+    /**
+     * The live price list (#354). The canon-aware reviewers and the
+     * orchestrator list its tokens, and the orchestrator validates its
+     * revision against it. The 2026-09-15 sheet when omitted.
+     */
+    pricing?: PricingSnapshot
     /** Progress callback */
     onProgress?: AgenticPipelineProgressCallback
 }
@@ -160,6 +167,7 @@ export async function runReviewPhase(
         skipOrchestration = false,
         currentPostSlug,
         pagesForQuery,
+        pricing,
         onProgress,
     } = options
 
@@ -185,6 +193,7 @@ export async function runReviewPhase(
             secondaryKeywords,
             modelId: reviewModelId,
             reasoningEffort: reviewEffort,
+            pricing,
         }
 
         const [
@@ -372,6 +381,7 @@ export async function runReviewPhase(
                 reviews,
                 modelId: resolvedOrchestratorModelId,
                 reasoningEffort: orchestratorEffort,
+                pricing,
             })
 
             billedCosts.push(orchestratorResult.costUsd)

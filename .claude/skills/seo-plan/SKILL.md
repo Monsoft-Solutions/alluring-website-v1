@@ -145,8 +145,10 @@ Read `blog/panels/<date>.md`: the citation rate against the previous run
 (its comparison line), which Alluring pages are cited, and every flag. Each
 `error` flag is a wrong claim an answer engine repeats. Trace it to the
 page it came from, and propose a `page-fix` or `compliance` item with that
-path. Prices and claims change in `blog/tools/ai-panel-prompts.json`
-`truths`, never in the code. Keep prompt text byte-identical, or bump
+path. The fix uses the claims canon's wording (`docs/claims/canon.md`), and
+an Alluring price in it is a claim token, never a typed figure. Prices and
+claims change in `blog/tools/ai-panel-prompts.json` `truths` (kept to the
+canon), never in the code. Keep prompt text byte-identical, or bump
 `version`.
 
 ## month (propose next month's calendar)

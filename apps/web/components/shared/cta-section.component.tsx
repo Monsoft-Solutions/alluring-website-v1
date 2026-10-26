@@ -64,16 +64,13 @@ function LuxuryCTASection({
 }: CTASectionProps) {
     const containerRef = useRef<HTMLDivElement>(null)
 
-    // Use stats from props if provided, otherwise fall back to siteConfig
-    // Default values as fallback if neither is provided
-    const displayStats = stats ??
-        siteConfig.trustStats ?? {
-            patients: '5,000+',
-            years: '15+',
-            certified: '100%',
-            rating: '4.7',
-            accreditation: 'Double Board-Certified',
-        }
+    // The Google rating from props, else siteConfig's static fallback for
+    // the synced figure. The card states verified facts only: the patient
+    // count, years and "100% Board-Certified" it showed are retired (claims
+    // canon §4, #354).
+    const displayStats = stats ?? {
+        rating: siteConfig.trustStats?.rating ?? '4.7',
+    }
 
     const { scrollYProgress } = useScroll({
         target: backgroundImage ? containerRef : undefined,
@@ -318,13 +315,13 @@ function LuxuryCTASection({
                                 <div className='rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md'>
                                     <div className='mb-6 text-center'>
                                         <div className='mb-2 font-serif text-sm font-medium tracking-widest text-stone-400 uppercase'>
-                                            Trusted By
+                                            Rated on Google
                                         </div>
                                         <div className='text-gold-400 font-serif text-6xl font-bold'>
-                                            {displayStats.patients}
+                                            {displayStats.rating}
                                         </div>
                                         <div className='text-lg text-stone-300'>
-                                            Happy Patients
+                                            Stars
                                         </div>
                                     </div>
 
@@ -332,18 +329,19 @@ function LuxuryCTASection({
                                         <div className='grid grid-cols-2 gap-4'>
                                             <div className='text-center'>
                                                 <div className='text-gold-400 font-serif text-3xl font-bold'>
-                                                    {displayStats.years}
+                                                    One
                                                 </div>
                                                 <div className='text-sm text-stone-400'>
-                                                    Years Experience
+                                                    Surgeon for every procedure
                                                 </div>
                                             </div>
                                             <div className='text-center'>
                                                 <div className='text-gold-400 font-serif text-3xl font-bold'>
-                                                    {displayStats.certified}
+                                                    2008
                                                 </div>
                                                 <div className='text-sm text-stone-400'>
-                                                    Board-Certified
+                                                    American Board of Surgery
+                                                    certified since
                                                 </div>
                                             </div>
                                         </div>

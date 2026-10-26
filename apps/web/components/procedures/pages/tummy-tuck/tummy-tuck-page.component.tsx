@@ -22,6 +22,10 @@ import {
 import { ModuleSources } from '@/components/procedures/module-kit/module-sources.component'
 import { ModuleStarSprite } from '@/components/procedures/module-kit/module-stars.component'
 import { StickyCtaBar } from '@/components/procedures/sections/sticky-cta-bar.component'
+import { PriceTag } from '@/components/shared/price-tag.component'
+import { findLinePrice } from '@/lib/claims/procedure-prices.util'
+import { getProcedurePrices } from '@/lib/queries/pricing.query'
+import { formatLineName } from '@workspace/shared/claims/pricing'
 import {
     tummyTuckFigure,
     tummyTuckSources,
@@ -111,13 +115,22 @@ function captionOf(photo: GalleryMediaCard): string {
  * consultation form, rendered twice, and one `SectionViewTracker`. Motion is
  * CSS (`module-kit.css`).
  */
-export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
-    const [pairs, gallery, reviewData] = await Promise.all([
+export async function TummyTuckPage({
+    procedure,
+    prices,
+}: ProcedurePageModuleProps) {
+    const fullPrice = findLinePrice(prices, 'full')
+    const statement = prices.discountStatement
+    const [pairs, gallery, reviewData, lipoPrices] = await Promise.all([
         // One pair leads the results section with its slider.
         getBeforeAfterPairsByProcedure(procedure.slug, 1),
         getGalleryMediaByProcedure(procedure.slug, GALLERY_POOL),
         getPublishedGoogleReviews(REVIEW_POOL),
+        // The cost section also prices the lipo add-on, which carries
+        // liposuction's discount, not the tummy tuck's.
+        getProcedurePrices('lipo'),
     ])
+    const lipoAddOn = findLinePrice(lipoPrices, 'abdomen-flanks')
     const pair = pairs[0]
     const photos = selectResultPhotos(gallery.media, procedure.slug)
 
@@ -146,8 +159,26 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
     const rail = (label: string) => (
         <ModuleFactRail
             label={label}
-            startingAt={tummyTuckFigure('price-mini')}
-            priceNote={`Mini tummy tuck; a full tummy tuck from ${tummyTuckFigure('price-full')}. Set for each patient after an exam`}
+            startingAt={<PriceTag price={prices.starting} />}
+            // Names the starting line from its own label, so the note stays
+            // true when the admin picks another line (#354).
+            priceNote={
+                <>
+                    {prices.starting &&
+                        formatLineName(prices.starting.label, {
+                            short: true,
+                            capitalized: true,
+                        })}
+                    {fullPrice && prices.starting?.lineKey !== 'full' && (
+                        <>
+                            ; a full tummy tuck is{' '}
+                            <PriceTag price={fullPrice} />
+                        </>
+                    )}
+                    . Set for each patient after an exam
+                </>
+            }
+            discountStatement={statement}
             surgeonName={KARLINSKY_NAME}
             updatedOn={procedure.dateModified}
         />
@@ -170,11 +201,28 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
                 }
                 rating={rating}
                 chips={[
-                    { label: `Mini from ${tummyTuckFigure('price-mini')}` },
+                    ...(prices.starting
+                        ? [
+                              {
+                                  id: 'price',
+                                  label: (
+                                      <>
+                                          {formatLineName(
+                                              prices.starting.label,
+                                              { short: true, capitalized: true }
+                                          )}{' '}
+                                          from{' '}
+                                          <PriceTag price={prices.starting} />
+                                      </>
+                                  ),
+                              },
+                          ]
+                        : []),
                     { label: 'Financing available' },
                     { label: 'Hablamos español', lang: 'es' },
                 ]}
                 chipsLabel='Tummy tuck at Alluring in brief'
+                discountStatement={prices.discountStatement}
                 image={tummyTuckImages.hero}
                 cardNote={`Every tummy tuck by ${KARLINSKY_SHORT_NAME}`}
             />
@@ -185,7 +233,7 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
                 photos={photos}
                 gallerySlug={gallery.groupSlug}
                 question='Tummy tuck before and after: what do real results look like?'
-                answer={`These are photos of real Alluring patients, shared with their consent. Some had a tummy tuck on its own and some combined it with another procedure, as each caption says. Results differ from person to person, and the final result can take up to ${tummyTuckFigure('results-3-months')} to show, once the swelling has gone.`}
+                answer={`These are photos of real Alluring patients, shared with their consent. Some had a tummy tuck on its own and some combined it with another procedure, as each caption says. Results differ from person to person, and the final result can take up to ${tummyTuckFigure('results-3-months')} to show, Cleveland Clinic says, once the swelling has gone.`}
                 railId='tummy-tuck-results-rail'
                 railLabel='Tummy tuck before and after photos from the gallery'
                 galleryLinkLabel='See every tummy tuck photo and video in the gallery'
@@ -199,9 +247,19 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
 
             <ModuleBand rail={rail('Tummy tuck at Alluring, key facts')}>
                 {procedure.pricing && (
-                    <TummyTuckCost pricing={procedure.pricing} />
+                    <TummyTuckCost
+                        pricing={procedure.pricing}
+                        prices={prices}
+                        lipoAddOn={lipoAddOn}
+                        discountStatement={
+                            statement ??
+                            (lipoAddOn?.discounted
+                                ? lipoPrices.discountStatement
+                                : null)
+                        }
+                    />
                 )}
-                <TummyTuckAtAGlance />
+                <TummyTuckAtAGlance prices={prices} />
                 <TummyTuckCandidate />
             </ModuleBand>
 

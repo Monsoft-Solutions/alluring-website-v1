@@ -8,7 +8,7 @@
  *
  * Key differentiators from general landing page:
  * - Local surgeon, no travel messaging
- * - Coral Gables office location prominently featured
+ * - Miami office location prominently featured
  * - Spanish language support emphasized
  * - Local testimonials and community references
  * - Convenience of nearby follow-up care
@@ -30,10 +30,11 @@ import { MiamiHero } from '@/components/landing/miami-hero.component'
 import { WhyLocal } from '@/components/landing/why-local.component'
 import { MiamiMiniCapture } from '@/components/landing/miami-mini-capture.component'
 import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
+import { FinancingSection } from '@/components/shared/financing-section.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
+import { resolveClaimsIn } from '@/lib/claims/resolve-claims.server'
 import { CTASection } from '@/components/shared/cta-section.component'
 import {
     miamiLandingFaqCategories,
@@ -53,14 +54,14 @@ import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/free-consultation/miami',
-    title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
+    title: 'Miami Plastic Surgery | One Local Surgeon',
     description:
-        "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español. Free consultation.",
+        'Cosmetic surgery in Miami with one surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, mommy makeover & more. Hablamos español. Free consultation.',
 
     openGraph: {
-        title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
+        title: 'Miami Plastic Surgery | One Local Surgeon',
         description:
-            "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español.",
+            'Cosmetic surgery in Miami with one surgeon, Victoria Karlinsky, MD, FACS. BBL, breast augmentation, mommy makeover & more. Hablamos español.',
         url: `${seoConfig.siteUrl}/free-consultation/miami`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -70,16 +71,16 @@ export const metadata = toNextMetadata(seoConfig, {
                 url: `${seoConfig.siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: `Miami Plastic Surgery - ${siteConfig.business.name} Coral Gables`,
+                alt: `Miami Plastic Surgery - ${siteConfig.business.name}`,
             },
         ],
     },
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
+        title: 'Miami Plastic Surgery | One Local Surgeon',
         description:
-            "Miami's trusted plastic surgeons in Coral Gables. 15+ years serving Miami. Hablamos Español. Free consultation.",
+            'Cosmetic surgery in Miami with one surgeon, Victoria Karlinsky, MD, FACS. Hablamos español. Free consultation.',
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 
@@ -95,8 +96,16 @@ export default async function MiamiConsultationPage() {
     // Fetch gallery images for the carousel
     const galleryImages = await getSpecialsFeaturedGalleryImages()
 
+    // Claim tokens in the answers (prices, financing; #354), resolved once
+    // for both the visible list and its schema.
+    const faqData = await resolveClaimsIn(
+        miamiLandingFaqData,
+        'text',
+        'faq /free-consultation/miami'
+    )
+
     // Flatten FAQ data for schema
-    const allFaqItems = Object.values(miamiLandingFaqData).flat()
+    const allFaqItems = Object.values(faqData).flat()
     const faqSchemaItems = allFaqItems.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
@@ -126,7 +135,7 @@ export default async function MiamiConsultationPage() {
             <WebPageSchema
                 name={`Miami Plastic Surgery - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/free-consultation/miami`}
-                description="Miami's trusted plastic surgeons in Coral Gables. Board-certified surgeons with 15+ years serving the Miami community. BBL, breast augmentation, mommy makeover & more."
+                description='Cosmetic surgery in Miami. One surgeon, Victoria Karlinsky, MD, FACS, performs every procedure: BBL, breast augmentation, mommy makeover & more.'
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -142,16 +151,16 @@ export default async function MiamiConsultationPage() {
                 {/* Section 3: Fear Busters - Universal objection handling */}
                 <FearBusters id='fear-busters' formAnchor='#hero-form' />
 
-                {/* Section 4: Weekly Payments - Financing options */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
+                {/* Section 4: Financing partners */}
+                <FinancingSection id='financing' formAnchor='#hero-form' />
 
                 {/* Section 5: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
                 {/* Section 6: Google Reviews */}
                 <GoogleReviews
-                    title='Real Reviews from Miami Patients'
-                    subtitle='See what our local Miami community says about us'
+                    title='What Our Patients Say'
+                    subtitle='Real reviews from our patients on Google'
                     limit={6}
                 />
 
@@ -159,7 +168,7 @@ export default async function MiamiConsultationPage() {
                 <CategorizedFAQ
                     id='faq'
                     categories={miamiLandingFaqCategories}
-                    faqData={miamiLandingFaqData}
+                    faqData={faqData}
                     badge={miamiLandingFaqConfig.badge}
                     title={miamiLandingFaqConfig.title}
                     subtitle={miamiLandingFaqConfig.subtitle}
@@ -170,7 +179,7 @@ export default async function MiamiConsultationPage() {
                     ctaConfig={{
                         title: 'Prefer to talk to someone?',
                         description:
-                            'Our Miami team is ready to help. Hablamos Español.',
+                            'Our Miami team is ready to help. Hablamos español.',
                         buttonText: 'Call Us Now',
                         phoneNumber: siteConfig.contact.phone.replace(
                             /\D/g,
@@ -187,7 +196,7 @@ export default async function MiamiConsultationPage() {
                     id='final-cta'
                     variant='luxury'
                     heading='Your Miami Transformation Awaits'
-                    description='No travel required. No strangers. Just your local Miami surgeons ready to help you look and feel your best. Schedule your free consultation at our Coral Gables office today.'
+                    description='No travel required. No strangers. Just your local Miami surgeon, ready to help. Schedule your free consultation at our Miami office today.'
                     primaryButton={{
                         text: 'Book My Free Consultation',
                         href: '#hero-form',
