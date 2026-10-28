@@ -88,11 +88,11 @@ export function BreastLiftSafety() {
             question='Is a breast lift safe?'
             answer={
                 <>
-                    Serious problems are uncommon. In a national surgical
-                    database, complications within{' '}
-                    {breastLiftFigure('thirty-day-complications')} followed{' '}
-                    {breastLiftFigure('thirty-day-complications', 1)} of breast
-                    lifts alone and{' '}
+                    The Aesthetic Society says serious complications are
+                    infrequent. In a national surgical database, complications
+                    within {breastLiftFigure('thirty-day-complications')}{' '}
+                    followed {breastLiftFigure('thirty-day-complications', 1)}{' '}
+                    of breast lifts alone and{' '}
                     {breastLiftFigure('thirty-day-complications', 2)} of lifts
                     with implants. The longer-term trade-offs are the scars,
                     changes in nipple sensation and the breast sagging again,

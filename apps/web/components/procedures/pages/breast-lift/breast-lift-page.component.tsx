@@ -83,6 +83,18 @@ function captionOf(photo: GalleryMediaCard): string {
 }
 
 /**
+ * Gallery files whose names credit another surgeon (2026-10-28 review: 7 of
+ * the 9 breast-lift results photos are `…-breast-lift-lofman-0N-…`). The page
+ * says Dr. Karlinsky performs every breast lift, so they stay off it until
+ * the practice confirms who performed them and fixes the files in the admin.
+ */
+const CREDITED_ELSEWHERE = /lofman/i
+
+function isCreditedElsewhere(...urls: string[]): boolean {
+    return urls.some((url) => CREDITED_ELSEWHERE.test(url))
+}
+
+/**
  * The breast lift page body, registered for `breast-lift-miami`.
  *
  * The route keeps the metadata, the H1 text, the canonical URL and the
@@ -112,13 +124,19 @@ function captionOf(photo: GalleryMediaCard): string {
  */
 export async function BreastLiftPage({ procedure }: ProcedurePageModuleProps) {
     const [pairs, gallery, reviewData] = await Promise.all([
-        // One pair leads the results section with its slider.
-        getBeforeAfterPairsByProcedure(procedure.slug, 1),
+        // One pair leads the results section with its slider; a few are
+        // fetched so one credited elsewhere can be skipped.
+        getBeforeAfterPairsByProcedure(procedure.slug, 4),
         getGalleryMediaByProcedure(procedure.slug, GALLERY_POOL),
         getPublishedGoogleReviews(REVIEW_POOL),
     ])
-    const pair = pairs[0]
-    const photos = selectResultPhotos(gallery.media, procedure.slug)
+    const pair = pairs.find(
+        (p) => !isCreditedElsewhere(p.beforeImage.url, p.afterImage.url)
+    )
+    const photos = selectResultPhotos(
+        gallery.media.filter((m) => !isCreditedElsewhere(m.url)),
+        procedure.slug
+    )
 
     // The synced Google Business Profile figure, falling back to the one
     // siteConfig keeps in step with it.
@@ -146,7 +164,7 @@ export async function BreastLiftPage({ procedure }: ProcedurePageModuleProps) {
         <ModuleFactRail
             label={label}
             startingAt={breastLiftFigure('price-lift')}
-            priceNote={`A breast lift without implants; with implants from ${breastLiftFigure('price-lift-saline')}. Set for each patient after an exam`}
+            priceNote={`A breast lift without implants; with implants from ${breastLiftFigure('price-lift-saline')}. Your surgeon confirms your price at consultation`}
             surgeonName={KARLINSKY_NAME}
             updatedOn={procedure.dateModified}
         />

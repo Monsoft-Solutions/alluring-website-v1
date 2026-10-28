@@ -6,9 +6,9 @@ import {
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 // The 16:9 crop of the hero: og:image, the home cards, procedure cards, the
-// sitemap and the paid landing page hero. A local preview of candidate 1
-// until the user picks the hero; the picked final goes to Blob and this
-// becomes the URL the upload returns. The old `/images/procedures/
+// sitemap and the paid landing page hero. A local preview of candidate 2
+// (Coconut Grove banyan), picked 2026-10-28, until the final goes to Blob
+// and this becomes the URL the upload returns. The old `/images/procedures/
 // breast-lift.jpg` (a lingerie crop on the chest, which breaks the image
 // rules) is no longer read by this file; the quiz still reads it.
 const HERO_WIDE = '/_local-preview/breast-lift-hero-wide-candidate-2.jpg'
@@ -22,7 +22,7 @@ export const breastLiftMiami: Procedure = {
     // Also the description in the page graph, `llms-full.txt` and the paid
     // landing page. Prices from the practice's price sheet of 2026-09-15
     // (`docs/pricing/practice-price-list.md`).
-    description: `A breast lift (mastopexy) raises breasts that have dropped by removing loose skin, tightening the tissue and moving the nipple higher, with or without implants. At Alluring in Miami, one surgeon performs every breast lift: ${KARLINSKY_NAME}. A breast lift is ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline implants and ${breastLiftFigure('price-lift-silicone')} with silicone implants.`,
+    description: `A breast lift (mastopexy) raises breasts that have dropped by removing loose skin, tightening the tissue and moving the nipple higher, with or without implants. At Alluring in Miami, one surgeon performs every breast lift: ${KARLINSKY_NAME}. A breast lift is ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline implants and ${breastLiftFigure('price-lift-silicone')} with silicone implants. Your surgeon confirms your price at consultation.`,
 
     // Hand-written metadata (D4 of the #320 brief). The generated title ended
     // "| Board-Certified Surgeons", a certification claim naming no board,
@@ -41,12 +41,12 @@ export const breastLiftMiami: Procedure = {
     metaDescription: `Breast lift in Miami: ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline and ${breastLiftFigure('price-lift-silicone')} with silicone. Performed by ${KARLINSKY_NAME}. Free consultation.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `Breast lift in Miami: ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline and ${breastLiftFigure('price-lift-silicone')} with silicone implants. Every breast lift at Alluring is performed by ${KARLINSKY_NAME}.`,
+    shortDescription: `Breast lift in Miami: ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline and ${breastLiftFigure('price-lift-silicone')} with silicone implants. Every breast lift at Alluring is performed by ${KARLINSKY_NAME}. Your surgeon confirms your price at consultation.`,
     heroSubtitle: 'Your shape back, with or without implants, by one surgeon',
     category: 'breast',
     bodyLocation: 'Breast',
     image: HERO_WIDE,
-    dateModified: '2026-09-30T00:00:00.000Z',
+    dateModified: '2026-10-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing: a breast lift without implants. The modified lift
@@ -194,7 +194,7 @@ export const breastLiftMiami: Procedure = {
     faqs: [
         {
             question: 'How much does a breast lift cost in Miami?',
-            answer: `At Alluring, a breast lift is ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline implants and ${breastLiftFigure('price-lift-silicone')} with silicone implants, and a modified lift, which removes skin from below the areola only, is ${breastLiftFigure('price-modified')}. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Price ranges are estimates and may change. Financing is available, subject to credit approval.`,
+            answer: `At Alluring, a breast lift is ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline implants and ${breastLiftFigure('price-lift-silicone')} with silicone implants, and a modified lift, which removes skin from below the areola only, is ${breastLiftFigure('price-modified')}. These are starting prices from the practice's price list. Your price is set for you after an exam, estimates may change, and ${KARLINSKY_NAME} confirms your price at consultation. Financing is available for qualified applicants.`,
         },
         {
             question:

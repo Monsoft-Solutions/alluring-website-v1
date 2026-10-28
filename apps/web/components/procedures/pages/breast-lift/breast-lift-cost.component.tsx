@@ -58,7 +58,7 @@ export function BreastLiftCost({ pricing }: { pricing: ProcedurePricing }) {
             id='pricing'
             question='How much is a breast lift in Miami?'
             className={moduleSectionPad}
-            answer={`At Alluring, a breast lift is ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline implants and ${breastLiftFigure('price-lift-silicone')} with silicone implants. A modified lift, which removes skin from below the areola only, is ${breastLiftFigure('price-modified')}. Which one fits depends on how far your breasts have dropped and whether you want more fullness, and your surgeon confirms your price after an exam.`}
+            answer={`At Alluring, a breast lift is ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline implants and ${breastLiftFigure('price-lift-silicone')} with silicone implants. A modified lift, which removes skin from below the areola only, is ${breastLiftFigure('price-modified')}. Which one fits depends on how far your breasts have dropped and whether you want more fullness, and your surgeon confirms your price at your consultation, after an exam.`}
         >
             <ModulePriceTable
                 options={pricing.options ?? []}
@@ -193,9 +193,9 @@ export function BreastLiftCost({ pricing }: { pricing: ProcedurePricing }) {
                 implants, and ask who performs the surgery and where.
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
-                Financing is available through {getFinancingPartnersString()},
-                subject to credit approval. ASPS says most health insurance
-                plans don&apos;t cover a breast lift.
+                Financing is available through {getFinancingPartnersString()}{' '}
+                for qualified applicants. ASPS says most health insurance plans
+                don&apos;t cover a breast lift.
             </p>
             <ModulePriceActions />
         </AnswerBlock>

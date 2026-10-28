@@ -22,7 +22,7 @@ export function BreastLiftAtAGlance() {
     const facts: Fact[] = [
         {
             label: 'Prices',
-            value: `A lift ${breastLiftFigure('price-lift')}; with saline implants ${breastLiftFigure('price-lift-saline')}; with silicone implants ${breastLiftFigure('price-lift-silicone')}; a modified lift ${breastLiftFigure('price-modified')}`,
+            value: `A lift ${breastLiftFigure('price-lift')}; with saline implants ${breastLiftFigure('price-lift-saline')}; with silicone implants ${breastLiftFigure('price-lift-silicone')}; a modified lift ${breastLiftFigure('price-modified')}; your surgeon confirms yours at consultation`,
         },
         { label: 'Your surgeon', value: KARLINSKY_NAME },
         {
