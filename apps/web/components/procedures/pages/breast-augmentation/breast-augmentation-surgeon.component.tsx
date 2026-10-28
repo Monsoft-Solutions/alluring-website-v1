@@ -35,8 +35,8 @@ export function BreastAugmentationSurgeon() {
                 Searching for breast augmentation in Miami turns up specials and
                 a wide spread of prices. What separates surgeons is whether they
                 help you choose a size you won&apos;t want to change, explain
-                the FDA&apos;s checklist and the scan schedule, tell you where
-                they operate, and let you check their credentials yourself.
+                the FDA&apos;s checklist and the scan schedule, and let you
+                check their credentials yourself.
             </p>
 
             <ModuleSurgeonCredentials />

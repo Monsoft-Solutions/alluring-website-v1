@@ -41,7 +41,7 @@ const evidence: ModuleSceneEvidence[] = [
     },
     {
         title: 'BIA-ALCL, mostly with textured implants',
-        body: `Of the BIA-ALCL cases reported to the FDA worldwide through June 2024, ${figure('bia-alcl-textured')} involved textured implants and ${figure('bia-alcl-textured', 1)} smooth ones; for the rest, the surface wasn't reported.`,
+        body: `Of the BIA-ALCL cases reported to the FDA through June 2024, ${figure('bia-alcl-textured')} involved textured implants and ${figure('bia-alcl-textured', 1)} smooth ones; for the rest, the surface wasn't reported.`,
         sourceId: 'fda-bia-alcl-reports',
     },
     {
@@ -325,6 +325,7 @@ export function BreastAugmentationSafety() {
                 heading:
                     'Questions to ask any breast augmentation surgeon, including us',
                 questions: checklist,
+                note: "Bring this list to your consultation and ask Dr. Karlinsky each question before you decide anything. Her credentials are below, each one linked to the issuing body's own record.",
             }}
         />
     )

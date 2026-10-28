@@ -150,7 +150,9 @@ export async function BreastAugmentationPage({
     ])
     const pair = pairs.find(isOurPair)
     const photos = selectResultPhotos(gallery.media, procedure.slug).filter(
-        isBeforeAndAfter
+        (photo) =>
+            isBeforeAndAfter(photo) &&
+            !CREDITED_ELSEWHERE.some((code) => photo.url.includes(code))
     )
 
     // The synced Google Business Profile figure, falling back to the one

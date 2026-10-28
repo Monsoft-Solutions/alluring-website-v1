@@ -31,7 +31,7 @@ const elsewhere: {
     },
     {
         concern: 'After children, your abdomen changed too',
-        body: 'Breast surgery and a tummy tuck planned together are a mommy makeover, in one surgery or two.',
+        body: 'Breast surgery and a tummy tuck planned together are a mommy makeover.',
         link: {
             label: 'Mommy makeover in Miami',
             href: '/procedures/mommy-makeover-miami',

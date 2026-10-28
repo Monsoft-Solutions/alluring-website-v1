@@ -14,7 +14,7 @@ export const breastAugmentationMiami: Procedure = {
     // landing page. Prices from the practice's price sheet of 2026-09-15
     // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
     // page's old saline "$4,500–$6,500" and silicone "$5,500–$8,500" (#309).
-    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Saline implants are ${figure('price-saline')} and silicone implants ${figure('price-silicone')}.`,
+    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants, and your surgeon confirms your price at consultation.`,
 
     // Hand-written metadata (D4 of the wave-two brief). The generated title
     // ended "| Board-Certified Surgeons", a certification claim naming no
@@ -40,7 +40,7 @@ export const breastAugmentationMiami: Procedure = {
     // the 16:9 crop of the new hero once the user picks it (Gate 4); until
     // then it stays the image the live site serves.
     image: '/images/procedures/breast-augmentation.jpg',
-    dateModified: '2026-09-30T00:00:00.000Z',
+    dateModified: '2026-10-28T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing: saline implants, the lower of the two
@@ -179,7 +179,7 @@ export const breastAugmentationMiami: Procedure = {
     faqs: [
         {
             question: 'How much does breast augmentation cost in Miami?',
-            answer: `At Alluring, breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants. A lift with implants is a breast lift, a different procedure with its own price. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Prices are estimates and may change. Financing is available, subject to credit approval.`,
+            answer: `At Alluring, breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants. A lift with implants is a breast lift, a different procedure with its own price. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Prices are estimates and may change. Financing is available for qualified applicants.`,
         },
         {
             question: 'How long do breast implants last?',

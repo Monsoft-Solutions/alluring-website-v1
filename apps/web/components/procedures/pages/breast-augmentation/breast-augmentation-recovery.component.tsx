@@ -29,7 +29,7 @@ const milestones: ModuleMilestone[] = [
     },
     {
         when: `Days ${figure('pain-1-5-days').replace(' days', '')}`,
-        body: `Acute pain typically eases after ${figure('pain-1-5-days')}, though soreness and swelling can last a few weeks (ASPS). Wear your support bra or band around the clock, as your surgeon instructs.`,
+        body: `Acute pain typically eases after ${figure('pain-1-5-days')}, though soreness and swelling can last a few weeks (ASPS). Wear your support bra or band day and night, as your surgeon instructs.`,
     },
     {
         when: 'A few days to a week',
@@ -45,7 +45,7 @@ const milestones: ModuleMilestone[] = [
     },
     {
         when: `At least ${figure('sex-2-weeks')}`,
-        body: 'Sex waits this long (The Aesthetic Society). Be gentle with your breasts for the month after that.',
+        body: 'Sex waits this long (The Aesthetic Society). Be gentle with your breasts for at least the next month.',
     },
     {
         when: 'Within a month',
@@ -120,7 +120,7 @@ export function BreastAugmentationRecovery() {
             id='recovery'
             question='What is breast augmentation recovery like?'
             className={moduleSectionPad}
-            answer={`Most people are back at a desk job within a few days to a week and recover in ${figure('recover-1-2-weeks')}, The Aesthetic Society says. Cleveland Clinic advises no heavy lifting for at least ${figure('heavy-lifting-4-weeks')}, sports after up to ${figure('sports-6-weeks')}, and puts full recovery at about ${figure('full-recovery-6-8-weeks')}.`}
+            answer={`Many people can return to a desk job within a few days to a week and recover in ${figure('recover-1-2-weeks')}, The Aesthetic Society says. Cleveland Clinic advises no heavy lifting for at least ${figure('heavy-lifting-4-weeks')}, sports after up to ${figure('sports-6-weeks')}, and puts full recovery at about ${figure('full-recovery-6-8-weeks')}.`}
         >
             <ModuleTimeline
                 label='Breast augmentation recovery timeline'

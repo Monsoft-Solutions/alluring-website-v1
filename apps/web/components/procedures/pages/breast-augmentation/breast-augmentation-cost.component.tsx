@@ -56,7 +56,7 @@ export function BreastAugmentationCost({
             id='pricing'
             question='How much is breast augmentation in Miami?'
             className={moduleSectionPad}
-            answer={`At Alluring, breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants, from our price list. Your surgeon confirms your price after an exam. For comparison, ASPS puts the national average surgeon's fee at ${figure('asps-average-fee')}, before anesthesia and the operating room, so ask what every quote includes.`}
+            answer={`At Alluring, breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants, from our price list. Your surgeon confirms your price at your consultation, after an exam. For comparison, ASPS puts the national average surgeon's fee at ${figure('asps-average-fee')}, before anesthesia and the operating room, so ask what every quote includes.`}
         >
             <ModulePriceTable
                 options={pricing.options ?? []}
@@ -127,9 +127,9 @@ export function BreastAugmentationCost({
                 where.
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
-                Financing is available through {getFinancingPartnersString()},
-                subject to credit approval. ASPS says most health insurance
-                plans won&apos;t cover cosmetic breast augmentation.
+                Financing is available through {getFinancingPartnersString()}{' '}
+                for qualified applicants. ASPS says most health insurance plans
+                won&apos;t cover cosmetic breast augmentation.
             </p>
             <ModulePriceActions />
         </AnswerBlock>

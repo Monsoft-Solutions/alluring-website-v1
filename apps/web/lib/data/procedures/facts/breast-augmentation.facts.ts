@@ -223,7 +223,7 @@ export const breastAugmentationSources: readonly BreastAugmentationSource[] = [
         title: 'Breast Augmentation - Aftercare & Recovery',
         url: 'https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery',
         attribution:
-            'Read on 2026-09-30: "It typically takes one to two weeks to recover from a breast augmentation." "You may be able to return to work within a few days to a week, depending on the nature of your job." "Most residual swelling will resolve within a month." Sleep on your back in an inclined position "for the initial postoperative days". "If you have external sutures, your surgeon will remove them in about a week." "Avoid sexual activity for a minimum of two weeks." Its sleeping angle is in degrees, a unit the copy does not state.',
+            'Read on 2026-09-30: "It typically takes one to two weeks to recover from a breast augmentation." "You may be able to return to work within a few days to a week, depending on the nature of your job." "Most residual swelling will resolve within a month." Sleep on your back in an inclined position "for the initial postoperative days". "If you have external sutures, your surgeon will remove them in about a week." "Avoid sexual activity for a minimum of two weeks." Re-read on 2026-10-28: "be extremely gentle with your breasts for at least the next month". Its sleeping angle is in degrees, a unit the copy does not state.',
     },
     {
         id: 'tas-breast-augmentation-procedure',
