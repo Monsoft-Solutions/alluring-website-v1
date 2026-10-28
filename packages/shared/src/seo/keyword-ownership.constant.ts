@@ -164,12 +164,24 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'mastopexy',
             'breast lift surgery',
             'breast rejuvenation',
-        ],
-        mustNotTarget: [
-            {
-                query: 'breast lift cost',
-                ownedBy: '/plastic-surgery-cost-miami',
-            },
+            'mastopexy miami',
+            // A lift with implants (augmentation-mastopexy) is this page's;
+            // the breast augmentation page links here for it (#320).
+            'breast lift with implants miami',
+            'breast lift and augmentation miami',
+            // Price intent (D5 of the #320 brief), as on the BBL, liposuction
+            // and tummy tuck pages. "breast lift cost" was held for
+            // /plastic-surgery-cost-miami, a hub that was never built (it
+            // redirects to the financing page). In the 180 days to
+            // 2026-09-30 Google sent these searches to
+            // /blog/affordable-plastic-surgery-miami (about 340 impressions
+            // at positions 15–28) and almost none here; this page now
+            // carries the four prices from the practice's 2026-09-15 sheet.
+            'breast lift cost',
+            'breast lift cost miami',
+            'how much is a breast lift',
+            'breast lift price',
+            'breast lift with implants cost',
         ],
     },
     {

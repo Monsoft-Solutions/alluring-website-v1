@@ -480,7 +480,10 @@ const WORDING_RULES: WordingRule[] = [
     },
     {
         rule: 'practice-claim',
-        re: /aaaasf|accredit|anesthesiologist|vaser|around-the-clock (?:surgeon |doctor )?(?:access|support|availability|care)|24\/7 (?:surgeon |doctor )?(?:access|support|availability|care)|5,?000\+?|thousands of (?:patients|procedures)|\b(?:we|our|alluring)\b[^.]{0,80}ultrasound[^.]{0,40}\bevery\b|\bevery (?:case|bbl|patient|procedure)\b[^.]{0,60}\b(?:we|our)\b/,
+        // "5,000+" is the volume claim ("5,000+ procedures"), not a price:
+        // "$5,000" and "$15,000" are let through (#320, a breast lift
+        // without implants is $5,000).
+        re: /aaaasf|accredit|anesthesiologist|vaser|around-the-clock (?:surgeon |doctor )?(?:access|support|availability|care)|24\/7 (?:surgeon |doctor )?(?:access|support|availability|care)|(?<![\d$.,])(?<!\$\s)5,?000\+?|thousands of (?:patients|procedures)|\b(?:we|our|alluring)\b[^.]{0,80}ultrasound[^.]{0,40}\bevery\b|\bevery (?:case|bbl|patient|procedure)\b[^.]{0,60}\b(?:we|our)\b/,
         why: 'one of the six practice claims awaiting the owner (#247 item 3)',
     },
     {

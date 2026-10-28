@@ -741,6 +741,12 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
         primaryKeyword: 'affordable plastic surgery miami',
         ownsQueries: ['affordable plastic surgery miami costs financing'],
         mustNotTarget: [
+            // Held the breast lift cost searches at positions 15–28 before
+            // the breast lift page published its prices (#320, D5).
+            {
+                query: 'breast lift cost miami',
+                ownedBy: '/procedures/breast-lift-miami',
+            },
             {
                 query: 'liposuction cost miami',
                 ownedBy: '/procedures/liposuction-miami',
