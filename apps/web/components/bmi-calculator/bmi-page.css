@@ -1,0 +1,123 @@
+/*
+ * BMI page (/bmi-calculator, #346): the rules Tailwind utilities can't
+ * express, and the page's motion. Classes are prefixed `bmi-`; the page's
+ * root element carries `bmi-page`.
+ *
+ * The look is the 2026-09 system the home page set: porcelain and cocoa
+ * (`stone-*`), champagne light (`gold-*`), Fraunces with one italic word,
+ * and the arch as a window. Here the arch frames numbers instead of people:
+ * the reader's BMI in the calculator, and each procedure's range.
+ *
+ * Motion follows the module kit's rules (module-kit.css): text never
+ * animates in from hidden, everything that moves sits behind
+ * `prefers-reduced-motion: no-preference`, scroll-driven effects sit behind
+ * `@supports (animation-timeline: view())`, and keyframes fill `both`.
+ */
+
+/* Anchors land clear of the announcement bar and the fixed header. */
+.bmi-page [id] {
+    scroll-margin-top: calc(var(--announcement-bar-height, 0px) + 6.5rem);
+}
+
+/* Below-the-fold bands skip rendering until they near the viewport. The text
+   stays in the DOM, so find-in-page, anchors and crawlers all see it. */
+.bmi-defer {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 1100px;
+}
+
+@layer components {
+    /* Film grain on the dark bands, so cocoa reads as a material. */
+    .bmi-grain {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .92 0 0 0 0 .84 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 160px 160px;
+    }
+
+    /* Headings: the one word that carries the feeling is set in italic. */
+    .bmi-display em {
+        font-style: italic;
+        font-weight: 400;
+    }
+
+    .bmi-dark .bmi-display em {
+        color: var(--gold-300);
+    }
+
+    /* The hero's arches: two outlined doorways behind the copy, drawn once. */
+    .bmi-hero-arches {
+        position: absolute;
+        inset: auto -6rem -10rem auto;
+        width: 34rem;
+        height: 46rem;
+        border: 1px solid rgb(228 201 157 / 0.16);
+        border-radius: 17rem 17rem 0 0;
+        pointer-events: none;
+    }
+
+    .bmi-hero-arches::after {
+        content: '';
+        position: absolute;
+        inset: 2.5rem;
+        border: 1px solid rgb(228 201 157 / 0.1);
+        border-radius: 15rem 15rem 0 0;
+    }
+
+    /* The BMI scale: the CDC bands as one bar, quiet to warm. */
+    .bmi-scale {
+        background: linear-gradient(
+            90deg,
+            var(--stone-200) 0 11.667%,
+            var(--gold-100) 11.667% 33.333%,
+            var(--gold-200) 33.333% 50%,
+            var(--gold-300) 50% 66.667%,
+            var(--gold-400) 66.667% 83.333%,
+            var(--gold-500) 83.333% 100%
+        );
+    }
+
+    /* Figures that line up. */
+    .bmi-num {
+        font-variant-numeric: lining-nums tabular-nums;
+    }
+
+    /* A procedure's range in its arch. */
+    .bmi-range-arch {
+        border-radius: 999px 999px 0.75rem 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* The marker glides to the new reading as the reader types. */
+    .bmi-marker {
+        transition: left 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    /* On load the hero's arches rise once into place. */
+    .bmi-hero-arches {
+        animation: bmi-rise 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    @supports (animation-timeline: view()) {
+        /* The risk bars grow from zero as they scroll into view. The figure
+           beside each bar is text and never moves. */
+        .bmi-bar-fill {
+            transform-origin: left;
+            animation: bmi-grow linear both;
+            animation-timeline: view();
+            animation-range: entry 10% cover 35%;
+        }
+    }
+}
+
+@keyframes bmi-rise {
+    from {
+        opacity: 0;
+        translate: 0 3rem;
+    }
+}
+
+@keyframes bmi-grow {
+    from {
+        scale: 0 1;
+    }
+}

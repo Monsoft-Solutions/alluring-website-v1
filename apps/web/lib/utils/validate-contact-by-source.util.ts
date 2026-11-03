@@ -22,7 +22,8 @@ export function validateBySource(data: ContactFormData): {
     switch (source) {
         // The contact, specials and home pages use the chat thread (#274),
         // which asks for a mobile number only; email is optional afterwards.
-        // So does Dr. Karlinsky's bio-link page (#332), on one screen.
+        // So does Dr. Karlinsky's bio-link page (#332), on one screen, and
+        // the BMI calculator page since its rebuild (#346).
         case CONTACT_SOURCES.CONTACT_PAGE:
         case CONTACT_SOURCES.SPECIALS_PAGE:
         case CONTACT_SOURCES.HOME_PAGE:
@@ -30,6 +31,7 @@ export function validateBySource(data: ContactFormData): {
         case CONTACT_SOURCES.EXIT_INTENT:
         case CONTACT_SOURCES.LEAD_FORM:
         case CONTACT_SOURCES.DR_KARLINSKY_IG:
+        case CONTACT_SOURCES.BMI_CALCULATOR:
             // Lead capture forms require phone
             if (!data.phone) {
                 return { valid: false, error: 'Phone number is required' }

@@ -92,7 +92,10 @@ function readConfig(): ProcedureCopyConfig {
 const CONFIG = readConfig()
 const SLUG = CONFIG.slug
 const BUILT_HTML = fileURLToPath(
-    new URL(`../.next/server/app/procedures/${SLUG}.html`, import.meta.url)
+    new URL(
+        `../.next/server/app/${CONFIG.htmlPath ?? `procedures/${SLUG}`}.html`,
+        import.meta.url
+    )
 )
 
 // Expected length in words, for the 40–60 word answer check.
@@ -802,9 +805,17 @@ async function main(): Promise<void> {
 
     // The page's own graph nodes. The site-wide organization node belongs to
     // the root layout, not to this page's copy.
+    // A page outside /procedures (`htmlPath`) renders separate schema
+    // components without ids, so its own nodes are the ones the root layout
+    // does not render.
     const nodes = ldNodes(document)
-    const pageNodes = nodes.filter((node) =>
-        String(node['@id'] ?? '').includes(`/procedures/${SLUG}#`)
+    const LAYOUT_TYPES = new Set(['Organization', 'WebSite'])
+    const pageNodes = nodes.filter(
+        (node) =>
+            String(node['@id'] ?? '').includes(`/procedures/${SLUG}#`) ||
+            (CONFIG.htmlPath !== undefined &&
+                node['@id'] === undefined &&
+                !LAYOUT_TYPES.has(String(node['@type'])))
     )
     const structured: CopyString[] = []
     for (const node of pageNodes) {

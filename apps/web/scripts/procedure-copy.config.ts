@@ -10,6 +10,7 @@
  * @module
  */
 
+import { bmiFacts, bmiSources } from '../lib/data/bmi/bmi.facts'
 import { bblFacts, bblSources } from '../lib/data/procedures/facts/bbl.facts'
 import { lipoFacts, lipoSources } from '../lib/data/procedures/facts/lipo.facts'
 import {
@@ -30,6 +31,11 @@ export interface WordingRule {
 
 export interface ProcedureCopyConfig {
     slug: string
+    /**
+     * The built page under `.next/server/app`, without `.html`, for a page
+     * that is not a procedure page. Default `procedures/<slug>`.
+     */
+    htmlPath?: string
     /** How the report names the page, e.g. "BBL". */
     name: string
     /** The class on the module's root element; the sweep reads inside it. */
@@ -151,10 +157,71 @@ const tummyTuck: ProcedureCopyConfig = {
     ],
 }
 
+/**
+ * Not a procedure page, but held to the same standard (#346): every BMI,
+ * %, count and time figure on /bmi-calculator comes from `bmi.facts.ts`.
+ * The calculator's readout, the weight chart and the consultation thread
+ * are data (`data-copy-check="data"`).
+ */
+const bmiCalculator: ProcedureCopyConfig = {
+    slug: 'bmi-calculator',
+    htmlPath: 'bmi-calculator',
+    name: 'BMI calculator',
+    rootClass: 'bmi-page',
+    factsFile: 'bmi.facts.ts',
+    facts: bmiFacts,
+    sources: bmiSources,
+    identifiers: [
+        [/64b8-9\.009(?:\(\d+\)\([a-z]\)\d*)?/g, ' rule '],
+        // The drug class, not a figure.
+        [/\bglp-1\b/g, ' glp '],
+    ],
+    neutralNames: [
+        /aesthetic plastic surgery/g,
+        // The society that sets the ASA classes, quoted from the rule too;
+        // not a claim about anyone's anesthesia team.
+        /american society of anesthesiologist(?:['’]s|s['’]?)?/g,
+    ],
+    requiredAnchors: [
+        'calculator',
+        'ranges',
+        'bbl',
+        'liposuction',
+        'tummy-tuck',
+        'mommy-makeover',
+        'breast-augmentation',
+        'breast-lift',
+        'breast-reduction',
+        'weight-chart',
+        'getting-there',
+        'florida',
+        'faq',
+        'sources',
+    ],
+    rules: [
+        {
+            rule: 'travel-or-accreditation',
+            re: /accredit|aaaasf|quad a|where we operate|our (?:surgical )?(?:facility|operating room)/,
+            why: 'facility accreditation is unverified and where Alluring operates is an owner question (#346)',
+        },
+        {
+            rule: 'free-or-price-language',
+            re: /\bfree\b|\bluxury\b|\baffordable\b/,
+            why: 'no "free", "luxury" or "affordable" in this page\'s copy (CLAUDE.md, #346)',
+        },
+        {
+            rule: 'glp1-dosing',
+            re: /\b(?:mg|dose|dosing|units?)\b/,
+            why: 'GLP-1 copy stays neutral: no dosing (#346)',
+        },
+    ],
+}
+
 export const procedureCopyConfigs: Readonly<
     Record<string, ProcedureCopyConfig>
 > = {
     [bbl.slug]: bbl,
     [lipo.slug]: lipo,
     [tummyTuck.slug]: tummyTuck,
+    [bmiCalculator.slug]: bmiCalculator,
 }

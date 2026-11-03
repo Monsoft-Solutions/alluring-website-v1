@@ -543,12 +543,104 @@ const CORE_PAGE_ENTRIES: OwnedPage[] = [
         ],
     },
     {
+        // Rebuilt in #346 around BMI by procedure. Owns the procedure-BMI
+        // and "weight for surgery" queries Search Console already sends it
+        // (90 days to 2026-10-14: "bmi for lipo 360" 104 impressions,
+        // "bmi for bbl" 94, "bbl weight calculator" 68, "liposuction weight
+        // loss calculator" 53, "bmi calculator for tummy tuck" 38, "ideal
+        // weight for mommy makeover" 31, "bmi for plastic surgery" 28). The
+        // procedure pages keep their head and cost terms; the competitor
+        // brand query "mia aesthetics bmi calculator" is deliberately left
+        // unowned.
         url: '/bmi-calculator',
         kind: 'page',
-        intent: 'informational',
+        intent: 'candidacy',
         status: 'live',
-        primaryKeyword: 'bmi calculator for plastic surgery',
-        ownsQueries: ['bmi requirements for plastic surgery'],
+        primaryKeyword: 'bmi for plastic surgery',
+        ownsQueries: [
+            'bmi calculator for plastic surgery',
+            'bmi requirements for plastic surgery',
+            'plastic surgery bmi requirements',
+            'bmi for cosmetic surgery',
+            'plastic surgery calculator',
+            'ideal bmi for surgery',
+            'bmi for bbl',
+            'bbl bmi',
+            'ideal bmi for bbl',
+            'bbl bmi requirements',
+            'bmi calculator for bbl',
+            'bbl weight calculator',
+            'bmi for lipo 360',
+            'lipo 360 bmi requirements',
+            'bmi for lipo',
+            'bmi for liposuction',
+            'liposuction bmi requirements',
+            'maximum bmi for liposuction',
+            'liposuction weight loss calculator',
+            'bmi for tummy tuck',
+            'bmi calculator for tummy tuck',
+            'max bmi for tummy tuck',
+            'what is the maximum bmi for tummy tuck',
+            'tummy tuck bmi requirements',
+            'what bmi do you need for a tummy tuck',
+            'bmi for mommy makeover',
+            'mommy makeover bmi',
+            'ideal weight for mommy makeover',
+            'bmi for breast augmentation',
+            'bmi for breast lift',
+            'bmi for breast reduction',
+            'bmi calculator for breast reduction',
+        ],
+        mustNotTarget: [
+            {
+                query: 'bbl miami',
+                ownedBy: '/procedures/brazilian-butt-lift-bbl-miami',
+            },
+            {
+                query: 'bbl cost miami',
+                ownedBy: '/procedures/brazilian-butt-lift-bbl-miami',
+            },
+            {
+                query: 'am i a candidate for a bbl',
+                ownedBy: '/procedures/brazilian-butt-lift-bbl-miami',
+            },
+            {
+                query: 'liposuction miami',
+                ownedBy: '/procedures/liposuction-miami',
+            },
+            {
+                query: 'am i a candidate for liposuction',
+                ownedBy: '/procedures/liposuction-miami',
+            },
+            {
+                query: 'tummy tuck miami',
+                ownedBy: '/procedures/tummy-tuck-miami',
+            },
+            {
+                query: 'tummy tuck cost miami',
+                ownedBy: '/procedures/tummy-tuck-miami',
+            },
+            {
+                query: 'mommy makeover miami',
+                ownedBy: '/procedures/mommy-makeover-miami',
+            },
+            {
+                query: 'breast augmentation miami',
+                ownedBy: '/procedures/breast-augmentation-miami',
+            },
+            {
+                query: 'breast lift miami',
+                ownedBy: '/procedures/breast-lift-miami',
+            },
+            {
+                query: 'breast reduction miami',
+                ownedBy: '/procedures/breast-reduction-miami',
+            },
+            {
+                query: 'plastic surgery after weight loss',
+                ownedBy: '/after-weight-loss-consultation',
+            },
+        ],
     },
     {
         url: '/miami-plastic-surgery-specials',
