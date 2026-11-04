@@ -3,5 +3,218 @@
   "what-is-lipo-foam": {
     "hero": "flare",
     "layers": "flare"
+  },
+  "breast-lift-scars-miami": {
+    "hero": "flare",
+    "timeline": "flare"
+  },
+  "types-of-breast-lift": {
+    "hero": "flare",
+    "types": "flare"
+  },
+  "breast-lift-implants-miami": {
+    "hero": "sunburst",
+    "compare": "flare"
+  },
+  "breast-lift-without-implants": {
+    "hero": "flare"
+  },
+  "breast-lift-cost": {
+    "hero": "flare",
+    "quote": "flare"
+  },
+  "breast-lift-candidate-checklist": {
+    "hero": "flare",
+    "grades": "flare"
+  },
+  "breast-lift-recovery-weight-loss-miami": {
+    "hero": "flare"
+  },
+  "breast-lift-vs-reduction-miami": {
+    "hero": "flare",
+    "compare": "flare"
+  },
+  "breast-augmentation-vs-breast-lift": {
+    "hero": "flare",
+    "compare": "flare"
+  },
+  "breast-lift-miami-post-pregnancy": {
+    "hero": "flare",
+    "decision": "flare"
+  },
+  "breast-lift-recovery-guide-miami": {
+    "hero": "sunburst",
+    "timeline": "flare"
+  },
+  "non-surgical-breast-lift": {
+    "hero": "flare"
+  },
+  "mommy-makeover-recovery-signs": {
+    "hero": "sunburst",
+    "timeline-card": "flare",
+    "normal-vs-call-card": "flare",
+    "mother-resting": "flare",
+    "checklist-card": "flare",
+    "recovery-flat-lay": "flare"
+  },
+  "how-long-after-mommy-makeover-can-i-drive": {
+    "hero": "flare",
+    "timing": "flare",
+    "five-checks": "flare",
+    "passenger": "flare"
+  },
+  "mommy-makeover-compression-garments-guide": {
+    "hero": "sunburst",
+    "wear-schedule": "flare",
+    "garment-on-chair": "flare",
+    "fit-check": "flare",
+    "what-to-wear": "flare"
+  },
+  "mommy-makeover-recovery-exercises": {
+    "hero": "sunburst",
+    "week-by-week": "flare",
+    "walking": "flare",
+    "doing-too-much": "flare",
+    "chest-arm-limits": "flare"
+  },
+  "tummy-tuck-mommy-makeover-miami": {
+    "hero": "flare",
+    "what-each-treats": "flare",
+    "side-by-side": "flare",
+    "consultation": "flare"
+  },
+  "breast-augmentation-candidate-quiz": {
+    "hero": "flare",
+    "tally-key": "flare",
+    "age-chart": "flare",
+    "wait-times": "flare"
+  },
+  "breast-augmentation-pain-management": {
+    "hero": "flare",
+    "pain-timeline": "flare",
+    "placement-diagram": "flare",
+    "medicine-questions": "flare",
+    "normal-or-call": "flare"
+  },
+  "breast-augmentation-recovery-miami": {
+    "hero": "flare",
+    "finish-lines": "flare",
+    "timeline": "flare",
+    "sleep-position": "flare",
+    "flat-lay": "flare",
+    "normal-vs-call": "flare",
+    "florida-card": "flare"
+  },
+  "breast-augmentation-scars-miami-timeline": {
+    "hero": "flare",
+    "incision-sites": "flare",
+    "scar-timeline": "flare",
+    "sun-kit": "flare",
+    "evidence-card": "flare",
+    "normal-vs-see": "flare"
+  },
+  "breast-implant-illness-symptoms": {
+    "hero": "flare",
+    "fda-reports-chart": "flare",
+    "which-problem-card": "flare",
+    "implant-checks": "flare",
+    "what-to-do-steps": "flare"
+  },
+  "breast-implant-rippling-bottoming-out": {
+    "hero": "flare",
+    "rippling-vs-bottoming-out-diagram": "flare",
+    "rippling-severity-scale": "flare"
+  },
+  "breast-implant-size-guide": {
+    "hero": "flare",
+    "selection": "flare"
+  },
+  "breast-implants-drop-fluff-timeline": {
+    "hero": "flare",
+    "week-by-week": "flare",
+    "normal-or-call": "flare"
+  },
+  "breast-implants-over-or-under-the-muscle": {
+    "hero": "flare",
+    "placement-diagram": "flare",
+    "tradeoff-card": "flare"
+  },
+  "capsular-contracture": {
+    "hero": "flare",
+    "baker-grades": "flare",
+    "normal-vs-call": "flare",
+    "ten-year-rates": "flare"
+  },
+  "how-long-after-breast-augmentation-can-i-drive": {
+    "hero": "sunburst",
+    "drive-timeline": "flare",
+    "ready-to-drive": "flare"
+  },
+  "how-long-after-breast-augmentation-can-i-swim": {
+    "hero": "flare",
+    "water-card": "flare",
+    "sun-flatlay": "flare"
+  },
+  "how-long-do-breast-implants-last": {
+    "hero": "flare",
+    "risk-over-time": "flare",
+    "when-to-act": "flare",
+    "scan-timeline": "flare"
+  },
+  "how-often-to-massage-breast-after-augmentation": {
+    "hero": "flare",
+    "massage-types": "flare",
+    "evidence-card": "flare"
+  },
+  "mammograms-breastfeeding-with-breast-implants": {
+    "hero": "flare",
+    "implant-displacement-views-diagram": "flare",
+    "mammogram-booking-checklist": "flare",
+    "breastfeeding-evidence-card": "flare"
+  },
+  "saline-vs-silicone-breast-implants": {
+    "hero": "flare",
+    "decision-card": "flare",
+    "rupture-diagram": "flare",
+    "implant-types": "flare"
+  },
+  "swelling-and-asymmetry-after-breast-augmentation-faq": {
+    "hero": "flare",
+    "higher-timeline": "flare",
+    "normal-vs-call": "flare"
+  },
+  "weeks-post-op-breast-augmentation-what-to-expect": {
+    "hero": "flare",
+    "week5-card": "flare",
+    "activity-card": "flare",
+    "sleep-setup": "flare",
+    "call-card": "flare"
+  },
+  "when-can-i-do-push-ups-after-breast-augmentation": {
+    "hero": "flare",
+    "timeline": "flare",
+    "progression": "flare"
+  },
+  "when-can-i-sleep-on-my-side-after-breast-augmentation": {
+    "hero": "flare",
+    "pillow-setup": "flare",
+    "side-weeks": "flare"
+  },
+  "when-can-i-sleep-without-a-bra-after-breast-augmentation": {
+    "hero": "flare",
+    "bra-stages": "flare",
+    "braless-checklist": "flare"
+  },
+  "when-can-you-work-out-after-breast-augmentation": {
+    "hero": "flare",
+    "exercise-timeline": "flare",
+    "stop-card": "flare"
+  },
+  "when-do-breast-augmentation-stitches-dissolve": {
+    "hero": "flare",
+    "timeline": "flare",
+    "normal-vs-call": "flare",
+    "types": "flare",
+    "what-affects": "flare"
   }
 }

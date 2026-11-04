@@ -21,7 +21,7 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (124 posts as of seed)', () => {
+    it('contains every published post exactly once (115 live posts)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
@@ -30,11 +30,27 @@ describe('registry integrity', () => {
         // posts into /blog/tummy-tuck-vs-bbl-miami, six "mom" posts into the
         // procedure page), and the three recovery posts folded into
         // /how-long-to-recover-from-bbl (miami-bbl-recovery-guide,
-        // bbl-recovery-time-miami, bbl-recovery-mistakes-miami), the eight
-        // liposuction posts folded in the 2026-09-22 blog review, and the
-        // eight tummy tuck posts folded in #357. The plan's three new posts
-        // add 3 in the PR that registers them.
-        expect(liveBlog.length).toBe(124)
+        // bbl-recovery-time-miami, bbl-recovery-mistakes-miami), and the
+        // eight liposuction posts folded in the 2026-09-22 blog review, the
+        // four breast lift posts folded on 2026-11-03 (breast-lift-miami-quiz,
+        // breast-lift-prep-miami, best-age-breast-lift-miami,
+        // breast-lift-myths-busted) plus the four written that day
+        // (types-of-breast-lift, breast-lift-without-implants, breast-lift-cost,
+        // non-surgical-breast-lift), the five mommy makeover posts folded on
+        // 2026-11-03 (three into /blog/mommy-makeover-recovery-signs:
+        // mommy-makeover-recovery-timeline-miami, mommy-makeover-recovery-miami,
+        // how-long-to-recover-from-mommy-makeover; two into the procedure page:
+        // mommy-makeover-miami-candidate-checklist,
+        // mommy-makeover-questions-miami), the nine breast augmentation posts
+        // folded in the 2026-11-03 rewrite, and the never-published 5-weeks
+        // entry, plus the six written that day
+        // (breast-implants-over-or-under-the-muscle,
+        // saline-vs-silicone-breast-implants, how-long-do-breast-implants-last,
+        // capsular-contracture, breast-implant-rippling-bottoming-out,
+        // mammograms-breastfeeding-with-breast-implants), and the eight tummy
+        // tuck posts folded in #357. The plan's three new posts add 3 in the PR
+        // that registers them.
+        expect(liveBlog.length).toBe(115)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -270,6 +286,81 @@ describe('resolveQueryOwner', () => {
             expect(entry?.status, slug).toBe('retired')
             expect(entry?.redirectsTo, slug).toBe(redirectsTo)
         }
+    })
+
+    it('folds the five mommy makeover posts and points their aliases straight at the hub', () => {
+        const hub = '/blog/mommy-makeover-recovery-signs'
+        const page = '/procedures/mommy-makeover-miami'
+        const folded: Array<[string, string]> = [
+            ['mommy-makeover-recovery-timeline-miami', hub],
+            ['mommy-makeover-recovery-miami', hub],
+            ['how-long-to-recover-from-mommy-makeover', hub],
+            ['mommy-makeover-miami-candidate-checklist', page],
+            ['mommy-makeover-questions-miami', page],
+            // Older aliases go straight to the hub, not through a second 308
+            ['mommy-makeover-recovery-timeline', hub],
+            ['mommy-makeover-recovery-guide', hub],
+            ['mommy-makeover-recovery-time-miami', hub],
+            ['mommy-makeover-recovery-pain-management', hub],
+            ['mommy-makeover-recovery-pain-guide', hub],
+        ]
+        for (const [slug, redirectsTo] of folded) {
+            const entry = BLOG_POST_ENTRIES.find((e) => e.slug === slug)
+            expect(entry?.status, slug).toBe('retired')
+            expect(entry?.redirectsTo, slug).toBe(redirectsTo)
+            expect(entry?.ownsQueries, slug).toEqual([])
+        }
+    })
+
+    it('gives each mommy makeover cluster one owner', () => {
+        const hub = '/blog/mommy-makeover-recovery-signs'
+        const page = '/procedures/mommy-makeover-miami'
+        const owners: Array<[string, string]> = [
+            ['mommy makeover miami', page],
+            ['mommy makeover cost', page],
+            ['mommy makeover cost miami', page],
+            ['how much is a mommy makeover in miami', page],
+            ['mini mommy makeover cost', page],
+            ['mommy makeover en miami', page],
+            ['mommy makeover near me', page],
+            ['am i a candidate for mommy makeover', page],
+            ['mommy makeover questions to ask', page],
+            ['mommy makeover consultation', '/mommy-makeover-consultation'],
+            [
+                'tummy tuck or mommy makeover',
+                '/blog/tummy-tuck-mommy-makeover-miami',
+            ],
+            ['mommy makeover recovery timeline', hub],
+            ['mommy makeover recovery week by week', hub],
+            ['mommy makeover checklist', hub],
+            [
+                'when can i drive after a tummy tuck',
+                '/how-long-after-mommy-makeover-can-i-drive',
+            ],
+            [
+                'mommy makeover compression garments',
+                '/blog/mommy-makeover-compression-garments-guide',
+            ],
+            [
+                'exercise after mommy makeover',
+                '/blog/mommy-makeover-recovery-exercises',
+            ],
+        ]
+        for (const [query, url] of owners) {
+            expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
+                url
+            )
+        }
+    })
+
+    it('retires the mommy makeover cost page and keeps "affordable" off every owner', () => {
+        const cost = getKeywordRegistry().find(
+            (e) => e.url === '/mommy-makeover-cost-miami'
+        )
+        expect(cost?.status).toBe('retired')
+        expect(cost?.redirectsTo).toBe('/procedures/mommy-makeover-miami')
+        expect(cost?.ownsQueries).toEqual([])
+        expect(resolveQueryOwner('affordable mommy makeover')).toBeNull()
     })
 
     it('gives each liposuction recovery question one owner', () => {

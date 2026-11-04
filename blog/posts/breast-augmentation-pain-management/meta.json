@@ -1,0 +1,382 @@
+{
+  "slug": "breast-augmentation-pain-management",
+  "mode": "rewrite",
+  "reader": "recovering",
+  "cluster": "breast-augmentation",
+  "cta": "default",
+  "title": "Breast Augmentation Pain: Timeline, Ibuprofen, Nerve Pain",
+  "meta_description": "Acute pain usually eases in 1 to 5 days, ASPS says. A pain timeline, whether you can take ibuprofen, why nerve zaps happen, and the pain that needs a call.",
+  "excerpt": "Pain after breast augmentation peaks in the first days and eases over the first week or so, with soreness lingering a few weeks and nerve zaps coming and going for months. Here is the timeline, what the evidence says about ibuprofen and gabapentin, what helps at home, and when pain is not normal. No doses, on purpose.",
+  "quick_answer": "How long does pain last after breast augmentation?\n\nAcute pain typically eases after 1 to 5 days, ASPS says, though soreness and swelling can last a few weeks. The Aesthetic Society says the first 48 hours are usually worst and that implants under the muscle hurt more. University of Utah Health says shooting pains can last a few months. Take only what your surgeon approves.",
+  "primary_keyword": "breast augmentation pain management",
+  "secondary_keywords": [
+    "how to relieve nerve pain after breast augmentation",
+    "breast augmentation pain timeline",
+    "ibuprofen after breast augmentation",
+    "can i take ibuprofen after breast augmentation",
+    "can you take ibuprofen after breast augmentation",
+    "when can i take ibuprofen after breast augmentation",
+    "gabapentin after breast augmentation",
+    "gabapentin for breast augmentation",
+    "best pain medication for breast augmentation",
+    "what pain medication is given after breast augmentation",
+    "pain meds for breast augmentation",
+    "pain after breast augmentation",
+    "how painful is breast augmentation",
+    "how long does pain last after breast augmentation"
+  ],
+  "owns_queries": [
+    "breast augmentation pain management first week tips",
+    "how to relieve nerve pain after breast augmentation",
+    "breast augmentation pain timeline",
+    "ibuprofen after breast augmentation",
+    "can i take ibuprofen after breast augmentation",
+    "gabapentin after breast augmentation"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Recovery",
+    "Recovery Timeline",
+    "Post-Op Care",
+    "Swelling"
+  ],
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her early 30s in a sand-colored linen shirt buttoned to the collar rests propped on pillows on a made bed, looking toward a bright window, with a glass of water and a closed book on the nightstand.",
+      "prompt": "SCENE: Mid-morning in a bright bedroom, white plaster walls, a tall window with sheer linen curtains, soft palm shadows across a pale limestone floor. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A woman in her early 30s with medium tan skin and long dark wavy hair loosely tied back, resting propped up on several pillows on a made bed, in a loose sand-colored linen shirt buttoned to the collar and a soft throw over her legs. A glass of water and a closed paperback on the oak nightstand. Three-quarter view, eyes open, looking toward the window, calm.\nKEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds of the frame; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain.\nCONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bra, surgical garment, bandages, drains or incisions; not photographed from behind; no crop on the chest; no surgeon or staff; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad. No pills, pill bottles or medicine anywhere in the frame; no ice pack on the body.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "pain-timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional vertical timeline chart on a warm porcelain-white background with a thin brushed-gold rule running down the left side and a small gold dot at each stage. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey, warm white and brushed gold. No people, no bodies, no pill or medicine icons, no logos, no practice name, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "Title: \"Breast Augmentation Pain: What's Common and When\"\nStage: \"First 12 to 24 hours\" | \"Usually the most painful\"\nStage: \"First 48 hours\" | \"The most pain, then less each day\"\nStage: \"Days 1 to 5\" | \"Acute pain subsides\"\nStage: \"First 2 weeks\" | \"Muscle soreness or sharp, shooting pain\"\nStage: \"A few weeks\" | \"Soreness and swelling linger\"\nStage: \"First few months\" | \"Shooting pains and tingling\"\nFooter in small text: \"Sources: UW Medicine, The Aesthetic Society, ASPS, University of Utah Health.\"",
+      "alt": "Timeline chart titled Breast Augmentation Pain: What's Common and When. First 12 to 24 hours: usually the most painful. First 48 hours: the most pain, then less each day. Days 1 to 5: acute pain subsides. First 2 weeks: muscle soreness or sharp, shooting pain. A few weeks: soreness and swelling linger. First few months: shooting pains and tingling. Footer credits UW Medicine, The Aesthetic Society, ASPS and University of Utah Health."
+    },
+    {
+      "key": "placement-diagram",
+      "type": "inline",
+      "aspect": "3:2",
+      "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, flat editorial typography with a refined serif title and a clean sans-serif for labels. Two panels side by side, each a simple, tasteful side-view outline of a woman's upper body wearing a plain high-neck top, drawn as a thin line like a textbook figure. A soft shaded band shows the chest muscle. In the left panel a soft dashed oval sits in front of the band; in the right panel the dashed oval sits behind the band. Modest and non-sexual, clothed, no skin detail, no nipples, no faces, no scars, no logos, no practice name, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "Title: \"Why Implants Under the Muscle Can Feel Sorer at First\"\nLeft panel label: \"Over the muscle\"\nRight panel label: \"Under the muscle\" and \"The muscle is stretched to fit the implant\"\nFooter in small text: \"Sources: The Aesthetic Society, an article on the ASPS website. Placement is chosen with your surgeon.\"",
+      "alt": "Clothed side-view diagram titled Why Implants Under the Muscle Can Feel Sorer at First. Two simple outlines of a woman in a plain high-neck top, one with a dashed oval showing an implant over the chest muscle, the other showing it under the chest muscle, labeled the muscle is stretched to fit the implant. Footer credits The Aesthetic Society and an article on the ASPS website, and says placement is chosen with your surgeon."
+    },
+    {
+      "key": "medicine-questions",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey, warm white and brushed gold, with hairline dividers and generous spacing. No people, no bodies, no icons of breasts, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines. All text must be rendered exactly, word for word, and nothing else. Numbered list, no pill, bottle or medicine illustrations, no milligrams, no quantities, no schedules.",
+      "text_in_image": "Title: \"Pain Medicine: 5 Questions for Your Surgeon\"\nQuestion: \"Which medicines am I taking, and why?\"\nQuestion: \"Can I take ibuprofen, and when?\"\nQuestion: \"Does my prescription already contain acetaminophen?\"\nQuestion: \"What should I do about nerve pain?\"\nQuestion: \"When can I stop, and when can I drive?\"\nFooter in small text: \"No doses here on purpose. Follow your prescription label.\"",
+      "alt": "Reference card titled Pain Medicine: 5 Questions for Your Surgeon. Which medicines am I taking, and why? Can I take ibuprofen, and when? Does my prescription already contain acetaminophen? What should I do about nerve pain? When can I stop, and when can I drive? Footer says no doses here on purpose, follow your prescription label."
+    },
+    {
+      "key": "normal-or-call",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey, warm white and brushed gold, with hairline dividers and generous spacing. No people, no bodies, no icons of breasts, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines. All text must be rendered exactly, word for word, and nothing else. Two columns, a calm stone column on the left and a soft gold-outlined column on the right, with one line across the bottom.",
+      "text_in_image": "Title: \"Pain After Breast Augmentation: Normal or Call?\"\nLeft column heading: \"Usually normal\"\nLeft column: \"Tightness and soreness that ease each day\" / \"Brief zaps or tingling in the first months\" / \"Sore chest muscles when you move\"\nRight column heading: \"Call your surgeon\"\nRight column: \"Severe pain your medicine doesn't help\" / \"Pain that increases, with redness, swelling or drainage\" / \"One breast suddenly swelling, or firm with pain and pressure\" / \"Fever\"\nBottom line: \"Emergency room: chest pain or trouble breathing\"\nFooter in small text: \"Sources: UW Medicine, MedlinePlus, The Aesthetic Society, Cleveland Clinic.\"",
+      "alt": "Reference card titled Pain After Breast Augmentation: Normal or Call? Usually normal: tightness and soreness that ease each day, brief zaps or tingling in the first months, sore chest muscles when you move. Call your surgeon: severe pain your medicine doesn't help, pain that increases with redness, swelling or drainage, one breast suddenly swelling or firm with pain and pressure, fever. Emergency room: chest pain or trouble breathing. Footer credits UW Medicine, MedlinePlus, The Aesthetic Society and Cleveland Clinic."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks.",
+        "Wear your support garment (a bra or elastic band, called a bandeau) around the clock as instructed by your plastic surgeon."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast augmentation surgery stretches the breast tissue and it can be painful—especially when your implants are underneath the pectoral muscle.",
+        "Typically, you’ll experience the most pain within the first 48 hours after surgery.",
+        "Your pain level will typically decrease each day",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "Your chest area may feel stiff and sore for two to five days.",
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair.",
+        "It is very important that you walk a few minutes every few hours to reduce the risk of blood clot formation in your legs.",
+        "Your breasts may feel tight and sensitive to the touch and your skin may feel warm or itchy."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center",
+      "title": "Breast Augmentation: What to expect and how to prepare (handout PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The first 12 to 24 hours after surgery are usually the most painful.",
+        "It is normal to have muscle soreness or sharp, shooting pain for 2 weeks after surgery.",
+        "You will be given a prescription for pain medicine. Take this medicine exactly as it was prescribed.",
+        "For the first 2 to 3 days, you may use ice packs over your whole breast area to lessen swelling, pain, and bruising.",
+        "Wrap the ice packs in a towel or cloth to protect your skin.",
+        "Apply the ice packs for 20 minutes each hour.",
+        "If doing something hurts or pulls on your incisions, stop what you are doing.",
+        "Severe pain that is not helped by your pain medicine",
+        "A fever higher than 100.5°F (38°C)"
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months.",
+        "You may experience some asymmetry since each breast may heal at a different rate."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny, freelance writer",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Typically, the first week is the most uncomfortable",
+        "especially if the implant was placed under the muscle.",
+        "If you have a subpectoral (under the muscle) implant, you'll likely feel some pain, because the muscle has been stretched to accommodate the implant."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Do not take aspirin, aspirin-containing medicines, or ibuprofen without your surgeon's approval.",
+        "Take them with food and plenty of water. Do not apply ice or heat to your breasts unless your surgeon tells you that it is OK.",
+        "Do not drink alcohol while you are taking pain medicines.",
+        "Smoking slows healing and increases your risk for complications and infection.",
+        "A fever of 100°F (38°C) or higher",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site",
+        "Also contact your surgeon if you notice sudden swelling of your breast."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Pain medication prescribed by your surgeon and/or acetaminophen (Tylenol®).",
+        "Avoid taking aspirin and certain anti-inflammatory drugs, since they can increase bleeding.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis (DVT)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms of this include chest pain, shortness of breath, cough with blood, lightheadedness and fainting."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Capsular contracture is the hardening of the breast around the implant. It can occur in the tissue surrounding one or both implants. This hardening causes the tissue to tighten, which can be painful."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27018685/",
+      "publisher": "Plastic and Reconstructive Surgery (Kelley and colleagues)",
+      "title": "Ibuprofen May Not Increase Bleeding Risk in Plastic Surgery: A Systematic Review and Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Four primary randomized controlled trials were selected for full analysis.",
+        "No significant difference was noted regarding bleeding events (p = 0.32), and pain control was noted to be equivalent.",
+        "This meta-analysis represents a small set of high-quality studies suggesting that ibuprofen provides pain control equivalent to narcotics.",
+        "Further large studies will be necessary to elucidate this issue further"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/press-releases/ibuprofen-doesnt-increase-bleeding-risk-after-plastic-surgery",
+      "publisher": "ASPS press release",
+      "title": "Ibuprofen doesn't increase bleeding risk after plastic surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "But available evidence suggests that ibuprofen does not increase the risk of bleeding after plastic surgery procedures"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31044107/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open (Torabi and colleagues)",
+      "title": "American Society of Plastic Surgeons Member Post-Operative Opioid Prescribing Patterns",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Overall, 80% (N = 240) of respondents used nonnarcotic adjuncts to manage postoperative pain",
+        "Of the 5,770 overall active ASPS members, 298 responses (12% response rate) were received",
+        "Respondents were randomized to 1 of 3 different common elective procedures in plastic surgery: breast augmentation, breast reduction, and abdominoplasty.",
+        "The most commonly prescribed narcotics were Hydrocodone with Acetaminophen (Lortab, Norco) and Oxycodone with Acetaminophen (Percocet, Oxycocet)"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34195767/",
+      "publisher": "Anesthesiology (Aarab and colleagues)",
+      "title": "Pectoral Nerve Blocks for Breast Augmentation Surgery: A Randomized, Double-blind, Dual-centered Controlled Trial",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Seventy-three adult female patients undergoing aesthetic breast augmentation surgery under general anesthesia were randomly allocated to receive a pectoral nerve block versus no block.",
+        "Pectoral nerve block in conjunction with multimodal analgesia provides effective perioperative pain relief after aesthetic breast surgery and is associated with reduced opioid consumption over the first 5 postoperative days."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31994018/",
+      "publisher": "Pain and Therapy (Urits and colleagues)",
+      "title": "Chronic Pain Following Cosmetic Breast Surgery: A Comprehensive Review",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Postoperative chronic pain, defined as lasting 3 or more months, has been reported in a wide variety of breast surgical procedures including breast augmentation, reduction mammaplasty, mastectomy, and mastectomy with reconstruction."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7203369/",
+      "publisher": "Pain and Therapy (Urits and colleagues), full text",
+      "title": "Chronic Pain Following Cosmetic Breast Surgery: A Comprehensive Review (2020)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Often, medical management provides an avenue to remain comfortable through utilization of over-the-counter analgesics, neuropathic agents, or physical therapy. For some, conservative management is insufficient; strategies may be employed to include regional anesthesia and nerve blocks.",
+        "In these patients, medications such as gabapentin or pregabalin may provide some relief",
+        "there is conflicting evidence as to the actual efficacy of either of these drugs",
+        "These medications are also associated with increased risk of bleeding and should be used with caution in older patients or those prone to bleeding.",
+        "Opioids are effective and often used for acute perioperative pain management in breast surgery",
+        "However, with the risk for opioid dependence, especially with chronic use, these medications should be limited in patients undergoing breast augmentation"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20727797/",
+      "publisher": "European Journal of Pain (von Sperling and colleagues)",
+      "title": "Persistent pain and sensory changes following cosmetic breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Ninety-five patients (66.9%) returned the questionnaire",
+        "All patients were operated by the same surgeon.",
+        "Mean time since operation was 31.8 months.",
+        "Forty-two patients (44.2%) reported having pain as a consequence of the operation, 9.5% had moderate to severe pain"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18712436/",
+      "publisher": "Aesthetic Plastic Surgery (Parsa and colleagues)",
+      "title": "Combined preoperative use of celecoxib and gabapentin in the management of postoperative pain",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Gabapentin (Neurontin) is an agent commonly used to control neuropathic pain.",
+        "Here we describe a prospective study assessing the efficacy of preoperative gabapentin in combination with celecoxib for reducing postoperative pain and opioid requirements in elective subpectoral breast augmentation.",
+        "Results were then compared with those of our previous study in which only celecoxib was used."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan FDA-approved patient labeling",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The range of changes varies from intense sensitivity to no feeling in the nipple or breast following surgery.",
+        "While some of these changes can be temporary, they can also be permanent"
+      ]
+    }
+  ],
+  "notes": "Full rewrite, title changes in this release. Fact check 3 Nov applied: nerve-recovery wording removed, excerpt timing, three operations on the Torabi survey, permanent sensation changes, 44.2% next to 9.5%, quick answer says approves. Links to N1 and N4 need those posts live in the same run. No dose of any medicine in the body, alts, image text or quotes: the live Tylenol, ibuprofen, gabapentin and muscle-relaxant regimen is gone, and so are \"short-term opioids for the first 48-72 hours\", \"over 5-10 lbs\", \"fever over 101°F\", \"64-80 oz\", the Miami humidity claims, \"double board-certified\", \"AAAASF-accredited\", \"Same-day callbacks\", the address and both phone numbers. All 5 live inline images and the hero were opened and all break a rule, so all are replaced: 0opapx (pain curve) carries the practice name, the phone number, Dr. Karlinsky's name and \"Miami humidity\"; ay65pg (multimodal diagram) shows no dose but carries the practice name and a logo and makes an unsourced gabapentin claim; 9q9fgu (woman in bed) shows a surgical bra, bare midriff and text on a photo; s71f1b (anatomy) shows a bare breast, nipple and incisions and the practice name; 7uv9wd (first-week card, in images but not placed in the body) carries the practice name and a \"Miami tip\". The hero is a satin robe in a luxury setting with pills on a tray. Four inline images replace the four body images, so the count holds. Queries moved in: gabapentin, nerve pain and ibuprofen H2s. Live FAQ kept in new wording: normal vs abnormal pain. Dropped as off-topic or moved: light activities by week 1 and incisions kept dry (the recovery hub owns them), signs of infection (in the normal-or-call table). Ice-pack FAQ moved into the body with the sourced UW Medicine and MedlinePlus conflict. Urits full-text quotes were read through Europe PMC REST (PMC7203369) because pmc.ncbi.nlm.nih.gov answers bots with a verification page. Open refresh candidate pending on this post at the read. Written from the live row read through the admin MCP on 2026-11-03; base_md5 is the local clone.",
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 7574,
+    "clicks": 54,
+    "position": 8.3,
+    "top_queries": [
+      {
+        "query": "how to relieve nerve pain after breast augmentation",
+        "impressions": 78,
+        "clicks": 0,
+        "position": 14.01
+      },
+      {
+        "query": "can you take ibuprofen after breast augmentation",
+        "impressions": 57,
+        "clicks": 0,
+        "position": 9.96
+      },
+      {
+        "query": "can i take ibuprofen after breast augmentation",
+        "impressions": 45,
+        "clicks": 0,
+        "position": 9.31
+      },
+      {
+        "query": "ibuprofen after breast augmentation",
+        "impressions": 40,
+        "clicks": 2,
+        "position": 8.35
+      },
+      {
+        "query": "site:www.alluringplasticsurgery.com",
+        "impressions": 31,
+        "clicks": 0,
+        "position": 81.9
+      },
+      {
+        "query": "when can i take ibuprofen after breast augmentation",
+        "impressions": 25,
+        "clicks": 0,
+        "position": 7.92
+      },
+      {
+        "query": "breast augmentation pain timeline",
+        "impressions": 23,
+        "clicks": 0,
+        "position": 6.09
+      },
+      {
+        "query": "best pain medication for breast augmentation",
+        "impressions": 21,
+        "clicks": 0,
+        "position": 12.19
+      },
+      {
+        "query": "gabapentin after breast augmentation",
+        "impressions": 17,
+        "clicks": 1,
+        "position": 8.29
+      },
+      {
+        "query": "pain after breast augmentation",
+        "impressions": 13,
+        "clicks": 0,
+        "position": 44.46
+      }
+    ]
+  },
+  "base_md5": "769391d39080c133abc97a649eb66d6c",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:41Z"
+}

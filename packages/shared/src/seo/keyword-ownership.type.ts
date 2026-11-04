@@ -74,6 +74,12 @@ export type OwnedPage = {
     /** Queries adjacent to this page's topic that belong to another owner */
     mustNotTarget?: MustNotTarget[]
     /**
+     * Owned queries that only claim an exact match. The topic gate's
+     * similarity check skips them, so an owned "breast lift cost miami" doesn't
+     * also claim the national "breast lift cost" by containment.
+     */
+    gateExactOnly?: string[]
+    /**
      * Blog consolidation candidates: this post targets a cluster whose
      * proposed owner is another URL (plan doc §6). Queries resolve to this
      * entry but the canonical owner is the referenced page.

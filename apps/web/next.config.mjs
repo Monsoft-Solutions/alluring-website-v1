@@ -235,30 +235,31 @@ const nextConfig = {
 
             // Duplicate blog content consolidation redirects
             // Destinations use /blog/ prefix since canonical posts are published >= Jan 2026
-            // Mommy Makeover Recovery (6 posts, same topic -> 1 canonical)
+            // Mommy Makeover Recovery (same topic -> the hub since the
+            // 2026-10-05 review; repointed so no alias takes a second hop)
             {
                 source: '/mommy-makeover-recovery-timeline',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-guide',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-time-miami',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-pain-management',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-pain-guide',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             // Liposuction Cost (duplicate keyword). The post it pointed at,
@@ -621,6 +622,47 @@ const nextConfig = {
                 destination: '/procedures/breast-reduction-miami',
                 permanent: true,
             },
+            // Breast lift posts folded in the 2026-11-03 rewrite.
+            {
+                source: '/breast-lift-miami-quiz',
+                destination: '/blog/breast-lift-candidate-checklist',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-lift-miami-quiz',
+                destination: '/blog/breast-lift-candidate-checklist',
+                permanent: true,
+            },
+            {
+                source: '/breast-lift-prep-miami',
+                destination: '/blog/breast-lift-recovery-guide-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-lift-prep-miami',
+                destination: '/blog/breast-lift-recovery-guide-miami',
+                permanent: true,
+            },
+            {
+                source: '/best-age-breast-lift-miami',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
+            {
+                source: '/blog/best-age-breast-lift-miami',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
+            {
+                source: '/breast-lift-myths-busted',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-lift-myths-busted',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
             {
                 source: '/best-breast-lift-surgeons-miami',
                 destination: '/procedures/breast-lift-miami',
@@ -688,6 +730,99 @@ const nextConfig = {
                 source: '/blog/swelling-and-asymmetry-after-augmentation-faq',
                 destination:
                     '/blog/swelling-and-asymmetry-after-breast-augmentation-faq',
+                permanent: true,
+            },
+            // Breast augmentation posts folded in the 2026-11-03 rewrite (#319): both URL forms.
+            {
+                source: '/blog/breast-augmentation-recovery-tips-miami',
+                destination: '/blog/breast-augmentation-recovery-miami',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-recovery-tips-miami',
+                destination: '/blog/breast-augmentation-recovery-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-recovery-exercises',
+                destination:
+                    '/blog/when-can-you-work-out-after-breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-recovery-exercises',
+                destination:
+                    '/blog/when-can-you-work-out-after-breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-miami-candidate',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-miami-candidate',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-miami-post-pregnancy',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-miami-post-pregnancy',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/best-age-breast-augmentation-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/best-age-breast-augmentation-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-weight-loss-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-weight-loss-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-before-after-miami',
+                destination: '/gallery/breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-before-after-miami',
+                destination: '/gallery/breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-safety-miami',
+                destination: '/procedures/breast-augmentation-miami#safety',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-safety-miami',
+                destination: '/procedures/breast-augmentation-miami#safety',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-vs-reduction-miami',
+                destination: '/procedures/breast-augmentation-miami#candidate',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-vs-reduction-miami',
+                destination: '/procedures/breast-augmentation-miami#candidate',
                 permanent: true,
             },
             {
@@ -778,6 +913,15 @@ const nextConfig = {
             {
                 source: '/procedures/brazilian-butt-lift-cosmetic-surgery-in-miami',
                 destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+
+            // The cost page the keyword registry planned and never built
+            // (D5): the procedure page's #pricing section owns the cost
+            // searches, as on the BBL, liposuction and tummy tuck pages.
+            {
+                source: '/breast-augmentation-cost-miami',
+                destination: '/procedures/breast-augmentation-miami#pricing',
                 permanent: true,
             },
 
@@ -1152,6 +1296,66 @@ const nextConfig = {
             },
             {
                 source: '/liposuction-vs-breast-augmentation-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            // Mommy makeover blog consolidation (2026-10-05 review, 2026-11-03
+            // plan): nine posts to four. Both URL forms, because a deleted post
+            // no longer reaches the root route's own 308.
+            {
+                source: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-recovery-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/blog/how-long-to-recover-from-mommy-makeover',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/how-long-to-recover-from-mommy-makeover',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-miami-candidate-checklist',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-miami-candidate-checklist',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-questions-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-questions-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            // Planned and never built (it 404s). The procedure page owns the
+            // mommy makeover cost cluster.
+            {
+                source: '/mommy-makeover-cost-miami',
                 destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },

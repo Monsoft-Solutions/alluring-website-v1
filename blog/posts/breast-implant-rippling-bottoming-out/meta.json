@@ -1,0 +1,439 @@
+{
+  "slug": "breast-implant-rippling-bottoming-out",
+  "id": "f64ab63d-5612-413e-8b46-f27b5f91ad7b",
+  "mode": "rewrite",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Breast Implant Rippling and Bottoming Out: Causes, Fixes",
+  "meta_description": "Rippling: implant folds felt or seen through skin, 0.7% to 13.7% in the augmentation figures we found. Bottoming out: an implant settling too low.",
+  "excerpt": "Rippling and bottoming out are different problems with different causes, and neither has one reliable rate. Here's what raises the odds, how placement and implant type connect, what a fix usually involves, and what the evidence can't tell you.",
+  "quick_answer": "What causes breast implant rippling and bottoming out?\n\nRippling is wrinkling of the implant that shows or can be felt through the skin, the FDA says, and Allergan's labeling says it may be more likely with saline. Bottoming out means the implant settles too low. The FDA says implants can shift from gravity, trauma or capsular contracture. Correcting either usually means another operation.",
+  "primary_keyword": "breast implant rippling",
+  "secondary_keywords": [
+    "bottoming out breast implants",
+    "rippling after breast implants",
+    "rippling after breast augmentation",
+    "implants rippling",
+    "why are my implants rippling",
+    "does implant rippling go away",
+    "what causes ripples in breast implants",
+    "why do i feel ripples in my breast implants",
+    "why do breast implants bottom out",
+    "how to fix bottoming out implants",
+    "bottoming out implant",
+    "breast implant bottom out",
+    "breast implant malposition"
+  ],
+  "owns_queries": [
+    "breast implant rippling",
+    "bottoming out breast implants",
+    "rippling after breast implants",
+    "rippling after breast augmentation",
+    "implants rippling",
+    "why are my implants rippling",
+    "does implant rippling go away",
+    "what causes ripples in breast implants",
+    "why do i feel ripples in my breast implants",
+    "why do breast implants bottom out",
+    "how to fix bottoming out implants",
+    "bottoming out implant",
+    "breast implant bottom out",
+    "breast implant malposition"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Results & Maintenance"
+  ],
+  "tags": [
+    "Breast Augmentation"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her late 30s with straight black hair in a low ponytail, wearing a stone-grey high-neck top, stands on a shaded limestone terrace with a small notebook in her hand, looking out at palm trees.",
+      "prompt": "SCENE: Mid-afternoon on a shaded Miami terrace, a pale limestone balustrade and warm plaster wall, palm fronds in soft focus beyond, dappled palm shadow on the stone. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A woman in her late 30s of East Asian descent with light skin, straight black hair in a low ponytail and a slim build, in a soft stone-grey long-sleeved high-neck top and loose sand-colored trousers, standing at the balustrade with a small closed notebook held at her side, looking out at the palms with a calm, thoughtful expression. The person is whole and at ease, seen from the front at a slight angle.\nKEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds of the frame; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain.\nCONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, bodycon, cleavage or bare midriff; no focus on the chest; not photographed from behind; no bandages, garments, drains or incisions; no surgeon or staff; not a result, no before-and-after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "rippling-vs-bottoming-out-diagram",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Two simple line drawings of a torso in a plain high-neck top. On the left, a dashed oval marks an implant with small wavy lines along its edge, labeled rippling: folds in the implant felt or seen through the skin. On the right, the dashed oval sits below a dotted line marking the breast fold, labeled bottoming out: implant settles below the original breast fold. The footer cites the FDA and Hoch and Stahlenbrecher, 2006.",
+      "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, flat editorial typography with a refined serif title and a clean sans-serif for labels. Two panels side by side, each a simple front three-quarter outline of a torso wearing a plain high-neck top, drawn as a thin line like a textbook figure. Left panel: a soft dashed oval shows where the implant sits, in its usual position, with a few short wavy gold lines along its lower outer edge to suggest folds. Right panel: a thin dotted horizontal line marks the original breast fold and the soft dashed oval sits lower, partly below that dotted line. Modest and non-sexual. No people other than the simple line figures, no bodies beyond them, no faces, no nipples or skin detail, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines.",
+      "text_in_image": "Title: \"Rippling vs Bottoming Out\"\nLeft panel label: \"Rippling\"\nLeft panel text: \"Folds in the implant felt or seen through the skin\"\nRight panel label: \"Bottoming out\"\nRight panel text: \"Implant settles below the original breast fold\"\nFooter in small text: \"Simplified drawing. Sources: FDA; Hoch and Stahlenbrecher, 2006.\""
+    },
+    {
+      "key": "rippling-severity-scale",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Rippling: A Proposed Severity Scale, with three rows. Grade 1, mild: felt, not seen. Grade 2, moderate: seen only when you bend forward. Grade 3, severe: seen when you stand upright. The footer cites Pantelides and Srinivasan, Aesthetic Plastic Surgery, 2018, and says it is a proposed scale, not a diagnosis.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Three stacked rows separated by hairlines; beside each row a very small simple line figure of a woman in a plain high-neck top: standing with a hand resting at her side in row 1, bending forward from the waist in row 2, standing upright in row 3. Thin line drawing, no skin detail, modest and non-sexual. No people other than the simple line figures, no bodies beyond them, no faces, no nipples or skin detail, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines.",
+      "text_in_image": "Title: \"Rippling: A Proposed Severity Scale\"\nRow 1: \"Grade 1, mild\" | \"Felt, not seen\"\nRow 2: \"Grade 2, moderate\" | \"Seen only when you bend forward\"\nRow 3: \"Grade 3, severe\" | \"Seen when you stand upright\"\nFooter in small text: \"Pantelides and Srinivasan, Aesthetic Plastic Surgery, 2018. A proposed scale, not a diagnosis.\""
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Wrinkling of the implant that can be felt or seen through the skin.",
+        "The implant is not in the correct position in the breast. This can happen during surgery or afterwards if the implant moves or shifts from its original location. Shifting can be caused by factors such as gravity, trauma or capsular contracture.",
+        "Repositioning of the implant by surgically opening the incision and moving the implant",
+        "Breast implants are not considered lifetime devices.",
+        "You and/or your doctor will be able to tell if your saline-filled implant ruptures because the saline solution leaks into your body immediately or over several days and deflates the implant."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly.",
+        "Even if you have complications, the cost of implant removal or implant replacement may not be covered by insurance."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "What is your reoperation rate?"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "a patient device card with information specific to a patient’s implant, such as the serial or lot number and the style and size."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication (guidance PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter.",
+        "Saline-filled breast implants do not have screening recommendations as rupture is detectable without screening."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/questions-and-answers-about-breast-implant-associated-anaplastic-large-cell-lymphoma-bia-alcl",
+      "publisher": "FDA",
+      "title": "Questions and Answers about Breast Implant-Associated Anaplastic Large Cell Lymphoma (BIA-ALCL)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The risk of BIA-ALCL is higher for textured surface implants versus smooth surface implants."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra (FDA-approved patient labeling)",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Wrinkling/Rippling 0.8% 1.2% 1.9%",
+        "Implant Malposition 1.4% 2.1% 2.7%",
+        "Implant Malposition 3.3% 4.8% 4.8%",
+        "Wrinkling/Rippling 3.0% 4.0% 4.8%",
+        "Wrinkling/Rippling 4 (2.7%) 4 (1.7%) 6 (2.1%)",
+        "If you do not have enough skin, and it is stretched too thin over the implant, you may be able to feel or see the edges of the implant under your skin surface after surgery.",
+        "You may be able to feel folds on the implant created by it being squeezed too tightly by the surrounding tissue and skin.",
+        "Breast implants that are too big for the amount of breast tissue or skin can cause problems: they can actually speed up the effects of gravity; your breasts may droop or sag earlier with implants that are too large.",
+        "Implants that are too large can also cause implant extrusion, skin wrinkling, infection, and hematoma.",
+        "If you have thin or weakened breast tissue, submuscular positioning may work better",
+        "Your surgeon will examine your breast tissue and skin to figure out if you will have enough to cover the implant.",
+        "In this case, you may be offered several choices.",
+        "Folding or wrinkling of the implant shell,",
+        "If your incision sites or breasts are red, swollen, hot, painful, or are weeping (draining white or yellow fluid) or if you have a fever, chills, aches, nausea, or vomiting, you may have an infection."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan (FDA-approved patient labeling)",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "visible wrinkling or rippling of the skin over the implant may be more likely to occur.",
+        "Wrinkling 13.7%",
+        "Implant Malposition 9.2%",
+        "Implant Palpability/Visibility 12.1%",
+        "Wrinkling 2.4% 1.9%",
+        "for these complications the rates shown in the table include only complications rated moderate, severe, or very severe (excludes mild and very mild ratings).",
+        "More visible and palpable implants",
+        "Less visible and palpable implants",
+        "May not be recommended if you have thin or weakened breast tissue.",
+        "May be preferable if you have thin or weakened breast tissue"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/implants",
+      "publisher": "ASPS",
+      "title": "What types of breast implants are available?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Smooth implants may have some palpable or visible rippling under the skin.",
+        "They can move with the breast implant pocket, which may give more natural movement.",
+        "Textured breast implants develop scar tissue to stick to the implant, making them less likely to move around inside of the breast and become repositioned."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Eric R. Mariotti, MD",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The entire drop and fluff process can take three to six months to complete"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/exercise-after-breast-augmentation",
+      "publisher": "ASPS website, article by Catherine Huang-Begovic, MD",
+      "title": "Exercise after breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "contraction places downward and outward pressure on them which, over time can result in the implants dropping or becoming displaced over time."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-revision",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Revision Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The weight of your implants will affect your breast appearance with time.",
+        "You will need to provide your surgeon with the surgical details of your first breast augmentation surgery"
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will begin to notice your final results around three months after surgery. However, you may continue to have subtle changes throughout the 12 months following your surgery.",
+        "You may experience some asymmetry since each breast may heal at a different rate.",
+        "You will wear a surgical bra for three to four weeks after your surgery. You should only remove the bra to shower or to wash it."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure.",
+        "Abnormal discharge, such as pus, from your incision site."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Also contact your surgeon if you notice sudden swelling of your breast."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center",
+      "title": "Breast Augmentation: What to expect and how to prepare (handout PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Severe pain that is not helped by your pain medicine",
+        "Bad-smelling drainage",
+        "If you are given one, keep it on 24 hours a day for 3 to 4 weeks.",
+        "Do not wear an underwire bra until your incisions are fully healed."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7899226/",
+      "publisher": "Plastic and Reconstructive Surgery (Caplin and colleagues; Mentor-sponsored)",
+      "title": "MemoryGel Breast Implants: Final Safety and Efficacy Results after 10 Years of Follow-Up",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Notably, there was a relatively low rate of malposition observed across cohorts, with only a 1.0 percent cumulative incidence rate in primary augmentation patients.",
+        "Mild occurrences excluded."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29546437/",
+      "publisher": "Aesthetic Plastic Surgery (Pantelides and Srinivasan)",
+      "title": "Rippling Following Breast Augmentation or Reconstruction: Aetiology, Emerging Treatment Options and a Novel Classification of Severity (2018)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Traditionally, the treatment has been to replace the implant, often placing it in a subpectoral pocket to reduce the risk of recurrence.",
+        "Other techniques, such as increasing the implant size or tightening the capsule, can also be used.",
+        "alternative treatments, including fat grafting or insertion of an acellular dermal matrix.",
+        "Grade 1-MILD-rippling is palpable but not visible: (1a) palpable in the lower outer quadrant, (1b) palpable in the upper inner quadrant (cleavage area); Grade 2-MODERATE-rippling is visible only when the patient bends forward; Grade 3-SEVERE-rippling is visible with the patient upright.",
+        "LEVEL OF EVIDENCE V"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30483933/",
+      "publisher": "Aesthetic Plastic Surgery (Abramo and colleagues)",
+      "title": "High- and Extra-High-Profile Round Implants in Breast Augmentation: Guidelines to Prevent Rippling and Implant Edge Visibility (2019)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Among the most relevant are breast soft tissue thickness, particularly the retroareolar mammary parenchyma, and implant profile.",
+        "Thirty patients underwent breast augmentation"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28656352/",
+      "publisher": "Aesthetic Plastic Surgery (Salgarello and Visconti)",
+      "title": "Staying Out of Double-Bubble and Bottoming-Out Deformities in Dual-Plane Breast Augmentation (2017)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Etiopathogenesis of these complications is still unclear.",
+        "A retrospective review of 207 consecutive women who underwent breast augmentation, using the submuscular dual-plane technique with a periareolar approach,",
+        "In our early clinical experience, we experienced 3% of double-bubble and 6% of bottoming-out deformities.",
+        "Those complications were avoided later by dissection in the inferior pole according to the anatomical findings."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17659411/",
+      "publisher": "Aesthetic Plastic Surgery (Araco and colleagues)",
+      "title": "A retrospective analysis of 3,000 primary aesthetic breast augmentations (2007)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "rippling in 21 patients (0.7%)",
+        "A total of 3,002 women were included in the study.",
+        "January 1996 to December 2001"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16991043/",
+      "publisher": "Handchirurgie Mikrochirurgie Plastische Chirurgie (Hoch and Stahlenbrecher)",
+      "title": "[Bottoming out in augmentation mammaplasty--correction and prevention] (2006; article in German, English abstract read)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Displacement of a breast implant beneath the original submammary fold is known as a rare but, in most cases, difficult to correct complication after augmentation mammaplasty.",
+        "we either lift the capsular shell of the implant"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34297171/",
+      "publisher": "Aesthetic Plastic Surgery (Atiyeh and colleagues)",
+      "title": "Ptosis and Bottoming out Following Mastopexy and Reduction Mammoplasty. Is Synthetic Mesh Internal Breast Support the Solution? (2022)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Ten studies were identified and judged to be relevant to this review.",
+        "available data indicate that meshes do not effectively prevent recurrent ptosis and bottoming out",
+        "providing low level of evidence."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "search_queries",
+    "window": "2026-05-05..2026-11-01",
+    "impressions": 10,
+    "clicks": 0,
+    "position": 2.6,
+    "top_queries": [
+      {
+        "query": "breast implant rippling",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "rippling after breast implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "implants rippling",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "why are my implants rippling",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "does implant rippling go away",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "rippling of breast implant",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "bottoming out implant",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "how to fix bottoming out implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "breast implant bottom out",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "why do breast implants bottom out",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      }
+    ]
+  },
+  "notes": "New post N5 (plan 2026-11-03, Wave 2). Keyword Planner per the plan: breast implant rippling 1,600/mo US, 140 Florida; bottoming out 1,000/mo US, 110 Florida. Search Console shows only single impressions on these queries (window above), so its data set the wording of the H2s and FAQs, not demand or rank. cta stays default: the breast CTA in apps/web/lib/data/blog-cta-content.ts says 'our board-certified surgeons' and carries a phone number, which compliance forbids, so no marker. No practice price, placement, incision or implant brand is stated; cost links to the procedure page #pricing per the plan's practice-question default. Fat grafting and acellular dermal matrix appear only as options a 2018 paper lists, not as anything the practice offers. Thin evidence stated in the post: no study followed rippling over time; no comparison of fixes; bottoming out has only one center's figure; makers report malposition, not bottoming out. Sources read beyond SOURCE-BANK on 2026-11-03: PubMed abstracts 29546437, 30483933, 16991043, 34297171; The Aesthetic Society breast revision page; Caplin full text for the mild-excluded footnote; Sientra and Allergan PDFs for table context (revision rows, reasons for reoperation, thin-tissue lines). Hoch and Stahlenbrecher is a German-language paper read through its English PubMed abstract. Links to N1, N2, N3, N4 are new posts in the same batch and must go live in the same run or be swapped. Allergan's reconstruction figure and the weight-lifting FAQ were cut for length. Fact check batch6 decisions applied on 2026-11-03: the stretched lower breast and high nipple description is labeled as practical advice and no longer attributed to the 2006 paper; the rippling range is limited to the augmentation figures; the rupture FAQ says Sientra does not tie shell folding to visible rippling.",
+  "gate": {
+    "verdict": "new",
+    "reason": "Cluster is unclaimed — safe to write",
+    "owningUrl": null,
+    "owningSlug": null,
+    "matchedQuery": null,
+    "similarityScore": null,
+    "claimedQueries": [
+      "breast implant rippling",
+      "bottoming out breast implants",
+      "rippling after breast implants",
+      "rippling after breast augmentation",
+      "implants rippling",
+      "why are my implants rippling",
+      "does implant rippling go away",
+      "what causes ripples in breast implants",
+      "why do i feel ripples in my breast implants",
+      "why do breast implants bottom out",
+      "how to fix bottoming out implants",
+      "bottoming out implant",
+      "breast implant bottom out",
+      "breast implant malposition"
+    ],
+    "warnings": [],
+    "checkedAt": "2026-11-04T03:31:20.218Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
+  },
+  "base_md5": "faa563fd45fa4e06b29c409b9ad3eaad",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:45Z"
+}

@@ -1,7 +1,7 @@
 -- The editorial author's bio, in the admin and open to the blog pipeline, still
 -- claims "board-certified surgeons". The public byline reads `authors.data.ts`,
--- so this brings the row into line with it (#357). Safe to re-run: it changes
--- nothing once the old text is gone.
+-- so this only removes that claim from the row (#357). Safe to re-run: it
+-- changes nothing once the old text is gone.
 --
 -- Run:
 --   psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f blog/tools/sql/editorial_author_bio.sql

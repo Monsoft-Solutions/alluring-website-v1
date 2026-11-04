@@ -1,0 +1,252 @@
+{
+  "slug": "when-can-i-sleep-on-my-side-after-breast-augmentation",
+  "mode": "rewrite",
+  "cluster": "breast-augmentation",
+  "cta": "default",
+  "base_md5": "50e48e425f6a1ae198b95baf4b03ec6b",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:53Z",
+  "reader": "recovering",
+  "title": "When Can I Sleep on My Side After Breast Augmentation?",
+  "meta_description": "After about 3 to 4 weeks, per UW Medicine and University of Utah Health, if your surgeon agrees. What 2 weeks means, and how to sleep until then.",
+  "excerpt": "A UW Medicine handout and University of Utah Health keep you on your back for the first 3 to 4 weeks and allow side sleeping after that, if your surgeon agrees. Here is what that means at 2, 3, 4 and 6 weeks, how to set up your bed, and how to get up without pushing with your arms.",
+  "quick_answer": "When can I sleep on my side after breast augmentation?\n\nAfter about 3 to 4 weeks, if your surgeon agrees. A UW Medicine handout keeps you on your back for those weeks, and University of Utah Health says to wait that long and alternate sides at first. Your surgeon may ask for longer. For your stomach, UW Medicine says the same, and University of Utah Health says to ask first.",
+  "primary_keyword": "when can i sleep on my side after breast augmentation",
+  "secondary_keywords": [
+    "how to sleep after breast augmentation",
+    "how should i sleep after breast augmentation",
+    "how long to sleep elevated after breast augmentation",
+    "how long to sleep sitting up after breast augmentation",
+    "can i sleep on my side 2 weeks after breast augmentation",
+    "can i sleep on my side 4 weeks after breast augmentation",
+    "side sleeping after breast augmentation",
+    "how long after breast augmentation can i sleep on my side",
+    "when can i lay on my side after breast augmentation",
+    "when can i sleep on my stomach after breast augmentation",
+    "how to get out of bed after breast augmentation",
+    "best way to sleep after breast augmentation",
+    "when can i lay flat after breast augmentation",
+    "breast implants hurt when i sleep on side"
+  ],
+  "owns_queries": [
+    "when can i sleep on my side after breast augmentation",
+    "how to sleep after breast augmentation",
+    "how should i sleep after breast augmentation",
+    "how long to sleep elevated after breast augmentation",
+    "how long to sleep sitting up after breast augmentation",
+    "can i sleep on my side 2 weeks after breast augmentation",
+    "can i sleep on my side 4 weeks after breast augmentation",
+    "side sleeping after breast augmentation",
+    "how long after breast augmentation can i sleep on my side",
+    "when can i sleep on my stomach after breast augmentation",
+    "how to get out of bed after breast augmentation",
+    "when can i lay flat after breast augmentation"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Lymphatic Massage",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in long-sleeved blue-gray pajamas sits on the side of her bed in daylight, arranging a large wedge pillow against the headboard.",
+      "prompt": "SCENE: Mid-morning in a bright Miami bedroom, warm white walls, an arched window with sheer linen curtains, soft palm shadows on a pale wood floor, a linen-covered bed with several plain pillows. Palette of stone, sand, warm white and brushed gold. SUBJECT: An East Asian woman in her early 50s with a silver-streaked chin-length bob, wearing long-sleeved, high-neck blue-gray cotton pajamas, sitting on the side of the bed and arranging a large cream wedge pillow against the headboard with a calm, practical expression. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, drains or incisions; not photographed from behind; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "pillow-setup",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "Portrait instructional line drawing: a side view of a simple bed with no person in it, a wedge pillow at the head sloping down toward the foot, a small pillow on each side where the arms would rest (near and far), and one pillow under where the knees would be. Three large labels above with leader lines down to each pillow. Hand-built vector card (HTML and SVG rendered in headless Chrome at 1280x1600), not a model render. Warm porcelain background, a thin brushed-gold rule at the top, Fraunces title and Instrument Sans text in dark stone ink, large type for phones. No people's faces, no practice name, no logo, no phone number, no watermark.",
+      "text_in_image": "How to Set Up Your Bed\nWedge pillow\nSmall pillow beside each arm\nPillow under your knees",
+      "alt": "Line drawing of a bed seen from the side, with no person in it: a wedge pillow at the head, a small pillow on each side where the arms rest, and a pillow under where the knees would be. Labels name each pillow."
+    },
+    {
+      "key": "side-weeks",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: One row per line of text, separated by thin brushed-gold hairlines, each row with its opening label in bold. The source line is last. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "Side Sleeping After Breast Augmentation, Week by Week\nWeek 1: On your back, propped up\nWeek 2: Still on your back\nWeeks 3–4: Ask your surgeon. Earliest side sleeping in university handouts\nAfter 4 weeks: Side sleeping, alternating sides at first, if your surgeon agrees\nStomach: Ask your surgeon. The handouts differ\nSources: UW Medicine; University of Utah Health. Your surgeon may ask for longer.",
+      "alt": "Chart titled Side Sleeping After Breast Augmentation, Week by Week. Week 1: on your back, propped up. Week 2: still on your back. Weeks 3–4: ask your surgeon, the earliest side sleeping in university handouts. After 4 weeks: side sleeping, alternating sides at first, if your surgeon agrees. Stomach: ask your surgeon, the handouts differ."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center",
+      "title": "Breast Augmentation: What to expect and how to prepare",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Sleep on your back for the first 3 to 4 weeks, whether or not you are wearing a surgical bra. After that, you may sleep on your side or stomach.",
+        "Your doctor will decide if you need a surgical bra. If you are given one, keep it on 24 hours a day for 3 to 4 weeks. Take it off only when you shower.",
+        "It is normal to have muscle soreness or sharp, shooting pain for 2 weeks after surgery.",
+        "Severe pain that is not helped by your pain medicine",
+        "A fever higher than 100.5°F (38°C)",
+        "Bad-smelling drainage",
+        "we will place implants filled with saline or silicone beneath your breast and pectoralis muscle."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For the first week after surgery, you should rest and sleep on your back, with extra pillows to prop you up. This can help with swelling.",
+        "Do not sleep on your stomach until your surgeon says it’s okay. If you want to sleep on your side, you should:",
+        "wait until three to four weeks after surgery and",
+        "alternate sides at first to help with swelling.",
+        "a limited range of motion in your shoulders, which may require someone to help you with certain tasks like putting on clothes,",
+        "In the beginning, it’s also best to wear shirts that are easy to put on and take off, such as loose button-down shirts or zip-up hoodies.",
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months.",
+        "You may experience some asymmetry since each breast may heal at a different rate."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair.",
+        "It is very important that you walk a few minutes every few hours to reduce the risk of blood clot formation in your legs.",
+        "You should refrain from lifting, pulling, or pushing anything that causes pain"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/four-tips-for-a-healthy-recovery-after-a-breast-augmentation",
+      "publisher": "ASPS website, article by Paul Vitenas Jr., MD",
+      "title": "Four tips for a healthy recovery after a breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Have plenty of pillows, so you can prop yourself up at a comfortable angle."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your nurse will help you begin to move around.",
+        "Do not do any heavy lifting, strenuous exercise, or overstretching your arms for 3 to 6 weeks.",
+        "Also contact your surgeon if you notice sudden swelling of your breast."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You should arrange for someone to drive you home after your surgery and also have someone stay with you the first night at least.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Lift (Mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Some surgeons prefer you to sleep on your back for a few weeks."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Capsular contracture is the hardening of the breast around the implant. It can occur in the tissue surrounding one or both implants. This hardening causes the tissue to tighten, which can be painful."
+      ]
+    }
+  ],
+  "notes": "Full rewrite, 3 Nov 2026 plan, title kept. Written from the live row read through the admin MCP on 2026-11-03; base_md5 is the local clone, whose content_updated_at and FAQ count match live (revisionCount 0), so the production rebase is a morning step for the main session. Side-sleep mark is 3 to 4 weeks per the brief and the facts file (side-sleep-after-3-4-weeks), never \"4-6 weeks\". Stomach sleeping: the UW Medicine handout groups it with side sleeping after 3 to 4 weeks and University of Utah Health says only when your surgeon says, and the post states both rather than \"no source dates it\". Fact check 3 Nov applied: the Huang-Begovic six-week cite came out of the week table as out of context. Links to /blog/capsular-contracture and /blog/breast-implants-over-or-under-the-muscle need those posts live in the same run, or point them at #safety and #placement until then. Removed: \"6 weeks\" as the mark, \"2-3 week supervised trials\", \"15-30 minutes\", practice-voice \"we recommend\", phone and #contactus CTAs, \"our board-certified surgeons\". The live row has no featured image and no images in the content (the 20 Oct plan's hero 4g4k9g is a related-post card from another post, in that post's folder), so hero and 2 inline images are new. The live FAQ column held 8 questions with no visible counterpart; kept in spirit as sections and FAQs. Twin link to the breast reduction post is in the opening section; the matching sentence on the reduction post is for the main session. Open refresh candidate on the live row was pending on 2026-11-03.",
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 2204,
+    "clicks": 4,
+    "position": 12.94,
+    "image": {
+      "impressions": 1136,
+      "clicks": 5,
+      "position": 32.74
+    },
+    "top_queries": [
+      {
+        "query": "how to sleep after breast augmentation",
+        "impressions": 78,
+        "clicks": 0,
+        "position": 11.73
+      },
+      {
+        "query": "best way to sleep after breast augmentation",
+        "impressions": 29,
+        "clicks": 0,
+        "position": 9.14
+      },
+      {
+        "query": "when can i sleep on my side after breast augmentation",
+        "impressions": 27,
+        "clicks": 0,
+        "position": 26.74
+      },
+      {
+        "query": "how long to sleep elevated after breast augmentation",
+        "impressions": 21,
+        "clicks": 0,
+        "position": 36.67
+      },
+      {
+        "query": "sleeping on side after breast aug",
+        "impressions": 18,
+        "clicks": 0,
+        "position": 27.33
+      },
+      {
+        "query": "when can i lay on my side after breast augmentation",
+        "impressions": 18,
+        "clicks": 0,
+        "position": 25.72
+      },
+      {
+        "query": "after breast reduction when can i sleep on my side",
+        "impressions": 16,
+        "clicks": 0,
+        "position": 35.31
+      },
+      {
+        "query": "breast implants hurt when i sleep on side",
+        "impressions": 15,
+        "clicks": 0,
+        "position": 31.8
+      },
+      {
+        "query": "side sleeping after breast augmentation",
+        "impressions": 14,
+        "clicks": 0,
+        "position": 25.71
+      },
+      {
+        "query": "how long after breast augmentation can i sleep on my side",
+        "impressions": 13,
+        "clicks": 0,
+        "position": 20.54
+      }
+    ]
+  }
+}

@@ -30,6 +30,21 @@ import { generateSitemapXml } from '@workspace/seo/utils'
  * canonical blog posts or procedure pages, so they must not appear in the sitemap.
  */
 const SITEMAP_EXCLUDED_SLUGS = new Set([
+    // Breast lift posts folded in the 2026-11-03 rewrite
+    'breast-lift-miami-quiz',
+    'breast-lift-prep-miami',
+    'best-age-breast-lift-miami',
+    'breast-lift-myths-busted',
+    // Breast augmentation posts folded in the 2026-11-03 rewrite (#319)
+    'breast-augmentation-recovery-tips-miami',
+    'breast-augmentation-recovery-exercises',
+    'breast-augmentation-miami-candidate',
+    'breast-augmentation-miami-post-pregnancy',
+    'best-age-breast-augmentation-miami',
+    'breast-augmentation-weight-loss-miami',
+    'breast-augmentation-before-after-miami',
+    'breast-augmentation-safety-miami',
+    'breast-augmentation-vs-reduction-miami',
     // Duplicate blog content consolidation redirects
     'mommy-makeover-recovery-timeline',
     'mommy-makeover-recovery-guide',
@@ -70,6 +85,12 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'liposuction-miami-moms-tips',
     'how-to-maintain-liposuction-results',
     'liposuction-vs-breast-augmentation-miami',
+    // Mommy makeover blog consolidation (2026-10-05 review, 2026-11-03 plan)
+    'mommy-makeover-recovery-timeline-miami',
+    'mommy-makeover-recovery-miami',
+    'how-long-to-recover-from-mommy-makeover',
+    'mommy-makeover-miami-candidate-checklist',
+    'mommy-makeover-questions-miami',
     // Tummy tuck blog consolidation (#357)
     'best-age-tummy-tuck-miami',
     'tummy-tuck-myths-miami-moms',

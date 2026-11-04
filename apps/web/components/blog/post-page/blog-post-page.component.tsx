@@ -154,6 +154,7 @@ export function BlogPostPage({
                             <PostProcedureStrip
                                 procedure={procedure}
                                 rating={rating}
+                                slug={post.slug}
                             />
                         )
                     }
@@ -175,6 +176,7 @@ export function BlogPostPage({
                                 beforeCTA={beforeCTA}
                                 afterCTA={afterCTA}
                                 intro={getPostIntroBlock(post.slug)}
+                                inlineImages={inlineImages}
                                 slot={
                                     <PostConsult
                                         procedure={procedure}

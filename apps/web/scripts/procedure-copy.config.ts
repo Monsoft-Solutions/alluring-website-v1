@@ -12,11 +12,23 @@
 
 import { bmiFacts, bmiSources } from '../lib/data/bmi/bmi.facts'
 import { bblFacts, bblSources } from '../lib/data/procedures/facts/bbl.facts'
+import {
+    breastLiftFacts,
+    breastLiftSources,
+} from '../lib/data/procedures/facts/breast-lift.facts'
 import { lipoFacts, lipoSources } from '../lib/data/procedures/facts/lipo.facts'
+import {
+    mommyMakeoverFacts,
+    mommyMakeoverSources,
+} from '../lib/data/procedures/facts/mommy-makeover.facts'
 import {
     tummyTuckFacts,
     tummyTuckSources,
 } from '../lib/data/procedures/facts/tummy-tuck.facts'
+import {
+    breastAugmentationFacts,
+    breastAugmentationSources,
+} from '../lib/data/procedures/facts/breast-augmentation.facts'
 import type {
     ProcedureFact,
     ProcedureSource,
@@ -121,6 +133,49 @@ const lipo: ProcedureCopyConfig = {
     ],
 }
 
+const breastLift: ProcedureCopyConfig = {
+    slug: 'breast-lift-miami',
+    name: 'Breast lift',
+    rootClass: 'breast-lift-page',
+    factsFile: 'breast-lift.facts.ts',
+    facts: breastLiftFacts,
+    sources: breastLiftSources,
+    // The title carries the current year, as the liposuction and tummy tuck
+    // pages' do (`seoTitle` in breast-lift-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    identifiers: [
+        [/64b8-9\.009\d?/g, ' rule '],
+        // The gallery's alt text for a lift with implants and Lipo 360 calls
+        // it "360 liposuction": the procedure's name, not a figure.
+        [/\b360 liposuction\b/g, ' all-round liposuction '],
+        // Gallery alt text says how long after surgery a photo was taken.
+        [/\b\d+ (?:weeks?|months?|years?) post-op\b/gi, ' post-op '],
+    ],
+    rules: [
+        {
+            rule: 'technique-price',
+            // A named incision and a dollar figure in one sentence.
+            re: /(?:crescent|donut|periareolar|peri-areolar|lollipop|vertical|anchor|inverted[\s-]t)[^.]{0,80}\$\s?\d|\$\s?\d[^.]{0,80}(?:crescent|donut|periareolar|peri-areolar|lollipop|vertical|anchor|inverted[\s-]t)/,
+            why: 'which incision each price covers is an owner question (#320 brief); the price sheet names no technique',
+        },
+        {
+            rule: 'drain-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\b(?:drainless|no drains?|without drains?)\b|\bdrainless\b/,
+            why: 'drains is an owner question (#320 brief)',
+        },
+        {
+            rule: 'implant-brand',
+            re: /natrelle|\bmentor\b|sientra|motiva|gummy[\s-]?bear|ideal implant/,
+            why: 'which implants the practice uses is an owner question (#320 brief)',
+        },
+        {
+            rule: 'implant-lifespan',
+            re: /implants?[^.]{0,60}\blast(?:s|ing)?\b[^.]{0,30}\byears?\b|lifetime (?:warranty|guarantee)/,
+            why: 'the FDA says implant life cannot be predicted; never give a number of years',
+        },
+    ],
+}
+
 const tummyTuck: ProcedureCopyConfig = {
     slug: 'tummy-tuck-miami',
     name: 'Tummy tuck',
@@ -155,6 +210,58 @@ const tummyTuck: ProcedureCopyConfig = {
             rule: 'muscle-repair-claim',
             re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\balways\b[^.]{0,30}\brepair/,
             why: 'which types include muscle repair waits on the owner (brief #10); the minis are "no muscle repair" on the sheet',
+        },
+    ],
+}
+
+const mommyMakeover: ProcedureCopyConfig = {
+    slug: 'mommy-makeover-miami',
+    name: 'Mommy makeover',
+    rootClass: 'mommy-makeover-page',
+    factsFile: 'mommy-makeover.facts.ts',
+    facts: mommyMakeoverFacts,
+    sources: mommyMakeoverSources,
+    // The title carries the current year, as the tummy tuck page's does
+    // (`seoTitle` in mommy-makeover-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    identifiers: [
+        [/64b8-9\.009\d?/g, ' rule '],
+        // Cleveland Clinic's sunscreen advice names the protection factor.
+        [/\bspf\s*30\b/g, ' spf '],
+        // MedlinePlus's "call 911", not a figure.
+        [/\b911\b/g, ' emergency number '],
+        // The answer under "where in Miami is Alluring?", from `siteConfig`.
+        [/\b8435 sw 24th st\b/g, ' street '],
+    ],
+    // The breast lift's price. The site-wide rule against a "5,000+ procedures"
+    // volume claim also matches it.
+    neutralNames: [/\$5,000/g],
+    // The module's anchors, and the old ids live posts still link.
+    requiredAnchors: [
+        'pricing',
+        'candidate',
+        'recovery',
+        'faq',
+        'en-espanol',
+        'how-much-does-a-mommy-makeover-cost',
+        'am-i-a-good-candidate',
+        'recovery-getting-back-to-your-family',
+    ],
+    rules: [
+        {
+            rule: 'drain-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\b(?:drainless|no drains?|without drains?)\b|\bdrainless\b/,
+            why: 'drains or a drainless technique is an owner question (2026-11-03 brief, section 9)',
+        },
+        {
+            rule: 'named-technique',
+            re: /hourglass|progressive[\s-]tension|quilting|\bhlta\b|j[\s-]?plasma|renuvion|\bvaser\b/,
+            why: 'technique names wait on the owner',
+        },
+        {
+            rule: 'no-total',
+            re: /\bmomm?y makeovers?\s+(?:starts?|starting|costs?|runs?|is|from|desde|cuesta)\b[^.;:]{0,24}\$\d|\b(?:whole|full|your|entire) plan\b[^.;:]{0,24}\$\d|\btotal (?:of|is|comes to|around|about|from|starts)\b[^.;:]{0,24}\$\d|\$\d[\d,]*\s+(?:in total|total|for (?:the|a) (?:whole plan|full plan|mommy makeover))/,
+            why: 'the price sheet has no mommy makeover line, so no total, "from" price or worked example until the owner answers how a plan is priced (`no-total`)',
         },
     ],
 }
@@ -219,11 +326,58 @@ const bmiCalculator: ProcedureCopyConfig = {
     ],
 }
 
+const breastAugmentation: ProcedureCopyConfig = {
+    slug: 'breast-augmentation-miami',
+    name: 'Breast augmentation',
+    rootClass: 'breast-augmentation-page',
+    factsFile: 'breast-augmentation.facts.ts',
+    facts: breastAugmentationFacts,
+    sources: breastAugmentationSources,
+    // The title carries the current year, as the liposuction and tummy tuck
+    // pages' do (`seoTitle` in breast-augmentation-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    rules: [
+        {
+            rule: 'implant-brand-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky|she)\b[^.]{0,60}\b(?:mentor|natrelle|allergan|sientra|motiva|ideal implant|memorygel)\b/,
+            why: 'which implants Dr. Karlinsky uses waits on the owner (brief #16); the makers are named only as their own studies',
+        },
+        {
+            rule: 'implant-surface-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky|she)\b[^.]{0,60}\b(?:only |always )?(?:uses?|offers?|places?)\b[^.]{0,40}\b(?:smooth|textured|gummy)\b/,
+            why: 'smooth or textured, and shaped implants, wait on the owner (brief #16)',
+        },
+        {
+            rule: 'placement-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky|she)\b[^.]{0,40}\b(?:usually|always|prefers?|typically)\b[^.]{0,40}\b(?:under|over|dual[\s-]plane|muscle|incision|fold|armpit|areola)\b/,
+            why: 'her usual placement and incision wait on the owner (brief #17)',
+        },
+        {
+            rule: 'sizing-device',
+            re: /\b3-?d (?:imaging|simulation|scan)|vectra|crisalix|\bsizers?\b/,
+            why: 'how sizes are tried on at Alluring waits on the owner (brief #18)',
+        },
+        {
+            rule: 'warranty-claim',
+            re: /warrant/,
+            why: 'any implant warranty waits on the owner (brief #21)',
+        },
+        {
+            rule: 'cup-size-conversion',
+            re: /\b(?:[b-d]|dd)[ -]cups?\b|\ban a[ -]cups?\b|\bcup sizes? (?:up|bigger|larger|increase)/,
+            why: 'no source gives a cc-to-cup conversion; the size guide owns sizes',
+        },
+    ],
+}
+
 export const procedureCopyConfigs: Readonly<
     Record<string, ProcedureCopyConfig>
 > = {
     [bbl.slug]: bbl,
     [lipo.slug]: lipo,
+    [breastLift.slug]: breastLift,
+    [mommyMakeover.slug]: mommyMakeover,
     [tummyTuck.slug]: tummyTuck,
     [bmiCalculator.slug]: bmiCalculator,
+    [breastAugmentation.slug]: breastAugmentation,
 }

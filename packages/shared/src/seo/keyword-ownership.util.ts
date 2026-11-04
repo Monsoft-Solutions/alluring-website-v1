@@ -266,7 +266,11 @@ export function findSimilarOwnedQueries(
     for (const entry of entries) {
         if (entry.status === 'retired') continue
         let best: { query: string; score: number } | null = null
+        const exactOnly = new Set(
+            (entry.gateExactOnly ?? []).map(normalizeQuery)
+        )
         for (const owned of ownedQueries(entry)) {
+            if (exactOnly.has(owned)) continue
             const scored = scoredQuery(owned)
             if (scored.tokens.size === 0) continue
             let intersection = 0

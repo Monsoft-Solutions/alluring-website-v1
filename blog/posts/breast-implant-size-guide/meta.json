@@ -1,0 +1,402 @@
+{
+  "slug": "breast-implant-size-guide",
+  "mode": "rewrite",
+  "base_md5": "7e43e8cc38768ff2024f36ed2aa6dbba",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T10:55:05Z",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Breast Implant Size Calculator, CC Chart & Size Guide",
+  "meta_description": "Estimate your implant size in cc from your band and cup with our free calculator, then read the CC chart, profiles and what your surgeon measures.",
+  "excerpt": "Use the calculator, then read the real numbers: a CC chart built on a measured rule of about 130 to 150 cc per cup, dimensions for 300cc, 400cc and 500cc implants, high vs moderate profile, and why height and weight don't set your size.",
+  "quick_answer": "What size breast implant should I get?\n\nThere is no standard size: it depends on your breast width, your tissue and the look you want. In ASPS's 2025 survey, surgeons ranked 300 to 400 cc among the implants they use most, with 200 to 300 cc second. A 2017 study put one cup size at about 130 to 150 cc, a rough rule.",
+  "primary_keyword": "breast implant size guide",
+  "secondary_keywords": [
+    "breast implant size calculator",
+    "breast implant size chart",
+    "implant size chart",
+    "breast implant sizes",
+    "cc size",
+    "cc cup size",
+    "cc bra size",
+    "breast implant size based on height and weight",
+    "breast implant cc sizes",
+    "breast width diameter",
+    "how many cc is a cup size implants",
+    "what cup size is 300cc implant",
+    "high profile breast implant sizes",
+    "moderate vs high profile implant pictures"
+  ],
+  "owns_queries": [
+    "breast implant size guide perfect cc chart",
+    "breast implant size calculator",
+    "breast implant size chart",
+    "implant size chart",
+    "breast implant sizes",
+    "cc size",
+    "cc cup size",
+    "cc bra size",
+    "breast implant size based on height and weight",
+    "breast implant cc sizes",
+    "breast width diameter",
+    "what cup size is 300cc implant",
+    "what cup size is 400cc implant",
+    "high profile vs moderate profile breast implants"
+  ],
+  "categories": [
+    "Breast Augmentation"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "Woman in a high-neck sand-colored sweater sitting at a small oak table in a bright room, looking at two clear gel sizing samples on a folded linen cloth, with a clinician's hands across the table.",
+      "prompt": "SCENE: Mid-morning in a bright consultation room, white plaster walls, an arched window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 30s with medium brown skin and dark curly hair pulled back, seated at a small oak table in a high-neck sand-colored knit sweater, looking thoughtfully at a pair of clear gel sizing samples resting on a folded linen cloth on the table. Only a clinician's hands and a sleeve are visible across the table. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions on the body; not photographed from behind; no text, letters, numbers, logos or watermarks; no surgeon or staff; not glamour, not a fashion ad, no penthouse or luxury setting.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "geometry",
+      "type": "inline",
+      "aspect": "1:1",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/1057cb41-fa87-4fa5-8fec-45d935fe1597/1769818741009-yltw8v-0.jpg",
+      "staged_replacement": {
+        "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, same square format as the live file. Top row: three stylised implant cross-sections side by side on a thin baseline, all the same volume: low profile wide and flat, moderate in between, high profile narrow and tall, with thin arrows for base width and projection. Bottom row: three side-view textbook line figures of a torso wearing a plain high-neck top, with a soft dashed shape showing where the implant sits. Modest and non-sexual, no skin detail, no nipples, no faces, no practice name, no surgeon name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+        "text_in_image": "Breast Implant Profiles at the Same 300 cc Volume\nLow profile\nModerate profile\nHigh profile\nBase width: wider to narrower\nProjection: lower to higher\nSource: Dr. Cameron Craven, article on the ASPS website",
+        "alt_after": "Diagram of breast implant profiles at the same 300 cc volume: low, moderate and high profile cross-sections, with base width going from wider to narrower and projection from lower to higher, above three side-view outlines of a torso in a plain high-neck top. Source: Dr. Cameron Craven, article on the ASPS website."
+      },
+      "alt": "Diagram of low, moderate and high profile breast implants at the same 300 cc volume: as the profile rises, base width narrows and projection increases.",
+      "prompt": "Anatomy-style diagram of implant dimensions: base width (diameter), projection, and how low/moderate/high profile changes silhouette at the same cc (neutral beige/stone palette with gold callouts)."
+    },
+    {
+      "key": "selection",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: On the left, a simple front-view textbook line figure of a torso wearing a plain high-neck top, with a thin dashed gold line across the width of one breast area marking its base width, and a second dashed line running from below the collar to the breast fold. On the right, five short labeled rows with simple line icons. Draws on what people search as breast implant size selection and breast base width. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "Breast Implant Size Selection: What Surgeons Measure\nBreast base width: Guides the implant's diameter\nSkin stretch: How much room the skin gives\nNipple to breast fold: Measured under stretch\nTissue cover: How much hides the implant\nYour goal: The look you want\nSources: Tebbetts 2002; Bletsis and van der Lei 2025.",
+      "alt": "Card titled Breast Implant Size Selection: What Surgeons Measure, with a front-view line drawing of a torso in a plain high-neck top and two dashed gold lines, one across the width of one breast and one running down the chest from the collar. Breast base width guides the implant's diameter. Skin stretch shows how much room the skin gives. Nipple to breast fold is measured under stretch. Tissue cover is how much hides the implant. Your goal is the look you want. Sources: Tebbetts 2002 and Bletsis and van der Lei 2025."
+    },
+    {
+      "key": "cc-chart",
+      "type": "inline",
+      "aspect": "1:1",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/1057cb41-fa87-4fa5-8fec-45d935fe1597/1769818794454-9htqm1-0.jpg",
+      "staged_replacement": {
+        "prompt": "A clean, professional reference chart on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the table. Same square format as the live file. Aimed at what people search as breast implant size chart and cc chart. No people, no bodies, no practice name, no surgeon name, no logos, no phone numbers, no watermarks, no decoration beyond hairlines. All text must be rendered exactly, word for word, and nothing else.",
+        "text_in_image": "Breast Implant Size Chart: CC to Cup Size\nCup sizes added | Narrower band: about 130 cc per cup | Wider band: about 150 cc per cup\n1 cup | about 130 cc | about 150 cc\n2 cups | about 260 cc | about 300 cc\n3 cups | about 390 cc | about 450 cc\n4 cups | about 520 cc | about 600 cc\nA rough rule, per breast. Source: King and colleagues, Plastic and Reconstructive Surgery, 2017",
+        "alt_after": "Breast implant size chart, CC to cup size, as a rough rule per breast. On a narrower band, about 130 cc per cup: 1 cup about 130 cc, 2 cups about 260 cc, 3 cups about 390 cc, 4 cups about 520 cc. On a wider band, about 150 cc per cup: 1 cup about 150 cc, 2 cups about 300 cc, 3 cups about 450 cc, 4 cups about 600 cc. Source: King and colleagues, Plastic and Reconstructive Surgery, 2017."
+      },
+      "alt": "Chart of implant volume and estimated cup change: 200–250 cc about +1 cup, 250–300 cc about +1 to +1.5, 300–350 cc about +1.5 to +2, 350–400 cc about +2, 400–500 cc about +2 to +3. Estimates vary by band size, breast width, tissue elasticity and implant profile.",
+      "prompt": "Premium CC-to-estimated-cup-increase chart (e.g., 200–250, 250–300, 300–350, 350–400, 400–500) with footnotes about variability by band size/tissue; clean typography and gold accent lines."
+    },
+    {
+      "key": "profile-compare",
+      "type": "inline",
+      "aspect": "1:1",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/1057cb41-fa87-4fa5-8fec-45d935fe1597/1769818823151-0zyo7t-0.jpg",
+      "staged_replacement": {
+        "prompt": "A clean two-column comparison card on a warm porcelain-white background with a thin brushed-gold rule, same square format as the live file. At the top of each column, a side-view textbook line figure of a torso wearing a plain high-neck top, with a soft dashed shape showing the implant: wider and flatter on the left, narrower and more forward on the right. Under each, short rows with simple line icons. Aimed at what people search as high profile vs moderate profile implants. Modest and non-sexual, no skin detail, no nipples, no faces, no practice name, no surgeon name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+        "text_in_image": "Moderate vs High Profile Breast Implants\nModerate Plus | High Profile\nBase width: Wider | Base width: Narrower\nProjection: Less | Projection: More\n400 cc: 13.1 cm wide, 4.0 cm forward | 400 cc: 12.2 cm wide, 5.0 cm forward\nSource: Mentor catalog, J&J MedTech",
+        "alt_after": "Moderate vs high profile breast implants compared, each with a side-view outline of a torso in a plain high-neck top. Moderate Plus: wider base width, less projection, 400 cc is 13.1 cm wide and 4.0 cm forward. High Profile: narrower base width, more projection, 400 cc is 12.2 cm wide and 5.0 cm forward. Source: Mentor catalog, J&J MedTech."
+      },
+      "alt": "Comparison card of moderate and high profile breast implants. Moderate: wider base, medium projection, natural slope. High: narrower base, more projection, upper-pole fullness.",
+      "prompt": "Two-column comparison (Moderate vs High): base width, projection, ideal chest types, typical aesthetic outcome (natural slope vs upper-pole fullness), and “best for” notes; include simple silhouette icons in stone tones."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/documents/news/statistics/2025/plastic-surgery-statistics-report-2025.pdf",
+      "publisher": "ASPS",
+      "title": "2025 Procedural Statistics Release",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "ranked implants in the 300-to-400-cc range among those they used most frequently, while 200-to-300-cc implants ranked second.",
+        "36 percent of ASPS Member Surgeons indicated patients trended toward smaller implant sizes than in previous years.",
+        "just 12 percent reported a shift toward larger implants.",
+        "52 percent, said implant size preferences remained consistent with prior years"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/all-about-breast-implant-profiles",
+      "publisher": "ASPS website, article by Dr. Cameron Craven (August 29, 2016)",
+      "title": "All about breast implant profiles",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Implants are available in several different profiles including low profile, moderate profile, moderate plus profile, high profile, and ultra-high profile.",
+        "Implants of the same size (cc volume) that have different widths will produce different levels of projection.",
+        "This type of implant is ideal for women with wider chests.",
+        "Implants with a moderate profile tend to yield the most natural-looking results.",
+        "Moderate implants are typically ideal for women with smaller or narrower chests.",
+        "High profile implants yield the fullest and most rounded results, which may look less natural on some patients.",
+        "high profile implants are often ideal for petite women who have a narrow chest wall.",
+        "as the same implant will look completely different on two different women with different chest types."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28445356/",
+      "publisher": "Plastic and Reconstructive Surgery (King and colleagues)",
+      "title": "What Is the Standard Volume to Increase a Cup Size for Breast Augmentation Surgery? A Novel Three-Dimensional Computed Tomographic Approach (2017)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Five bra cup sizes from three different companies were analyzed for their volume capacity.",
+        "The clinical arm consisted of 79 patients who underwent breast augmentation surgery",
+        "The average incremental increase in bra cup size across all three brands in the laboratory arm was 135 cc.",
+        "The mean volume increase per cup size was 138.23 cc in the clinical arm.",
+        "This article confirms that there is no standardization within the bra manufacturing industry.",
+        "patients should be advised that 130 to 150 cc equates to a one-cup-size increase.",
+        "Bras with narrower band widths need 130 cc and wider band widths require 150 cc to increase one cup size.",
+        "Previous reports equate 100 cc to a one-cup-size increase"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11964998/",
+      "publisher": "Plastic and Reconstructive Surgery (Tebbetts)",
+      "title": "A system for breast implant selection based on patient tissue characteristics and implant-soft tissue dynamics (2002)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Complications that occur from failure to reconcile a patient's wishes for breast size with her individual tissue characteristics include skin stretch and thinning, ptosis, atrophy of parenchyma, implant edge or shell visibility, implant edge or shell palpability, visible traction rippling, \"bottoming\" deformities, and lateral implant displacement with widening of the intermammary distance.",
+        "focuses on only three tissue measurements to estimate implant volume required to fill each patient's existing breast envelope, on the basis of her individual tissue characteristics: base width of the parenchyma, anterior pull skin stretch, and areola- and/or nipple-to-inframammary-fold distance measured under maximal stretch."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40230475/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open (Bletsis and van der Lei)",
+      "title": "Key Insights From a Decade of Breast Augmentation: Our 5 Critical Decisions in Breast Implant Selection (2025)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "5 critical breast measurements are recorded: sternal notch-nipple distance, base width of the breast, soft-tissue coverage of the implant, optimal implant selection based on volume and dimensions, and calculation of the neo-inframammary fold using the Pythagorean theorem.",
+        "offering patients the chance to preview the postoperative result through both bra sizers and 3-dimensional simulation."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38377409/",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "Optimizing Implant Width Selection in Breast Augmentation: Insights From On-Patient Landmark Positioning in 3-Dimensional Breast Simulation (2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The Vectra XT 3D simulation program is a valuable adjunct in breast augmentation.",
+        "However, relying on it solely may lead to inaccuracies in the assessment of breast dimensions due to automatic landmarking.",
+        "Our results underline the superiority of clinical judgment to simulation programs when establishing a reliable surgical plan."
+      ]
+    },
+    {
+      "url": "https://www.jnjmedtech.com/es-419/product/mentor/mentor-memorygel",
+      "publisher": "J&J MedTech (product page, Spanish edition, read through WebFetch)",
+      "title": "Implante de seno MENTOR MemoryGel",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "350-3001 BC",
+        "350-4001 BC",
+        "350-5001 BC",
+        "350-3004 BC",
+        "350-4004 BC",
+        "350-5004 BC"
+      ]
+    },
+    {
+      "url": "https://www.jnjmedtech.com/system/files/pdf/2018_Cat%C3%A1logo%20para%20HCP_Xtra.pdf",
+      "publisher": "J&J MedTech (Mentor catalog for surgeons, Spanish edition, 2018; text extracted from the PDF today; Perfil Moderado Plus and Perfil Alto, smooth round)",
+      "title": "MENTOR MemoryGel Implantes de Mama",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "125 cc 8,9 cm 2,8 cm 350-1251 BC",
+        "800 cc 16,5 cm 5,1 cm 350-8001 BC",
+        "250 cc 11,3 cm 3,4 cm",
+        "300 cc 12,0 cm 3,6 cm 350-3001 BC",
+        "350 cc 12,5 cm 3,9 cm",
+        "400 cc 13,1 cm 4,0 cm 350-4001 BC",
+        "450 cc 13,6 cm 4,2 cm",
+        "500 cc 14,1 cm 4,3 cm 350-5001 BC",
+        "250 cc 10,5 cm 4,3 cm 350-2504 BC",
+        "300 cc 11,1 cm 4,5 cm 350-3004 BC",
+        "350 cc 11,7 cm 4,8 cm 350-3504 BC",
+        "400 cc 12,2 cm 5,0 cm 350-4004 BC",
+        "450 cc 12,8 cm 5,1 cm 350-4504 BC",
+        "500 cc 13,2 cm 5,3 cm 350-5004 BC"
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra FDA-approved patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you do not have enough skin, and it is stretched too thin over the implant, you may be able to feel or see the edges of the implant under your skin surface after surgery.",
+        "the most common reason for implant removal was the patient requesting a different implant size or style",
+        "Style/Size Change 139 (49.1%)"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Many patients have additional operations to change implant size."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "What is your reoperation rate?"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly.",
+        "which must be reviewed with the prospective patient by the health care provider",
+        "The patient must be given the opportunity to initial and sign the patient decision checklist"
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine), on cosmetic breast surgery in general, lifts and reductions included",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Protect your scars with a strong sunblock (SPF 30 or higher) whenever you are out in the sun.",
+        "Do not take aspirin, aspirin-containing medicines, or ibuprofen without your surgeon's approval.",
+        "Also contact your surgeon if you notice sudden swelling of your breast.",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site",
+        "Exertion can increase blood pressure, and lead to bleeding.",
+        "Once you no longer need dressings, wear a soft, wireless, supportive bra night and day for 2 to 4 weeks.",
+        "Any stitches will be removed within 2 weeks after surgery.",
+        "Make sure you eat healthy foods, including lots of fruits and vegetables. Drink plenty of fluids.",
+        "Do not smoke. Smoking slows healing and increases your risk for complications and infection."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation.",
+        "Most residual swelling will resolve within a month.",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "If you have external sutures, your surgeon will remove them in about a week. If your surgeon used tissue glue or tape, it will fall off on its own in a week or two.",
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On average, full recovery takes about six to eight weeks.",
+        "You should not do any heavy lifting for at least four weeks. If you are physically active in sports, it may take up to six weeks before you can return to those activities.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure.",
+        "Contact your healthcare provider immediately if you’re experiencing any of the following symptoms:",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, article by Dr. Cindy Wu",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is normal for implants to still sit higher on your chest wall after the first month.",
+        "Over the next 2-3 months, your implants will naturally settle into the breast, revealing your final results.",
+        "If you are planning to swim, make sure to plan to have your surgery at least a month in advance of your vacation, as most surgeons will want you to wait that long before immersing in a pool or ocean."
+      ]
+    },
+    {
+      "url": "https://www.nist.gov/pml/owm/approximate-conversions-us-customary-measures-metric",
+      "publisher": "NIST",
+      "title": "Approximate Conversions from U.S. Customary Measures to Metric",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "cup 0.24 liter L"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 60129,
+    "clicks": 406,
+    "position": 3.62,
+    "image_impressions": 193333,
+    "image_clicks": 273,
+    "top_queries": [
+      {
+        "query": "breast implant size calculator",
+        "impressions": 1294,
+        "clicks": 8,
+        "position": 3.4
+      },
+      {
+        "query": "breast implant size chart",
+        "impressions": 996,
+        "clicks": 5,
+        "position": 2.9
+      },
+      {
+        "query": "breast implant sizes",
+        "impressions": 881,
+        "clicks": 1,
+        "position": 3.1
+      },
+      {
+        "query": "implant size chart",
+        "impressions": 449,
+        "clicks": 1,
+        "position": 2.9
+      },
+      {
+        "query": "cc size",
+        "impressions": 370,
+        "clicks": 0,
+        "position": 1.5
+      },
+      {
+        "query": "breast implant size based on height and weight",
+        "impressions": 359,
+        "clicks": 1,
+        "position": 1.7
+      },
+      {
+        "query": "cc cup size",
+        "impressions": 313,
+        "clicks": 0,
+        "position": 2.0
+      },
+      {
+        "query": "breast implants size chart",
+        "impressions": 286,
+        "clicks": 1,
+        "position": 4.2
+      },
+      {
+        "query": "cc bra size",
+        "impressions": 278,
+        "clicks": 0,
+        "position": 1.4
+      },
+      {
+        "query": "cc breast size",
+        "impressions": 271,
+        "clicks": 0,
+        "position": 1.7
+      }
+    ]
+  },
+  "notes": "Gentle pass, fact-checked (batch 7). Calculator: there is no marker in the stored text. It is a code-owned block (apps/web/components/blog/post-page/post-intro-block.tsx) that composePostSource inserts before the first '## ', so no body edit can break it. Written from live text; base_md5 is the local clone and needs a production rebase. Implant dimensions: the US 2020 Mentor catalog cited on 5 Oct now returns 404. The same rows were read on J&J MedTech's Spanish-language product page (WebFetch) and its 2018 Spanish catalog PDF (text extracted). Kept images geometry, cc-chart and profile-compare carry a phone number or practice name and wrong labels or figures; each alt describes the picture as it stands and each has a staged_replacement for the same-address swap. When the swap runs, set alt to alt_after. 'What your surgeon measures' stays in the live meta description, which only changes for a wrong figure. /bmi-calculator's 'choose your implant at the weight you'll keep' was read in apps/web/components/bmi-calculator/bmi-procedures.component.tsx, under 'If you're above it'. Links to /blog/breast-implants-over-or-under-the-muscle, /blog/breast-implant-rippling-bottoming-out and /blog/saline-vs-silicone-breast-implants pass only in a batch with those new posts or once they are live."
+}

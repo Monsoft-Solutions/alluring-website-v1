@@ -1,0 +1,434 @@
+{
+  "slug": "breast-implant-illness-symptoms",
+  "mode": "rewrite",
+  "base_md5": "08b057f3d55de392cb32105b9cf2bb6c",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:44Z",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Breast Implant Illness: Symptoms, What's Known, What to Do",
+  "meta_description": "Fatigue, joint problems and anxiety lead the reports to the FDA. What's known about breast implant illness, what else it could be, and what to do next.",
+  "excerpt": "The symptoms are real, but breast implant illness isn't a formal diagnosis and has no test. Here is what reports to the FDA show, what else your symptoms could be, what to do first, and what the evidence says about removing implants.",
+  "quick_answer": "What are the symptoms of breast implant illness?\n\nThe FDA lists fatigue, memory loss, rash, brain fog and joint pain as symptoms that may be associated with implants. It is not a formal diagnosis and has no specific test, the FDA says. The cause is unknown, and Cleveland Clinic says some people improve after removal while others don't. See a doctor first, because other conditions can cause these.",
+  "primary_keyword": "breast implant illness symptoms",
+  "secondary_keywords": [
+    "breast implant illness",
+    "breast implant illness symptoms list",
+    "what is breast implant illness",
+    "is breast implant illness real",
+    "how common is breast implant illness",
+    "what causes breast implant illness",
+    "breast implant illness treatment",
+    "how to avoid breast implant illness",
+    "symptoms of breast implant illness",
+    "signs of breast implant illness",
+    "can breast implants make you sick",
+    "can silicone implants make you sick",
+    "signs of breast implant problems",
+    "breast implant complications",
+    "guide to breast implant illness"
+  ],
+  "owns_queries": [
+    "breast implant illness symptoms risks prevention",
+    "breast implant illness symptoms",
+    "breast implant illness",
+    "breast implant illness symptoms list",
+    "what is breast implant illness",
+    "is breast implant illness real",
+    "how common is breast implant illness",
+    "what causes breast implant illness",
+    "breast implant illness treatment",
+    "how to avoid breast implant illness",
+    "can breast implants make you sick",
+    "signs of breast implant problems"
+  ],
+  "categories": [
+    "Breast Augmentation"
+  ],
+  "tags": [
+    "Breast Augmentation"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her mid 40s in a high-neck heather-grey sweater sits at an oak table in morning light, her pen on a small open notebook beside a mug of tea, looking toward the window.",
+      "prompt": "SCENE: Early morning at a kitchen table in a bright South Florida apartment, white plaster walls, a tall window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid 40s with light olive skin and shoulder-length wavy brown hair touched with grey, wearing a high-neck heather-grey knit sweater, seated at a plain oak table, writing in a small notebook with a pen, a ceramic mug of tea beside her. Three-quarter view, thoughtful and calm. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions on the body; not photographed from behind; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad. The notebook page shows no legible writing.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "fda-reports-chart",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Chart of the 10 symptom terms most common in 10,318 reports to the FDA from January 1, 2008 to June 30, 2024: fatigue 41.1%, joint issues 30.9%, anxiety 22.9%, autoimmune diseases 22.6%, brain fog 22.5%, hair loss 19.6%, illness 18.7%, depression 16.9%, rash 16.7%, weight (loss, gain, other) 16.5%. A note says these are shares of reports, not how often this happens.",
+      "prompt": "Portrait horizontal bar chart with ten bars, all in one colour so colour carries no meaning, starting from zero, each bar's length in exact proportion to its percentage (the largest, 41.1%, is the full width), the symptom term above the left end of each bar and its percentage above the right end. A note and a source line beneath. Hand-built vector card (HTML and SVG rendered in headless Chrome at 1280x1600), not a model render. Warm porcelain background, a thin brushed-gold rule at the top, Fraunces title and Instrument Sans text in dark stone ink, large type for phones. No people's faces, no practice name, no logo, no phone number, no watermark.",
+      "text_in_image": "Symptoms Named in Reports to the FDA\n\nFatigue 41.1%\nJoint issues 30.9%\nAnxiety 22.9%\nAutoimmune diseases 22.6%\nBrain fog 22.5%\nHair loss 19.6%\nIllness 18.7%\nDepression 16.9%\nRash 16.7%\nWeight (loss, gain, other) 16.5%\n\nShare of 10,318 reports, not how often this happens.\n\nSource: FDA medical device reports, January 1, 2008 to June 30, 2024"
+    },
+    {
+      "key": "which-problem-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Reference card matching implant symptoms to what they could be and what to do. Fatigue, brain fog, joint pain or rash: reported as breast implant illness, see your primary doctor and tell your surgeon. A firmer breast or a shape change: capsular contracture, see your surgeon. Saline implant losing size: deflation, see your surgeon. Persistent swelling, a lump or pain near the implant: BIA-ALCL needs ruling out, see your surgeon promptly. Fever, redness or heat: infection, call right away.",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule at the top. SUBJECT: A clean five-row reference table. Each row has the sign in a bold short line on the left and what it could be and what to do on the right, separated by hairlines, with a source footer beneath. Plain line icons are not needed. KEY DETAILS: Flat editorial typography, a refined serif for the title in dark stone and a clean sans-serif for the labels, brushed gold used only for rules and accents, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: No people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark. No decoration beyond hairlines. Spell every word exactly as supplied; no extra words or numbers.",
+      "text_in_image": "What Could It Be?\n\nFatigue, brain fog, joint pain or rash\nReported as breast implant illness. See your primary doctor and tell your surgeon.\n\nA firmer breast or a shape change\nCapsular contracture. See your surgeon.\n\nSaline implant losing size\nDeflation. See your surgeon.\n\nPersistent swelling, a lump or pain near the implant\nBIA-ALCL needs ruling out. See your surgeon promptly.\n\nFever, redness or heat\nInfection. Call right away.\n\nSources: FDA, Cleveland Clinic, MedlinePlus"
+    },
+    {
+      "key": "implant-checks",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Implant Checks the FDA Recommends, with one row for each of three cases, from the FDA labeling guidance of 2020. Silicone, no symptoms: first ultrasound or MRI at 5–6 years, then every 2–3 years. Silicone, symptoms at any time: MRI. Saline: no screening recommended, because a rupture is noticeable without it.",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule at the top. SUBJECT: A horizontal timeline for silicone implants with a thin brushed-gold line, a marker for the first check and repeating smaller markers after it, then two short labeled blocks beneath it for the other cases, with a source footer. Abstract markers only. KEY DETAILS: Flat editorial typography, a refined serif for the title in dark stone and a clean sans-serif for the labels, brushed gold used only for rules and accents, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: No people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark. No decoration beyond hairlines. Spell every word exactly as supplied; no extra words or numbers.",
+      "text_in_image": "Implant Checks the FDA Recommends\nSilicone, no symptoms: First ultrasound or MRI at 5–6 years, then every 2–3 years\nSilicone, symptoms at any time: MRI\nSaline: No screening recommended. A rupture is noticeable without it.\nSource: FDA labeling guidance, 2020",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    },
+    {
+      "key": "what-to-do-steps",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Step card titled If You Think You Have Breast Implant Illness: write down your symptoms and when they began, find your device card, see your primary care doctor to look for other causes, see your surgeon for an exam, then talk through removal.",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule at the top. SUBJECT: A simple vertical sequence of five rounded steps joined by a thin brushed-gold line, with a short source footer. The steps are marked with small gold dots rather than numbers. KEY DETAILS: Flat editorial typography, a refined serif for the title in dark stone and a clean sans-serif for the labels, brushed gold used only for rules and accents, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: No people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark. No decoration beyond hairlines. Spell every word exactly as supplied; no extra words or numbers.",
+      "text_in_image": "If You Think You Have Breast Implant Illness\n\nWrite down your symptoms and when they began\nFind your device card\nSee your primary care doctor to look for other causes\nSee your surgeon for an exam\nThen talk through removal\n\nSources: FDA, Cleveland Clinic"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/medical-device-reports-systemic-symptoms-women-breast-implants",
+      "publisher": "FDA",
+      "title": "Medical Device Reports for Systemic Symptoms in Women with Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A number of patients and clinicians use the term \"breast implant illness\" or \"BII\" to describe a variety of systemic symptoms that have been reported following reconstruction or augmentation with breast implants.",
+        "The appearance of such symptoms has been reported with all types of breast implants regardless of filling, shape or surface characteristic, and the symptoms appear anywhere from right after implantation to years later.",
+        "BII is not recognized as a formal medical diagnosis and there are no specific tests or recognized criteria to define or characterize it.",
+        "the FDA's review identified a total of 10,318 MDRs between January 1, 2008 and June 30, 2024",
+        "The incidence, prevalence, or cause of an event cannot be determined from this reporting system alone due to under-reporting of events, duplicate reporting of events, inaccuracies in reports, lack of verification that the device caused the reported event, and lack of information about frequency of device use.",
+        "In these cases, the average time to onset was 5.6 years with a range of 0-42.5 years.",
+        "7,838/10,318",
+        "Fatigue 41.1%",
+        "Joint Issues* 30.9%",
+        "Anxiety 22.9%",
+        "Autoimmune diseases** 22.6%",
+        "Fog 22.5%",
+        "Hair Loss 19.6%",
+        "Illness 18.7%",
+        "Depression 16.9%",
+        "Rash 16.7%",
+        "Weight (loss, gain, other) 16.5%",
+        "Only 785 reports provided information related to the status of a woman's symptoms following breast implant removal. Of these, 687 noted improvement and 98 noted either no improvement or worsening of symptoms."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms such as fatigue, memory loss, rash, \"brain fog,\" and joint pain may be associated with breast implants.",
+        "These symptoms and what causes them are poorly understood.",
+        "The FDA has not detected any association between silicone gel-filled breast implants and connective tissue disease, breast cancer or reproductive problems.",
+        "You and/or your doctor will be able to tell if your saline-filled implant ruptures because the saline solution leaks into your body immediately or over several days and deflates the implant.",
+        "most silicone implant ruptures are without symptoms, known as \"silent ruptures.\"",
+        "Occasionally when a silicone gel-filled implant ruptures, you may notice a decrease in breast size, change in breast implant shape, hard lumps over the implant or chest area, an uneven appearance of the breasts, pain or tenderness, tingling, swelling, numbness, burning, or changes in sensation.",
+        "After removal, some women do not choose to replace their implants. These women may have cosmetically undesirable dimpling, chest wall concavity, puckering, or sagging of their natural breasts.",
+        "Some insurance companies do not cover implant removal or implant replacement, even if there are complications and even if the first implant surgery was covered.",
+        "We encourage patients to report any injury, adverse event, or symptom related to a medical device"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Patient decision checklist, which must be reviewed with the prospective patient by the health care provider to help ensure the patient understands the risks, benefits and other information about the breast implant device. The patient must be given the opportunity to initial and sign the patient decision checklist and it must be signed by the physician implanting the device.",
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly.",
+        "Breast implants are not lifetime devices."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Individual patient risk for developing these symptoms has not been well established.",
+        "While the causes of these symptoms are unclear, some patients have reported relief of these symptoms with removal of their implants and surrounding scar tissue capsule, however not all patients may experience improvement in their symptoms.",
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter.",
+        "If you have symptoms at any time or uncertain ultrasound results for breast implant rupture, an MRI is recommended.",
+        "Saline-filled breast implants do not have screening recommendations as rupture is detectable without screening.",
+        "These imaging evaluations may not detect all ruptures or leaks, be costly, and the expense may not be covered by my medical insurance.",
+        "This cancer occurs more commonly in patients with textured breast implants than smooth implants, although rates are not well defined. Some patients have died from BIA-ALCL.",
+        "I understand that this cancer has been reported more frequently for textured breast implants, but that patients with smooth surfaced implants have also been diagnosed.",
+        "Autoimmune disease (e.g., Hashimoto’s, Lupus, Rheumatoid Arthritis) or family history of autoimmune disease",
+        "I understand the following conditions have not been adequately studied to determine whether the conditions put me at higher risk:"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You have the right to request this information, and your physician is expected to provide it."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "a patient device card with information specific to a patient’s implant, such as the serial or lot number and the style and size."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/questions-and-answers-about-breast-implant-associated-anaplastic-large-cell-lymphoma-bia-alcl",
+      "publisher": "FDA",
+      "title": "Questions and Answers about Breast Implant-Associated Anaplastic Large Cell Lymphoma (BIA-ALCL)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast Implant Associated Lymphoma (BIA-ALCL) is not breast cancer - it is a type of non-Hodgkin's lymphoma (cancer of the immune system).",
+        "An individual's risk of developing BIA-ALCL is considered to be low; however, this cancer is serious and can lead to death, especially if not treated promptly.",
+        "The main symptoms of BIA-ALCL are persistent swelling, presence of a mass or pain in the area of the breast implant.",
+        "Evaluation for BIA-ALCL typically involves a physical exam, imaging, and/or assessment of the fluid or tissue around the breast implant.",
+        "Patients with confirmed BIA-ALCL should undergo implant removal with removal of the surrounding scar capsule",
+        "the type of implant fill does not appear to be a risk factor for BIA-ALCL, but this has not been evaluated in a large, well-designed, epidemiologic study.",
+        "We are not recommending the routine removal of these or other types of breast implants in patients who have no symptoms."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/medical-device-reports-breast-implant-associated-anaplastic-large-cell-lymphoma",
+      "publisher": "FDA",
+      "title": "Medical Device Reports of Breast Implant-Associated Anaplastic Large Cell Lymphoma",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Table 1: Summary of U.S. and Worldwide Deaths Reported in MDRs Received as of June 30, 2024 (64 Deaths)",
+        "Table 2: Summary of U.S. and Worldwide BIA-ALCL Cases Reported as MDRs as of June 30, 2024 (1380 Cases)",
+        "Textured 1010 73",
+        "Not specified 330 24",
+        "In the 40 cases of patients with smooth implants, 18 have unknown prior history of implants, 8 have a history of at least one textured implant, 13 have a history of prior implants with unknown texture, and 1 has a history of one smooth implant and no known textured implant.",
+        "Seroma 666 48",
+        "Breast swelling/pain 366 27",
+        "Capsular contracture 200 14",
+        "Peri-implant mass/lump 147 11",
+        "Median 8 -",
+        "The incidence, prevalence, or cause of an event cannot be determined from this reporting system alone"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/safety-communications/update-reports-squamous-cell-carcinoma-scc-capsule-around-breast-implants-fda-safety-communication",
+      "publisher": "FDA",
+      "title": "UPDATE: Reports of Squamous Cell Carcinoma (SCC) in the Capsule Around Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The FDA is aware of 19 cases of SCC in the capsule around the breast implant from published literature.",
+        "While the FDA continues to believe that occurrences of SCC in the capsule around the breast implant may be rare, the cause, incidence and risk factors remain unknown.",
+        "If you do not have symptoms, the FDA does not recommend the removal of breast implants solely due to concern related to the risk of developing SCC or various lymphomas."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/23366-breast-implant-illness",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Implant Illness",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "People have reported more than 50 symptoms",
+        "it isn’t yet recognized as an official medical diagnosis",
+        "It’s unclear how common breast implant illness is",
+        "People with BII have symptoms whether they have saline-filled or silicone-filled implants.",
+        "Researchers don’t know the exact cause of breast implant illness.",
+        "Autoimmune or inflammatory reaction to parts of the breast implant, such as silicone.",
+        "Bacteria may grow on an implant surface and cause infection (biofilm infection).",
+        "Reaction to the surgery used to insert breast implants.",
+        "Currently, there aren’t any commonly used tests to diagnose breast implant illness.",
+        "tests to rule out other diseases or conditions, such as arthritis or Lyme disease.",
+        "Surgeons usually treat breast implant illness with breast implant removal.",
+        "Many surgeons will offer to remove the scar tissue around your breast implants at the same time.",
+        "Relief may occur within the first 30 days after surgery.",
+        "Experts don’t know why some people get BII while the majority of others don’t.",
+        "Certainly, one way to eliminate the risk of BII is choosing not to get breast implants.",
+        "It’s important to find a healthcare provider who listens to your concerns."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis (DVT)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms of this include chest pain, shortness of breath, cough with blood, lightheadedness and fainting.",
+        "It’s important to call your provider right away or go to the emergency room if you have deep vein thrombosis"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/patient-safety/breast-implant-safety/bia-alcl-summary",
+      "publisher": "ASPS",
+      "title": "Breast Implant-Associated Anaplastic Large Cell Lymphoma (BIA-ALCL) Disease Summary",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The current lifetime risk of BIA-ALCL is estimated to be 1:2,207-1:86,029 for women with textured implants based upon current confirmed cases and textured implant sales data over the past two decades.",
+        "typically developing at least more than one year after receiving an implant, and on average after 8 to 10 years.",
+        "When caught early, BIA-ALCL is curable in most patients."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40788544/",
+      "publisher": "Aesthetic Plastic Surgery (Ferreira and colleagues)",
+      "title": "Breast Implant Illness: Symptoms, Outcomes with Explantation and Potential Etiologies",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "81.9% of patients reported symptom improvement post-explantation",
+        "From 4612 identified articles, 33 met the inclusion criteria",
+        "Its mechanisms remain unclear, with hypotheses including immune responses, microbial colonization, and psychological factors.",
+        "This review supports BII as a real, multifactorial clinical entity"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38636098/",
+      "publisher": "Aesthetic Surgery Journal (Kabir and colleagues)",
+      "title": "Breast Implant Illness as a Clinical Entity: A Systematic Review of the Literature",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Among these, 9 studies reported symptom improvement in 83.5% patients."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40391348/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open (Bouhadana and colleagues)",
+      "title": "Defining Breast Implant Illness: A Systematic Review and Meta-analysis of Patient-reported Symptoms",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Although no definitive scientific link has been established, public concern surrounding breast implant illness (BII) is increasing.",
+        "A total of 36 articles were included in this study",
+        "Fatigue or malaise (RR = 3.15 [2.89-3.43]), myalgia or weakness (RR = 2.96 [2.76-3.18]), and cognitive dysfunction (RR = 2.87 [2.64-3.12]) were most strongly associated with the presence of breast implants.",
+        "Implants that were ruptured (RR = 1.12 [1.04-1.21], P = 0.003) or filled with silicone (RR = 2.11 [1.49-2.99], P < 0.0001) appeared more likely to lead to BII-type symptoms."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra FDA-approved patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "the 10-year risk of reoperation is 24% for primary augmentation patients",
+        "If your incision sites or breasts are red, swollen, hot, painful, or are weeping (draining white or yellow fluid) or if you have a fever, chills, aches, nausea, or vomiting, you may have an infection."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33620918/",
+      "publisher": "Plastic and Reconstructive Surgery (Caplin and colleagues; Mentor-sponsored)",
+      "title": "MemoryGel Breast Implants: Final Safety and Efficacy Results after 10 Years of Follow-Up",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For any reoperation",
+        "primary augmentation, 25.5 percent"
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan FDA-approved patient labeling",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Deflated implants require additional surgery to remove."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A fever of 100°F (38°C) or higher",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42881298/",
+      "publisher": "Aesthetic Plastic Surgery",
+      "title": "Capsulectomy Following Breast Implant Removal: Evidence-Based Indications and a Framework for Clinical Decision-Making (2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "No published study directly compares outcomes of explantation with capsulectomy versus explantation alone; the most rigorous prospective data show that explantation without capsulectomy produces symptom improvement statistically indistinguishable from partial or total capsulectomy.",
+        "The only pre-registered controlled cohort study (n = 9590) found no difference in BII symptom prevalence between women with and without implants",
+        "Capsulectomy carries a higher complication rate than explantation alone",
+        "Four indications are supported by the available evidence: confirmed BIA-ALCL, confirmed capsular malignancy, symptomatic capsular calcification with demonstrable mammographic impairment, and Grade III-IV contracture where capsulotomy is insufficient.",
+        "Level of Evidence V"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 373,
+    "clicks": 0,
+    "position": 17.79,
+    "top_queries_window": "2026-05-05..2026-11-01",
+    "top_queries": [
+      {
+        "query": "signs of breast implant problems",
+        "impressions": 22,
+        "clicks": 0,
+        "position": 53
+      },
+      {
+        "query": "breast implant complications 33401",
+        "impressions": 22,
+        "clicks": 0,
+        "position": 30.5
+      },
+      {
+        "query": "breast implant problems 33401",
+        "impressions": 21,
+        "clicks": 0,
+        "position": 31.8
+      },
+      {
+        "query": "breast implant illness",
+        "impressions": 20,
+        "clicks": 0,
+        "position": 30.6
+      },
+      {
+        "query": "breast implant illness symptoms",
+        "impressions": 20,
+        "clicks": 0,
+        "position": 38.2
+      },
+      {
+        "query": "breast implant problems",
+        "impressions": 17,
+        "clicks": 0,
+        "position": 44.6
+      },
+      {
+        "query": "breast implant complications",
+        "impressions": 16,
+        "clicks": 0,
+        "position": 41.1
+      },
+      {
+        "query": "guide to breast implant illness",
+        "impressions": 16,
+        "clicks": 0,
+        "position": 15.8
+      },
+      {
+        "query": "breast implant conditions",
+        "impressions": 14,
+        "clicks": 0,
+        "position": 38.6
+      },
+      {
+        "query": "breast implant illness symptoms list",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 24
+      }
+    ]
+  },
+  "notes": "Full rewrite for accuracy, not ranking (health systems and the FDA hold this search). Written from the live row read with the admin MCP get_post on 2026-11-03, not the local clone: the clone's row is older (content_updated_at 2026-01-31 against live 2026-09-15), so base_md5 here is the clone's and production needs the morning rebase. Removed: ABPS verification advice, AAAASF, '4.9 rating', board-certified claims, phone number, fly-in and financing copy, Miami humidity section, the mislabeled FDA figures (now the FDA's own 10 terms), 'muscle pain 30.9%', 'anxiety and depression 22.9%', 'hair loss and rash 19.6%', RR 1.38 and scleroderma and Sjogren's ratios, 'swelling in 80%' for BIA-ALCL, 'under 1% at 5 years' and '10-24% by 10 years' rupture, '1 in 6', massage as prevention, Keller funnel, supportive bra 'about 2 months', 'recovery 4-6 weeks', lymphatic drainage. Capsular contracture details moved to /blog/capsular-contracture. All live images replaced, none is an earner: new hero (the old one was a glamour image with 'luxurious Miami medical spa' alt) and 4 inline, same count as the 4 placed live. Live FAQs dropped: long-term risks of BII (invented autoimmune claims), rupture factors (N2/N3 own rupture). Kept and corrected: telling BII from autoimmune disease, prevention (now a body section), BIA-ALCL frequency, treatment (now a body section). Links to new posts (/blog/capsular-contracture, /blog/saline-vs-silicone-breast-implants, /blog/how-long-do-breast-implants-last) mean this post must go live in the same run as them or after. cta stays default because the 'breast' CTA copy says 'our board-certified surgeons'. Open refresh candidate on live: 918f4740-4037-4220-88bd-8720625e1888 (pending). Folded posts' queries are left out of the keywords: breast-augmentation-safety-miami folds to the procedure page. Fact check batch 4 applied 2026-11-03: meta and lead reworded to the FDA's actual ranking, 7,838 line attributed to the FDA, MedlinePlus added and chills attributed to Sientra's labeling (the checker missed that line), PMID 42881298 added for capsulectomy and the cohort finding; that paper is one author's level V review and discloses AI help with its literature search."
+}

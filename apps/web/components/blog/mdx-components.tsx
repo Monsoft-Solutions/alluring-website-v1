@@ -54,6 +54,64 @@ const CONTRACT_COMPONENTS: Record<
     QuickAnswer,
 }
 
+/** An image's real pixel size, by the URL the post's markdown uses. */
+export type ContentImageSizes = ReadonlyMap<
+    string,
+    { width: number; height: number }
+>
+
+/**
+ * The markdown image. With its real size known, the space is reserved before
+ * the file loads (no layout shift), and a tall card is capped to fit one
+ * screen. Without it, the 800x400 default stands in, as on every post that
+ * doesn't pass sizes.
+ *
+ * Honors width/height/sizes when the source declares them, so images that ship
+ * real dimensions are not forced into the default.
+ */
+export function createContentImage(imageSizes?: ContentImageSizes) {
+    return function ContentImage({
+        src,
+        alt,
+        width,
+        height,
+        sizes,
+        ...props
+    }: ComponentPropsWithoutRef<'img'>) {
+        // Same guard as <Figure>: next/image throws on an src it cannot
+        // parse, and one unresolved placeholder would take down the post
+        // instead of dropping a single image.
+        if (typeof src !== 'string' || !isResolvedImageSrc(src)) return null
+
+        const known = imageSizes?.get(src)
+
+        return (
+            <Image
+                src={src}
+                alt={alt || 'Blog post image'}
+                width={
+                    known?.width ??
+                    toImageDimension(width, DEFAULT_CONTENT_IMAGE_WIDTH)
+                }
+                height={
+                    known?.height ??
+                    toImageDimension(height, DEFAULT_CONTENT_IMAGE_HEIGHT)
+                }
+                sizes={sizes || CONTENT_IMAGE_SIZES}
+                className={known ? 'mx-auto rounded-lg' : 'rounded-lg'}
+                style={
+                    known && {
+                        width: `min(100%, calc(85vh * ${known.width / known.height}))`,
+                        height: 'auto',
+                    }
+                }
+                loading='lazy'
+                {...props}
+            />
+        )
+    }
+}
+
 export function getMDXComponents(): MDXComponents {
     return {
         // Custom Link component using Next.js Link
@@ -75,47 +133,27 @@ export function getMDXComponents(): MDXComponents {
             return <Link href={href || '#'}>{children}</Link>
         },
 
-        // Custom Image component using Next.js Image.
-        // Honors width/height/sizes when the source declares them, so images
-        // that ship real dimensions are not forced into the 800x400 default.
-        img: ({
-            src,
-            alt,
-            width,
-            height,
-            sizes,
-            ...props
-        }: ComponentPropsWithoutRef<'img'>) => {
-            // Same guard as <Figure>: next/image throws on an src it cannot
-            // parse, and one unresolved placeholder would take down the post
-            // instead of dropping a single image.
-            if (typeof src !== 'string' || !isResolvedImageSrc(src)) return null
-
-            return (
-                <Image
-                    src={src}
-                    alt={alt || 'Blog post image'}
-                    width={toImageDimension(width, DEFAULT_CONTENT_IMAGE_WIDTH)}
-                    height={toImageDimension(
-                        height,
-                        DEFAULT_CONTENT_IMAGE_HEIGHT
-                    )}
-                    sizes={sizes || CONTENT_IMAGE_SIZES}
-                    className='rounded-lg'
-                    loading='lazy'
-                    {...props}
-                />
-            )
-        },
+        img: createContentImage(),
 
         // GFM tables — wrapped so wide comparison tables scroll on mobile
-        // instead of collapsing into unreadable one-word columns.
+        // instead of collapsing into unreadable one-word columns. Up to three
+        // columns fit a phone, so only tables of four or more scroll. Their
+        // last column can stop right at the edge, which looks like the table's
+        // end, so the hint says there is more (where 30rem doesn't fit).
         table: (props: ComponentPropsWithoutRef<'table'>) => (
-            <div className='my-8 overflow-x-auto rounded-xl border border-stone-200'>
-                <table
-                    className='w-full min-w-[30rem] border-collapse text-left text-sm'
-                    {...props}
-                />
+            <div className='group/table my-8'>
+                <div className='overflow-x-auto rounded-xl border border-stone-200'>
+                    <table
+                        className='w-full min-w-[30rem] border-collapse text-left text-sm [&:not(:has(th:nth-child(4)))]:min-w-0'
+                        {...props}
+                    />
+                </div>
+                <p
+                    aria-hidden='true'
+                    className='mt-2 mb-0 hidden text-right text-xs text-stone-500 max-[539px]:group-has-[th:nth-child(4)]/table:block'
+                >
+                    Swipe to see more →
+                </p>
             </div>
         ),
 

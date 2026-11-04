@@ -18,6 +18,7 @@ import {
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { CTASection } from '@/components/shared/cta-section.component'
 import { SectionContainer } from '@/components/shared/section-container.component'
+import { GALLERY_PAGE_COPY } from '@/lib/data/gallery/gallery-page-copy'
 import { siteConfig } from '@/lib/data/site-config'
 import {
     getAllGalleryGroupSlugs,
@@ -98,12 +99,15 @@ export async function generateMetadata({
     }
 
     const pageUrl = `${siteUrl}/gallery/${group.slug}`
-    const pageTitle = `${group.name} Gallery | Before & After Photos Miami`
+    const copy = GALLERY_PAGE_COPY[group.slug]
+    const pageTitle =
+        copy?.title ?? `${group.name} Gallery | Before & After Photos Miami`
+    const pageDescription = copy?.description ?? group.description
 
     return toNextMetadata(seoConfig, {
         title: pageTitle,
         description:
-            group.description ??
+            pageDescription ??
             `View our ${group.name} gallery featuring real before and after photos from ${siteConfig.business.name} in Miami.`,
         canonical: `/gallery/${group.slug}`,
         openGraph: {
@@ -111,8 +115,8 @@ export async function generateMetadata({
             url: pageUrl,
             title: pageTitle,
             description:
-                group.description ??
-                `Explore our ${group.name} photo gallery showcasing exceptional results from our board-certified surgeons.`,
+                pageDescription ??
+                `Explore our ${group.name} photo gallery with real before and after photos.`,
             images: group.coverImage
                 ? [
                       {
@@ -126,8 +130,8 @@ export async function generateMetadata({
             card: 'summary_large_image',
             title: pageTitle,
             description:
-                group.description ??
-                `Explore our ${group.name} photo gallery showcasing exceptional results.`,
+                pageDescription ??
+                `Explore our ${group.name} photo gallery with real before and after photos.`,
             images: group.coverImage ? [group.coverImage.url] : undefined,
         },
     })
@@ -149,6 +153,7 @@ export default async function GalleryGroupPage({ params }: PageProps) {
     )
     const photoCount = group.media.filter((m) => m.type === 'image').length
     const videoCount = group.media.length - photoCount
+    const pageCopy = GALLERY_PAGE_COPY[group.slug]
     const countLine = [
         photoCount > 0 &&
             `${photoCount} ${photoCount === 1 ? 'photo' : 'photos'}`,
@@ -230,13 +235,19 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                             </div>
 
                             <h1 className='mb-6 font-serif text-4xl text-stone-900 md:text-5xl lg:text-6xl'>
-                                {group.name}
+                                {pageCopy?.heading ?? group.name}
                             </h1>
 
-                            {group.description && (
-                                <p className='text-lg leading-relaxed font-light text-stone-600 md:text-xl'>
-                                    {group.description}
-                                </p>
+                            {pageCopy ? (
+                                <div className='space-y-4 text-lg leading-relaxed text-stone-600'>
+                                    {pageCopy.intro}
+                                </div>
+                            ) : (
+                                group.description && (
+                                    <p className='text-lg leading-relaxed font-light text-stone-600 md:text-xl'>
+                                        {group.description}
+                                    </p>
+                                )
                             )}
 
                             <p className='mt-4 text-sm text-stone-500'>
@@ -322,15 +333,15 @@ export default async function GalleryGroupPage({ params }: PageProps) {
                     trustBadges={[
                         {
                             icon: <Award className='h-5 w-5' />,
-                            label: 'Board-Certified Surgeons',
+                            label: 'Real Patient Photos',
                         },
                         {
                             icon: <Users className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+                            label: 'Hablamos Español',
                         },
                         {
                             icon: <Building2 className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                            label: 'Financing Available',
                         },
                     ]}
                 />

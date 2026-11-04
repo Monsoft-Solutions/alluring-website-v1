@@ -48,13 +48,17 @@ export const PROCEDURE_PRICING: Record<ProcedureId, ProcedureDetails> = {
         shortDescription: 'Restore youthful breast position and firmness',
         slug: 'breast-lift-miami',
         category: 'breast',
+        // A modified lift to a lift with silicone implants, from the
+        // practice's price sheet of 2026-09-15, as in
+        // breast-lift-miami.data.ts
         priceRange: {
-            min: 5000,
-            max: 8000,
+            min: 4000,
+            max: 7000,
         },
+        // priceRange over 36 months, like the other rows
         monthlyPayment: {
-            min: 139,
-            max: 222,
+            min: 111,
+            max: 194,
         },
         recoveryWeeks: 2,
         benefits: [

@@ -20,7 +20,8 @@
  * hand-written `notes` and GSC-derived `ownsQueries` on a few entries (the
  * BBL recovery owner /how-long-to-recover-from-bbl, the #231 comparison owner,
  * procedure-page absorptions, the liposuction posts' Search Console queries
- * and combined BBL + liposuction rule, and the notes on retired entries) that cannot be
+ * and combined BBL + liposuction rule, the four surviving mommy makeover posts'
+ * primary keywords and queries, and the notes on retired entries) that cannot be
  * reproduced from the database, so after a regeneration restore those from
  * `git diff` before committing.
  */
@@ -38,13 +39,6 @@ const DUPLICATE_OF = {
     // Surgeon selection — credential intent owner
     'best-board-certified-plastic-surgeons-miami':
         '/blog/board-certified-plastic-surgeon-miami',
-    // Mommy makeover recovery — owner /blog/mommy-makeover-recovery-timeline-miami
-    'mommy-makeover-recovery-miami':
-        '/blog/mommy-makeover-recovery-timeline-miami',
-    'mommy-makeover-recovery-signs':
-        '/blog/mommy-makeover-recovery-timeline-miami',
-    'how-long-to-recover-from-mommy-makeover':
-        '/blog/mommy-makeover-recovery-timeline-miami',
     // Breast reduction × weight loss
     'breast-reduction-weight-loss-quiz':
         '/blog/breast-reduction-weight-loss-miami',
@@ -70,7 +64,7 @@ const STRIP_QUERIES = {
 }
 
 /** Legacy root posts in a duplicate cluster: GSC evidence required before any 301. */
-const GSC_CHECK_FIRST = new Set(['how-long-to-recover-from-mommy-makeover'])
+const GSC_CHECK_FIRST = new Set()
 
 /**
  * Retired blog URLs (308 sources in apps/web/next.config.mjs), keyed by the
@@ -78,19 +72,40 @@ const GSC_CHECK_FIRST = new Set(['how-long-to-recover-from-mommy-makeover'])
  * The slug is the last path segment.
  */
 const RETIRED = {
+    '/blog/breast-lift-miami-quiz': '/blog/breast-lift-candidate-checklist',
+    '/blog/breast-lift-prep-miami': '/blog/breast-lift-recovery-guide-miami',
+    '/blog/best-age-breast-lift-miami':
+        '/blog/breast-lift-miami-post-pregnancy',
+    '/blog/breast-lift-myths-busted': '/blog/breast-lift-miami-post-pregnancy',
+    '/blog/breast-augmentation-recovery-tips-miami':
+        '/blog/breast-augmentation-recovery-miami',
+    '/blog/breast-augmentation-recovery-exercises':
+        '/blog/when-can-you-work-out-after-breast-augmentation',
+    '/blog/breast-augmentation-miami-candidate':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/breast-augmentation-miami-post-pregnancy':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/best-age-breast-augmentation-miami':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/breast-augmentation-weight-loss-miami':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/breast-augmentation-before-after-miami':
+        '/gallery/breast-augmentation',
+    '/blog/breast-augmentation-safety-miami':
+        '/procedures/breast-augmentation-miami#safety',
+    '/blog/breast-augmentation-vs-reduction-miami':
+        '/procedures/breast-augmentation-miami#candidate',
     '/mommy-makeover-miami-guide': '/procedures/mommy-makeover-miami',
     '/prepare-mommy-makeover-miami': '/procedures/mommy-makeover-miami',
     '/mommy-makeover-myths-miami': '/procedures/mommy-makeover-miami',
-    '/mommy-makeover-recovery-timeline':
-        '/blog/mommy-makeover-recovery-timeline-miami',
-    '/mommy-makeover-recovery-guide':
-        '/blog/mommy-makeover-recovery-timeline-miami',
+    '/mommy-makeover-recovery-timeline': '/blog/mommy-makeover-recovery-signs',
+    '/mommy-makeover-recovery-guide': '/blog/mommy-makeover-recovery-signs',
     '/mommy-makeover-recovery-time-miami':
-        '/blog/mommy-makeover-recovery-timeline-miami',
+        '/blog/mommy-makeover-recovery-signs',
     '/mommy-makeover-recovery-pain-management':
-        '/blog/mommy-makeover-recovery-timeline-miami',
+        '/blog/mommy-makeover-recovery-signs',
     '/mommy-makeover-recovery-pain-guide':
-        '/blog/mommy-makeover-recovery-timeline-miami',
+        '/blog/mommy-makeover-recovery-signs',
     '/miami-liposuction-cost': '/procedures/liposuction-miami',
     '/blepharoplasty-candidate-checklist':
         '/blog/blepharoplasty-candidate-miami-checklist',
@@ -150,6 +165,17 @@ const RETIRED = {
     '/how-to-maintain-liposuction-results': '/procedures/liposuction-miami',
     '/blog/liposuction-vs-breast-augmentation-miami':
         '/procedures/mommy-makeover-miami',
+    // Mommy makeover blog consolidation (2026-10-05 review, 2026-11-03 plan):
+    // nine posts to four
+    '/blog/mommy-makeover-recovery-timeline-miami':
+        '/blog/mommy-makeover-recovery-signs',
+    '/blog/mommy-makeover-recovery-miami':
+        '/blog/mommy-makeover-recovery-signs',
+    '/how-long-to-recover-from-mommy-makeover':
+        '/blog/mommy-makeover-recovery-signs',
+    '/blog/mommy-makeover-miami-candidate-checklist':
+        '/procedures/mommy-makeover-miami',
+    '/blog/mommy-makeover-questions-miami': '/procedures/mommy-makeover-miami',
     // Tummy tuck folds (#357)
     '/blog/best-age-tummy-tuck-miami': '/procedures/tummy-tuck-miami',
     '/blog/tummy-tuck-myths-miami-moms': '/procedures/tummy-tuck-miami',

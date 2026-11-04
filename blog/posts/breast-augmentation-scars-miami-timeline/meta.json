@@ -1,0 +1,415 @@
+{
+  "slug": "breast-augmentation-scars-miami-timeline",
+  "mode": "rewrite",
+  "base_md5": "b9e2b5225c4d4dc2271cb229cc3dc18a",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:43Z",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Breast Augmentation Scars: Where They Are, How They Fade",
+  "meta_description": "Scars sit in the breast crease, at the areola edge or in the armpit. They fade over months to a couple of years but never vanish. Florida sun rules too.",
+  "excerpt": "Breast augmentation scars sit in one of three places and fade over several months to a couple of years, but they never completely disappear. Here is what each incision means, what the evidence says about scar care, and how to protect new scars in the Florida sun.",
+  "quick_answer": "Do breast augmentation scars go away?\n\nThey fade but never fully disappear. ASPS says incision lines may take several months, even a couple of years, to fade, and Cleveland Clinic says a scar never completely goes away. Scars usually sit in the crease under the breast, at the edge of the areola or in the armpit.",
+  "primary_keyword": "breast augmentation scars miami timeline",
+  "secondary_keywords": [
+    "breast augmentation scars",
+    "breast augmentation scar",
+    "boob job scar",
+    "boob job scars healed",
+    "breast implant scars",
+    "breast augmentation scar healing stages",
+    "how long do breast implant scars take to heal",
+    "how long for breast implant scars to disappear",
+    "do breast implant scars go away",
+    "healed breast augmentation scars",
+    "periareolar incision scar",
+    "inframammary incision scar",
+    "armpit scars from breast augmentation",
+    "breast augmentation scar removal",
+    "breast implants without scars",
+    "scars after breast augmentation"
+  ],
+  "owns_queries": [
+    "breast augmentation scars",
+    "breast augmentation scar",
+    "boob job scar",
+    "breast implant scars",
+    "breast augmentation scar healing stages",
+    "how long do breast implant scars take to heal",
+    "do breast implant scars go away",
+    "armpit scars from breast augmentation",
+    "breast implants without scars"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a long-sleeved, high-neck linen shirt stands by an open front door, rubbing sunscreen into the back of her hand, with a straw hat on a hook beside her.",
+      "prompt": "SCENE: Morning in the entryway of a South Florida home, white plaster walls, an arched front door standing open to soft green palms outside, daylight falling across a pale stone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: An East Asian woman in her late 40s with shoulder-length dark hair, wearing a loose, long-sleeved, high-neck ivory linen shirt with sand trousers, standing at ease by the door and rubbing sunscreen into the back of one hand, an unbranded white tube on a small console table and a straw hat hanging on a hook beside her. Three-quarter view, relaxed, about to head out, not posing. KEY DETAILS: Framed from the hips up with space above her head, her face and hands in the upper two thirds of the frame; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso and arms; not at a beach or pool; no swimwear, lingerie, cleavage or bare midriff; no garments on the body beyond everyday clothes, no bandages, drains, incisions or scars; no surgeon or staff; no before and after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "incision-sites",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Simple front-view line drawing of a woman in a plain high-neck top with three numbered markers on the clothing: 1, inframammary, the crease under the breast; 2, periareolar, the edge of the areola; 3, transaxillary, the armpit. A note says the belly-button route is not recommended.",
+      "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold. A simple, tasteful front-view line drawing, like a textbook figure, of a woman from the shoulders to the waist wearing a plain high-neck top, arms slightly away from her sides, with only a soft curved line under each side of the chest showing where the fold sits. Three small numbered brushed-gold circles sit on top of the clothing, all on the viewer's left side of the chest: number 1 at the lowest point of the curved fold line under that side, about halfway between the body's center line and the outer edge of the torso; number 2 directly above number 1, with a small dashed half circle around it, centered on that same side of the chest, about halfway between the center line and the outer edge; number 3 at the armpit on that side. Thin leader lines run from each number to its label. Modest and non-sexual, no skin, no nipples, no breast detail, no face, no logos, no phone numbers, no watermarks.",
+      "text_in_image": "Where Breast Augmentation Scars Sit\n1 Inframammary: the crease under the breast\n2 Periareolar: the edge of the areola\n3 Transaxillary: the armpit\nBelly-button route: not recommended\nSources: ASPS, Sientra's patient labeling"
+    },
+    {
+      "key": "scar-timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Vertical timeline card titled How a Breast Augmentation Scar Fades, with five stages. First 1 to 2 weeks: outer stitches come out, tape or glue falls off. First weeks and months: thin pink or red line, swollen for a while. About 1 year: thin, slightly discolored line. Up to a couple of years: still fading in some women. Long term: it fades but never completely goes away. Sources: The Aesthetic Society, University of Utah Health, ASPS and Cleveland Clinic.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. A horizontal timeline: a thin brushed-gold line across the middle with five small dots, each with its stage above and its note below. Abstract line and dots only, no skin, no body, no photo of a scar.",
+      "text_in_image": "How a Breast Augmentation Scar Fades\nFirst 1 to 2 weeks: Outer stitches come out, tape or glue falls off\nFirst weeks and months: Thin pink or red line, swollen for a while\nAbout 1 year: Thin, slightly discolored line\nUp to a couple of years: Still fading in some women\nLong term: It fades but never completely goes away\nSources: The Aesthetic Society, University of Utah Health, ASPS, Cleveland Clinic",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    },
+    {
+      "key": "sun-kit",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "A sun protection kit laid out on a limestone ledge in palm shadow: a straw hat, a folded long-sleeved linen shirt, an unbranded white tube of sunscreen and a pair of sunglasses.",
+      "prompt": "SCENE: Overhead flat lay on a pale limestone ledge outdoors, a soft palm shadow falling across it, morning light. Palette of stone, sand, warm white and brushed gold. SUBJECT: A straw hat, a neatly folded long-sleeved ivory linen shirt, an unbranded white tube of sunscreen and a pair of tortoiseshell sunglasses, arranged with space between them. KEY DETAILS: Editorial still-life photography, natural texture, no people. CONSTRAINTS: No body, no skin; no swimwear; no brand marks; no text, letters, numbers, logos or watermarks anywhere, including on the tube."
+    },
+    {
+      "key": "evidence-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Scar Care: What the Evidence Says. Sun protection, SPF 30 or higher or cover up, because sun can darken new scars. Silicone sheets or gel, weak evidence for abnormal scars in a Cochrane review of 20 trials and 873 people, worth asking about. Scar massage, common advice with no set schedule, ask your surgeon. Not smoking, nicotine affects scar quality.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. A table-like list of four rows, each with the method in serif on the left and a short verdict in sans-serif on the right, separated by hairlines.",
+      "text_in_image": "Scar Care: What the Evidence Says\nSun protection: SPF 30 or higher, or cover up. Sun can darken new scars.\nSilicone sheets or gel: weak evidence for abnormal scars (Cochrane review, 20 trials, 873 people). Worth asking about.\nScar massage: common advice, no set schedule. Ask your surgeon.\nNot smoking: nicotine affects scar quality.\nSources: MedlinePlus, Cochrane, ASPS"
+    },
+    {
+      "key": "normal-vs-see",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled New Scar: Normal, or See Your Surgeon? Usually normal: pink or red at first, or dark spots on darker skin, slight swelling for a while, sometimes itchy, tape or glue coming off on its own. See your surgeon: pus or bad-smelling drainage, stitches that open, spreading redness or heat, a scar growing thick, raised or spreading. Sources: Cleveland Clinic, UW Medicine and an article on the ASPS website.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. Two columns side by side with a thin rule between them, a small line icon over each column. No drawing of skin or a scar.",
+      "text_in_image": "New Scar: Normal, or See Your Surgeon?\nUsually normal\nPink or red at first, or dark spots on darker skin\nSlight swelling for a while, sometimes itchy\nTape or glue coming off on its own\nSee your surgeon\nPus or bad-smelling drainage\nStitches that open\nSpreading redness or heat\nA scar growing thick, raised or spreading\nSources: Cleveland Clinic, UW Medicine, article on the ASPS website"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/results",
+      "publisher": "ASPS",
+      "title": "What results should I expect after breast augmentation surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines may take several months, even a couple of years, to fade."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "they will eventually fade to thin, slightly discolored lines over the course of one year.",
+        "it’s possible the scars may always be noticeable.",
+        "In general, your scars will be swollen for awhile after surgery.",
+        "While the incision location can help to conceal the scars"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/11030-scars",
+      "publisher": "Cleveland Clinic",
+      "title": "Scars",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A scar may fade so much that you can barely see it, but it never completely goes away.",
+        "People with dark skin (especially people with African, Asian or Hispanic heritage), as well as red-haired individuals, are more likely to develop keloid scars.",
+        "Keloids are raised scars that grow and extend beyond the injured area.",
+        "When a scar first develops on lighter skin, it’s usually pink or red.",
+        "In people with dark skin, scars often appear as dark spots.",
+        "Sometimes scars itch",
+        "If you’ve had a keloid scar, you’re more likely to develop another one.",
+        "Sun exposure can make a scar darker.",
+        "Treatments can reduce a scar’s size or appearance, but the scar will never completely go away.",
+        "This is an exchange of one type of scar for a different, more preferable scar."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/procedure",
+      "publisher": "ASPS",
+      "title": "What are the steps of a breast augmentation procedure?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision options include: along the areolar edge (peri-areolar incision), the fold under the breast (inframammary fold) and in the armpit (axillary incision). A belly-button approach is associated with a higher complication rate.",
+        "Incisions vary based on the type of breast implant, degree of enlargement desired, your particular anatomy and patient-surgeon preference.",
+        "The quality of scar depends on many things, including your genetics, exposure of your body to nicotine and infection."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Inframammary – the most common incision, made under your breast at the crease where the breast meets the body",
+        "Transaxillary – the incision is made in the armpit, which gives the surgeon easier access to the chest muscle.",
+        "This way of placing breast implants has not been studied in the Clinical Study and should not be used. It may cause damage to the implant shell.",
+        "This might cause more scarring than just having implants placed and may lengthen your recovery time.",
+        "you should avoid the following for the first month after your surgery:",
+        "Sun exposure",
+        "After your stitches are removed and your incision has healed, your doctor may tell you to massage your incision site(s) with a gel, cream or lotion to keep the skin from drying out",
+        "Your wounds will take several weeks or more to heal completely."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28916908/",
+      "publisher": "Aesthetic Plastic Surgery (Li and colleagues)",
+      "title": "Capsular Contracture Rate After Breast Augmentation with Periareolar Versus Other Two Incisions: A Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Seven comparative studies were selected and meta-analyzed.",
+        "Subgroup results showed no significant difference of capsular contracture between periareolar incisions and transaxillary incisions (OR, 0.94; 95% CI, 0.52-1.64, p = 0.79) and showed a significantly higher rate of capsular contracture in periareolar incisions compared to inframammary incisions (OR, 1.91; 95% CI, 1.06-3.43, p = 0.03)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30607574/",
+      "publisher": "Aesthetic Plastic Surgery (Sun and colleagues, 2019)",
+      "title": "The Comparison of Scars in Breast Implantation Surgery with Inframammary Fold Incision Versus Axillary Incision",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "One hundred and sixty-three patients were completely investigated three times.",
+        "At 1 month after surgery, the median total VSS score was 6 in the axillary incision group and 4 in the IMF group, with statistically significant differences (P < 0.05).",
+        "At 6 months after surgery, the median total VSS score was 4 in the axillary incision group and 3 in the IMF group, with statistical significance (P < 0.05).",
+        "At 12 months after surgery, the median total VSS score was 2 in both groups.",
+        "No significant differences were noted in the total VSS and patient satisfaction scores between the two groups."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27484988/",
+      "publisher": "Aesthetic Plastic Surgery (Sun and colleagues, 2016)",
+      "title": "Scar Assessment After Breast Augmentation Surgery with Axillary Incision versus Inframammary Fold Incision",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Sixty-one patients underwent implantation surgeries through the axillary incisions, and 17 patients through the IMF incisions.",
+        "The scores of pigmentation were higher in the IMF group than those in the axilla group with statistical significance (P < 0.05).",
+        "The scores of other subscales, overall VSS scores, and patient satisfaction were not statistically significant.",
+        "The scars were significantly longer in the axilla group compared with the IMF group (P < 0.05)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16404252/",
+      "publisher": "Plastic and Reconstructive Surgery (Okwueze and colleagues)",
+      "title": "Effect of augmentation mammaplasty on breast sensation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Our study suggests that the periareolar incision may produce less sensory loss in the lower pole of the breast when compared with the inframammary incision."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41628597/",
+      "publisher": "Plastic and Reconstructive Surgery (Goncalves and colleagues)",
+      "title": "A Systematic Review and Meta-Analysis of 11,686 Breasts Undergoing Transaxillary Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Meta-analyses showed no significant differences between TAA and other incisions for CC (RR 0.73; 95% CI 0.29-1.88), reintervention (RR 0.74; 95% CI 0.41-1.34), or infection (RR 1.00; 95% CI 0.14-6.99)."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Placement through a non-FDA approved incision site, for example the belly button"
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan patient labeling",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Saline-Filled Breast Implants typically require a smaller incision. However, visible wrinkling or rippling of the skin over the implant may be more likely to occur."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/implants",
+      "publisher": "ASPS",
+      "title": "What types of breast implants are available?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Placement of gummy bear implants requires a slightly longer incision in the skin."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have external sutures, your surgeon will remove them in about a week. If your surgeon used tissue glue or tape, it will fall off on its own in a week or two."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/how-to-maintain-minimal-scarring-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Daniel Maman",
+      "title": "How to maintain minimal scarring after breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "In most cases, scars appear as thin, pink or red lines along the breast crease (inframammary incision) or around the areola (periareolar incision).",
+        "The entire healing process can take several months to over a year to complete.",
+        "UV rays can permanently darken fresh scars. Even after you feel fully healed, new scar tissue is very sensitive to sunlight. Always cover the area with clothing or apply a broad-spectrum SPF 30+ sunscreen.",
+        "Thick, raised scars (hypertrophic scars or keloids)",
+        "Scars that stay red, dark or itchy for months",
+        "Options like medical scar treatments (silicone sheets, steroid injections or laser therapy) may help."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision scars may take several months to more than a year to fade.",
+        "Protect your scars with a strong sunblock (SPF 30 or higher) whenever you are out in the sun.",
+        "limit your physical activities so that you do not stretch your incisions."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, article by Dr. Cindy Wu",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it's important to protect your incision with sunscreen that is SPF 30 or greater.",
+        "You will also want to massage your scar with a silicone-based scar gel to help promote a thin, fine scar."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For example, discuss whether surgeries resulted in a more than expected amount of scar tissue."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24030657/",
+      "publisher": "Cochrane Database of Systematic Reviews (O'Brien and Jones)",
+      "title": "Silicone gel sheeting for preventing and treating hypertrophic and keloid scars",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "We included 20 trials involving 873 people",
+        "There is weak evidence of a benefit of silicone gel sheeting as a prevention for abnormal scarring in high-risk individuals but the poor quality of research means a great deal of uncertainty prevails."
+      ]
+    },
+    {
+      "url": "https://plasticsurgery.org/documents/health-policy/resources/2024-managing-risks-of-smoking.pdf",
+      "publisher": "ASPS",
+      "title": "Practice Reference: Managing the Risks of Smoking in Plastic Surgery Patients",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "should occur 4–8 weeks before surgery"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine",
+      "title": "Breast Augmentation: What to expect and how to prepare (patient handout)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Bad-smelling drainage"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 862,
+    "clicks": 4,
+    "position": 19.14,
+    "top_queries": [
+      {
+        "query": "breast augmentation scars",
+        "impressions": 33,
+        "clicks": 0,
+        "position": 80.2
+      },
+      {
+        "query": "healed one year breast lift scars",
+        "impressions": 9,
+        "clicks": 0,
+        "position": 8.2
+      },
+      {
+        "query": "breast implant scars",
+        "impressions": 8,
+        "clicks": 0,
+        "position": 70.4
+      },
+      {
+        "query": "augmentation scars",
+        "impressions": 7,
+        "clicks": 0,
+        "position": 73.9
+      },
+      {
+        "query": "natural breast augmentation miami",
+        "impressions": 7,
+        "clicks": 0,
+        "position": 11.4
+      },
+      {
+        "query": "recovery from transumbilical breast augmentation miami",
+        "impressions": 6,
+        "clicks": 0,
+        "position": 28.3
+      },
+      {
+        "query": "breast augmentation scar",
+        "impressions": 5,
+        "clicks": 0,
+        "position": 71.2
+      },
+      {
+        "query": "boob job scars healed",
+        "impressions": 4,
+        "clicks": 0,
+        "position": 42.8
+      },
+      {
+        "query": "breast augmentation scar removal",
+        "impressions": 4,
+        "clicks": 0,
+        "position": 52.5
+      },
+      {
+        "query": "how long for breast implant scars to disappear",
+        "impressions": 4,
+        "clicks": 0,
+        "position": 10.8
+      }
+    ]
+  },
+  "notes": "Rewrite of the live row, read with the admin MCP get_post on 2026-11-03 (live contentUpdatedAt 2026-01-20, same as the clone by date). Keyword Planner volumes from the 3 Nov plan: breast augmentation scars 4,400, boob job scar 2,400, inframammary 720. The registry primaryKeyword is kept as the gate requires; the code PR should rename it and drop \"fast fade\" from ownsQueries. Removed: \"fast fade\", \"invisible\", \"nearly invisible\", double board-certified, AAAASF, 20 years, phone number, address, financing partners, Mayo Clinic citation, week-by-week scar phases with no source, silicone 12+ hours, massage at 2-3 weeks for 5 minutes, SPF indoors, nutrition list with 8-10 glasses, fever over 101, Dr. Karlinsky favors inframammary (an owner question). Live FAQs kept in reworked form: how long, minimize (body and silicone FAQ), sun, incision types. No scar photos, clothed diagrams only. Fact-check fixes applied 2026-11-03 (factcheck/batch3.md). Links to N2 and N4 were added on the coordinator's instruction, so this post must go live with or after those posts, or those two links wait."
+}

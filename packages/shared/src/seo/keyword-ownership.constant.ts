@@ -17,8 +17,8 @@ import type { OwnedPage } from './keyword-ownership.type'
 /**
  * Procedure pages — procedure intent. Their cost sections stay (they earn
  * the cost FAQ snippet), but price-intent clusters belong to cost pages.
- * The exceptions are BBL and liposuction, whose procedure pages own their
- * price clusters.
+ * The exceptions are BBL, liposuction, tummy tuck and mommy makeover, whose
+ * procedure pages own their price clusters.
  */
 const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
     {
@@ -152,23 +152,24 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'breast implants miami',
             'natural looking boob job',
             'natural breast augmentation',
-            'silicone implants',
-            'saline implants',
-            'gummy bear implants',
-        ],
-        mustNotTarget: [
-            {
-                query: 'breast augmentation cost miami',
-                ownedBy: '/breast-augmentation-cost-miami',
-            },
-            {
-                query: 'boob job cost',
-                ownedBy: '/breast-augmentation-cost-miami',
-            },
-            {
-                query: 'breast augmentation cost',
-                ownedBy: '/breast-augmentation-cost-miami',
-            },
+            'breast augmentation safety miami',
+            'breast augmentation safety miami risks prevention',
+            'breast augmentation vs reduction miami',
+            'breast augmentation vs breast reduction miami',
+            // Price intent (D5 of the wave-two brief). Like BBL, liposuction
+            // and the tummy tuck, breast augmentation has no cost page: the
+            // planned /breast-augmentation-cost-miami is retired to this
+            // page, which carries the saline and silicone prices from the
+            // practice's 2026-09-15 price sheet. 90 days to 2026-09-27: the
+            // cost cluster was 1,098 impressions site-wide, 51% on
+            // /blog/affordable-plastic-surgery-miami and 17% here.
+            'breast augmentation cost miami',
+            'boob job cost',
+            'how much is a boob job',
+            'breast augmentation cost',
+            'breast implant prices',
+            'silicone implants cost',
+            'how much is a boob job in miami',
         ],
     },
     {
@@ -181,12 +182,38 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'mastopexy',
             'breast lift surgery',
             'breast rejuvenation',
+            'mastopexy miami',
+            // A lift with implants (augmentation-mastopexy) is this page's;
+            // the breast augmentation page links here for it (#320).
+            'breast lift with implants miami',
+            'breast lift and augmentation miami',
+            // Price intent in Miami (D5 of the #320 brief). National cost
+            // searches ("breast lift cost", 18,100 a month, against 140 for
+            // "breast lift miami cost") belong to /blog/breast-lift-cost,
+            // which links back to #pricing: this is a Miami page ranking
+            // about 55, and it can't serve them. In the 180 days to
+            // 2026-09-30 Google sent these searches to
+            // /blog/affordable-plastic-surgery-miami (about 340 impressions
+            // at positions 15-28) and almost none here; this page now
+            // carries the four prices from the practice's 2026-09-15 sheet.
+            'breast lift cost miami',
+            'breast lift miami cost',
+            'how much is a breast lift in miami',
+            'breast lift price miami',
+            'breast lift with implants cost miami',
         ],
-        mustNotTarget: [
-            {
-                query: 'breast lift cost',
-                ownedBy: '/plastic-surgery-cost-miami',
-            },
+        // Exact matches only: containment would otherwise claim the national
+        // and non-surgical questions that the blog owns ("breast lift cost"
+        // sits inside "breast lift cost miami").
+        gateExactOnly: [
+            'breast lift surgery',
+            'breast lift cost miami',
+            'breast lift miami cost',
+            'how much is a breast lift in miami',
+            'breast lift price miami',
+            'breast lift with implants cost miami',
+            'breast lift with implants miami',
+            'breast lift and augmentation miami',
         ],
     },
     {
@@ -256,16 +283,42 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             // /blog/liposuction-vs-breast-augmentation-miami folded here in
             // the 2026-09-22 liposuction blog review: combination intent.
             'liposuction and breast augmentation',
+            // Head and local terms.
+            'miami mommy makeover',
+            'mommy makeover in miami',
+            'mommy makeover south florida',
+            'mommy makeover south miami',
+            'mommy makeover coral gables',
+            // Price intent, as on the BBL, liposuction and tummy tuck pages;
+            // the planned cost page is retired (2026-10-05 mommy makeover
+            // blog review). /blog/tummy-tuck-mommy-makeover-miami held these
+            // searches and is now a pure comparison.
+            'mommy makeover cost miami',
+            'mommy makeover cost',
+            'cost of mommy makeover miami',
+            'how much is a mommy makeover',
+            'how much is a mommy makeover in miami',
+            'mommy makeover price',
+            'mommy makeover miami price',
+            'mini mommy makeover cost',
+            // Spanish speakers in the US: a short real answer on the page.
+            'mommy makeover en miami',
+            'precio mommy makeover miami',
+            'cuanto cuesta un mommy makeover',
+            // Surgeon, safety and near me. Owning a query here keeps ideation
+            // from writing a post on it. It is not copy: "best" and "safest"
+            // stay off the page.
+            'best mommy makeover surgeon miami',
+            'safe mommy makeover miami',
+            'mommy makeover near me',
+            // Candidacy and consultation questions, absorbed from the two
+            // posts folded here. Booking intent stays with
+            // /mommy-makeover-consultation.
+            'mommy makeover candidate',
+            'am i a candidate for mommy makeover',
+            'mommy makeover questions to ask',
         ],
         mustNotTarget: [
-            {
-                query: 'mommy makeover cost',
-                ownedBy: '/mommy-makeover-cost-miami',
-            },
-            {
-                query: 'how much is a mommy makeover',
-                ownedBy: '/mommy-makeover-cost-miami',
-            },
             {
                 query: 'mommy makeover consultation',
                 ownedBy: '/mommy-makeover-consultation',
@@ -337,45 +390,21 @@ const COST_PAGE_ENTRIES: OwnedPage[] = [
         url: '/breast-augmentation-cost-miami',
         kind: 'cost',
         intent: 'price',
-        status: 'planned',
+        status: 'retired',
         primaryKeyword: 'breast augmentation cost miami',
-        ownsQueries: [
-            'boob job cost',
-            'how much is a boob job',
-            'breast augmentation cost',
-            'breast implant prices',
-            'silicone implants cost',
-        ],
-        mustNotTarget: [
-            {
-                query: 'breast augmentation miami',
-                ownedBy: '/procedures/breast-augmentation-miami',
-            },
-        ],
+        ownsQueries: [],
+        redirectsTo: '/procedures/breast-augmentation-miami',
+        notes: "Never built: no route and no post (it returned 404). Retired in the breast augmentation page rebuild (#319, D5): the procedure page owns the cost cluster, as the BBL, liposuction and tummy tuck pages do. The URL redirects to the page's #pricing.",
     },
     {
         url: '/mommy-makeover-cost-miami',
         kind: 'cost',
         intent: 'price',
-        status: 'planned',
+        status: 'retired',
         primaryKeyword: 'mommy makeover cost',
-        ownsQueries: [
-            'how much is a mommy makeover',
-            'mommy makeover price',
-            'mini mommy makeover cost',
-            'mommy makeover cost miami',
-            'affordable mommy makeover',
-        ],
-        mustNotTarget: [
-            {
-                query: 'mommy makeover miami',
-                ownedBy: '/procedures/mommy-makeover-miami',
-            },
-            {
-                query: 'mommy makeover consultation',
-                ownedBy: '/mommy-makeover-consultation',
-            },
-        ],
+        ownsQueries: [],
+        redirectsTo: '/procedures/mommy-makeover-miami',
+        notes: 'Never built (404). Retired in the 2026-10-05 mommy makeover blog review: the procedure page owns the cost cluster. "affordable mommy makeover" stays off every owner, because new copy never says "affordable".',
     },
 ]
 
@@ -413,7 +442,10 @@ const LANDING_ENTRIES: OwnedPage[] = [
         intent: 'consultation',
         status: 'live',
         primaryKeyword: 'mommy makeover consultation',
-        ownsQueries: ['mommy makeover consultation miami'],
+        ownsQueries: [
+            'mommy makeover consultation miami',
+            'free mommy makeover consultation',
+        ],
     },
     {
         url: '/fly-in-consultation',

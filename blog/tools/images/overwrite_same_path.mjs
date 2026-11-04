@@ -6,8 +6,11 @@
 // For an image Google already ranks at that address, where a new URL would
 // lose its image-search position (the canary in the 2026-11-03 tummy tuck
 // plan). Everything else goes through export_upload.mjs, whose new URL per
-// render avoids a CDN-cached old copy; here the old copy can keep serving for a
-// while, so check the live URL afterwards before calling it done.
+// render avoids a CDN-cached old copy; here the old copy can keep serving, and
+// the site's image optimizer keeps its own copies, keyed by URL, for weeks. So
+// after --apply, from a checkout whose apps/web is linked to the project, run
+//   vercel cache invalidate --srcimg <live blob url> --yes --cwd apps/web
+// then fetch /_next/image for that URL to check before calling it done.
 //
 // --dry-run is the default: it checks the arguments, finds the token and reads
 // the live file's headers, and writes nothing.
@@ -125,6 +128,9 @@ console.log(
 )
 if (!apply) {
     console.log('dry run: nothing written or uploaded. Pass --apply to act.')
+    console.log(
+        `after --apply: vercel cache invalidate --srcimg ${liveUrl} --yes --cwd apps/web, then fetch /_next/image for that URL to check.`
+    )
     process.exit(0)
 }
 
@@ -154,5 +160,5 @@ if (result.url !== liveUrl)
         `the upload landed at ${result.url}, not ${liveUrl}. Restore from ${backupFile}.`
     )
 console.log(
-    `overwritten: ${result.url}\nThe CDN can serve the old copy for a while: check the live URL before calling it done.`
+    `overwritten: ${result.url}\nThe site's image optimizer keeps its own copies for weeks. From a checkout whose apps/web is linked to the project, run:\n  vercel cache invalidate --srcimg ${result.url} --yes --cwd apps/web\nthen fetch /_next/image for that URL to check before calling it done.`
 )

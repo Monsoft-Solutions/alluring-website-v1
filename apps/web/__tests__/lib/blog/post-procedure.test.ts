@@ -16,6 +16,11 @@ const FIXTURES = [
         'planning',
     ],
     [
+        'Capsular Contracture: Symptoms, Grades and Treatment',
+        'breast-augmentation-miami',
+        'planning',
+    ],
+    [
         'When Can I Sleep Without a Bra After Breast Reduction?',
         'breast-reduction-miami',
         'recovering',

@@ -1,0 +1,287 @@
+{
+  "slug": "breast-lift-candidate-checklist",
+  "mode": "rewrite",
+  "base_md5": "6a634a22215ec1ee7206e1ad955ef1fe",
+  "base_from": "localhost:5432/alluring_bl_rewrite 2026-11-04T03:01:58Z",
+  "reader": "deciding",
+  "cluster": "breast-lift",
+  "title": "Do I Need a Breast Lift? The Pencil Test and Ptosis Grades",
+  "meta_description": "How to tell if you need a breast lift: where your nipple sits against the crease, how the pencil test works and its limits, and what ptosis grades mean.",
+  "excerpt": "Whether you need a breast lift comes down to where your nipple sits against the crease and how you feel about it. How to check at home, what the pencil test can't tell you, what the ptosis grades mean, and how to choose between a lift, implants or a reduction.",
+  "quick_answer": "Do I need a breast lift?\n\nIt depends on where your nipple sits against the crease under your breast, and how you feel about it. ASPS lists nipples below the crease or pointing down among the signs. The pencil test is only a rough home check, which one surgeon on the ASPS website calls not entirely precise. Your surgeon decides at consultation.",
+  "primary_keyword": "do i need a breast lift",
+  "secondary_keywords": [
+    "breast ptosis",
+    "breast ptosis grades",
+    "pencil test breasts",
+    "am i a candidate for a breast lift",
+    "sagging breasts",
+    "how to tell if you need a breast lift",
+    "ptosis grades",
+    "ptosis breast",
+    "pseudoptosis",
+    "regnault classification",
+    "pencil test for breast lift",
+    "signs you need a breast lift"
+  ],
+  "owns_queries": [
+    "do i need a breast lift",
+    "breast ptosis",
+    "breast ptosis grades",
+    "pencil test breasts",
+    "am i a candidate for a breast lift",
+    "how to tell if you need a breast lift",
+    "sagging breasts",
+    "ptosis grades",
+    "pseudoptosis"
+  ],
+  "categories": [
+    "Breast Lift"
+  ],
+  "tags": [
+    "Breast Lift",
+    "Breast Augmentation",
+    "Breast Reduction"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her early 40s with freckles and auburn hair, in an oatmeal sweater, stands by an arched window and looks out, relaxed, in soft morning light.",
+      "prompt": "SCENE: Morning in a calm Miami home, a tall arched window with a deep limestone sill, white plaster walls, soft palm shadows on the wall. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 40s with fair freckled skin and shoulder-length auburn hair, in a loose high-neck oatmeal sweater, standing by the arched window and looking out, relaxed, with a private half smile. KEY DETAILS: Framed from the waist up with generous space above her head, head in the upper part of the frame, subject centered and in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, robes, cleavage or bare midriff; no bandages, garments, drains or incisions; not photographed from behind; never a surgeon or staff, never a result or before-and-after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "grades",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "A four-panel diagram of breast ptosis grades, drawn as a thin contour line, a dashed gold crease line and a gold dot. Grade 1, mild: level with the crease. Grade 2, moderate: below the crease, not the lowest point. Grade 3, severe: below the crease, at the lowest point. Pseudoptosis: at or above the crease, tissue below.",
+      "prompt": "SCENE: A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, like a page in a modern textbook. SUBJECT: Four equal panels in a row. Each panel shows one very simple side-profile curve drawn as a single thin grey line, like an abstract graph of a contour rather than a body, with a horizontal dashed gold line for the crease, and one small solid gold dot marking the nipple position. Panel 1: the dot sits level with the dashed line. Panel 2: the dot sits a little below the dashed line, with the curve hanging lower and continuing below the dot. Panel 3: the dot sits at the very lowest point of the curve, well below the dashed line. Panel 4: the dot sits above the dashed line while the curve hangs below it. KEY DETAILS: Refined serif title, clean sans-serif labels. Thin even line weight, generous margins. CONSTRAINTS: No drawn breasts, nipples or bare torsos; no skin, no shading, no realistic anatomy, no faces, no logos, no phone numbers, no watermarks.",
+      "text_in_image": "Breast Ptosis Grades: Where the Nipple Sits\nGrade 1, mild\nLevel with the crease\nGrade 2, moderate\nBelow the crease, not the lowest point\nGrade 3, severe\nBelow the crease, at the lowest point\nPseudoptosis\nAt or above the crease, tissue below\nRegnault classification, from StatPearls. A rough guide, not a diagnosis. Your surgeon measures this at your exam."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Who is a good candidate for breast lift surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You should do it for yourself, not to fulfill someone else's desires or to try to fit any sort of ideal image.",
+        "You are physically healthy and maintain a stable weight",
+        "You do not smoke",
+        "You are bothered by the feeling that your breasts sag or have lost shape and volume",
+        "Your breasts have a flatter, elongated shape or are pendulous",
+        "When unsupported, your nipples fall below the breast crease",
+        "Your nipples and areolas point downward",
+        "You have stretched skin and enlarged areolas",
+        "One breast is lower than the other"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast lift surgery does not significantly change the size of your breasts or round out the upper part of your breast.",
+        "If you want your breasts to look fuller, consider breast lift and breast augmentation.",
+        "If you want smaller breasts, consider combining breast lift and breast reduction."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/results",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift results",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast surgery should be entertained after child bearing is completed.",
+        "Changes that occur in the breasts during pregnancy can minimize or reverse the improvement a breast lift provides.",
+        "Likewise, significant weight loss after breast surgery can negatively impact breast appearance.",
+        "The results of your breast lift surgery will be long-lasting.",
+        "Over time, your breasts can continue to change due to aging and gravity."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/preparation",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "How should I prepare for breast lift surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Stop smoking"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "removal of skin and tissue from the breast, followed by reshaping and elevating"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/to-breast-lift-or-not-to-breast-lift",
+      "publisher": "ASPS website, a post by Umbareen Mahmood, MD (the author's views)",
+      "title": "To breast lift or not to breast lift? (April 26, 2019)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Many women are familiar with the \"pencil test,\" as an informal test they use to try to decide if they need a breast lift.",
+        "if the pencil stays in place by itself rather than falling down,",
+        "the breasts may have drooped enough to need a breast lift.",
+        "While this can be a helpful trick, it's not entirely precise, and not exactly the same approach plastic surgeons use!",
+        "The degree of ptosis is classified according to the position of the nipple.",
+        "Any degree of nipple drooping below the fold may indicate that a breast lift is needed.",
+        "known as \"pseudoptosis,\" and these patients may still be candidates for a breast lift."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/breast-augmentation-vs-breast-lift-picking-the-right-procedure-for-you",
+      "publisher": "ASPS website, a post by Rod Rohrich, MD, FACS (the author's views)",
+      "title": "Breast augmentation vs breast lift: picking the right procedure for you (June 9, 2017)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A simple test to determine if you're a candidate for a breast lift is the pencil test.",
+        "Place a pencil as high as you can under the breast fold.",
+        "If the pencil holds, then you have signs of breast drooping.",
+        "If your nipple falls below the pencil, then you have significant ptosis,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-are-the-benefits-of-combining-breast-augmentation-and-a-breast-lift",
+      "publisher": "ASPS website, a post by Lawrence Iteld, MD (the author's views)",
+      "title": "What are the benefits of combining breast augmentation and a breast lift? (August 10, 2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "augmentation on its own isn't enough to address sagging breasts."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/better-breasts-after-pregnancy-and-breastfeeding",
+      "publisher": "ASPS website, a post by Shahram Salemy, MD, FACS (the author's views)",
+      "title": "Better breasts after pregnancy and breastfeeding (February 8, 2022)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For most women, it is best to wait up to six months after lactation has stopped",
+        "before getting any kind of cosmetic surgery done on the breasts."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast lift: detailed procedure information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "degree of breast sagging, skin quality, skin elasticity, and how much extra skin you have.",
+        "In general, the more incisions the surgeon makes, the greater the ability the surgeon has to modify the breast.",
+        "This technique produces the greatest lift, but also leaves the most scars.",
+        "This technique produces moderate scarring.",
+        "This technique produces the least amount of scarring.",
+        "If you have a severe degree of sagging or are getting a breast reduction with your breast lift,",
+        "If you have a moderate degree of sagging and do not want breast implants, your surgeon will likely recommend this approach.",
+        "If you have a mild degree of sagging or asymmetric areolas, your surgeon may recommend this approach.",
+        "If you have minor sagging or are getting a breast lift in conjunction with breast augmentation,",
+        "This technique is less common.",
+        "You will not get the same degree of lifting with this approach as you would with other incision techniques.",
+        "however, you will not have the same amount of lift as the other techniques,",
+        "and the results are not as long-lasting."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast lift surgery (mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you are happy with your breast size, but not the way your breasts look, you may benefit from a breast lift.",
+        "If you have large and heavy breasts, you can get a breast lift, but the results may not be as long-lasting"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast lift (mastopexy): surgery and recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "As we age, our breasts change. They may lose elasticity, causing your breasts to stretch, sag or droop. Causes include:",
+        "Aging.",
+        "Breastfeeding.",
+        "Gravity.",
+        "Pregnancy.",
+        "Significant weight loss."
+      ]
+    },
+    {
+      "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK567792/",
+      "publisher": "StatPearls, NCBI Bookshelf",
+      "title": "Breast Ptosis (Martinez AA, Chung S, updated November 12, 2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The nipple is at the level of the IMF.",
+        "The nipple is below the level of the IMF but is not the most dependent part of the breast.",
+        "The nipple is below the IMF and is the most dependent part of the breast.",
+        "Pseudoptosis designates a breast configuration in which the nipple is located above or at the level of the IMF",
+        "Pregnant or breastfeeding women should postpone breast ptosis surgery,",
+        "Vertical mastopexy is indicated for any degree of ptosis.",
+        "The suprasternal notch-to-nipple (SSN-N) distance identifies asymmetry between the 2 nipples",
+        "Ptosis can also occur when parenchymal volume decreases (eg, after significant weight loss)",
+        "most of the breast is well below the IMF, and the nipple-to-IMF distance is often greater than 6 cm."
+      ]
+    },
+    {
+      "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK610682/",
+      "publisher": "StatPearls, NCBI Bookshelf",
+      "title": "Mastopexy (Breast Lift) (Toomey AE, Cape JD, updated December 11, 2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If the patient plans to lose a significant amount of weight, the procedure should be delayed",
+        "until they are near their goal weight or at a stable weight",
+        "Active breast cancer",
+        "Active breast infection",
+        "Patients who are not medically stable for anesthesia"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20354434/",
+      "publisher": "Annals of Plastic Surgery",
+      "title": "Breast ptosis: causes and cure (Rinker B, Veneracion M, Walsh CP, 2010)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Upon logistic regression, age, history of significant (>50 lbs) weight loss, higher body mass index,",
+        "larger bra cup size, number of pregnancies, and smoking history were found to be significant risk factors",
+        "History of breast-feeding, weight gain during pregnancy, and lack of participation in regular upper body exercise",
+        "were not found to be significant risk factors for ptosis.",
+        "132 consecutive patients"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5055840/",
+      "publisher": "Journal of Evaluation in Clinical Practice",
+      "title": "Automated calculation of ptosis on lateral clinical photographs (Lee J and colleagues, 2015)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "usually hidden behind the breast mound",
+        "has low inter- and intra-observer agreement."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2884715/",
+      "publisher": "Seminars in Plastic Surgery",
+      "title": "Simultaneous breast augmentation with periareolar mastopexy (Davison SP, Spear SL, 2004)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The nipple is above the fold, but the breast hangs below the fold.",
+        "seems virtually the same as glandular ptosis.",
+        "is not significantly comprehensive because it focuses primarily on nipple position on the chest."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 144,
+    "clicks": 0,
+    "position": 15.8
+  },
+  "notes": "Rewrite for the 3 Nov 2026 breast lift brief. The quiz breast-lift-miami-quiz folds in here: its self-check is kept as eight questions from the ASPS list, without its score, BMI under 30, 6-month, centimeter or age claims. Removed from the live post: the 55% and 70% claims, BMI, \"2-3 hours\", \"4-6 weeks\", financing brand names, \"free PDF\", board-certified, phone, luxury. gsc is summed from page_trend over the window; query data is too thin to name. The pencil-test limits on why a pencil stays are plain reasoning, not a sourced finding. The ptosis card labels differ from data/sample-prompts.py on panels 2, 3 and 4 so that they match StatPearls and the post word for word. Fact-check round, 3 Nov: the Mahmood cell keeps her words but ends the quote before \"plastic surgeons use\", which the lint bans in copy."
+}

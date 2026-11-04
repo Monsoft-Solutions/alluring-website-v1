@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { createContentImage } from '@/components/blog/mdx-components'
 import { PostMarkdown } from '@/components/blog/post-markdown.component'
 import {
     composePostSource,
@@ -7,6 +8,7 @@ import {
     POST_SPLIT_SLOT,
     rehypeFaqSections,
 } from '@/lib/blog/post-mdx.util'
+import type { InlineImage } from '@/lib/queries/blog/post-images.query'
 
 type PostBodyProps = {
     /** Content before the split point, from `findCTAInsertionPoint`. */
@@ -20,6 +22,8 @@ type PostBodyProps = {
      * block for this slug (`getPostIntroBlock`), or nothing.
      */
     intro?: ReactNode
+    /** The post's inline images; those with a stored size reserve their space. */
+    inlineImages?: InlineImage[]
 }
 
 /**
@@ -31,8 +35,21 @@ type PostBodyProps = {
  * into question cards by `rehypeFaqSections`. A post with an `intro` block
  * gets it before its first H2.
  */
-export function PostBody({ beforeCTA, afterCTA, slot, intro }: PostBodyProps) {
+export function PostBody({
+    beforeCTA,
+    afterCTA,
+    slot,
+    intro,
+    inlineImages,
+}: PostBodyProps) {
+    const imageSizes = new Map(
+        (inlineImages ?? []).flatMap(({ url, width, height }) =>
+            width && height ? [[url, { width, height }] as const] : []
+        )
+    )
+
     const components = {
+        img: createContentImage(imageSizes),
         [POST_SPLIT_SLOT]: function PostSplitSlot() {
             if (!slot) return null
             return <div className='bp-slot not-prose'>{slot}</div>

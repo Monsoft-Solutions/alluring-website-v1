@@ -1,0 +1,299 @@
+{
+  "slug": "when-can-i-sleep-without-a-bra-after-breast-augmentation",
+  "mode": "rewrite",
+  "cluster": "breast-augmentation",
+  "cta": "default",
+  "base_md5": "ed818a9859b5887dd6ffcfbd9da436df",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:54Z",
+  "reader": "recovering",
+  "title": "When Can I Sleep Without a Bra After Breast Augmentation?",
+  "meta_description": "Not in the first 3 to 4 weeks: university handouts keep a support bra on 24 hours a day. No source dates going braless, so your surgeon clears you.",
+  "excerpt": "A support bra stays on day and night for the first 3 to 4 weeks, according to university handouts. No medical source gives a date for going braless at night, so your surgeon clears you. Here is how long each bra stage lasts, what to wear to bed, and what can delay it.",
+  "quick_answer": "When can I sleep without a bra after breast augmentation?\n\nOnce your surgeon clears you, and not in the first 3 to 4 weeks: UW Medicine and University of Utah Health keep a surgical bra on 24 hours a day for that long. No medical source we read gives a date for going braless at night. Underwire waits until your incisions are fully healed.",
+  "primary_keyword": "when can i sleep without a bra after breast augmentation",
+  "secondary_keywords": [
+    "when can i go braless after breast augmentation",
+    "how long after breast augmentation can i sleep without a bra",
+    "sleeping without a bra after breast augmentation",
+    "breast support without a bra",
+    "when can you sleep without a bra after breast augmentation",
+    "can i sleep without a bra after breast augmentation",
+    "can i sleep without a bra 6 weeks after breast augmentation",
+    "when can i stop wearing a bra to bed after breast augmentation",
+    "when can i stop wearing a bra after breast augmentation",
+    "when can you go braless after breast augmentation",
+    "when can i sleep without a bra after breast lift",
+    "does sleeping without bra increase breast size",
+    "how long to wear surgical bra after breast augmentation",
+    "best bra after breast augmentation"
+  ],
+  "owns_queries": [
+    "when can i sleep without a bra after breast augmentation",
+    "when can i go braless after breast augmentation",
+    "how long after breast augmentation can i sleep without a bra",
+    "sleeping without a bra after breast augmentation",
+    "breast support without a bra",
+    "when can you sleep without a bra after breast augmentation",
+    "can i sleep without a bra after breast augmentation",
+    "can i sleep without a bra 6 weeks after breast augmentation",
+    "when can i stop wearing a bra to bed after breast augmentation",
+    "when can i stop wearing a bra after breast augmentation",
+    "when can you go braless after breast augmentation",
+    "how long to wear surgical bra after breast augmentation"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Breast Reduction",
+    "Compression Garments",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in long-sleeved sage cotton pajamas sits on the edge of a neatly made bed in morning light, with a plain folded bra on a wooden chair beside her.",
+      "prompt": "SCENE: Early morning in a bright Miami bedroom, white plaster walls, a tall window with sheer linen curtains, soft palm shadows on a pale limestone floor, a simple wooden chair beside the bed with a plain soft beige wire-free bra folded neatly on its seat. Palette of stone, sand, warm white and brushed gold. SUBJECT: A South Asian woman in her early 30s with a long dark braid, wearing long-sleeved, high-neck sage-green cotton pajamas, sitting on the edge of a neatly made linen bed, looking toward the window with a calm, rested expression. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, drains or incisions; not photographed from behind; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "bra-stages",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional reference chart on a warm porcelain-white background with a thin brushed-gold rule, palette of stone grey and brushed gold. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Four stacked rows separated by hairlines, each with a stage name in bold and one line of explanation below it, and a small plain line icon of a folded soft garment or a moon at the left. No people, no bodies, no faces, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines and the small icons described.",
+      "text_in_image": "Bra Stages After Breast Augmentation\nSurgical or support bra: 24 hours a day for 3 to 4 weeks. Off only to shower.\nSoft, supportive sports bra: After 3 to 4 weeks.\nNo bra at night: No source gives a date. Your surgeon clears you.\nUnderwire bra: Not until incisions are fully healed.\nSources: UW Medicine; University of Utah Health. Follow your surgeon's plan.",
+      "alt": "Chart titled Bra Stages After Breast Augmentation. Surgical or support bra: 24 hours a day for 3 to 4 weeks, off only to shower. Soft, supportive sports bra: after 3 to 4 weeks. No bra at night: no source gives a date, your surgeon clears you. Underwire bra: not until incisions are fully healed."
+    },
+    {
+      "key": "sleep-setup",
+      "type": "inline",
+      "aspect": "1:1",
+      "prompt": "Lifestyle bedroom scene: patient resting on her back with a wedge pillow, extra pillows placed for support, neutral stone-toned bedding; subtle “post-op comfort setup” vibe (no medical gore).",
+      "text_in_image": "Post-Op Comfort Setup",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/bdc849c5-2ad6-4e04-950d-b53aa6d11b97/1768929026264-zml6h2-0.jpg",
+      "alt": "A woman lying on her back in bed in a soft gray T-shirt, propped on a wedge pillow with pillows beside her arms and under her knees. A caption reads Post-Op Comfort Setup."
+    },
+    {
+      "key": "braless-checklist",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional reference chart on a warm porcelain-white background with a thin brushed-gold rule, palette of stone grey and brushed gold. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. A checklist card: four rows, each with a small tick box in brushed gold at the left, separated by hairlines, and the last line set apart in a soft stone band. A small plain line icon of a crescent moon above the title. No people, no bodies, no faces, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines and the small icons described.",
+      "text_in_image": "Ready to Sleep Without a Bra?\nIncisions fully healed\nSwelling mostly down\nComfortable lying down\nCleared by your surgeon at a follow-up visit\nAlways confirm with your surgeon.",
+      "alt": "Checklist card titled Ready to Sleep Without a Bra? It lists incisions fully healed, swelling mostly down, comfortable lying down, and cleared by your surgeon at a follow-up visit, with a note to always confirm with your surgeon."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center",
+      "title": "Breast Augmentation: What to expect and how to prepare",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your doctor will decide if you need a surgical bra. If you are given one, keep it on 24 hours a day for 3 to 4 weeks. Take it off only when you shower.",
+        "If your doctor decides you do not need a surgical bra, you can still wear one. Or, wear what is comfortable.",
+        "Do not wear an underwire bra until your incisions are fully healed.",
+        "Sleep on your back for the first 3 to 4 weeks, whether or not you are wearing a surgical bra. After that, you may sleep on your side or stomach.",
+        "A fever higher than 100.5°F (38°C)",
+        "Bad-smelling drainage"
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will wear a surgical bra for three to four weeks after your surgery. You should only remove the bra to shower or to wash it.",
+        "In the beginning, it’s also best to wear shirts that are easy to put on and take off, such as loose button-down shirts or zip-up hoodies.",
+        "After three to four weeks of wearing the surgical bra, you can transition into a soft, supportive sports bra.",
+        "For the first week after surgery, you should rest and sleep on your back, with extra pillows to prop you up. This can help with swelling.",
+        "Do not sleep on your stomach until your surgeon says it’s okay.",
+        "a limited range of motion in your shoulders, which may require someone to help you with certain tasks like putting on clothes,",
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months.",
+        "You may experience some asymmetry since each breast may heal at a different rate."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Once you no longer need dressings, wear a soft, wireless, supportive bra night and day for 2 to 4 weeks.",
+        "Smoking slows healing and increases your risk for complications and infection.",
+        "Also contact your surgeon if you notice sudden swelling of your breast."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Wear your support garment (a bra or elastic band, called a bandeau) around the clock as instructed by your plastic surgeon.",
+        "an elastic bandage or support bra will minimize swelling and support the breasts as they heal."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair.",
+        "Most residual swelling will resolve within a month.",
+        "Your breasts may feel tight and sensitive to the touch"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/what-to-expect-after-your-breast-augmentation-surgery",
+      "publisher": "ASPS website, article by Gabby Shacknai",
+      "title": "What to expect after your breast augmentation surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "I put my patients in a surgical bra that they wear for two weeks, and then after that, I tell them to wear any sports bra or bra without an underwire",
+        "I don't let them wear an underwire bra for about two to three months until the implants have settled."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Whether it's a postoperative bra or a supportive sports bra, these garments help keep everything secure, comfortable and in place."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Eric R. Mariotti, MD",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Before you spring for a new wardrobe, though, give your breasts several months to settle into place and for their size and shape to stop adjusting.",
+        "Your breast implants may appear to be bigger or fuller once they've dropped to a lower, more natural-looking position on your chest"
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Some surgeons may not want you to wear a bra at all for a period of time following the surgery."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Lift (Mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Usually, women can wear a regular bra about eight weeks after surgery."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If your incision sites or breasts are red, swollen, hot, painful, or are weeping (draining white or yellow fluid) or if you have a fever, chills, aches, nausea, or vomiting, you may have an infection."
+      ]
+    }
+  ],
+  "notes": "Full rewrite, 3 Nov 2026 plan, title kept. Written from the live row read through the admin MCP on 2026-11-03; base_md5 is the local clone, whose content_updated_at and FAQ count match live (revisionCount 0), so the production rebase is a morning step for the main session. Per the brief and the facts file (no-bra-at-night-no-date), no number of weeks for going braless: the 6-week query is answered in the FAQ as \"no source sets it\". Removed: \"six to eight weeks\" as standard, \"two-week\" compression, \"enhancing blood circulation\", the stomach-sleeping / capsular contracture claim, CTAs, \"transformed thousands of lives\". Images: the old hero zml6h2 has text on the photo (\"Post-Op Comfort Setup\") and is 1:1, so it cannot stay featured; a new 3:2 hero replaces it. Because it is the likely Images earner (\"how to sleep after breast augmentation\", 1 click/239 impressions in 90 days, plus \"how to sleep after breast surgery\" 3/90), it stays at the same URL inline in the how-to-sleep section with a new alt; candidate for a same-address overwrite to remove the caption. scfuog (bare anatomical cross-section, practice name, unsourced claims in pixels) and o5a1vv (phone number, surgeon name, practice name) break the rules and are replaced by new renders at the same positions. mn5kbe (weeks 6-8) and vbeh18 (cleavage, phone) were never in the content and are dropped. Fact check 3 Nov applied: the surgical bra answer now gives two handouts and the 2 to 4 range, the front-closure and camisole tips are labeled as practical advice, the larger-implants bullet moved to \"ask your surgeon\", and the Horton long-term quote and the Huang-Begovic six-week cite came out as out of context. The link to /blog/capsular-contracture needs that post live in the same run. Twin link to the breast reduction post is in the opening section; the matching sentence on the reduction post is for the main session. Live FAQs kept in spirit: bra type, delays, comfort, long term and normal sleeping habits moved to sections or the FAQ. Open refresh candidate on the live row was pending on 2026-11-03.",
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 10937,
+    "clicks": 22,
+    "position": 7.11,
+    "image": {
+      "impressions": 19459,
+      "clicks": 28,
+      "position": 29.88
+    },
+    "top_queries": [
+      {
+        "query": "when can i sleep without a bra after breast augmentation",
+        "impressions": 544,
+        "clicks": 1,
+        "position": 10.72
+      },
+      {
+        "query": "breast support without a bra",
+        "impressions": 219,
+        "clicks": 0,
+        "position": 7.29
+      },
+      {
+        "query": "when can i sleep without a bra after breast augmentation reddit",
+        "impressions": 79,
+        "clicks": 0,
+        "position": 6.84
+      },
+      {
+        "query": "when can i sleep without a bra after breast lift",
+        "impressions": 77,
+        "clicks": 0,
+        "position": 7.62
+      },
+      {
+        "query": "when can i go braless after breast augmentation",
+        "impressions": 72,
+        "clicks": 1,
+        "position": 10.58
+      },
+      {
+        "query": "how long after breast augmentation can i sleep without a bra",
+        "impressions": 63,
+        "clicks": 0,
+        "position": 8.06
+      },
+      {
+        "query": "sleeping without a bra after breast augmentation",
+        "impressions": 61,
+        "clicks": 0,
+        "position": 7.36
+      },
+      {
+        "query": "sleeping without bra can increase breast size",
+        "impressions": 55,
+        "clicks": 0,
+        "position": 7.56
+      },
+      {
+        "query": "when can you sleep without a bra after breast augmentation",
+        "impressions": 53,
+        "clicks": 0,
+        "position": 8.83
+      },
+      {
+        "query": "when can you go braless after breast augmentation",
+        "impressions": 49,
+        "clicks": 0,
+        "position": 10.59
+      }
+    ]
+  }
+}

@@ -1,0 +1,320 @@
+{
+  "slug": "when-do-breast-augmentation-stitches-dissolve",
+  "mode": "rewrite",
+  "base_md5": "10d6ac7fba8e47d50da78b4aa414a961",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T16:52:03Z",
+  "reader": "recovering",
+  "cluster": "breast-augmentation",
+  "title": "When Do Breast Augmentation Stitches Dissolve?",
+  "meta_description": "When Do Breast Augmentation Stitches Dissolve? How long stitches take to dissolve, what healing looks like, and how to care for your incisions.",
+  "excerpt": "Visible stitch ends often fade within 1 to 2 weeks, but buried sutures take about 2 to 8 months to absorb, depending on the material. Here is the timeline by suture type, what a poking stitch means, and when to call your surgeon.",
+  "quick_answer": "When do breast augmentation stitches dissolve?\n\nVisible stitch ends often fade within 1 to 2 weeks, in line with Cleveland Clinic, but buried material takes longer: about 56 to 70 days for Coated Vicryl Plus, 91 to 119 days for Monocryl and 182 to 238 days for PDS, by the makers' figures. Stitches that need removing come out in about a week to two weeks.",
+  "primary_keyword": "when do breast augmentation stitches dissolve",
+  "secondary_keywords": [
+    "how long do dissolvable stitches take to dissolve after breast surgery",
+    "symptoms of torn internal stitches breast augmentation",
+    "breast augmentation stitches",
+    "breast augmentation stitches healing",
+    "dissolvable stitches timeline",
+    "dissolvable stitches healing stages",
+    "stitches timeline",
+    "breast implant stitches",
+    "breast surgery stitches",
+    "how long do stitches stay in after breast augmentation",
+    "stitches after breast surgery",
+    "breast stitches"
+  ],
+  "owns_queries": [
+    "how long do dissolvable stitches take to dissolve after breast surgery",
+    "dissolvable stitches timeline",
+    "breast augmentation stitches",
+    "symptoms of torn internal stitches breast augmentation",
+    "dissolvable stitches healing stages"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Recovery",
+    "Recovery Timeline"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "Woman of about fifty with deep brown skin and short natural hair flecked with gray, in a high-neck stone-colored cardigan, seated on a linen sofa reading a printed care sheet.",
+      "prompt": "SCENE: Soft afternoon light in a calm living room, warm white walls, a linen sofa, a tall window with sheer curtains and faint palm shadows. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman of about 50 with deep brown skin and short natural hair flecked with gray, in a high-neck stone-colored cardigan, seated on the sofa and reading a single sheet of paper held in both hands, its print too small and blurred to read. Three-quarter view, attentive and relaxed. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions on the body; not photographed from behind; no text, letters, numbers, logos or watermarks; no surgeon or staff; not glamour, not a fashion ad, no penthouse or luxury setting.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: A horizontal timeline with four gold markers, a thin stylized thread that fades from solid to dotted as it moves right, and a short caption under each marker. No body figure and no skin. Aimed at what people search as dissolvable stitches timeline. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "Dissolvable Stitches Timeline After Breast Augmentation\n1 to 2 weeks: Visible stitch ends often fade\nAbout 2 months: Coated Vicryl Plus fully absorbed (56 to 70 days)\n3 to 4 months: Monocryl fully absorbed (91 to 119 days)\n6 to 8 months: PDS essentially complete (182 to 238 days)\nSources: Cleveland Clinic, suture makers' data. Your surgeon's suture may differ.",
+      "alt": "Vertical timeline card titled Dissolvable Stitches Timeline After Breast Augmentation. 1 to 2 weeks: visible stitch ends often fade. About 2 months: Coated Vicryl Plus fully absorbed, 56 to 70 days. 3 to 4 months: Monocryl fully absorbed, 91 to 119 days. 6 to 8 months: PDS essentially complete, 182 to 238 days. A footer credits Cleveland Clinic and the suture makers' data and says your surgeon's suture may differ.",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    },
+    {
+      "key": "normal-vs-call",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: Title, then two lists stacked one above the other, never side by side. Each list opens with its heading in bold dark ink, both headings the same weight, and has one row per line under it, with thin brushed-gold hairlines between rows. The source line is last. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "Healing Stitches: Normal vs Call Your Surgeon\nNormal\nIncision lines flatten and fade\nLess redness each week\nA little itching or tingling\nTape falling off on its own\nCall your surgeon\nPus or bad-smelling drainage\nSpreading redness or heat\nAn incision or stitch line that opens\nA new lump or growing pain\nFever or chills\nSources: Cleveland Clinic, MedlinePlus, UW Medicine.",
+      "alt": "Card titled Healing Stitches: Normal vs Call Your Surgeon. Normal: incision lines flatten and fade, less redness each week, a little itching or tingling, tape falling off on its own. Call your surgeon: pus or bad-smelling drainage, spreading redness or heat, an incision or stitch line that opens, a new lump or growing pain, fever or chills. Sources: Cleveland Clinic, MedlinePlus and UW Medicine."
+    },
+    {
+      "key": "types",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: Title, then two lists stacked one above the other, never side by side. Each list opens with its heading in bold dark ink, both headings the same weight, and has one row per line under it, with thin brushed-gold hairlines between rows. The source line is last. With this little text, make the type larger than the minimum so the rows fill the canvas. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "Stitches Used in Breast Augmentation\nDissolving stitches\nBuried under the skin\nNo removal needed\nExamples: Vicryl, Monocryl, PDS\nRemovable stitches, glue or tape\nOuter stitches come out in about 1 to 2 weeks\nTape or glue comes off in 1 to 2 weeks\nSources: The Aesthetic Society, ASPS, MedlinePlus. Ask your surgeon which you have.",
+      "alt": "Comparison card titled Stitches Used in Breast Augmentation. Dissolving stitches: buried under the skin, no removal needed, examples are Vicryl, Monocryl and PDS. Removable stitches, glue or tape: outer stitches come out in about 1 to 2 weeks, and tape or glue comes off in 1 to 2 weeks. Sources: The Aesthetic Society, ASPS and MedlinePlus. A note says to ask your surgeon which you have."
+    },
+    {
+      "key": "what-affects",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: Four square tiles in a two-by-two grid with thin gold borders and simple line icons: a thread spool, stacked layers, a small figure in a high-neck top, a water droplet. No skin and no incision. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "What Affects How Fast Stitches Dissolve?\nSuture material: Makes the biggest difference\nDepth: Buried stitches last longer than what you see\nYour own healing: Varies from person to person\nClean and dry: Follow your surgeon\nSources: suture makers' data, Cleveland Clinic.",
+      "alt": "Tile card titled What Affects How Fast Stitches Dissolve? Suture material makes the biggest difference. Depth: buried stitches last longer than what you see. Your own healing varies from person to person. Clean and dry: follow your surgeon. Sources: suture makers' data and Cleveland Clinic."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/15709-incision-care",
+      "publisher": "Cleveland Clinic, on surgical wounds in general",
+      "title": "Incision & Surgical Wound Care",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It usually takes one to two weeks before absorbable stitches dissolve. These stitches can last for a few months, depending on how your body heals.",
+        "A healthcare provider may remove dissolvable stitches before they dissolve if they bother you. Don’t try to remove these stitches at home.",
+        "After two weeks, gently remove any remaining Steri-Strips from your skin."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On average, full recovery takes about six to eight weeks.",
+        "You should not do any heavy lifting for at least four weeks. If you are physically active in sports, it may take up to six weeks before you can return to those activities.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure.",
+        "Contact your healthcare provider immediately if you’re experiencing any of the following symptoms:",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation.",
+        "Most residual swelling will resolve within a month.",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "If you have external sutures, your surgeon will remove them in about a week. If your surgeon used tissue glue or tape, it will fall off on its own in a week or two.",
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/procedure",
+      "publisher": "ASPS",
+      "title": "What are the steps of a breast augmentation procedure?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incisions are closed with layered sutures in the breast tissue and with sutures, skin adhesive or surgical tape to close the skin.",
+        "Under the pectoral muscle (a submuscular placement)",
+        "Directly behind the breast tissue, over the pectoral muscle (a submammary/ subglandular placement)"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/results",
+      "publisher": "ASPS",
+      "title": "What results should I expect after breast augmentation surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines may take several months, even a couple of years, to fade."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center (patient handout)",
+      "title": "Breast Augmentation: What to expect and how to prepare",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Sleep on your back for the first 3 to 4 weeks, whether or not you are wearing a surgical bra. After that, you may sleep on your side or stomach.",
+        "Your doctor will decide if you need a surgical bra. If you are given one, keep it on 24 hours a day for 3 to 4 weeks. Take it off only when you shower.",
+        "Do not wear an underwire bra until your incisions are fully healed.",
+        "A fever higher than 100.5°F (38°C)",
+        "Severe pain that is not helped by your pain medicine",
+        "Bad-smelling drainage",
+        "There will be stitches under your skin and strips of white tape (Steri-Strips) over your incisions. Keep the Steri-Strips on until they fall off. Remove them after 2 weeks if they are still on.",
+        "You may start taking showers 48 hours after your surgery."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You may experience some asymmetry since each breast may heal at a different rate.",
+        "You will begin to notice your final results around three months after surgery. However, you may continue to have subtle changes throughout the 12 months following your surgery.",
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months.",
+        "For the first week after surgery, you should rest and sleep on your back, with extra pillows to prop you up. This can help with swelling.",
+        "Do not sleep on your stomach until your surgeon says it’s okay. If you want to sleep on your side, you should:",
+        "wait until three to four weeks after surgery and",
+        "alternate sides at first to help with swelling.",
+        "You will wear a surgical bra for three to four weeks after your surgery. You should only remove the bra to shower or to wash it.",
+        "After three to four weeks of wearing the surgical bra, you can transition into a soft, supportive sports bra.",
+        "You can resume a daily shower two days after surgery. Do not soak in a bathtub, pool, or hot tub until your incisions heal or your surgeon says it’s okay."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine), on cosmetic breast surgery in general, lifts and reductions included",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Protect your scars with a strong sunblock (SPF 30 or higher) whenever you are out in the sun.",
+        "Do not take aspirin, aspirin-containing medicines, or ibuprofen without your surgeon's approval.",
+        "Also contact your surgeon if you notice sudden swelling of your breast.",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site",
+        "Exertion can increase blood pressure, and lead to bleeding.",
+        "Once you no longer need dressings, wear a soft, wireless, supportive bra night and day for 2 to 4 weeks.",
+        "Any stitches will be removed within 2 weeks after surgery.",
+        "Make sure you eat healthy foods, including lots of fruits and vegetables. Drink plenty of fluids.",
+        "Do not smoke. Smoking slows healing and increases your risk for complications and infection."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, article by Dr. Cindy Wu",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is normal for implants to still sit higher on your chest wall after the first month.",
+        "Over the next 2-3 months, your implants will naturally settle into the breast, revealing your final results.",
+        "If you are planning to swim, make sure to plan to have your surgery at least a month in advance of your vacation, as most surgeons will want you to wait that long before immersing in a pool or ocean."
+      ]
+    },
+    {
+      "url": "https://www.jnjmedtech.com/en-US/product/coated-vicryl-polyglactin-910-suture",
+      "publisher": "J&J MedTech (the manufacturer; read through WebFetch only, curl returns 403)",
+      "title": "Coated VICRYL Plus Antibacterial (Polyglactin 910) Suture",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "these sutures are absorbed by hydrolysis and fully absorbed within approximately 56 to 70 days."
+      ]
+    },
+    {
+      "url": "https://www.jnjmedtech.com/en-US/product/monocryl-poliglecaprone-25-suture",
+      "publisher": "J&J MedTech (the manufacturer; read through WebFetch only, curl returns 403)",
+      "title": "MONOCRYL suture",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "fully absorbed within approximately 91 to 119 days."
+      ]
+    },
+    {
+      "url": "https://www.eboshealthcare.com.au/globalassets/ebos-au/microsites/jj-ethicon/monocryl-catalogue.pdf",
+      "publisher": "Ethicon, the manufacturer (distributor-hosted PDF)",
+      "title": "MONOCRYL catalogue",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Completely absorbed in 91-119 days"
+      ]
+    },
+    {
+      "url": "https://res.onemed.com/DK/Produktblad/959754.pdf",
+      "publisher": "Ethicon, the manufacturer (distributor-hosted PDF)",
+      "title": "PDS II (Polydioxanone) Suture data sheet",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Essentially complete in 182-238 days."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 17445,
+    "clicks": 166,
+    "position": 5.25,
+    "image_impressions": 12454,
+    "image_clicks": 4,
+    "top_queries": [
+      {
+        "query": "when do stitches dissolve",
+        "impressions": 379,
+        "clicks": 0,
+        "position": 10
+      },
+      {
+        "query": "how long do dissolvable stitches take to dissolve after breast surgery",
+        "impressions": 69,
+        "clicks": 1,
+        "position": 5.5
+      },
+      {
+        "query": "when do sutures dissolve",
+        "impressions": 69,
+        "clicks": 0,
+        "position": 9.2
+      },
+      {
+        "query": "symptoms of torn internal stitches breast augmentation",
+        "impressions": 48,
+        "clicks": 1,
+        "position": 9.3
+      },
+      {
+        "query": "how long does it take for stitches to dissolve",
+        "impressions": 45,
+        "clicks": 0,
+        "position": 6.3
+      },
+      {
+        "query": "stitches timeline",
+        "impressions": 33,
+        "clicks": 0,
+        "position": 2.6
+      },
+      {
+        "query": "breast augmentation stitches healing",
+        "impressions": 31,
+        "clicks": 0,
+        "position": 5.8
+      },
+      {
+        "query": "breast augmentation stitches",
+        "impressions": 31,
+        "clicks": 0,
+        "position": 1.8
+      },
+      {
+        "query": "dissolvable stitches timeline",
+        "impressions": 25,
+        "clicks": 0,
+        "position": 2.9
+      },
+      {
+        "query": "when do stitches dissolve after breast reduction",
+        "impressions": 23,
+        "clicks": 0,
+        "position": 4.2
+      }
+    ]
+  },
+  "notes": "Gentle pass. Opening H2 added because the kit requires it; live H2s kept in order, with bold removed from one. New H2s from the 20 Oct plan: healing stages, why a stitch pokes out, torn internal stitches. Busiest months are January to March, so this should be stable before then. Corrected: 'complete absorption 6-8 weeks' (9 places, opening included) to about 2-8 months by material; PDO to polydioxanone (PDS); 'enzymatic breakdown' to hydrolysis for Vicryl and PDS; support bra 'six weeks' to as your surgeon says, 3-4 weeks in university handouts; monofilament scarring claim removed as unsourced; all claims and phones removed. Confidence: Monocryl and PDS were read directly from the maker's PDFs today. Vicryl rests on the J&J page for Coated VICRYL Plus Antibacterial through WebFetch only (curl returns 403); the post says so. The poking-stitch line now cites Cleveland Clinic. The granuloma reassurance is cut: a new lump gets evaluated. Meta description changed only for length: the live one is 162 characters and the kit's limit is 155. It holds no wrong figure. All four live inline images and the hero get new prompts: the timeline states 'Week 6-8 fully absorbed', the checklist and types card carry the phone number or the PDO error, and the hero has 'Support bra: 6 weeks' printed in the photo. Written from live text; the local clone differs in link form, so base_md5 needs a production rebase."
+}
