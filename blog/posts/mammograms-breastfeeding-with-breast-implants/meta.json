@@ -1,0 +1,435 @@
+{
+  "slug": "mammograms-breastfeeding-with-breast-implants",
+  "id": "c5a8f7cd-1aee-4925-8cf1-733c9491a2de",
+  "mode": "new",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Mammograms, Pregnancy and Breastfeeding With Implants",
+  "meta_description": "Yes, keep your mammograms: tell the facility about your implants and expect 4 extra pictures. Many women breastfeed, but implants may make it harder.",
+  "excerpt": "Keep your mammograms: implants change how the exam is done, not whether you need it. Here's what to tell the facility, how displacement views work, what the evidence says about pregnancy and breastfeeding, and where it is still unsure.",
+  "quick_answer": "Can you have a mammogram with breast implants?\n\nYes. The American Cancer Society says to keep regular screening mammograms, mention your implants when you book, and expect 4 extra pictures called implant displacement views. Rupture from a mammogram is very rare. Many women with implants breastfeed, though a 2023 review of 11 studies found significantly lower odds than without implants.",
+  "primary_keyword": "mammogram with implants",
+  "secondary_keywords": [
+    "mammogram with breast implants",
+    "mammograms and breast implants",
+    "can you have a mammogram with breast implants",
+    "how is a mammogram done with breast implants",
+    "mammogram with implants under the muscle",
+    "how long after breast augmentation can i get a mammogram",
+    "do you need a mammogram before breast augmentation",
+    "breastfeeding with implants",
+    "can you breastfeed with implants",
+    "can you breastfeed with breast implants",
+    "can you still breastfeed after a breast augmentation",
+    "getting pregnant after breast implants"
+  ],
+  "owns_queries": [
+    "mammogram with implants",
+    "mammogram with breast implants",
+    "mammograms and breast implants",
+    "can you have a mammogram with breast implants",
+    "how is a mammogram done with breast implants",
+    "mammogram with implants under the muscle",
+    "how long after breast augmentation can i get a mammogram",
+    "do you need a mammogram before breast augmentation",
+    "breastfeeding with implants",
+    "can you breastfeed with implants",
+    "can you breastfeed with breast implants",
+    "can you still breastfeed after a breast augmentation",
+    "getting pregnant after breast implants"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Results & Maintenance"
+  ],
+  "tags": [
+    "Breast Augmentation"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her mid-30s with tan skin and dark hair in a low bun, wearing a long-sleeved high-neck sand linen dress, sits on a cushioned window seat holding a sleeping baby wrapped in an oatmeal blanket close to her, her cheek resting on the baby's head.",
+      "prompt": "SCENE: Soft morning light in a quiet Miami living room, white plaster walls, a cushioned window seat under a tall arched window with sheer linen curtains, gentle palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A woman in her mid-30s of Latina descent with medium tan skin, dark wavy hair in a low bun and a fuller figure, in a long-sleeved high-neck sand-colored linen dress, sitting on the window seat and holding a sleeping newborn wrapped in a plain oatmeal blanket against her shoulder, looking down with a calm, content smile. The person is whole and at ease.\nKEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds of the frame; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain.\nCONSTRAINTS: Modest clothing fully covering the torso; not breastfeeding, baby fully wrapped; no swimwear, lingerie, cleavage or bare midriff; no focus on the chest; no bandages, garments, drains or incisions; no surgeon or staff; not a result, no before-and-after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "implant-displacement-views-diagram",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Diagram with two simple side-view line drawings of a torso in a plain high-neck top. Standard view: the implant, shown as a dashed oval, can hide the tissue in line with it. Implant displacement (ID) view: the implant is pushed back and the breast is pulled forward. The footer says 4 standard pictures plus 4 ID views, 2 on each breast, and names the American Cancer Society as the source.",
+      "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, flat editorial typography with a refined serif title and a clean sans-serif for labels. Two panels side by side, each a simple side-view outline of a torso wearing a plain high-neck top, drawn as a thin line like a textbook figure, with two thin flat horizontal plates in front of the chest to suggest a mammogram machine. Left panel: a soft dashed oval shows the implant in its usual place between the plates, with a faint shaded band in front of it. Right panel: the dashed oval is moved back against the chest wall, outside the plates, with a small gold arrow pointing backward, and a small gold arrow pointing forward at the breast outline between the plates. Modest and non-sexual, no breast detail. No people other than any simple line figures, no faces, no nipples or skin detail, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines.",
+      "text_in_image": "Title: \"Implant Displacement Views: What Changes\"\nLeft panel label: \"Standard view\"\nLeft panel text: \"The implant can hide the tissue in line with it\"\nRight panel label: \"Implant displacement (ID) view\"\nRight panel text: \"Implant pushed back, breast pulled forward\"\nFooter in small text: \"4 standard pictures plus 4 ID views, 2 on each breast. Source: American Cancer Society.\""
+    },
+    {
+      "key": "mammogram-booking-checklist",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Checklist card titled Booking a Mammogram With Implants. When you book: say you have implants, ask if the facility has experience with implants, ask which type of exam you are scheduled for, and know your implant type and placement. At the exam: remind the technologist before you start and bring your device card. The footer names the American Cancer Society, the FDA and Sientra's patient labeling as sources.",
+      "prompt": "A clean, professional checklist card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the lines, with a small open gold circle before each checklist line. Two groups separated by a hairline. No people, no bodies, no faces, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines.",
+      "text_in_image": "Title: \"Booking a Mammogram With Implants\"\nGroup heading: \"When you book\"\nLine: \"Say you have implants\"\nLine: \"Ask if the facility has experience with implants\"\nLine: \"Ask which type of exam you are scheduled for\"\nLine: \"Know your implant type and placement\"\nGroup heading: \"At the exam\"\nLine: \"Remind the technologist before you start\"\nLine: \"Bring your device card\"\nFooter in small text: \"Sources: American Cancer Society; FDA; Sientra patient labeling.\""
+    },
+    {
+      "key": "breastfeeding-evidence-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Breastfeeding With Implants: What One Review Found. About 82% with implants breastfed. About 88% without implants breastfed. Pooled odds ratio 0.45 across 5 comparative studies, meaning significantly lower odds. The footer cites Chen and colleagues, Aesthetic Surgery Journal, 2023, 11 studies.",
+      "prompt": "A clean, professional evidence card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and large figures, a clean sans-serif for the labels. Three stacked rows separated by hairlines, each with a large figure on the left and a short label on the right, then a footer. No charts, no people, no bodies, no babies, no faces, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines.",
+      "text_in_image": "Title: \"Breastfeeding With Implants: What One Review Found\"\nFirst row: \"About 82%\" | \"with implants breastfed\"\nSecond row: \"About 88%\" | \"without implants breastfed\"\nThird row: \"Pooled odds ratio 0.45\" | \"5 comparative studies: significantly lower odds\"\nFooter in small text: \"Chen and colleagues, Aesthetic Surgery Journal, 2023. 11 studies.\""
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-detection/mammograms/mammograms-for-women-with-breast-implants.html",
+      "publisher": "American Cancer Society",
+      "title": "Mammograms with Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have breast implants, you should still get regular screening mammograms as recommended",
+        "unless you had your breast tissue removed with a bilateral mastectomy before getting the implants.",
+        "It’s best to mention you have breast implants when you make the appointment to have your mammogram done. This way you can find out whether the facility has experience doing mammograms in women with breast implants.",
+        "it’s important to tell the technologist doing your mammogram that you have implants before your mammogram starts.",
+        "both silicone and saline implants can make it hard for the doctor to see the breast tissue that is in line with them on the mammogram.",
+        "women with implants have 4 extra pictures done (2 on each breast), as well as the 4 standard pictures taken during a screening mammogram.",
+        "the implant is pushed back against the chest wall, and the breast is pulled forward over it and then compressed.",
+        "ID views are harder to do and can be uncomfortable if areas of scar tissue called contractures have formed around the implants.",
+        "ID views are easier if the implants were placed underneath (behind) the chest muscles.",
+        "Very rarely, the mammogram process can rupture an implant."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-adverse-events-during-mammography",
+      "publisher": "FDA",
+      "title": "Breast Implant Adverse Events during Mammography (content current as of 01/18/2018; reports a 2004 study)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The risk for breast cancer does not differ in women with breast implants compared to other women.",
+        "between 22% and 83% of mammographically visualizable breast tissue obscured by breast implants",
+        "a delay in breast cancer detection in women with implants, but without increased mortality to women with implants.",
+        "always inform the mammography center that they have breast implants when they make an appointment and always remind the mammography technician",
+        "Recommendations for breast cancer screening also apply to women with breast implants.",
+        "It is unknown how often these problems occur because the MAUDE database cannot be used to determine rates of problems occurring.",
+        "pain during mammography attributed to the implants"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you are making an appointment for mammography, inform the mammography facility that you have breast implants, and ask them what you can expect regarding mammography with breast implants.",
+        "trouble breastfeeding, or reproductive problems. There is currently insufficient evidence to support an association between breast implants and those diagnoses.",
+        "a patient device card with information specific to a patient’s implant, such as the serial or lot number and the style and size."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Some women who undergo breast augmentation can successfully breastfeed and some cannot.",
+        "At this time, it is not known if a small amount of silicone may pass through from the breast implant silicone shell into breast milk during breastfeeding.",
+        "Although there are currently no established methods for accurately detecting silicone levels in breast milk, a study measuring silicon (one component in silicone) levels did not indicate higher levels in breast milk from women with silicone gel-filled implants when compared to women without implants.",
+        "Two studies in humans have found no increased risk of birth defects in children born to mothers who have had breast implant surgery.",
+        "Although low birth weight was reported in a third study, other factors (for example, lower pre-pregnancy weight) may explain this finding."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication (guidance PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter.",
+        "Saline-filled breast implants do not have screening recommendations as rupture is detectable without screening.",
+        "I understand that breast implants and breast surgery may interfere with my ability to successfully breastfeed.",
+        "I am pregnant or nursing."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It is important to tell the surgeon if you think you may be pregnant."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra (FDA-approved patient labeling)",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will need more views captured than during a routine mammogram. Therefore, the procedure will take more time and you will be exposed to more radiation than during a standard routine screening mammogram. However, the benefits of mammograms outweigh this risk.",
+        "Your doctor may request a “diagnostic” mammogram instead of a “screening” mammogram because more pictures are taken for a diagnostic mammogram.",
+        "Make sure your mammographer knows what type of implants you have and how they are placed (for example, on top of the chest muscle or underneath).",
+        "Carry your Device Identification Card (that you will receive after surgery) with you and show it to the mammographer.",
+        "He or she can also take steps to reduce the likelihood that your implants will rupture due to the mammogram.",
+        "It is a good idea to have a mammogram before your breast implant surgery. This establishes a baseline to which future mammograms can be compared.",
+        "You are also encouraged to have another mammogram 6 months to 1 year after your implant surgery to establish a baseline with the implant present.",
+        "85.2%% (of 236 patients who gave birth) in the primary augmentation group",
+        "reported no difficulties with lactation.",
+        "The Institute of Medicine (IOM) and The American College of Obstetricians and Gynecologists (ACOG) encourage women with breast implants to try breast-feeding.",
+        "There is evidence that breast implantation may increase the risk of insufficient lactation, but no evidence that this poses a hazard to the infant beyond the loss of breast feeding itself.",
+        "If you are planning to breast feed your infant, be prepared to use formula and bottle-feed your baby in the event you have difficulty breast feeding."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan (FDA-approved patient labeling)",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "the current recommendations for getting screening/preoperative mammograms are no different for women with breast implants than for those without implants.",
+        "You may wish to undergo a preoperative mammogram and another one 6 months to one year after implantation to establish a baseline.",
+        "You should request a diagnostic mammogram rather than a screening mammogram, because more pictures are taken with diagnostic mammography.",
+        "The technologist can use special techniques to reduce the possibility of deflation and to get the best possible views of the breast tissue.",
+        "More difficult imaging during mammography exam",
+        "Easier imaging during mammography exam",
+        "If your surgeon uses a periareolar surgical approach (an incision around the colored portion surrounding the nipple), it may increase the chance of breastfeeding difficulties.",
+        "Also, breast implants will not prevent your breast from sagging after pregnancy.",
+        "Feeling in the nipple and breast can increase or decrease after implant surgery.",
+        "While some of these changes can be temporary, they can also be permanent and may affect your sexual response or your ability to nurse a baby."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/candidates",
+      "publisher": "ASPS",
+      "title": "Who is a good candidate for breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You are physically healthy and you aren't pregnant or breastfeeding"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/safety",
+      "publisher": "ASPS",
+      "title": "What are the risks of breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Pregnancy, weight loss and menopause may influence the appearance of augmented breasts over the course of your lifetime"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/better-breasts-after-pregnancy-and-breastfeeding",
+      "publisher": "ASPS website, article by Shahram Salemy, MD, FACS",
+      "title": "Better breasts after pregnancy and breastfeeding",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For most women, it is best to wait up to six months after lactation has stopped before getting any kind of cosmetic surgery done on the breasts.",
+        "it is recommended to wait until you do not plan to become pregnant anymore before you undergo breast rejuvenation.",
+        "However, in certain cases, women who want breast enhancement but may also have future children can still undergo surgery in a safe manner.",
+        "Breast lifts and breast augmentation are popular cosmetic procedures for women who are no longer pregnant or nursing."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/post-pregnancy-plastic-surgery-what-can-you-do-now-and-what-needs-to-wait",
+      "publisher": "ASPS website, article by Alia Willson",
+      "title": "Post-pregnancy plastic surgery: What can you do now, and what needs to wait",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For patients who have breastfed, I prefer to wait at least three months after weaning before breast surgery, as the tissue continues to change during that time."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This placement may interfere less with mammograms and breast-feeding."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-revision",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Revision Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Weight loss, weight gain, pregnancy, or breastfeeding has negatively affected the appearance of your breasts."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Surgical incisions around your areola are more likely to cause reductions in milk production.",
+        "Breast implants that are placed below your muscle usually affect milk production less than implants that are above your muscle."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center",
+      "title": "Breast Augmentation: What to expect and how to prepare (handout PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will need to have a second mammogram 9 months after your surgery.",
+        "Your healthcare providers will consider this mammogram your new baseline and will compare all future mammograms to it.",
+        "You might have a mammogram if it has been more than 1 year since you have had one, regardless of your age."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/14747501/",
+      "publisher": "JAMA (Miglioretti and colleagues)",
+      "title": "Effect of breast augmentation on the accuracy of mammography and cancer characteristics (2004)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast augmentation decreases the sensitivity of screening mammography among asymptomatic women but does not increase the false-positive rate.",
+        "the prognostic characteristics of tumors are not influenced by augmentation."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35993683/",
+      "publisher": "Annals of Plastic Surgery (Normandin and colleagues)",
+      "title": "Breast Implant-Related Adverse Events During Mammography (2022)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Of the 20 539 implant-related adverse events available in the Manufacturer and User Facility Device Experience database, 427 were retrieved using our search strategy and 41 were related to mammography.",
+        "between 2008 and November 2018.",
+        "Thirty-five of identified cases (85.4%) reported implant rupture, of which 19 (54.3%) were confirmed by a healthcare professional, 9 (25.7%) were clinically confirmed by saline implant deflation, and 7 (20.0%) were unverified reports by patients.",
+        "this should neither prevent patients from adhering to breast cancer screening programs nor deter patients from seeking breast implants."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36752943/",
+      "publisher": "Aesthetic Surgery Journal (Chen and colleagues)",
+      "title": "Breastfeeding Outcome and Complications in Females With Breast Implants: A Systematic Review and Meta-Analysis (2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Eleven studies (4 prospective and 7 retrospective) in total were included in the review.",
+        "A total of 8197 out of 9965 (82.25%) patients were successfully able to breastfeed after breast implants.",
+        "Of 5 studies that included a control group, 343,793 of 388,695 (88.45%) women without breast implants successfully breastfed.",
+        "A meta-analysis of 5 comparative studies showed a significant reduction of breastfeeding in females with breast implants, n = 393,686, pooled odds ratio = 0.45 (95% CI, 0.38 to 0.53).",
+        "There may be impairment in ability to breastfeed for females who receive breast implants when compared with those without."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29932861/",
+      "publisher": "Journal of Human Lactation (Cheng and colleagues)",
+      "title": "Do Breast Implants Influence Breastfeeding? A Meta-Analysis of Comparative Studies (2018)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Four cohorts and one cross-sectional study were included.",
+        "Participants with breast implants are less likely to establish breastfeeding, especially exclusive breastfeeding.",
+        "There was no evidence that periareolar incision was associated with a reduction in the exclusive breastfeeding rate, pooled relative risk = 0.84, 95% confidence interval [0.45, 1.58]."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8532261/",
+      "publisher": "Obstetrics & Gynecology (Hurst)",
+      "title": "Lactation after augmentation mammoplasty (1996)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The periareolar approach was most significantly associated with lactation insufficiency.",
+        "Among 42 augmented women, 27 (64%) had insufficient lactation, compared with only three (less than 7%) of the 42 nonaugmented women.",
+        "client records maintained by a lactation support program"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "search_queries",
+    "window": "2026-05-05..2026-11-01",
+    "impressions": 12,
+    "clicks": 0,
+    "position": 2.7,
+    "top_queries": [
+      {
+        "query": "can you breastfeed with implants",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "can you breastfeed if you have implants",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "mammogram with implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "can you have a mammogram with breast implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "how is a mammogram done with breast implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "how long after breast augmentation can i get a mammogram",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "do you need a mammogram before breast augmentation",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "breastfeeding with implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "can you still breastfeed after a breast augmentation",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "getting pregnant after breast implants",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 5
+      }
+    ]
+  },
+  "notes": "New post N6 (plan 2026-11-03, Wave 2). Keyword Planner per the plan: mammogram with implants 1,000/mo US, 90 Florida; breastfeeding with implants 1,000/mo US, 70 Florida; pregnancy 210/mo. Search Console shows only single impressions on these queries (window above), so its data set the wording of the H2s and FAQs, not demand or rank. cta stays default: the breast CTA in apps/web/lib/data/blog-cta-content.ts says 'our board-certified surgeons' and carries a phone number, which compliance forbids, so no marker. 82% vs 88% always appears with the pooled odds ratio 0.45 note the facts file requires, and the meta description leaves the pair out for that reason. Hurst's 64% is not stated; the study is cited only as a selected group. The 22-83% and JAMA 2004 findings are labeled as older. Miglioretti's sensitivity percentages are left out on purpose to keep the tone calm; the abstract's plain conclusions are used. Baseline timing is stated with its sources by decision after the fact check (batch6), replacing the SOURCE-BANK note's no-date wording; there is still no single date and no screening age or schedule. 'Define success differently' and the card's note line were removed because the claim could not be read in the abstract (full text blocked). No usual placement or incision is stated. Sources read beyond SOURCE-BANK on 2026-11-03: full American Cancer Society page; FDA mammography and What to Know pages for extra sentences (no-rate note, screening recommendations apply, insufficient evidence on reproductive problems); Sientra and Allergan PDFs for the booking steps and diagnostic mammogram lines; The Aesthetic Society breast revision page. Three inline images because the post has three topics; that is one more render than the plan's 2-per-new-post estimate (about 2.75 credits). Links to N1, N2, N3, N4 are new posts in the same batch and must go live in the same run or be swapped.",
+  "gate": {
+    "verdict": "new",
+    "reason": "Cluster is unclaimed — safe to write",
+    "owningUrl": null,
+    "owningSlug": null,
+    "matchedQuery": null,
+    "similarityScore": null,
+    "claimedQueries": [
+      "mammogram with implants",
+      "mammogram with breast implants",
+      "mammograms and breast implants",
+      "can you have a mammogram with breast implants",
+      "how is a mammogram done with breast implants",
+      "mammogram with implants under the muscle",
+      "how long after breast augmentation can i get a mammogram",
+      "do you need a mammogram before breast augmentation",
+      "breastfeeding with implants",
+      "can you breastfeed with implants",
+      "can you breastfeed with breast implants",
+      "can you still breastfeed after a breast augmentation",
+      "getting pregnant after breast implants"
+    ],
+    "warnings": [],
+    "checkedAt": "2026-11-04T03:31:37.699Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
+  }
+}

@@ -135,9 +135,10 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'breast implants miami',
             'natural looking boob job',
             'natural breast augmentation',
-            'silicone implants',
-            'saline implants',
-            'gummy bear implants',
+            'breast augmentation safety miami',
+            'breast augmentation safety miami risks prevention',
+            'breast augmentation vs reduction miami',
+            'breast augmentation vs breast reduction miami',
             // Price intent (D5 of the wave-two brief). Like BBL, liposuction
             // and the tummy tuck, breast augmentation has no cost page: the
             // planned /breast-augmentation-cost-miami is retired to this

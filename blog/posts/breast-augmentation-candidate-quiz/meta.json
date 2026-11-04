@@ -1,0 +1,413 @@
+{
+  "slug": "breast-augmentation-candidate-quiz",
+  "mode": "rewrite",
+  "base_md5": "741e87f03ea2dfa506806fc8f27415f9",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T13:21:40Z",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Am I a Candidate for Breast Augmentation? Quick Quiz",
+  "meta_description": "Should I get a boob job? Twelve yes-or-no questions on health, age, pregnancy, weight and goals, and what your score means. Your surgeon decides.",
+  "excerpt": "Twelve yes-or-no questions to help you see whether breast augmentation could suit you now, what to sort out first and what to ask. Covers FDA age limits, waiting after pregnancy or weight loss, sagging, size and long-term care. Your surgeon decides at consultation.",
+  "quick_answer": "Am I a candidate for breast augmentation?\n\nYou may be if you are healthy, your breasts are fully developed, your expectations are realistic and you aren't pregnant or breastfeeding, ASPS says. The FDA approved saline implants from age 18 and silicone from 22. Its example checklist rules out surgery during an active infection or untreated breast cancer. Your surgeon decides at consultation.",
+  "primary_keyword": "breast augmentation candidate quiz",
+  "secondary_keywords": [
+    "am i a candidate for breast augmentation",
+    "am i a good candidate for breast augmentation",
+    "should i get a boob job quiz",
+    "should i get breast implants quiz",
+    "breast implant quiz",
+    "what size breast implants should i get quiz",
+    "what size implants should i get quiz",
+    "what is a good size breast implants should i get quiz",
+    "breast implant size quiz",
+    "how old do you have to be to get a boob job",
+    "breast augmentation consultation checklist",
+    "pre op breast augmentation checklist"
+  ],
+  "owns_queries": [
+    "am i a candidate for breast augmentation quiz",
+    "am i a good candidate for breast augmentation",
+    "should i get a boob job quiz",
+    "should i get breast implants quiz",
+    "breast implant quiz",
+    "what size breast implants should i get quiz",
+    "what size implants should i get quiz",
+    "how old do you have to be to get a boob job"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Choosing a Surgeon"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Breast Lift",
+    "Mommy Makeover"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A young woman in a high-neck olive knit top sits on a window seat, looking up from her phone as she thinks over a question.",
+      "prompt": "SCENE: Afternoon on a cushioned window seat in a bright South Florida home, white plaster, an arched window with sheer linen curtains, soft palm shadow on the wall. Palette of stone, sand, warm white and brushed gold. SUBJECT: A Latina woman in her late 20s with medium brown skin and long dark curly hair, wearing a high-neck muted olive knit top and sand trousers, sitting sideways on the window seat with her knees drawn up, holding a phone in one hand with the screen turned away from the camera, looking up in thought with a small, calm expression. KEY DETAILS: Framed from the waist up with generous space above her head, her face and hands in the upper two thirds of the frame; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. Nothing on the phone screen is visible. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments on the body beyond everyday clothes, no bandages, drains, incisions or scars; no surgeon or staff; no before and after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "tally-key",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled How to Read Your Quiz Score. Any yes in Part 1, not right now, often temporary. 0 points, on paper you fit the ASPS description. 1 to 3 points, common, things to plan around. 4 or more points, several things to sort out first. Yes to question 9, ask your surgeon whether a lift would help. A footer says this is a self-check and your surgeon decides at consultation.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. A single-column list of five rows, each with the score in serif on the left and its meaning in sans-serif on the right, separated by hairlines.",
+      "text_in_image": "How to Read Your Quiz Score\nAny yes in Part 1: not right now, often temporary\n0 points: on paper, you fit the ASPS description\n1 to 3 points: common, things to plan around\n4 or more points: several things to sort out first\nYes to question 9: ask your surgeon whether a lift would help\nA self-check, not a medical score. Your surgeon decides at consultation."
+    },
+    {
+      "key": "age-chart",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Bar chart of breast implant placements by age in 2025, from ASPS, including revisions. 18 to 25: 15,292. 26 to 35: 57,821. 36 to 45: 96,016. 46 to 55: 65,410. 56 to 65: 44,748. 66 and older: 24,946.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. A simple horizontal bar chart with six bars in brushed gold on a stone-grey hairline axis, bar lengths in proportion to the counts, the age band on the left of each bar and the exact count at its end, largest bar 96,016. No gridlines, no 3D, no people.",
+      "text_in_image": "Breast Implant Placements by Age, 2025\n18 to 25: 15,292\n26 to 35: 57,821\n36 to 45: 96,016\n46 to 55: 65,410\n56 to 65: 44,748\n66 and older: 24,946\nIncludes revisions. Source: ASPS 2025 Procedural Statistics"
+    },
+    {
+      "key": "wait-times",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled How Long Surgeons Say to Wait, marked as opinions and not rules. After giving birth, at least 6 months. After weaning, at least 3 months, up to 6 months. After weight loss, at least 3 to 6 months of stable weight. Your surgeon decides.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. Three stacked sections, each with a simple line icon and a large time figure in serif, then a thin rule.",
+      "text_in_image": "How Long Surgeons Say to Wait\nOpinions, not rules\nAfter giving birth: at least 6 months\nAfter weaning: at least 3 months, up to 6 months\nAfter weight loss: at least 3 to 6 months of stable weight\nYour surgeon decides. Source: articles on the ASPS website"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/candidates",
+      "publisher": "ASPS",
+      "title": "Who is a good candidate for breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You are physically healthy and you aren't pregnant or breastfeeding",
+        "You have realistic expectations",
+        "Your breasts are fully developed",
+        "You are bothered by the feeling that your breasts are too small",
+        "You are dissatisfied with your breasts losing shape and volume after pregnancy, weight loss or with aging",
+        "Your breasts are asymmetrical",
+        "it's important that you're doing it for yourself and not for someone else"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/types-breast-implants",
+      "publisher": "FDA",
+      "title": "Types of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The FDA approved saline-filled breast implants for breast augmentation in women age 18 or older and for breast reconstruction in women of any age.",
+        "Silicone gel-filled breast implants are approved for breast augmentation in women age 22 or older and for breast reconstruction in women of any age."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "I have an active infection anywhere in my body;",
+        "I have an existing cancer or pre-cancer of my breast tissue that has not been adequately treated; or",
+        "I am pregnant or nursing.",
+        "Active smoker or a former smoker;",
+        "Medical condition that affects my body’s ability to heal (e.g., diabetes, connective tissue disorder);",
+        "Conditions that interfere with wound healing or blood clotting",
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter.",
+        "Saline-filled breast implants do not have screening recommendations as rupture is detectable without screening.",
+        "As many as 20 percent of women who receive breast implants for augmentation have to have their implants removed within 8 to 10 years, but my implants may last for a shorter or longer time.",
+        "These numbers are provided for illustrative purposes only.",
+        "This cancer occurs more commonly in patients with textured breast implants than smooth implants, although rates are not well defined. Some patients have died from BIA-ALCL.",
+        "Individual patient risk for developing these symptoms has not been well established."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will need to take at least three days off from work, so plan accordingly. If you have a labor-intensive job, you will likely need to take off at least three weeks of work.",
+        "You should arrange for someone to drive you home after your surgery and also have someone stay with you the first night at least.",
+        "On average, full recovery takes about six to eight weeks.",
+        "In most cases, breast augmentation is considered elective cosmetic surgery and therefore insurance carriers will not cover the procedure or any necessary follow-up visits.",
+        "Additionally, insurance might not cover the procedure should you want your implants removed in the future.",
+        "If you are physically active in sports, it may take up to six weeks before you can return to those activities."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/candidates",
+      "publisher": "ASPS",
+      "title": "Who is a good candidate for breast lift surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "When unsupported, your nipples fall below the breast crease",
+        "Your nipples and areolas point downward"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You should assume that you will need to have additional surgeries (reoperations) because breast implants are not lifetime devices and complications can occur.",
+        "Patient decision checklist, which must be reviewed with the prospective patient by the health care provider to help ensure the patient understands the risks, benefits and other information about the breast implant device. The patient must be given the opportunity to initial and sign the patient decision checklist and it must be signed by the physician implanting the device."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/documents/news/statistics/2025/plastic-surgery-statistics-report-2025.pdf",
+      "publisher": "ASPS",
+      "title": "2025 Procedural Statistics Release",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "2025 Cosmetic Surgery Age Distribution (18-25)",
+        "Breast augmentation (implant placement for both primary and/or revisions) 15,292 17,495 -13%",
+        "2025 Cosmetic Surgery Age Distribution (26-35)",
+        "Breast augmentation (implant placement for both primary and/or revisions) 57,821 60,356 -4%",
+        "2025 Cosmetic Surgery Age Distribution (36-45)",
+        "Breast augmentation (implant placement for both primary and/or revisions) 96,016 85,984 12%",
+        "2025 Cosmetic Surgery Age Distribution (46-55)",
+        "Breast augmentation (implant placement for both primary and/or revisions) 65,410 54,059 21%",
+        "2025 Cosmetic Surgery Age Distribution (56-65)",
+        "Breast augmentation (implant placement for both primary and/or revisions) 44,748 36,843 21%",
+        "2025 Cosmetic Surgery Age Distribution (66+)",
+        "Breast augmentation (implant placement for both primary and/or revisions) 24,946 18,565 34%",
+        "The majority of respondents, ranked implants in the 300-to-400-cc range among those they used most frequently",
+        "Less than 200 cc 15% Between 300-400 cc 1",
+        "Between 200-300 cc 80% Between 200-300 cc 2",
+        "while 200-to-300-cc implants ranked second.",
+        "36 percent of ASPS Member Surgeons indicated patients trended toward smaller implant sizes than in previous years."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/post-pregnancy-plastic-surgery-what-can-you-do-now-and-what-needs-to-wait",
+      "publisher": "ASPS website, article by Alia Willson",
+      "title": "Post-pregnancy plastic surgery: What can you do now, and what needs to wait",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This typically means waiting a minimum of six months postpartum, and longer if breastfeeding.",
+        "For patients who have breastfed, I prefer to wait at least three months after weaning before breast surgery, as the tissue continues to change during that time.",
+        "After stopping breastfeeding, it can take four to six months for the breasts to contract to their post-pregnancy size and shape – or not.",
+        "so I recommend waiting up to a full year before considering any plastic surgery procedure"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/better-breasts-after-pregnancy-and-breastfeeding",
+      "publisher": "ASPS website, article by Dr. Shahram Salemy",
+      "title": "Better breasts after pregnancy and breastfeeding",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For most women, it is best to wait up to six months after lactation has stopped before getting any kind of cosmetic surgery done on the breasts.",
+        "it is recommended to wait until you do not plan to become pregnant anymore before you undergo breast rejuvenation.",
+        "women who want breast enhancement but may also have future children can still undergo surgery in a safe manner."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/safety",
+      "publisher": "ASPS",
+      "title": "What are the risks of breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Pregnancy, weight loss and menopause may influence the appearance of augmented breasts over the course of your lifetime"
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan patient labeling",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Also, breast implants will not prevent your breast from sagging after pregnancy."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation",
+      "publisher": "ASPS",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This procedure can also restore breast volume lost after weight reduction or pregnancy",
+        "Breast augmentation does not correct severely drooping breasts. A breast lift may be required along with a breast augmentation for sagging breasts to look fuller and lifted.",
+        "Breast lifting can often be done at the same time as your augmentation or may require a separate operation."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/glp-1-and-breast-surgery-how-weight-loss-medications-are-reshaping-aesthetic-options",
+      "publisher": "ASPS website, article by Ariel Frankeny",
+      "title": "GLP-1 and breast surgery: How weight loss medications are reshaping aesthetic options",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "I typically recommend documented weight stability for at least three to six months before surgery.",
+        "There isn't one magic number of months that applies to every patient, but I want to see a meaningful period of stability rather than operating while someone is still actively losing substantial weight",
+        "An implant adds volume",
+        "It does not remove excess skin or reliably reposition a breast that has descended.",
+        "using a larger implant simply to fill that loose skin can sometimes create a breast that is larger but still sits too low"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/will-breast-implants-get-in-the-way-of-exercise",
+      "publisher": "ASPS website, article by Dr. John Cook",
+      "title": "Will breast implants get in the way of exercise?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "breast implants remain the same size and shape regardless of how much weight you lose.",
+        "In most cases, patients will be healed and able to resume all forms of exercise – including heavy cardio – within six weeks."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41741917/",
+      "publisher": "Aesthetic Plastic Surgery (Knoedler and colleagues)",
+      "title": "Weight a Minute: Investigating the Impact of Body Mass Index on Early Outcomes After Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Among 6,515 patients analyzed, we identified BMI ≥25.2 kg/m2 as a statistically derived risk threshold",
+        "Overall 30-day morbidity was markedly elevated in the higher BMI cohort (4.3% vs 1.3%, p < 0.001)"
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This might cause more scarring than just having implants placed and may lengthen your recovery time.",
+        "It is not always best to do multiple procedures during one surgery.",
+        "If you do not have any complications, you will probably be able to go back to most of your usual daily activities in 1 to 2 weeks after surgery.",
+        "Style/Size Change 139 (49.1%)",
+        "1-2 weeks after reviewing and considering this information before deciding whether to have the surgery."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The life of breast implants varies by person and cannot be predicted. That means everyone with breast implants may need additional surgeries, but no one can predict when. Patients can also request additional surgeries to modify the size or shape of their breasts.",
+        "The FDA restricts the sale and distribution of breast implants to only health care providers and facilities that provide information to patients using the patient decision checklist."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You have the right to request this information, and your physician is expected to provide it."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36752943/",
+      "publisher": "Aesthetic Surgery Journal (Chen and colleagues)",
+      "title": "Breastfeeding Outcome and Complications in Females With Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A total of 8197 out of 9965 (82.25%) patients were successfully able to breastfeed after breast implants.",
+        "There may be impairment in ability to breastfeed for females who receive breast implants when compared with those without."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Some women who undergo breast augmentation can successfully breastfeed and some cannot."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Eric Mariotti",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The entire drop and fluff process can take three to six months to complete"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 676,
+    "clicks": 11,
+    "position": 11.18,
+    "top_queries": [
+      {
+        "query": "am i a good candidate for breast augmentation?",
+        "impressions": 73,
+        "clicks": 0,
+        "position": 8.3
+      },
+      {
+        "query": "should i get a boob job quiz",
+        "impressions": 45,
+        "clicks": 0,
+        "position": 8.2
+      },
+      {
+        "query": "what is a good size breast implants should i get quiz",
+        "impressions": 26,
+        "clicks": 0,
+        "position": 9.3
+      },
+      {
+        "query": "am i a candidate for breast augmentation",
+        "impressions": 19,
+        "clicks": 0,
+        "position": 9
+      },
+      {
+        "query": "do i need a breast reduction quiz",
+        "impressions": 14,
+        "clicks": 0,
+        "position": 38.9
+      },
+      {
+        "query": "what size breast implants should i get quiz",
+        "impressions": 12,
+        "clicks": 0,
+        "position": 9.3
+      },
+      {
+        "query": "breast implant quiz",
+        "impressions": 8,
+        "clicks": 0,
+        "position": 5.8
+      },
+      {
+        "query": "what size implants should i get quiz",
+        "impressions": 6,
+        "clicks": 0,
+        "position": 15.3
+      },
+      {
+        "query": "pre op breast augmentation checklist",
+        "impressions": 5,
+        "clicks": 0,
+        "position": 10.2
+      },
+      {
+        "query": "breast augmentation consultation checklist",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 11
+      }
+    ]
+  },
+  "notes": "Rewrite of the live row, read with the admin MCP get_post on 2026-11-03 (live contentUpdatedAt 2026-09-15, faqs 6). The local clone row is older (2026-01-19), so the base_md5 recorded here is the clone's and the morning rebase is needed against production. Written from live, not the clone. Absorbs what holds up from four folds; their keywords stay out until the fold PR, for the main session to add to this post's ownsQueries then: breast-augmentation-miami-candidate (primary \"breast augmentation miami candidate\", owns \"am i a candidate for breast augmentation miami\"); breast-augmentation-miami-post-pregnancy (primary \"breast augmentation miami post pregnancy\", owns \"breast augmentation miami natural post pregnancy boost\"); best-age-breast-augmentation-miami (primary \"best age breast augmentation miami\", owns \"best age for breast augmentation in miami\"); breast-augmentation-weight-loss-miami (primary \"breast augmentation weight loss miami\", owns \"am i a candidate for breast aug after weight loss miami\"). Kept from the folds: FDA ages, the checklist idea, waiting after weaning (now with named surgeons), lift vs implant, stable weight. Dropped as untrue or unsourced: invented patient stories, 250-400 cc naturals, 3D imaging, \"average age 34\", 30-39 largest group (ASPS 2025 says 36-45), 6-12 months for all, 2 years after bariatric, 5K+ patients, implants last 10-20 years, $5,000-$12,000, 46-73% fat retention, textured implants for thin tissue, double board-certified, AAAASF, phone number, financing partners. New: 12-question tally, ASPS 2025 age table. The BMI line follows apps/web/lib/data/bmi/bmi.facts.ts (under 30 as a guide, no society cutoff, case by case). Live FAQs kept in reworked form: after pregnancy (body), BMI, implant size (body), mommy makeover, recovery, active lifestyles (without the unsourced rupture rate). Fact-check fixes applied 2026-11-03 (factcheck/batch3.md); question 7 no longer scores a BMI number. Links to N1, N2, N3 and N6 were added on the coordinator's instruction, so this post must go live with or after those posts, or those links wait. Practice questions left vague: age policy is the FDA's, not stated as Alluring's; no fat transfer claim; no price stated."
+}

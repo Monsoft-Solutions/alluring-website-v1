@@ -95,9 +95,10 @@ const RULES: readonly ProcedureRule[] = [
         procedure: breastAugmentationMiami,
         // A bare "augmentation" or "implants" is the breast kind on this
         // blog, unless another body part names it ("butt implants", "lip
-        // augmentation").
+        // augmentation"). Capsular contracture is an implant complication,
+        // and that post's title names neither word.
         pattern:
-            /breast aug|(?<!(?:butt|buttock|gluteal|lip|chin|cheek|calf|pec) )(?:augmentation|\bimplants?\b)/,
+            /breast aug|capsular contracture|(?<!(?:butt|buttock|gluteal|lip|chin|cheek|calf|pec) )(?:augmentation|\bimplants?\b)/,
         shortName: 'breast augmentation',
     },
     {

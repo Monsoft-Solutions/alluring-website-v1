@@ -1,0 +1,384 @@
+{
+  "slug": "weeks-post-op-breast-augmentation-what-to-expect",
+  "mode": "rewrite",
+  "base_md5": "592ee5b1451ba09ded8e755fbe2b432e",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T10:55:10Z",
+  "reader": "recovering",
+  "cluster": "breast-augmentation",
+  "title": "5 Weeks Post Op Breast Augmentation What to Expect",
+  "meta_description": "5 Weeks Post Op Breast Augmentation What to Expect: Learn about swelling, pain levels, activity limits, and healing milestones in your recovery.",
+  "excerpt": "At 5 weeks after breast augmentation, most swelling has eased, but implants can still sit high and chest work still waits. Here is what's normal, how to sleep, which bra to wear, and the signs that mean you should call your surgeon.",
+  "quick_answer": "What should I expect 5 weeks after breast augmentation?\n\nAt 5 weeks most swelling has gone down: The Aesthetic Society says most residual swelling resolves within a month. Implants can still sit high and feel firm while they drop and fluff. Cleveland Clinic advises no heavy lifting for at least 4 weeks, says sports may take up to 6, and puts full recovery at about 6 to 8 weeks.",
+  "primary_keyword": "weeks post op breast augmentation what to expect",
+  "secondary_keywords": [
+    "5 weeks post breast augmentation",
+    "5 weeks post op",
+    "5 weeks after breast augmentation",
+    "5 weeks post surgery",
+    "breast augmentation 5 weeks post op",
+    "6 weeks post breast augmentation",
+    "6 weeks post op breast augmentation",
+    "5 weeks post op breast lift and augmentation",
+    "post op breast augmentation",
+    "4 weeks post op breast augmentation",
+    "4 weeks post breast augmentation",
+    "5 week post op breast augmentation"
+  ],
+  "owns_queries": [
+    "5 weeks post op breast augmentation what to expect",
+    "5 weeks post breast augmentation",
+    "5 weeks after breast augmentation",
+    "6 weeks post op breast augmentation",
+    "4 weeks post op breast augmentation"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "Woman in her forties in a loose long-sleeve linen shirt and wide trousers, walking at an easy pace past a white wall with palm shadows, holding a paper cup of coffee.",
+      "prompt": "SCENE: Early morning on a quiet South Florida street, a white stucco wall with soft palm shadows and a pale limestone path. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid-40s with light olive skin and shoulder-length chestnut hair, walking at an easy pace in a loose long-sleeve oat-colored linen shirt buttoned to the collar and wide trousers, holding a paper cup of coffee. Three-quarter front view, relaxed expression. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions on the body; not photographed from behind; no text, letters, numbers, logos or watermarks; no surgeon or staff; not glamour, not a fashion ad, no penthouse or luxury setting.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "week5-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: Six short rows with simple line icons for swelling, tightness, settling, nerves, scars and activity. Replaces an older card; no body figure at all. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "Week 5 After Breast Augmentation: What's Normal\nSwelling: Mostly gone. Most resolves within a month\nTightness: Common and easing\nDrop and fluff: Implants may still sit high\nNerves: Tingling or shooting pains can last a few months\nScars: Still visible. Protect from the sun with SPF 30\nActivity: Walking yes. Chest work not yet\nSources: The Aesthetic Society, University of Utah Health, MedlinePlus.",
+      "alt": "Card titled Week 5 After Breast Augmentation: What's Normal. Swelling is mostly gone, and most resolves within a month. Tightness is common and easing. With drop and fluff, implants may still sit high. Tingling or shooting pains can last a few months. Scars are still visible, so protect them from the sun with SPF 30. Walking is fine and chest work is not yet. Sources: The Aesthetic Society, University of Utah Health and MedlinePlus."
+    },
+    {
+      "key": "drop-fluff",
+      "type": "inline",
+      "aspect": "1:1",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/703cd3f7-06a8-4f26-925a-c1a80285654c/1768928987404-hvd7id-0.jpg",
+      "staged_replacement": {
+        "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, same square format as the live file. Four panels in a two-by-two grid, each a simple side-view textbook outline of a torso wearing a plain high-neck top, drawn as a thin line, with a soft dashed oval showing where the implant sits: high and tight in panel 1, slightly lower in panel 2, lower and rounder in panel 3, natural and settled in panel 4. Aimed at what people search as drop and fluff timeline. Modest and non-sexual, no skin detail, no nipples, no faces, no practice name, no surgeon name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+        "text_in_image": "Implant Settling: Drop and Fluff\nAfter surgery: Higher and firm\nAfter the first month: Can still sit higher\nAround three months: You begin to notice your final results\nThe whole process can take three to six months\nSources: University of Utah Health; Dr. Eric Mariotti and Dr. Cindy Wu, articles on the ASPS website",
+        "alt_after": "Drop and fluff diagram with four side-view outlines of a torso in a plain high-neck top, with a dashed implant shape moving lower. After surgery, higher and firm. After the first month, can still sit higher. Around three months, you begin to notice your final results. The whole process can take three to six months. Sources: University of Utah Health; Dr. Eric Mariotti and Dr. Cindy Wu, articles on the ASPS website."
+      },
+      "alt": "Illustration of implant settling at week 1, week 3, week 6 and weeks 12 and later, with the implant sitting lower and softer at each stage.",
+      "prompt": "Elegant, clinic-branded illustration showing implant position progression (early high/upper pole fullness → gradual settling) with a simple timeline (weeks 1–12+)."
+    },
+    {
+      "key": "activity-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: Two columns with simple line icons: walking shoe, leg, stretching figure on the left; push-up, weight, running shoe crossed out on the right. Icons of clothed figures only. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "Week 5 Activity: Usually OK vs Not Yet\nUsually OK with your surgeon's clearance\nWalking\nLight lower-body work\nDaily activities\nNot yet\nPush-ups and chest work: ask your surgeon\nHeavy lifting: ask your surgeon\nRunning and jarring activity: until fully recovered\nSources: Cleveland Clinic, articles on the ASPS website.",
+      "alt": "Card titled Week 5 Activity: Usually OK vs Not Yet. Usually OK with your surgeon's clearance: walking, light lower-body work and daily activities. Not yet: push-ups and chest work, ask your surgeon; heavy lifting, ask your surgeon; running and jarring activity, until fully recovered. Sources: Cleveland Clinic and articles on the ASPS website."
+    },
+    {
+      "key": "sleep-setup",
+      "type": "inline",
+      "aspect": "3:2",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: A calm side-view textbook line drawing of a figure in a plain high-neck long-sleeve top and loose trousers lying on her back on a bed, raised on a wedge pillow, a pillow under the knees and a long body pillow alongside. Thin leader lines go to the labels. Modest, non-sexual, no face detail. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "How to Sleep After Breast Augmentation\nWedge pillow\nPillow under the knees\nBody pillow to stop rolling\nAsk your surgeon when to change position.",
+      "alt": "Line diagram of a clothed figure in a plain high-neck top lying on her back, titled How to Sleep After Breast Augmentation. Labels point to a wedge pillow under the upper body, a pillow under the knees, and a body pillow alongside to stop rolling. A note says to ask your surgeon when to change position."
+    },
+    {
+      "key": "call-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: A simple checklist of six rows with small line icons, then a separate boxed note at the bottom. No body figure. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "5 Weeks Post-Op: Call Your Surgeon If\nFever or chills\nSpreading redness or heat\nPus or bad-smelling drainage\nAn incision that opens\nOne breast suddenly swells\nSevere pain your medicine doesn't help\nChest pain or trouble breathing: emergency room\nSources: Cleveland Clinic, MedlinePlus, UW Medicine.",
+      "alt": "Card titled 5 Weeks Post-Op: Call Your Surgeon If. Fever or chills; spreading redness or heat; pus or bad-smelling drainage; an incision that opens; one breast suddenly swells; severe pain your medicine doesn't help. A last row says chest pain or trouble breathing means the emergency room. Sources: Cleveland Clinic, MedlinePlus and UW Medicine."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation.",
+        "Most residual swelling will resolve within a month.",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "If you have external sutures, your surgeon will remove them in about a week. If your surgeon used tissue glue or tape, it will fall off on its own in a week or two.",
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "ASPS",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks.",
+        "Wear your support garment (a bra or elastic band, called a bandeau) around the clock as instructed by your plastic surgeon."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/results",
+      "publisher": "ASPS",
+      "title": "What results should I expect after breast augmentation surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines may take several months, even a couple of years, to fade."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Eric Mariotti",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The entire drop and fluff process can take three to six months to complete",
+        "Smaller, lighter implants, for example, may take longer than heavier implants to drop and fluff",
+        "if you have textured breast implants, you may see a more gradual drop and fluff process than with smooth implants"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, article by Dr. Cindy Wu",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is normal for implants to still sit higher on your chest wall after the first month.",
+        "Over the next 2-3 months, your implants will naturally settle into the breast, revealing your final results.",
+        "If you are planning to swim, make sure to plan to have your surgery at least a month in advance of your vacation, as most surgeons will want you to wait that long before immersing in a pool or ocean."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/exercise-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Catherine Huang-Begovic",
+      "title": "Exercise after breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Patients should start light walking immediately after surgery",
+        "This is good for the circulation and helps prevent blood clots.",
+        "After two weeks, patients can start more intense cardio such as walking on a treadmill or walking uphill.",
+        "At a month most patients can resume most exercise except heavy lifting.",
+        "At six weeks, patients are generally completely healed and can resume all exercises.",
+        "After breast augmentation, especially with implants under the muscle, I recommend patients try to avoid strenuous chest exercise such as push ups.",
+        "Since the implants sit under the muscle, contraction places downward and outward pressure on them which, over time can result in the implants dropping or becoming displaced over time."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny, freelance writer, quoting surgeons",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "However, strenuous activities and upper body movements should still be avoided for at least six weeks.",
+        "but the majority of the swelling goes down within about two weeks.",
+        "Typically, the first week is the most uncomfortable",
+        "most women feel pressure on their chest, especially if the implant was placed under the muscle."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/what-to-expect-after-your-breast-augmentation-surgery",
+      "publisher": "ASPS website, article by Gabby Shacknai, quoting a surgeon",
+      "title": "What to expect after your breast augmentation surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "I don't let them wear an underwire bra for about two to three months until the implants have settled."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On average, full recovery takes about six to eight weeks.",
+        "You should not do any heavy lifting for at least four weeks. If you are physically active in sports, it may take up to six weeks before you can return to those activities.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure.",
+        "Contact your healthcare provider immediately if you’re experiencing any of the following symptoms:",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic, about a breast lift",
+      "title": "Breast Lift (Mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Usually, women can wear a regular bra about eight weeks after surgery."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic, on blood clots in general",
+      "title": "Deep Vein Thrombosis (DVT)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms of this include chest pain, shortness of breath, cough with blood, lightheadedness and fainting."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You may experience some asymmetry since each breast may heal at a different rate.",
+        "You will begin to notice your final results around three months after surgery. However, you may continue to have subtle changes throughout the 12 months following your surgery.",
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months.",
+        "For the first week after surgery, you should rest and sleep on your back, with extra pillows to prop you up. This can help with swelling.",
+        "Do not sleep on your stomach until your surgeon says it’s okay. If you want to sleep on your side, you should:",
+        "wait until three to four weeks after surgery and",
+        "alternate sides at first to help with swelling.",
+        "You will wear a surgical bra for three to four weeks after your surgery. You should only remove the bra to shower or to wash it.",
+        "After three to four weeks of wearing the surgical bra, you can transition into a soft, supportive sports bra.",
+        "You can resume a daily shower two days after surgery. Do not soak in a bathtub, pool, or hot tub until your incisions heal or your surgeon says it’s okay."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center (patient handout)",
+      "title": "Breast Augmentation: What to expect and how to prepare",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Sleep on your back for the first 3 to 4 weeks, whether or not you are wearing a surgical bra. After that, you may sleep on your side or stomach.",
+        "Your doctor will decide if you need a surgical bra. If you are given one, keep it on 24 hours a day for 3 to 4 weeks. Take it off only when you shower.",
+        "Do not wear an underwire bra until your incisions are fully healed.",
+        "A fever higher than 100.5°F (38°C)",
+        "Severe pain that is not helped by your pain medicine",
+        "Bad-smelling drainage",
+        "There will be stitches under your skin and strips of white tape (Steri-Strips) over your incisions. Keep the Steri-Strips on until they fall off. Remove them after 2 weeks if they are still on.",
+        "You may start taking showers 48 hours after your surgery."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine), on cosmetic breast surgery in general, lifts and reductions included",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Protect your scars with a strong sunblock (SPF 30 or higher) whenever you are out in the sun.",
+        "Do not take aspirin, aspirin-containing medicines, or ibuprofen without your surgeon's approval.",
+        "Also contact your surgeon if you notice sudden swelling of your breast.",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site",
+        "Exertion can increase blood pressure, and lead to bleeding.",
+        "Once you no longer need dressings, wear a soft, wireless, supportive bra night and day for 2 to 4 weeks.",
+        "Any stitches will be removed within 2 weeks after surgery.",
+        "Make sure you eat healthy foods, including lots of fruits and vegetables. Drink plenty of fluids.",
+        "Do not smoke. Smoking slows healing and increases your risk for complications and infection."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan FDA-approved patient labeling for Natrelle saline implants",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The range of changes varies from intense sensitivity to no feeling in the nipple or breast following surgery."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly.",
+        "which must be reviewed with the prospective patient by the health care provider",
+        "The patient must be given the opportunity to initial and sign the patient decision checklist"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Most infections resulting from surgery appear within a few days to a week, but infection is possible any time after surgery.",
+        "Wrinkling of the implant that can be felt or seen through the skin.",
+        "Collection of blood near the surgical site. May cause swelling, bruising and pain.",
+        "Collection of fluid around the implant. May cause swelling, pain and bruising.",
+        "most silicone implant ruptures are without symptoms, known as \"silent ruptures.\""
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 8621,
+    "clicks": 129,
+    "position": 6.8,
+    "image_impressions": 80241,
+    "image_clicks": 140,
+    "top_queries": [
+      {
+        "query": "5 weeks",
+        "impressions": 289,
+        "clicks": 6,
+        "position": 2.1
+      },
+      {
+        "query": "5 weeks post op",
+        "impressions": 167,
+        "clicks": 0,
+        "position": 2.3
+      },
+      {
+        "query": "5 weeks post op breast augmentation",
+        "impressions": 149,
+        "clicks": 4,
+        "position": 2.0
+      },
+      {
+        "query": "breast augmentation recovery stages",
+        "impressions": 132,
+        "clicks": 0,
+        "position": 14.1
+      },
+      {
+        "query": "5 weeks post surgery",
+        "impressions": 96,
+        "clicks": 1,
+        "position": 3.1
+      },
+      {
+        "query": "5 weeks post breast augmentation",
+        "impressions": 90,
+        "clicks": 5,
+        "position": 2.7
+      },
+      {
+        "query": "6 weeks post breast augmentation",
+        "impressions": 86,
+        "clicks": 1,
+        "position": 5.2
+      },
+      {
+        "query": "drop and fluff week by week",
+        "impressions": 79,
+        "clicks": 0,
+        "position": 5.8
+      },
+      {
+        "query": "6 weeks post op breast augmentation",
+        "impressions": 75,
+        "clicks": 1,
+        "position": 5.6
+      },
+      {
+        "query": "5 weeks post op breast lift and augmentation",
+        "impressions": 64,
+        "clicks": 5,
+        "position": 2.4
+      }
+    ]
+  },
+  "notes": "Gentle pass, fact-checked (batch 7). Opening H2 added because the kit requires it; all live H2s and H3s kept in order. Written from live text; base_md5 is the local clone and needs a production rebase. Meta description: only 'recovery journey' became 'recovery', because the kit bans 'journey' and fails the post on it. Recovery stages are handed to the hub with a link, not targeted here. '5 weeks post op breast augmentation' is left out of the keywords: the registry still gives it to the phantom /blog/5-weeks-post-op-breast-augmentation-what-s-normal. Add it when that entry is retired. Kept image drop-fluff carries a phone number, bare torsos, misprinted labels and 'Finel position'; the alt describes it as it stands and it has a staged_replacement. The replacement drops the week 1, 3, 6 and 12+ labels because no source gives them. When the swap runs, set alt to alt_after. The link to /blog/capsular-contracture passes only in a batch with that new post or once it is live."
+}

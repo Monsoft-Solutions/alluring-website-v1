@@ -1,0 +1,389 @@
+{
+  "slug": "saline-vs-silicone-breast-implants",
+  "id": "4780278b-2405-45c4-9ace-0ebb43cc28f1",
+  "mode": "new",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Saline vs Silicone Implants: How to Choose",
+  "meta_description": "Saline shows a rupture; silicone usually does not, so the FDA recommends scans. FDA ages: 18 for saline, 22 for silicone. A plain decision table.",
+  "excerpt": "Saline and silicone share a silicone shell and differ in almost everything you would notice: feel, incision, age rules and what happens if one breaks. Here is a plain decision table, the FDA rules, and what gummy bear, teardrop, smooth and textured actually mean.",
+  "quick_answer": "Should I choose saline or silicone breast implants?\n\nIt comes down to feel, rupture and follow-up. ASPS says silicone gel feels a bit more like natural breast tissue; saline can go in through a smaller incision but may ripple more. The FDA approves saline from age 18 and silicone from 22, and recommends scans for silicone because its ruptures are usually silent.",
+  "primary_keyword": "saline vs silicone implants",
+  "secondary_keywords": [
+    "silicone implants vs saline",
+    "saline vs silicone breast implants",
+    "silicone vs saline breast implants",
+    "are saline or silicone implants better",
+    "silicone or saline breast implants",
+    "silicone or saline implants",
+    "are saline implants safer than silicone",
+    "are saline breast implants safer than silicone",
+    "what is a gummy bear implant",
+    "are gummy bear implants saline or silicone",
+    "teardrop vs round implants",
+    "how often do saline implants rupture",
+    "if a breast implant ruptures what happens",
+    "silicone breast implant rupture symptoms",
+    "how do you know if a silicone breast implant has ruptured",
+    "ruptured silicone implant"
+  ],
+  "owns_queries": [
+    "saline vs silicone implants",
+    "saline vs silicone breast implants",
+    "silicone vs saline breast implants",
+    "silicone implants vs saline",
+    "are saline or silicone implants better",
+    "are saline implants safer than silicone",
+    "what is a gummy bear implant",
+    "are gummy bear implants saline or silicone",
+    "teardrop vs round implants",
+    "silicone breast implant rupture symptoms",
+    "if a breast implant ruptures what happens"
+  ],
+  "categories": [
+    "Breast Augmentation"
+  ],
+  "tags": [
+    "Breast Augmentation"
+  ],
+  "cta": "breast",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a high-neck cream sweater at a bright table, holding a clear gel sizing sample in her palm, with a second clear sample resting on a folded linen cloth in front of her.",
+      "prompt": "SCENE: Late morning in a sunlit room with white plaster walls, a tall arched window, sheer curtains and soft palm shadows on a limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 30s with deep brown skin and natural curls pulled back, seated at a pale wooden table in a high-neck cream knit sweater, holding a clear gel sizing sample in her open palm and looking at it with quiet interest, a second clear water-filled sample resting on a folded linen cloth in front of her. No clinician in frame. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, garments, drains or incisions; no surgeon or staff faces; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "decision-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "A comparison card titled Saline vs Silicone at a Glance. Saline: sterile salt water, FDA age 18 or older, uniform shape and firmness, deflates if it ruptures so you notice, no screening recommended. Silicone: silicone gel, FDA age 22 or older, feels a bit more like natural breast tissue, usually silent if it ruptures, first scan at 5 to 6 years, then every 2 to 3 years. The footer credits the FDA and ASPS.",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the table, generous margins, hairline dividers only. SUBJECT: A three-column comparison table with five rows. KEY DETAILS: Lay the listed lines out in order: the first line is the title, the next two are the column headers for the second and third columns, then each group of three lines is one row (row label, Saline value, Silicone value), and the last line is a small source footer. CONSTRAINTS: No people, no bodies, no skin, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines. All text exactly as listed, nothing added.",
+      "text_in_image": "Saline vs Silicone at a Glance\nSaline\nSilicone\nFill\nSterile salt water\nSilicone gel\nFDA age, augmentation\n18 or older\n22 or older\nFeel\nUniform shape and firmness\nA bit more like natural breast tissue\nIf it ruptures\nDeflates, so you notice\nUsually silent\nRoutine scans\nNone recommended\nFirst at 5 to 6 years, then every 2 to 3 years\nSources: FDA; ASPS."
+    },
+    {
+      "key": "rupture-diagram",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled What Happens When an Implant Ruptures, with a simple drawing and text in each of two rows. Saline, drawn as a flattened implant with droplets leaving it: the shell leaks and the implant deflates, right away or over several days, and the body absorbs the salt water. Silicone, drawn as an implant with a small tear and gel held inside a dashed outline of scar tissue: usually no symptoms, the gel generally stays inside the scar tissue around the implant, so it usually takes a scan to find it. The footer credits the FDA and ASPS.",
+      "prompt": "SCENE: A calm medical-education diagram on a warm porcelain-white background with a thin brushed-gold rule at the top, palette of stone grey and brushed gold, a refined serif for the title and a clean sans-serif for the labels. SUBJECT: Two side-by-side panels, each a simple line drawing of a single implant shown as an object with no body: panel 1 a saline implant collapsed and flattened with a small tear; panel 2 a silicone implant still full with a small tear, its gel held inside a thin outer line for the scar capsule. KEY DETAILS: Each panel has its label and one short sentence under it; a one-line source footer in small text. CONSTRAINTS: No people, no bodies, no skin, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines. All text exactly as listed, nothing added.",
+      "text_in_image": "What Happens When an Implant Ruptures\nSaline\nThe shell leaks and the implant deflates, right away or over several days. The body absorbs the salt water.\nSilicone\nUsually no symptoms. The gel generally stays inside the scar tissue around the implant, so it usually takes a scan to find it.\nSources: FDA; ASPS.",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    },
+    {
+      "key": "implant-types",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Implant Shapes and Surfaces Explained, with one row and one simple drawing of an implant for each of five types. Round: same shape all over, less concern about rotation. Shaped or teardrop: more projection at the bottom, can rotate. Gummy bear: thicker silicone gel that holds its shape, firmer. Smooth: softest feeling, may ripple. Textured: grips scar tissue, BIA-ALCL reported more often. The footer credits ASPS and the FDA and says this is general information, not a list of what any practice offers.",
+      "prompt": "SCENE: A calm medical-education diagram on a warm porcelain-white background with a thin brushed-gold rule at the top, palette of stone grey and brushed gold, a refined serif for the title and a clean sans-serif for the labels. SUBJECT: Five evenly spaced tiles, each a simple side-view line drawing of one implant as an object with no body: a round dome, a teardrop tapering toward the top, a form-stable shape with a cut face showing thick gel, a smooth shell, and a finely textured shell. KEY DETAILS: Each tile has its label and one short line under it; a one-line footer in small text. CONSTRAINTS: No people, no bodies, no skin, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines. All text exactly as listed, nothing added.",
+      "text_in_image": "Implant Shapes and Surfaces Explained\nRound: Same shape all over. Less concern about rotation.\nShaped or teardrop: More projection at the bottom. Can rotate.\nGummy bear: Thicker silicone gel that holds its shape. Firmer.\nSmooth: Softest feeling. May ripple.\nTextured: Grips scar tissue. BIA-ALCL reported more often.\nSources: ASPS; FDA. General information, not a list of what any practice offers.",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/types-breast-implants",
+      "publisher": "FDA",
+      "title": "Types of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Saline-filled breast implants contain a silicone outer shell filled with a sterile saltwater (saline) solution. Some are pre-filled and others are filled during the implant operation.",
+        "Silicone gel-filled breast implants have a silicone outer shell that is filled with silicone gel.",
+        "The FDA approved saline-filled breast implants for breast augmentation in women age 18 or older",
+        "Silicone gel-filled breast implants are approved for breast augmentation in women age 22 or older and for breast reconstruction in women of any age."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You and/or your doctor will be able to tell if your saline-filled implant ruptures because the saline solution leaks into your body immediately or over several days and deflates the implant.",
+        "most silicone implant ruptures are without symptoms, known as \"silent ruptures.\"",
+        "Occasionally when a silicone gel-filled implant ruptures, you may notice a decrease in breast size, change in breast implant shape, hard lumps over the implant or chest area, an uneven appearance of the breasts, pain or tenderness, tingling, swelling, numbness, burning, or changes in sensation.",
+        "Generally, when silicone gel-filled implants rupture, the silicone gel escapes through a tear or hole in the implant shell but remains confined within the scar tissue around the implant",
+        "Magnetic resonance imaging (MRI) is the most effective method for detecting silent rupture of silicone gel-filled breast implants. An ultrasound is an acceptable alternative imaging for screening for rupture for asymptomatic patients.",
+        "The FDA has not detected any association between silicone gel-filled breast implants and connective tissue disease, breast cancer or reproductive problems.",
+        "Symptoms such as fatigue, memory loss, rash, \"brain fog,\" and joint pain may be associated with breast implants.",
+        "These symptoms and what causes them are poorly understood."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Patient decision checklist, which must be reviewed with the prospective patient by the health care provider to help ensure the patient understands the risks, benefits and other information about the breast implant device. The patient must be given the opportunity to initial and sign the patient decision checklist and it must be signed by the physician implanting the device.",
+        "Breast implants are not lifetime devices.",
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly.",
+        "Even if you have complications, the cost of implant removal or implant replacement may not be covered by insurance.",
+        "FDA takes action to protect patients from risk of certain textured breast implants; requests Allergan voluntarily recall certain breast implants and tissue expanders from market: FDA News Release (7/24/2019)"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The life of breast implants varies by person and cannot be predicted.",
+        "a patient device card with information specific to a patient’s implant, such as the serial or lot number and the style and size."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication (guidance PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter.",
+        "If you have symptoms at any time or uncertain ultrasound results for breast implant rupture, an MRI is recommended.",
+        "Saline-filled breast implants do not have screening recommendations as rupture is detectable without screening.",
+        "These imaging evaluations may not detect all ruptures or leaks, be costly, and the expense may not be covered by my medical insurance.",
+        "I understand that this cancer has been reported more frequently for textured breast implants, but that patients with smooth surfaced implants have also been diagnosed."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/medical-device-reports-breast-implant-associated-anaplastic-large-cell-lymphoma",
+      "publisher": "FDA",
+      "title": "Medical Device Reports of Breast Implant-Associated Anaplastic Large Cell Lymphoma",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Textured 1010 73",
+        "Not specified 330 24",
+        "In the 40 cases of patients with smooth implants, 18 have unknown prior history of implants, 8 have a history of at least one textured implant, 13 have a history of prior implants with unknown texture, and 1 has a history of one smooth implant and no known textured implant.",
+        "The incidence, prevalence, or cause of an event cannot be determined from this reporting system alone"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/questions-and-answers-about-breast-implant-associated-anaplastic-large-cell-lymphoma-bia-alcl",
+      "publisher": "FDA",
+      "title": "Questions and Answers about Breast Implant-Associated Anaplastic Large Cell Lymphoma (BIA-ALCL)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is a type of non-Hodgkin's lymphoma (cancer of the immune system)",
+        "An individual's risk of developing BIA-ALCL is considered to be low; however, this cancer is serious and can lead to death, especially if not treated promptly.",
+        "the type of implant fill does not appear to be a risk factor for BIA-ALCL, but this has not been evaluated in a large, well-designed, epidemiologic study.",
+        "The risk of BIA-ALCL is higher for textured surface implants versus smooth surface implants.",
+        "We are not recommending the routine removal of these or other types of breast implants in patients who have no symptoms."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/implants",
+      "publisher": "ASPS",
+      "title": "What types of breast implants are available?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The gel feels a bit more like natural breast tissue.",
+        "Saline breast implants provide a uniform shape, firmness and feel",
+        "Should the implant shell leak, a saline implant will collapse and the saline will be absorbed and naturally expelled by the body.",
+        "A leaking implant filled with silicone gel will not collapse.",
+        "Structured implants are filled with sterile salt water, and contain an inner structure which aims to make the implant feel more natural.",
+        "Form-stable implants are sometimes referred to as gummy bear breast implants because they maintain their shape even when the implant shell is broken.",
+        "The consistency of the silicone gel inside the implant is thicker than traditional silicone gel implants.",
+        "These implants are also firmer than traditional implants.",
+        "Shaped gummy bear breast implants have more projection at the bottom and are tapered towards the top.",
+        "If a shaped implant rotates, it may lead to an unusual appearance of the breast that requires a separate procedure to correct.",
+        "Placement of gummy bear implants requires a slightly longer incision in the skin.",
+        "Round breast implants have a tendency to make breasts appear fuller than form-stable implants.",
+        "Because round implants are the same shape all over, there is less concern about them rotating out of place.",
+        "Smooth breast implants are the softest feeling. They can move with the breast implant pocket, which may give more natural movement.",
+        "Smooth implants may have some palpable or visible rippling under the skin.",
+        "Textured breast implants develop scar tissue to stick to the implant, making them less likely to move around inside of the breast and become repositioned."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/video-gallery/what-to-do-when-your-breast-implant-ruptures",
+      "publisher": "ASPS video gallery (unnamed speaker)",
+      "title": "What to Do When Your Breast Implant Ruptures",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If your implant is ruptured on your imaging, is this an emergency? It's not. We typically recommend that if you have a ruptured silicone implant, it's replaced sometime within the first six months after the rupture is identified."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Choosing the type of implant typically comes down to personal preference and your surgeon’s opinion.",
+        "All silicone gel breast implants are pre-filled."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/23366-breast-implant-illness",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Implant Illness",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "People with BII have symptoms whether they have saline-filled or silicone-filled implants."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan (FDA-approved patient labeling)",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Saline-Filled Breast Implants typically require a smaller incision. However, visible wrinkling or rippling of the skin over the implant may be more likely to occur.",
+        "To permit the smallest possible incision, the implant is typically inserted empty, and then filled with saline.",
+        "Deflated implants require additional surgery to remove.",
+        "Some studies suggest that surface texturing reduces the chance of severe capsular contracture, while other studies do not.",
+        "Implant Deflation 13.8%",
+        "Wrinkling 13.7%",
+        "If you experience fever, or noticeable swelling and/or redness in your implanted breast(s), you should contact your surgeon immediately.",
+        "These results are from patient surveys rather than physician visits."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra (FDA-approved patient labeling)",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Implant Rupture (MRI cohort) 0 4.2% 8.5%",
+        "Wrinkling/Rippling 0.8% 1.2% 1.9%",
+        "the most common reason for implant removal was the patient requesting a different implant size or style",
+        "Style/Size Change 139 (49.1%)"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7899226/",
+      "publisher": "Plastic and Reconstructive Surgery (Caplin and colleagues; Mentor-sponsored), full text",
+      "title": "MemoryGel Breast Implants: Final Safety and Efficacy Results after 10 Years of Follow-Up",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Rupture rates for MRI cohort A patients (suspected or confirmed) 24.2"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39989707/",
+      "publisher": "Aesthetic Surgery Journal Open Forum (Haas and colleagues)",
+      "title": "Capsular Contracture After Breast Augmentation: A Systematic Review and Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "No significant difference in capsular contracture rates was found between silicone and saline (OR = 0.39, 95% CI, 0.02-6.69).",
+        "Smooth implants were associated with significantly higher capsular contracture rates compared with textured implants (OR = 2.80, 95% CI, 1.92-4.08)."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11842228/",
+      "publisher": "Aesthetic Surgery Journal Open Forum (Haas and colleagues), full text",
+      "title": "Capsular Contracture After Breast Augmentation: A Systematic Review and Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Three studies (4198 cases) provided data on capsular contracture comparing saline vs silicone implants.",
+        "clear definition of capsular contracture as Baker Grade III or IV"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "search_queries",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 43,
+    "clicks": 0,
+    "position": 2.7,
+    "top_queries": [
+      {
+        "query": "teardrop vs round implants",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 4
+      },
+      {
+        "query": "teardrop implants vs round photos",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "breast implant rupture treatment",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "can a ruptured breast implant kill you",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "how long do saline breast implants last",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "round vs teardrop implants",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "silicone implants vs saline",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "are saline breast implants safer than silicone",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "if a breast implant ruptures what happens",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "ruptured breast implant",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 2
+      }
+    ]
+  },
+  "notes": "New post N2 (3 Nov plan). No prices: the post links the page's #pricing. Gummy bear, shaped, smooth and textured are explained generally, with no claim of what Alluring offers (open practice question). Keyword Planner's 5,400 US searches a month is the plan's figure; the site's own impressions for these exact queries are very small, so the gsc block reads as a low baseline. No price terms in secondary_keywords or owns_queries. Independent fact check of 3 Nov applied (factcheck/batch5.md): Haas three-study count, FDA wording on BIA-ALCL risk, the smooth-case history, and the rupture FAQ now leads with when to call. Bank quotes copied verbatim; FDA types page and ASPS implants page re-read with curl on 2026-11-03 to confirm the silicone shell and structured saline lines. Links to N1, N3, N5 and N6, which must go live in the same run. The 'breast' CTA text in apps/web/lib/data/blog-cta-content.ts says 'our board-certified surgeons': needs a code fix before this renders.",
+  "gate": {
+    "verdict": "new",
+    "reason": "Cluster is unclaimed — safe to write",
+    "owningUrl": null,
+    "owningSlug": null,
+    "matchedQuery": null,
+    "similarityScore": null,
+    "claimedQueries": [
+      "saline vs silicone implants",
+      "silicone implants vs saline",
+      "saline vs silicone breast implants",
+      "silicone vs saline breast implants",
+      "are saline or silicone implants better",
+      "silicone or saline breast implants",
+      "silicone or saline implants",
+      "are saline implants safer than silicone",
+      "are saline breast implants safer than silicone",
+      "what is a gummy bear implant",
+      "are gummy bear implants saline or silicone",
+      "teardrop vs round implants",
+      "how often do saline implants rupture",
+      "if a breast implant ruptures what happens",
+      "silicone breast implant rupture symptoms",
+      "how do you know if a silicone breast implant has ruptured",
+      "ruptured silicone implant"
+    ],
+    "warnings": [],
+    "checkedAt": "2026-11-04T03:33:54.602Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
+  }
+}

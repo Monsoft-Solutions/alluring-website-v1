@@ -1,0 +1,335 @@
+{
+  "slug": "swelling-and-asymmetry-after-breast-augmentation-faq",
+  "mode": "rewrite",
+  "base_md5": "b43d02ab15470926fb3a9eae6f4a3adc",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T10:55:09Z",
+  "reader": "recovering",
+  "cluster": "breast-augmentation",
+  "title": "Swelling and Asymmetry After Breast Augmentation: FAQ",
+  "meta_title": "Breast Augmentation Swelling Asymmetry: What's Normal?",
+  "meta_description": "Breast augmentation swelling asymmetry is common early in recovery. Learn what is normal, when to call your surgeon, and how healing progresses safely.",
+  "excerpt": "One breast may look higher, firmer, or more swollen as your body heals after breast augmentation. Learn why uneven swelling happens, what to expect by week, and when changing symptoms warrant a call to your surgical team.",
+  "quick_answer": "Is it normal for one breast to be higher after breast augmentation?\n\nUsually, in the first weeks. University of Utah Health says each breast may heal at a different rate, and The Aesthetic Society says most residual swelling resolves within a month. An article on the ASPS website says drop and fluff can take 3 to 6 months. Call your surgeon the same day if one side suddenly grows or hardens.",
+  "primary_keyword": "breast augmentation swelling asymmetry",
+  "secondary_keywords": [
+    "4 week post op breast augmentation one breast is higher",
+    "2 week post op breast augmentation one breast is higher",
+    "6 week post op breast augmentation one breast is higher",
+    "3 week post op breast augmentation one breast is higher",
+    "side swelling after breast augmentation",
+    "one breast hurts more than the other after augmentation",
+    "uneven nipples after breast augmentation",
+    "is it normal for one breast to be more swollen after augmentation",
+    "is it normal for one breast to be bigger than the other after breast augmentation",
+    "one breast more swollen after augmentation",
+    "asymmetry after breast augmentation",
+    "uneven swelling after breast augmentation"
+  ],
+  "owns_queries": [
+    "swelling and asymmetry after breast augmentation faq",
+    "4 week post op breast augmentation one breast is higher",
+    "2 week post op breast augmentation one breast is higher",
+    "6 week post op breast augmentation one breast is higher",
+    "side swelling after breast augmentation",
+    "uneven nipples after breast augmentation",
+    "one breast hurts more than the other after augmentation"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Recovery",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "Woman in her early thirties in a soft high-neck cream sweater, seated at a small table by a bright window with her hands around a mug of tea, looking calmly outside.",
+      "prompt": "SCENE: Late morning in a bright kitchen corner, warm white walls, a tall window with sheer linen curtains and soft palm shadows, a small pale wood table. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 30s of East Asian descent with shoulder-length straight black hair, seated in a soft high-neck cream sweater with her hands around a stoneware mug of tea, looking calmly out of the window. Three-quarter view, at ease. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions on the body; not photographed from behind; no text, letters, numbers, logos or watermarks; no surgeon or staff; not glamour, not a fashion ad, no penthouse or luxury setting.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "higher-timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins, no decoration beyond hairlines and simple line icons. SUBJECT: A horizontal timeline with four evenly spaced gold markers and a short caption under each. No body figure. CONSTRAINTS: No people's bodies beyond what is described, no skin detail, no nipples, no faces; no practice name, no logos, no phone numbers, no watermarks. All text must be rendered exactly, word for word, and nothing else.",
+      "text_in_image": "One Breast Higher After Breast Augmentation\n2 weeks: Most swelling has gone down\n4 weeks: Most remaining swelling resolves\n6 weeks: Implants can still sit higher\n3 to 6 months: Drop and fluff can finish\nSources: The Aesthetic Society, articles on the ASPS website.",
+      "alt": "Vertical timeline card titled One Breast Higher After Breast Augmentation. 2 weeks: most swelling has gone down. 4 weeks: most remaining swelling resolves. 6 weeks: implants can still sit higher. 3 to 6 months: drop and fluff can finish. Sources: The Aesthetic Society and articles on the ASPS website.",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    },
+    {
+      "key": "normal-vs-call",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. Palette of stone grey and brushed gold. Generous margins. SUBJECT: A typography-only card. The title runs across the full width at the top. Below it, two equal columns divided by a thin gold rule: each column has a bold heading and four short rows separated by hairlines. Below the columns, one full-width boxed line for the emergency message. Below the box, a small one-line source footer. KEY DETAILS: Absolutely no icons, no symbols, no pictograms, no drawings anywhere on the card, only text and hairlines. CONSTRAINTS: No people or body shapes, no logos, no practice name, no phone numbers, no watermarks. All text must be rendered exactly, word for word, in the positions labeled, and nothing else.",
+      "text_in_image": "Title: Swelling and Asymmetry: Normal vs Call Your Surgeon\nLeft column heading: Usually normal in the first weeks\nLeft rows: One breast sits higher | One side looks rounder or firmer | Swelling shifts through the day | Tingling or brief shooting pains\nRight column heading: Call your surgeon today\nRight rows: One breast suddenly swells or grows | New firmness with pain and pressure | Redness, warmth, fever or chills | Drainage or an incision that opens\nBoxed line: Chest pain or trouble breathing: emergency room\nFooter: Sources: Cleveland Clinic, MedlinePlus, University of Utah Health.",
+      "alt": "Card titled Swelling and Asymmetry: Normal vs Call Your Surgeon. Usually normal in the first weeks: one breast sits higher, one side looks rounder or firmer, swelling shifts through the day, tingling or brief shooting pains. Call your surgeon today: one breast suddenly swells or grows, new firmness with pain and pressure, redness, warmth, fever or chills, drainage or an incision that opens. A note says chest pain or trouble breathing means the emergency room. Sources: Cleveland Clinic, MedlinePlus and University of Utah Health."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "ASPS",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks.",
+        "Wear your support garment (a bra or elastic band, called a bandeau) around the clock as instructed by your plastic surgeon."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/implants",
+      "publisher": "ASPS",
+      "title": "What types of breast implants are available?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Smooth implants may have some palpable or visible rippling under the skin."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/results",
+      "publisher": "ASPS",
+      "title": "What results should I expect after breast augmentation surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines may take several months, even a couple of years, to fade."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny, freelance writer, quoting surgeons",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "However, strenuous activities and upper body movements should still be avoided for at least six weeks.",
+        "but the majority of the swelling goes down within about two weeks.",
+        "Typically, the first week is the most uncomfortable",
+        "most women feel pressure on their chest, especially if the implant was placed under the muscle."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, article by Dr. Cindy Wu",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is normal for implants to still sit higher on your chest wall after the first month.",
+        "Over the next 2-3 months, your implants will naturally settle into the breast, revealing your final results.",
+        "If you are planning to swim, make sure to plan to have your surgery at least a month in advance of your vacation, as most surgeons will want you to wait that long before immersing in a pool or ocean."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Eric Mariotti",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The entire drop and fluff process can take three to six months to complete",
+        "Smaller, lighter implants, for example, may take longer than heavier implants to drop and fluff",
+        "if you have textured breast implants, you may see a more gradual drop and fluff process than with smooth implants"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation.",
+        "Most residual swelling will resolve within a month.",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "If you have external sutures, your surgeon will remove them in about a week. If your surgeon used tissue glue or tape, it will fall off on its own in a week or two.",
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You may experience some asymmetry since each breast may heal at a different rate.",
+        "You will begin to notice your final results around three months after surgery. However, you may continue to have subtle changes throughout the 12 months following your surgery.",
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months.",
+        "For the first week after surgery, you should rest and sleep on your back, with extra pillows to prop you up. This can help with swelling.",
+        "Do not sleep on your stomach until your surgeon says it’s okay. If you want to sleep on your side, you should:",
+        "wait until three to four weeks after surgery and",
+        "alternate sides at first to help with swelling.",
+        "You will wear a surgical bra for three to four weeks after your surgery. You should only remove the bra to shower or to wash it.",
+        "After three to four weeks of wearing the surgical bra, you can transition into a soft, supportive sports bra.",
+        "You can resume a daily shower two days after surgery. Do not soak in a bathtub, pool, or hot tub until your incisions heal or your surgeon says it’s okay."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On average, full recovery takes about six to eight weeks.",
+        "You should not do any heavy lifting for at least four weeks. If you are physically active in sports, it may take up to six weeks before you can return to those activities.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure.",
+        "Contact your healthcare provider immediately if you’re experiencing any of the following symptoms:",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic, on blood clots in general",
+      "title": "Deep Vein Thrombosis (DVT)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms of this include chest pain, shortness of breath, cough with blood, lightheadedness and fainting."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine), on cosmetic breast surgery in general, lifts and reductions included",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Protect your scars with a strong sunblock (SPF 30 or higher) whenever you are out in the sun.",
+        "Do not take aspirin, aspirin-containing medicines, or ibuprofen without your surgeon's approval.",
+        "Also contact your surgeon if you notice sudden swelling of your breast.",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site",
+        "Exertion can increase blood pressure, and lead to bleeding.",
+        "Once you no longer need dressings, wear a soft, wireless, supportive bra night and day for 2 to 4 weeks.",
+        "Any stitches will be removed within 2 weeks after surgery.",
+        "Make sure you eat healthy foods, including lots of fruits and vegetables. Drink plenty of fluids.",
+        "Do not smoke. Smoking slows healing and increases your risk for complications and infection."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Most infections resulting from surgery appear within a few days to a week, but infection is possible any time after surgery.",
+        "Wrinkling of the implant that can be felt or seen through the skin.",
+        "Collection of blood near the surgical site. May cause swelling, bruising and pain.",
+        "Collection of fluid around the implant. May cause swelling, pain and bruising.",
+        "most silicone implant ruptures are without symptoms, known as \"silent ruptures.\""
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication (guidance PDF)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan FDA-approved patient labeling for Natrelle saline implants",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The range of changes varies from intense sensitivity to no feeling in the nipple or breast following surgery."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra FDA-approved patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you do not have enough skin, and it is stretched too thin over the implant, you may be able to feel or see the edges of the implant under your skin surface after surgery.",
+        "the most common reason for implant removal was the patient requesting a different implant size or style",
+        "Style/Size Change 139 (49.1%)"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-are-the-benefits-of-combining-breast-augmentation-and-a-breast-lift",
+      "publisher": "ASPS website, article by Dr. Lawrence Iteld",
+      "title": "What are the benefits of combining breast augmentation and a breast lift?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast augmentation alone can enhance breast size, but it does not address issues such as sagging, uneven breast position or stretched-out nipples."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 12831,
+    "clicks": 178,
+    "position": 5.17,
+    "image_impressions": 167,
+    "image_clicks": 0,
+    "top_queries": [
+      {
+        "query": "4 week post op breast augmentation one breast is higher",
+        "impressions": 65,
+        "clicks": 2,
+        "position": 2.6
+      },
+      {
+        "query": "2 week post op breast augmentation one breast is higher",
+        "impressions": 37,
+        "clicks": 0,
+        "position": 7.1
+      },
+      {
+        "query": "side swelling after breast augmentation",
+        "impressions": 35,
+        "clicks": 0,
+        "position": 9.2
+      },
+      {
+        "query": "6 week post op breast augmentation one breast is higher",
+        "impressions": 33,
+        "clicks": 1,
+        "position": 4.3
+      },
+      {
+        "query": "one breast hurts more than the other after augmentation",
+        "impressions": 26,
+        "clicks": 0,
+        "position": 5.1
+      },
+      {
+        "query": "uneven nipples after breast augmentation",
+        "impressions": 25,
+        "clicks": 0,
+        "position": 7.2
+      },
+      {
+        "query": "fluid retention after breast augmentation",
+        "impressions": 17,
+        "clicks": 0,
+        "position": 70.6
+      },
+      {
+        "query": "is it normal for one breast to be more swollen after augmentation",
+        "impressions": 11,
+        "clicks": 0,
+        "position": 9.2
+      },
+      {
+        "query": "is it normal for one breast to be bigger than the other after breast augmentation",
+        "impressions": 11,
+        "clicks": 0,
+        "position": 7.9
+      },
+      {
+        "query": "3 week post op breast augmentation one breast is higher",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 5
+      }
+    ]
+  },
+  "notes": "Gentle pass. Meta title must stay as it is live ('Breast Augmentation Swelling Asymmetry: What's Normal?'), but build_sql.py writes meta_title = title with no way to keep them apart, so the production run as built would change it. Recorded here as meta_title; the main session must handle this before the run. The live row has no categories or tags; these are added. Live H2 'Quick FAQ: ...' is renamed because the kit requires 'Frequently asked questions'. New H2 'One breast higher at 2, 4 and 6 weeks post-op' per the 20 Oct plan. Corrected: 'first 4 to 8 weeks' to The Aesthetic Society's month; 'between 6 weeks and 3 months' to about 3 months and 3-6 months; Johns Hopkins and Mayo Clinic citations replaced with sources read today (Hopkins returned 403, Mayo is off the bank's list); FDA screening link moved to the guidance PDF; /contact-us link removed; /gallery to /gallery/breast-augmentation. River stones replaced by a new hero and two teaching cards. Fact check (batch 7): 'Most surgeons ask patients...' deleted; unsourced lines cut or labeled as practical advice. Links to /blog/breast-implant-rippling-bottoming-out and /blog/capsular-contracture pass only in a batch with those new posts or once they are live."
+}

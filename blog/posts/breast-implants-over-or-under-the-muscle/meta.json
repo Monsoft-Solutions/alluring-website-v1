@@ -1,0 +1,409 @@
+{
+  "slug": "breast-implants-over-or-under-the-muscle",
+  "id": "4b0cc7d7-2574-4170-9394-13cce5a5dd27",
+  "mode": "new",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Over or Under the Muscle? Breast Implant Placement Compared",
+  "meta_description": "Under the muscle: less visible, less contracture, may hurt more early. Over: recovery may be shorter, implant should stay put when you flex.",
+  "excerpt": "Where the implant sits changes how it looks, how your first weeks feel and what happens when you flex. Here is what each placement trades, what the evidence does and does not show, and the questions that settle it at your consultation.",
+  "quick_answer": "Are breast implants better over or under the muscle?\n\nNeither suits everyone. Sientra's and Allergan's labeling say implants under the muscle are harder to see or feel and carry less capsular contracture, but surgery may be longer and more painful, and The Aesthetic Society says they may move when you flex. Over the muscle, recovery may be shorter, but implants show more.",
+  "primary_keyword": "breast implants over or under the muscle",
+  "secondary_keywords": [
+    "under the muscle vs over the muscle implants",
+    "implants under the muscle vs over",
+    "over vs under muscle breast implants",
+    "under vs over muscle breast implants",
+    "above vs below muscle breast implant",
+    "breast implants above or below the muscle",
+    "is over or under the muscle breast implants better",
+    "is under muscle implants better",
+    "problems with breast implants under the muscle",
+    "how painful is breast augmentation under the muscle",
+    "subglandular vs submuscular breast implant",
+    "dual plane breast augmentation",
+    "is dual plane the same as under the muscle",
+    "what does half under the muscle mean for breast implants",
+    "breast implant placement comparison",
+    "recovery time for breast augmentation under the muscle"
+  ],
+  "owns_queries": [
+    "breast implants over or under the muscle",
+    "under the muscle vs over the muscle implants",
+    "implants under the muscle vs over",
+    "over vs under muscle breast implants",
+    "under vs over muscle breast implants",
+    "subglandular vs submuscular breast implant",
+    "breast implant placement comparison",
+    "is dual plane the same as under the muscle",
+    "problems with breast implants under the muscle"
+  ],
+  "categories": [
+    "Breast Augmentation"
+  ],
+  "tags": [
+    "Breast Augmentation"
+  ],
+  "cta": "breast",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a high-neck knit sweater at a small oak table in a bright room, studying a pencil sketch in a notebook while a clinician's hand points to it.",
+      "prompt": "SCENE: Mid-morning in a bright Miami consultation room, white plaster walls, an arched window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid 40s with warm olive skin and shoulder-length dark hair with a few silver strands, seated at a small oak table in a high-neck oatmeal knit sweater, looking thoughtfully at an open notebook with a simple pencil sketch of two curved lines and no writing. Only a clinician's hand and a sleeve are visible across the table, resting a pencil near the sketch. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, garments, drains or incisions; no surgeon or staff faces; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "placement-diagram",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Where a Breast Implant Sits, with three side-view line drawings, one per row, of a figure in a plain high-neck top, with a dashed gold shape for the implant and a grey band for the chest muscle. Over the muscle (subglandular): behind the breast tissue, on top of the chest muscle. Under the muscle (submuscular): beneath the chest muscle, wholly or in part. Dual plane: top under the muscle, lower part behind the breast tissue. The footer credits ASPS, Allergan labeling and Tebbetts in Plastic and Reconstructive Surgery and says the drawings are stylized and not to scale.",
+      "prompt": "SCENE: A calm medical-education diagram on a warm porcelain-white background with a thin brushed-gold rule at the top, palette of stone grey and brushed gold only, a refined serif for the title and a clean sans-serif for the labels. SUBJECT: Three panels in a row, each the same simple side-view outline of a woman's upper body facing right, wearing a plain high-neck top, drawn as a thin line like a textbook figure, with a smooth rounded chest contour. Inside each outline, one smooth stone-grey band runs down the chest for the chest muscle, and one single smooth dashed gold oval shows the implant. Panel 1: the whole oval is in front of the band, on the side toward the outer chest. Panel 2: the whole oval is behind the band, between the band and the ribs. Panel 3: one single unbroken oval, its upper half behind the band and its lower half in front of the band's lower end, because the band stops partway down and the oval continues below it. KEY DETAILS: Each oval is one continuous smooth shape, never pinched. The chest contour is a smooth curve with no point at its apex. No colors other than grey and gold, no stray lines. Each panel has its label and one short line under it; a one-line source footer in small text. CONSTRAINTS: Modest and non-sexual, every figure wears a plain high-neck top, no skin detail, no nipples, no faces, no logos, no practice name, no phone numbers, no watermarks. All text exactly as listed, nothing added.",
+      "text_in_image": "Where a Breast Implant Sits\nOver the muscle (subglandular): Behind the breast tissue, on top of the chest muscle\nUnder the muscle (submuscular): Beneath the chest muscle, wholly or in part\nDual plane: Top under the muscle, lower part behind the breast tissue\nDashed gold: the implant. Grey: the chest muscle.\nSources: ASPS; Allergan labeling; Tebbetts, Plastic and Reconstructive Surgery. Stylized, not to scale.",
+      "notes": "Hand-built as HTML/SVG (no render credits left); the prompt describes the original render."
+    },
+    {
+      "key": "tradeoff-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "A comparison card titled Over or Under the Muscle: The Trade-offs. Under the muscle: less visible and harder to feel, capsular contracture through 10 years 15.7%, recovery may be longer and more painful, implant may move when you flex, easier mammogram views. Over the muscle: more visible and easier to feel, capsular contracture through 10 years 26.3%, recovery may be shorter and less painful, implant should stay in place, harder mammogram views. The footer credits Allergan's 10-year study (Spear and Murphy, 2014) for the contracture rates.",
+      "prompt": "SCENE: A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the table, generous margins, hairline dividers only. SUBJECT: A three-column comparison table with five rows. KEY DETAILS: Lay the listed lines out in order: the first line is the title, the next two are the column headers for the second and third columns, then each group of three lines is one row (row label, Under the muscle value, Over the muscle value), and the last line is a small source footer. CONSTRAINTS: No people, no bodies, no skin, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines. All text exactly as listed, nothing added.",
+      "text_in_image": "Over or Under the Muscle: The Trade-offs\nUnder the muscle\nOver the muscle\nHow much it shows\nLess visible, harder to feel\nMore visible, easier to feel\nCapsular contracture through 10 years\n15.7%\n26.3%\nRecovery\nMay be longer, more painful\nMay be shorter, less painful\nWhen you flex\nImplant may move\nImplant should stay in place\nMammogram views\nEasier\nHarder\nContracture rates: Allergan's 10-year study (Spear and Murphy, 2014). Other rows: Sientra and Allergan labeling; The Aesthetic Society; American Cancer Society."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/procedure",
+      "publisher": "ASPS",
+      "title": "What are the steps of a breast augmentation procedure?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The method for inserting and positioning breast implants depends on the type of implant, degree of enlargement desired, your body type and your surgeon's recommendations.",
+        "Under the pectoral muscle (a submuscular placement)",
+        "Directly behind the breast tissue, over the pectoral muscle (a submammary/ subglandular placement)"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "ASPS",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny, freelance writer",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have a subpectoral (under the muscle) implant, you'll likely feel some pain, because the muscle has been stretched to accommodate the implant.",
+        "However, strenuous activities and upper body movements should still be avoided for at least six weeks."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/exercise-after-breast-augmentation",
+      "publisher": "ASPS website, article by Catherine Huang-Begovic, MD",
+      "title": "Exercise after breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "After breast augmentation, especially with implants under the muscle, I recommend patients try to avoid strenuous chest exercise such as push ups."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Eric R. Mariotti, MD",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The entire drop and fluff process can take three to six months to complete"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This placement may interfere less with mammograms and breast-feeding. However, the implant may move when you flex your chest muscles.",
+        "This placement may interfere with mammograms and breast-feeding. However, the implant should stay in place when you flex your chest muscles."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Women with large breast implants, especially those inserted on top of the chest muscles (subglandularly), may have major cosmetic deformity if they choose not to replace them",
+        "Some women who undergo breast augmentation can successfully breastfeed and some cannot.",
+        "Repositioning of the implant by surgically opening the incision and moving the implant"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "What is your reoperation rate?"
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra (FDA-approved patient labeling)",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Surgery time may be longer",
+        "Recovery may be longer",
+        "May be more painful",
+        "Future re-operation may be more difficult",
+        "Capsular contracture may be less likely",
+        "It may be easier to image breast with mammography",
+        "If you have thin or weakened breast tissue, submuscular positioning may work better",
+        "Surgery time may be shorter",
+        "Recovery time may be shorter",
+        "May be less painful",
+        "Future reoperation may be easier",
+        "Implants may be more palpable (can feel the implant through breast tissue)",
+        "Capsular contracture may be more likely",
+        "If you do not have enough skin, and it is stretched too thin over the implant, you may be able to feel or see the edges of the implant under your skin surface after surgery.",
+        "Breast implants that are too big for the amount of breast tissue or skin can cause problems: they can actually speed up the effects of gravity; your breasts may droop or sag earlier with implants that are too large."
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan (FDA-approved patient labeling)",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Placement of a breast implant wholly or partially underneath the chest muscle",
+        "Less visible and palpable implants",
+        "More visible and palpable implants",
+        "Greater likelihood of capsular contracture",
+        "Less likelihood of capsular contracture",
+        "More difficult imaging during mammography exam",
+        "Easier imaging during mammography exam",
+        "Reoperation may be more difficult",
+        "May provide easier access for reoperation",
+        "May be preferable if you have thin or weakened breast tissue",
+        "May not be recommended if you have thin or weakened breast tissue"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24867717/",
+      "publisher": "Plastic and Reconstructive Surgery (Spear and Murphy; Allergan-funded)",
+      "title": "Natrelle round silicone breast implants: Core Study results at 10 years",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Among augmentation subjects, capsular contracture was significantly lower (p = 0.023) for submuscular (15.7 percent) versus subglandular (26.3 percent) placement."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39989707/",
+      "publisher": "Aesthetic Surgery Journal Open Forum (Haas and colleagues)",
+      "title": "Capsular Contracture After Breast Augmentation: A Systematic Review and Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Subpectoral implant placement demonstrated significantly reduced capsular contracture rates compared with prepectoral placement (OR = 0.35, 95% CI, 0.25-0.50)."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11842228/",
+      "publisher": "Aesthetic Surgery Journal Open Forum (Haas and colleagues), full text",
+      "title": "Capsular Contracture After Breast Augmentation: A Systematic Review and Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "were obtained from 11 studies (17,707 cases)",
+        "clear definition of capsular contracture as Baker Grade III or IV",
+        "most of the included studies were non-randomized trials, with a low level of evidence and a significant degree of heterogeneity"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30685936/",
+      "publisher": "Archives of Plastic Surgery (Dyrberg and colleagues)",
+      "title": "Breast animation deformity",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Its incidence and etiology have yet to be established.",
+        "three describing BAD after breast augmentation and one describing BAD after immediate breast reconstruction",
+        "The highest percentages were found in patients operated on using the Regnault technique or the dual-plane technique (73%-78%).",
+        "The lowest percentages were found following the dual-plane muscle-splitting technique (30%) and the triple-plane technique (33%).",
+        "This review of the current literature suggests that the degree of BAD is proportional to the degree of muscle involvement.",
+        "Evidence is scarce, and the phenomenon seems to be underreported."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19052809/",
+      "publisher": "Aesthetic Plastic Surgery (Spear and colleagues)",
+      "title": "Outcome assessment of breast distortion following submuscular breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Of the 40 patients' photographs that were evaluated, 9 (22.5%) had no distortion, 25 (62.5%) had minimal distortion, 4 (10%) had moderate distortion, and 2 (5%) had severe distortion.",
+        "Patients who may be better candidates for subglandular placement are those for whom exercise is central to their daily living.",
+        "All procedures were performed by the senior author using a variation of a previously described dual-plane technique.",
+        "Of the 195 questionnaires, there were 69 responses, a 35% response rate.",
+        "Fifty-six (82%) described mild to no distortion",
+        "the most common activities that were problematic were lifting weights and exercising (24 and 19%, respectively)",
+        "Only one (1%) patient stated that she would not recommend subpectoral positioning."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30902576/",
+      "publisher": "Journal of Plastic, Reconstructive & Aesthetic Surgery (Alnaif and colleagues)",
+      "title": "Treatment of breast animation deformity: A systematic review",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The prevalence and clinical significance of AD remain unclear.",
+        "Of the 214 included breasts, 151 were postmastectomy and reconstruction, while 63 were primary augmentation.",
+        "Overall, interventions for treating AD were successful in all (n = 214) of the documented cases, with an overall complication rate of 11.6% (n = 25) reported in the studies after treatment.",
+        "the substantial complication rate of these treatment modalities."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11373572/",
+      "publisher": "Plastic and Reconstructive Surgery (Tebbetts)",
+      "title": "Dual plane breast augmentation: optimizing implant-soft-tissue relationships in a wide range of breast types",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "introducing techniques that combine retromammary and partial retropectoral pocket locations in a single patient to optimize the benefits of each pocket location while limiting the tradeoffs and risks of a single pocket location.",
+        "A total of 468 patients had dual plane augmentation between January of 1992 and March of 1998"
+      ]
+    },
+    {
+      "url": "https://www.cancer.org/cancer/types/breast-cancer/screening-tests-and-early-detection/mammograms/mammograms-for-women-with-breast-implants.html",
+      "publisher": "American Cancer Society",
+      "title": "Mammograms with Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have breast implants, you should still get regular screening mammograms as recommended",
+        "ID views are easier if the implants were placed underneath (behind) the chest muscles."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On average, full recovery takes about six to eight weeks.",
+        "Breast implants that are placed below your muscle usually affect milk production less than implants that are above your muscle."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will begin to notice your final results around three months after surgery. However, you may continue to have subtle changes throughout the 12 months following your surgery."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "search_queries",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 113,
+    "clicks": 0,
+    "position": 5.7,
+    "top_queries": [
+      {
+        "query": "under the muscle",
+        "impressions": 13,
+        "clicks": 0,
+        "position": 3.1
+      },
+      {
+        "query": "under muscle",
+        "impressions": 7,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "over the muscle",
+        "impressions": 6,
+        "clicks": 0,
+        "position": 2
+      },
+      {
+        "query": "problems with breast implants under the muscle",
+        "impressions": 5,
+        "clicks": 0,
+        "position": 2.4
+      },
+      {
+        "query": "breast implant placement comparison",
+        "impressions": 4,
+        "clicks": 0,
+        "position": 7.2
+      },
+      {
+        "query": "post op breast augmentation under muscle",
+        "impressions": 4,
+        "clicks": 0,
+        "position": 7.5
+      },
+      {
+        "query": "pain after breast augmentation under muscle",
+        "impressions": 3,
+        "clicks": 0,
+        "position": 47
+      },
+      {
+        "query": "subglandular breast augmentation",
+        "impressions": 3,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "submuscular",
+        "impressions": 3,
+        "clicks": 0,
+        "position": 2.7
+      },
+      {
+        "query": "breast implant placement options",
+        "impressions": 3,
+        "clicks": 0,
+        "position": 3
+      }
+    ]
+  },
+  "notes": "New post N1 (3 Nov plan). Compares both placements and claims no usual placement for Dr. Karlinsky (open practice question). Search Console, 90 days to 2026-11-01: placement queries show few impressions and no clicks; the plan's '1,227 impressions at 13.5' could not be reproduced from gsc.json or search_queries with any filter tried, and Keyword Planner's 2,900 US searches a month is the plan's figure, not re-pulled here. Links to N2, N3, N4 (capsular-contracture), N5 (breast-implant-rippling-bottoming-out) and N6 (mammograms-breastfeeding-with-breast-implants): these must go live in the same run. Allergan and Sientra placement rows re-read directly from the PDFs on 2026-11-03. Independent fact check of 3 Nov applied (factcheck/batch5.md): meta wording, push-up and lifting FAQ, repositioning FAQ, sag FAQ, Utah wording, Haas study counts, Dyrberg's low end, Spear 2009 context, Alnaif's success rate. Left out on purpose: Dr. Karen Horton's 3 weeks vs 3 months line (Shacknai 2021), a single surgeon's stated preference, and any claim that drop and fluff is slower under the muscle (no source). The 'breast' CTA text in apps/web/lib/data/blog-cta-content.ts says 'our board-certified surgeons': needs a code fix before this renders.",
+  "gate": {
+    "verdict": "new",
+    "reason": "Cluster is unclaimed — safe to write",
+    "owningUrl": null,
+    "owningSlug": null,
+    "matchedQuery": null,
+    "similarityScore": null,
+    "claimedQueries": [
+      "breast implants over or under the muscle",
+      "under the muscle vs over the muscle implants",
+      "implants under the muscle vs over",
+      "over vs under muscle breast implants",
+      "under vs over muscle breast implants",
+      "above vs below muscle breast implant",
+      "breast implants above or below the muscle",
+      "is over or under the muscle breast implants better",
+      "is under muscle implants better",
+      "problems with breast implants under the muscle",
+      "how painful is breast augmentation under the muscle",
+      "subglandular vs submuscular breast implant",
+      "dual plane breast augmentation",
+      "is dual plane the same as under the muscle",
+      "what does half under the muscle mean for breast implants",
+      "breast implant placement comparison",
+      "recovery time for breast augmentation under the muscle"
+    ],
+    "warnings": [],
+    "checkedAt": "2026-11-04T03:33:54.233Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
+  }
+}

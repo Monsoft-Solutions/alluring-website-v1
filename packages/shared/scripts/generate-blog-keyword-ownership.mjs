@@ -81,6 +81,24 @@ const RETIRED = {
     '/blog/best-age-breast-lift-miami':
         '/blog/breast-lift-miami-post-pregnancy',
     '/blog/breast-lift-myths-busted': '/blog/breast-lift-miami-post-pregnancy',
+    '/blog/breast-augmentation-recovery-tips-miami':
+        '/blog/breast-augmentation-recovery-miami',
+    '/blog/breast-augmentation-recovery-exercises':
+        '/blog/when-can-you-work-out-after-breast-augmentation',
+    '/blog/breast-augmentation-miami-candidate':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/breast-augmentation-miami-post-pregnancy':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/best-age-breast-augmentation-miami':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/breast-augmentation-weight-loss-miami':
+        '/blog/breast-augmentation-candidate-quiz',
+    '/blog/breast-augmentation-before-after-miami':
+        '/gallery/breast-augmentation',
+    '/blog/breast-augmentation-safety-miami':
+        '/procedures/breast-augmentation-miami#safety',
+    '/blog/breast-augmentation-vs-reduction-miami':
+        '/procedures/breast-augmentation-miami#candidate',
     '/mommy-makeover-miami-guide': '/procedures/mommy-makeover-miami',
     '/prepare-mommy-makeover-miami': '/procedures/mommy-makeover-miami',
     '/mommy-makeover-myths-miami': '/procedures/mommy-makeover-miami',
