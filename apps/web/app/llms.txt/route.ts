@@ -18,6 +18,12 @@ import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
+ * The file's one-line summary. Not `siteConfig.business.description`, whose
+ * "World-class" and "Where luxury meets affordability" answer engines repeat.
+ */
+const SUMMARY = `${siteConfig.business.tagline} Cosmetic surgery in Miami, Florida, with personalized care and financing available.`
+
+/**
  * Group procedures by category
  */
 function groupProceduresByCategory() {
@@ -75,9 +81,9 @@ async function generateLlmsTxt(): Promise<string> {
 
     const content = `# ${siteConfig.business.name}
 
-> Plastic surgery in Miami, Florida. ${siteConfig.business.tagline}
+> ${SUMMARY}
 
-${siteConfig.business.name} is a plastic surgery clinic in Miami, Florida offering breast augmentation, Brazilian butt lift (BBL), liposuction, tummy tuck, mommy makeover, and facial procedures. One surgeon performs every surgery: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${siteConfig.trustStats ? ` The practice's published patient rating is ${siteConfig.trustStats.rating} out of 5.` : ''}
+${siteConfig.business.name} is a plastic surgery practice in Miami, Florida, offering breast augmentation, Brazilian butt lift (BBL), liposuction, tummy tuck, mommy makeover, and facial procedures. ${KARLINSKY_NAME}, is the practice's one surgeon. ${KARLINSKY_CREDENTIALS}
 
 ## About Us
 
@@ -157,7 +163,7 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
 }
 ## Why Choose ${siteConfig.business.name}
 
-1. **One Surgeon**: ${KARLINSKY_NAME} performs every surgery. ${KARLINSKY_CREDENTIALS}
+1. **One surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
 2. **Flexible Financing**: Financing is offered through Cherry, CareCredit, and United Credit, subject to credit approval
 3. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base${
         siteConfig.trustStats
@@ -207,7 +213,7 @@ export async function GET() {
 
         // Return a basic fallback
         return new NextResponse(
-            `# ${siteConfig.business.name}\n\n> Plastic surgery in Miami, Florida. ${siteConfig.business.tagline}\n\nVisit our website for more information.`,
+            `# ${siteConfig.business.name}\n\n> ${SUMMARY}\n\nVisit our website for more information.`,
             {
                 status: 500,
                 headers: {

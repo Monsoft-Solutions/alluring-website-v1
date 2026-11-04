@@ -11,7 +11,8 @@
 # prerender list), sitemap-urls, blog-post-<slug> (one post's page). After a
 # rewrite or a new post: blog-posts sitemap-urls blog-post-<slug>. After a fold:
 # every post 01-fold-links.sql edited, then the folded slugs after the delete.
-# /sitemap/blog.xml is route ISR (3 h) and no tag reaches it: it catches up alone.
+# /sitemap/blog.xml is route ISR: sitemap-urls also expires it by path, so send
+# that tag after every publish, rewrite or fold. Its 3-hour timer is the fallback.
 # The secret is the LAST REVALIDATION_SECRET line of apps/admin/.env.
 set -euo pipefail
 

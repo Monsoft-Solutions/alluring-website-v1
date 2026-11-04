@@ -10,32 +10,32 @@ const law: ModuleSceneItem[] = [
         body: 'Fat goes only into the layer under the skin and never crosses the fascia, the tissue that covers the gluteal muscle.',
     },
     {
-        title: 'Ultrasound guidance',
-        body: 'The surgeon uses ultrasound while moving the cannula, to see where the fat is going.',
+        title: 'Ultrasound or other authorized guidance',
+        body: 'The physician uses ultrasound, or other technology authorized under board rule, while placing and moving the cannula.',
     },
     {
-        title: 'One surgeon, one patient',
-        body: 'Your surgeon stays with you for the whole procedure and is not operating on anyone else at the same time.',
+        title: 'One physician, one patient',
+        body: 'One physician to one patient from the start of anesthesia until extubation, when the breathing tube comes out, with no other procedure at the same time.',
     },
     {
         title: 'An exam before surgery day',
-        body: 'The surgeon examines you in person no later than the day before surgery.',
+        body: 'The physician examines you in person no later than the day before surgery.',
     },
     {
-        title: 'The surgeon does the transfer',
-        body: 'The surgeon removes and injects the fat personally. That work cannot be handed to anyone else.',
+        title: 'The physician does the transfer',
+        body: 'The physician performs the fat extraction and injection personally. Other duties can be delegated with your written consent, under direct supervision.',
     },
 ]
 
 const evidence: ModuleSceneEvidence[] = [
     {
         title: 'Why the law exists',
-        body: 'South Florida recorded 25 deaths from BBL fat embolism between 2010 and 2022. 92% of those patients had surgery at high-volume, budget clinics, and in every case examined at autopsy, fat had been injected into the muscle (Pazmiño and Garcia, Aesthetic Surgery Journal, 2023).',
+        body: "South Florida recorded 25 deaths from BBL fat embolism between 2010 and 2022, 12 of them after Florida's 2019 emergency rule (Pazmiño and Garcia, Aesthetic Surgery Journal, 2023). In the 11 cases they examined at autopsy, the authors describe fat in the muscle.",
         sourceId: 'pazmino-garcia-2023',
     },
     {
         title: 'How often complications happen',
-        body: 'A 2026 meta-analysis of 38 studies and 22,151 patients found minor complications in 3.58% of BBL patients, most often a seroma (a pocket of fluid) in 2.03%. Major complications were less common with ultrasound guidance: 0.02% versus 0.08% (Elsaftawy and colleagues, Plastic and Reconstructive Surgery, 2026).',
+        body: 'A 2026 meta-analysis of 38 studies and 22,151 patients found minor complications in 3.58% of BBL patients, including uneven contours in 2.29% and seroma, a pocket of fluid, in 2.03%. Major complications were less common with ultrasound guidance: 0.02% versus 0.08% (Elsaftawy and colleagues, Plastic and Reconstructive Surgery, 2026).',
         sourceId: 'elsaftawy-meta-analysis-2026',
     },
 ]
@@ -50,13 +50,14 @@ const checklist = [
 ]
 
 /**
- * Where Florida law lets fat go, as the layers of the buttock. Real text, not
+ * Where Florida's rule for office surgery lets fat go, as the layers of the
+ * buttock. Real text, not
  * a picture of text, so it is read, translated and quoted like the rest of
  * the page. The cannula is drawn in as the diagram scrolls into view.
  */
 function BblStrata() {
     return (
-        <figure aria-label='Where Florida law allows fat to go: the layers of the buttock'>
+        <figure aria-label="Where Florida's rule for office surgery allows fat to go: the layers of the buttock">
             <div className='flex flex-col border border-stone-700'>
                 <div className='flex h-14 items-center bg-[#2B2724] px-5'>
                     <p className='text-base font-bold text-stone-100'>Skin</p>
@@ -67,7 +68,8 @@ function BblStrata() {
                             Fat under the skin
                         </p>
                         <p className='mt-1.5 text-[0.9375rem] leading-[1.45] text-stone-200'>
-                            The only layer Florida law allows fat to go
+                            The only layer Florida&apos;s rule for office
+                            surgery allows fat to go
                         </p>
                     </div>
                     <div className='flex items-center'>
@@ -76,7 +78,8 @@ function BblStrata() {
                             className='pm-draw-x bg-gold-400 relative block h-0.5 w-[40%] after:absolute after:top-1/2 after:-right-1 after:size-2 after:-translate-y-1/2 after:rounded-full after:bg-inherit lg:w-[56%]'
                         />
                         <p className='ml-4 text-[0.8125rem] leading-[1.4] text-stone-300'>
-                            Cannula, watched on ultrasound
+                            Cannula, with ultrasound or other authorized
+                            guidance
                         </p>
                     </div>
                 </div>
@@ -120,17 +123,16 @@ export function BblSafety() {
             question='Is a BBL safe in Miami?'
             answer={
                 <>
-                    A BBL&apos;s most serious risk is a fat embolism: fat
-                    injected into or below the gluteal muscle can enter a blood
-                    vessel, which can be fatal. The risk is lowest when the fat
-                    stays under the skin, and Florida law now requires exactly
-                    that, along with ultrasound guidance and one surgeon for one
-                    patient.
+                    A BBL is surgery with a small but serious risk. The most
+                    serious is a fat embolism: fat injected into or below the
+                    gluteal muscle can enter a blood vessel, which can be fatal.
+                    Safety guidance says to keep fat under the skin, and
+                    Florida&apos;s rule for office surgery requires it.
                 </>
             }
             diagram={<BblStrata />}
             law={{
-                heading: 'What Florida law requires',
+                heading: "Florida's rule for office surgery",
                 sources: [
                     {
                         label: 'Florida Statutes §458.328',
@@ -143,6 +145,7 @@ export function BblSafety() {
             checklist={{
                 heading: 'Questions to ask any BBL surgeon, including us',
                 questions: checklist,
+                closing: "If an answer isn't clear, ask again before you book.",
             }}
         />
     )

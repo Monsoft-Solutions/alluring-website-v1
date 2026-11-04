@@ -267,7 +267,8 @@ Start from Search Console, not guesses: the `search-console` MCP
 - Count `<script type="application/ld+json">` tags, not mentions (the RSC
   payload repeats them): BreadcrumbList, MedicalWebPage, BlogPosting, FAQPage
   when there are FAQs, ImageObject only for images in the body.
-- `/sitemap/blog.xml` refreshes on its own within 3 hours; no tag reaches it.
+- `/sitemap/blog.xml` lists the post right after the `sitemap-urls` revalidate,
+  with its `lastmod`.
 
 ### 5. Measure
 
@@ -458,8 +459,9 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
   notes and ownsQueries: restore them from the git diff.
 - **"scheduled" never publishes.** No cron publishes scheduled posts. The kit
   inserts posts as `published` with an explicit `published_at`.
-- **Sitemap lag.** `/sitemap/blog.xml` is cached for up to 3 hours and no
-  revalidation tag reaches it; wait, or redeploy.
+- **Sitemap lag.** `/sitemap/blog.xml` is cached for up to 3 hours unless
+  `sitemap-urls` is revalidated, which expires it by path. A stale sitemap means
+  that tag wasn't sent: send it, or wait for the timer.
 
 ## Known issues outside the kit
 

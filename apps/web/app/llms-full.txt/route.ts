@@ -9,13 +9,19 @@
 import { NextResponse } from 'next/server'
 
 import { procedures } from '@/lib/data/procedures.data'
+import { siteConfig, getFullAddress } from '@/lib/data/site-config'
 import {
     KARLINSKY_CREDENTIALS,
     KARLINSKY_NAME,
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
-import { siteConfig, getFullAddress } from '@/lib/data/site-config'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
+
+/**
+ * The file's one-line summary. Not `siteConfig.business.description`, whose
+ * "World-class" and "Where luxury meets affordability" answer engines repeat.
+ */
+const SUMMARY = `${siteConfig.business.tagline} Cosmetic surgery in Miami, Florida, with personalized care and financing available.`
 
 /**
  * Generate comprehensive llms-full.txt content
@@ -54,9 +60,9 @@ async function generateLlmsFullTxt(): Promise<string> {
 
     const content = `# ${siteConfig.business.name} - Comprehensive Information Guide
 
-> Plastic surgery in Miami, Florida. ${siteConfig.business.tagline}
+> ${SUMMARY}
 
-This is the comprehensive information file for ${siteConfig.business.name}, a plastic surgery clinic in Miami, Florida. This document provides detailed information about our procedures, our surgeon, and our services for AI assistants and language models.
+This is the comprehensive information file for ${siteConfig.business.name}, a plastic surgery practice in Miami, Florida. This document provides detailed information about our procedures, surgeon, and services for AI assistants and language models.
 
 ---
 
@@ -94,7 +100,7 @@ This is the comprehensive information file for ${siteConfig.business.name}, a pl
     }
 
 ### Surgeon and Rating
-- **Surgeon**: ${KARLINSKY_NAME}. One surgeon performs every surgery. ${KARLINSKY_CREDENTIALS}${
+- **Surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${
         siteConfig.trustStats
             ? `
 - **Published Patient Rating**: ${siteConfig.trustStats.rating} out of 5`
@@ -198,7 +204,7 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
 
 ## Why Choose ${siteConfig.business.name}
 
-1. **One Surgeon**: ${KARLINSKY_NAME} performs every surgery. ${KARLINSKY_CREDENTIALS}
+1. **One Surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
 
 2. **Flexible Financing**: Our financing options, subject to credit approval, spread the cost of surgery over time.
 

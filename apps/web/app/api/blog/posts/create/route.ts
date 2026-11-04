@@ -11,11 +11,12 @@ import {
 } from '@workspace/db/schema/blog'
 import { CACHE_TAGS } from '@workspace/shared/cache'
 import { inArray } from 'drizzle-orm'
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 
 import { uploadImageToBlob as uploadImageToBlobFormUrl } from '@/lib/api/upload-image.util'
 import { withApiAuth } from '@/lib/api/withApiAuth.middleware'
+import { BLOG_SITEMAP_PATH } from '@/lib/cache/blog-sitemap-path.constant'
 
 // Infer transaction type from db client
 type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
@@ -93,6 +94,7 @@ async function postHandler(request: NextRequest) {
         // If published, revalidate sitemap URLs for page classification
         if (data.status === 'published') {
             revalidateTag(CACHE_TAGS.SITEMAP_URLS, { expire: 0 })
+            revalidatePath(BLOG_SITEMAP_PATH)
         }
 
         console.log('Blog post created successfully')

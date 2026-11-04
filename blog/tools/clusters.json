@@ -34,6 +34,7 @@
         "page": "/procedures/brazilian-butt-lift-bbl-miami",
         "anchors": [
             "what-is-a-bbl",
+            "candidate",
             "options",
             "procedure",
             "recovery",
@@ -43,7 +44,12 @@
             "faq"
         ],
         "facts": ["bbl.facts.ts"],
-        "old_figures": []
+        "old_figures": [
+            "\\b50 ?%? ?(?:[–-]|to) ?80 ?%",
+            "\\b20 ?%? ?(?:[–-]|to) ?50 ?%",
+            "\\b10 ?(?:[–-]|to) ?12 (?:sessions|massages)",
+            "\\b(?:1|one) in 3,?000\\b"
+        ]
     },
     "tummy-tuck": {
         "label": "Tummy tuck",

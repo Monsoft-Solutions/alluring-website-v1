@@ -228,8 +228,9 @@ bash blog/tools/revalidate.sh blog-posts sitemap-urls blog-post-<slug>
 
 - `blog-posts` covers the listings and the prerender list, `blog-post-<slug>`
   the page, and `sitemap-urls` the URL lists. Each call sends at most 10 tags.
-- `/sitemap/blog.xml` is route ISR with a 3-hour revalidate, and no tag
-  reaches it. A new post appears there within 3 hours, or after a deploy.
+- `/sitemap/blog.xml` is route ISR with a 3-hour timer as the fallback.
+  `sitemap-urls` also expires it by path, so a new post appears on the next
+  fetch.
 - After a fold, revalidate every post that `01-fold-links.sql` edited (its
   last SELECT prints the tags). After the delete, revalidate the folded
   slugs.

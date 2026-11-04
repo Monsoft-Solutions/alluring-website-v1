@@ -39,6 +39,7 @@ export function ModuleAskAnySurgeon({
     heading,
     questions,
     note = "Bring this list to your free consultation, and she answers each question before you decide anything. Her credentials are below, each one linked to the issuing body's own record.",
+    closing = 'A clinic that cannot answer these clearly is one to walk away from.',
 }: {
     /** e.g. "Questions to ask any BBL surgeon, including us". */
     heading: string
@@ -49,6 +50,8 @@ export function ModuleAskAnySurgeon({
      * that orders its sections differently passes its own.
      */
     note?: string
+    /** The bold line under the questions. */
+    closing?: string
 }) {
     return (
         <section
@@ -73,8 +76,7 @@ export function ModuleAskAnySurgeon({
                 ))}
             </ul>
             <p className='text-gold-100 mt-7 text-[1.0625rem] leading-[1.55] font-bold md:text-lg'>
-                A clinic that cannot answer these clearly is one to walk away
-                from.
+                {closing}
             </p>
             <div className='mt-9 flex flex-col gap-6 border-t border-stone-700 pt-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12'>
                 <div className='max-w-[37.5rem]'>
@@ -159,6 +161,7 @@ export type ModuleSceneSectionProps = {
         heading: string
         questions: string[]
         note?: string
+        closing?: string
     }
 }
 
@@ -301,6 +304,7 @@ export function ModuleSceneSection({
                     heading={checklist.heading}
                     questions={checklist.questions}
                     note={checklist.note}
+                    closing={checklist.closing}
                 />
             ) : null}
         </ModuleScene>

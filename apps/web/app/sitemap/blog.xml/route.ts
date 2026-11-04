@@ -6,7 +6,8 @@
  *
  * Category pages are excluded (noindexed to prevent cannibalization with procedure pages).
  *
- * Revalidates every 3 hours to balance freshness with performance
+ * Refreshes when `sitemap-urls` goes through POST /api/revalidate, which expires
+ * this path. The 3-hour timer is the fallback for writes that don't send it.
  */
 import { NextResponse } from 'next/server'
 

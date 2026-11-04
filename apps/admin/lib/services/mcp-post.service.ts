@@ -384,10 +384,14 @@ async function revalidateLivePost(slug: string | null) {
     if (slug) {
         await revalidateWebAppCache([
             CACHE_TAGS.BLOG_POSTS,
+            CACHE_TAGS.SITEMAP_URLS,
             CACHE_TAGS.blogPostBySlug(slug),
         ])
     } else {
-        await revalidateWebAppCache([CACHE_TAGS.BLOG_POSTS])
+        await revalidateWebAppCache([
+            CACHE_TAGS.BLOG_POSTS,
+            CACHE_TAGS.SITEMAP_URLS,
+        ])
     }
     revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
 }

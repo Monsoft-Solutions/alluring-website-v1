@@ -63,15 +63,13 @@ export function BblCost({ pricing }: { pricing: ProcedurePricing }) {
             />
 
             <h3 className={cn(moduleH3, 'mt-10 md:mt-11')}>
-                Why some BBL offers cost less
+                Comparing BBL quotes
             </h3>
             <p className={cn(moduleBody, 'mt-3.5')}>
-                Some advertised BBL prices leave out anesthesia, the facility,
-                garments or follow-up visits, or describe a smaller procedure
-                than the one you want. Ask every clinic, including us, for an
-                itemized quote. Then ask whether the surgeon places the fat
-                under ultrasound guidance and stays with one patient for the
-                whole surgery, as Florida law requires.
+                Quotes don&apos;t always cover the same things. Ask every
+                clinic, including us, for an itemized quote: surgeon,
+                anesthesia, facility, garments, follow-up visits and how much
+                fat is moved.
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
                 Financing is available through {getFinancingPartnersString()},

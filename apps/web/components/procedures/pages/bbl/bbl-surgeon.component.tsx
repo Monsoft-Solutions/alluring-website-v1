@@ -29,14 +29,13 @@ export function BblSurgeon() {
             id='surgeon'
             question='BBL surgeons in Miami: who performs your procedure'
             className={moduleSectionPad}
-            answer={`Every BBL at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} Under Florida law she examines you in person before surgery, removes and injects the fat herself and stays with you throughout.`}
+            answer={`Every BBL at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} She examines you in person before surgery and confirms your price.`}
         >
             <p className={cn(moduleBody, 'mt-4.5')}>
                 Searching for a BBL surgeon in Miami turns up a long list of
-                names and a wide spread of prices. What separates them is where
-                they put the fat, whether they follow Florida law on every case,
-                how many patients they operate on at once, and whether you can
-                check their credentials yourself.
+                names and a wide spread of prices. When you compare surgeons,
+                ask where they place the fat, how many patients they operate on
+                at once, and where you can check their credentials yourself.
             </p>
 
             <ModuleSurgeonCredentials />
