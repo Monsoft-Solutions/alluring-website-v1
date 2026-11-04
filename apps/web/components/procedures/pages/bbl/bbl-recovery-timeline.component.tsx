@@ -13,6 +13,8 @@ import {
 } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 
+import { BblBookPrompt } from './bbl-book-prompt.component'
+
 /**
  * The sourced recovery standard approved on 2026-09-14: every figure is a
  * fact in `bbl.facts.ts`, attributed the way that file says it must be.
@@ -24,19 +26,19 @@ const milestones = [
     },
     {
         when: 'Weeks 1–2',
-        body: 'The strictest stretch: no sitting or lying on your buttocks for at least 2 weeks, and sleep on your stomach or side. Most people need some pain medication for the first 4 to 5 days, and Cleveland Clinic says pain eases after 1 to 2 weeks.',
+        body: 'The strictest stretch: no sitting or lying on your buttocks for at least 2 weeks, and sleep on your stomach or side. A plastic surgeon interviewed by ASPS says most people need some pain medication for the first 4 to 5 days, and Cleveland Clinic says pain eases after 1 to 2 weeks.',
     },
     {
         when: 'Days 10–14',
-        body: 'Back to a desk job and driving, sitting on a BBL pillow. Some surgeons allow work between days 7 and 10; a job that involves lifting needs longer.',
+        body: 'Cleveland Clinic says you should be able to go back to work between 10 and 14 days, and The Aesthetic Society says you can work and drive by then if you sit on a pillow. An ASPS article says patients return between days 7 and 10; a job that involves lifting needs longer.',
     },
     {
         when: 'Month 1',
-        body: 'Compression garment 24/7, except in the shower, or as your surgeon directs. No heavy lifting or strenuous exercise.',
+        body: 'Compression garment 24/7, except in the shower, or as your surgeon directs (the schedule of a plastic surgeon interviewed by ASPS). No heavy lifting or strenuous exercise.',
     },
     {
         when: 'Month 2',
-        body: 'Garment at least 12 hours a day, or as your surgeon directs. Light activity such as fast walking. Sit only briefly on a pillow, about 10 minutes at a time through week 6, as a plastic surgeon interviewed by ASPS advises.',
+        body: 'Garment at least 12 hours a day, or as your surgeon directs (the same schedule). Light activity such as fast walking. Keep using a pillow when you sit. A plastic surgeon interviewed by ASPS advises keeping any sitting to about 10 minutes at a time for the first 6 weeks.',
     },
     {
         when: 'Week 8',
@@ -44,11 +46,11 @@ const milestones = [
     },
     {
         when: 'Months 2–3',
-        body: 'Most people feel recovered, though it can take up to 6 months. The risk of losing grafted fat drops around month 3.',
+        body: 'Most people feel recovered, though it can take up to 6 months. A plastic surgeon interviewed by ASPS says the risk of losing grafted fat drops around month 3.',
     },
     {
         when: 'Months 3–6',
-        body: 'Your final shape shows. About 50% to 80% of the grafted fat survives.',
+        body: 'Your final shape shows, and results can keep settling after that. Of the transferred fat, ASPS says patients retain 60–80% on average, in some cases more and in others less.',
     },
 ]
 
@@ -87,14 +89,15 @@ export function BblRecoveryTimeline() {
             id='recovery'
             question='What does BBL recovery look like, week by week?'
             className={moduleSectionPad}
-            answer="Most people return to a desk job 10 to 14 days after a BBL, sit normally and exercise again at about 8 weeks, and feel recovered at 2 to 3 months, though it can take up to 6 months. The final shape shows at 3 to 6 months. Your surgeon's instructions come first."
+            answer="Most people return to a desk job 10 to 14 days after a BBL, sit normally and exercise again at about 8 weeks, and feel recovered at 2 to 3 months, though it can take up to 6 months. The final shape shows at 3 to 6 months, and results can keep settling after that. Your surgeon's instructions come first."
         >
             <ModuleTimeline
                 label='BBL recovery timeline'
                 milestones={milestones}
             />
+            <BblBookPrompt note='You get your surgery, pre-op and follow-up dates in writing.' />
 
-            <h3 className={cn(moduleH3, 'mt-6')}>
+            <h3 className={cn(moduleH3, 'mt-10 md:mt-11')}>
                 If you are flying in from another state
             </h3>
             <p className={cn(moduleBody, 'mt-3 tabular-nums')}>

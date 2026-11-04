@@ -10,6 +10,7 @@
  * @module
  */
 
+import { bblAnchors } from '../components/procedures/pages/bbl/bbl-page.constant'
 import { bmiFacts, bmiSources } from '../lib/data/bmi/bmi.facts'
 import { bblFacts, bblSources } from '../lib/data/procedures/facts/bbl.facts'
 import {
@@ -89,11 +90,20 @@ const bbl: ProcedureCopyConfig = {
     identifiers: [
         [/§\s*458\.328/g, ' statute '],
         [/\b458\.328\b/g, ' statute '],
+        // Pazmiño and Garcia's counts, in the wording the page uses. Read as
+        // deaths, so a changed number still fails against the facts file.
+        [/\b12 of them\b/g, ' 12 deaths '],
+        [/\b11 cases\b/g, ' 11 deaths '],
     ],
     neutralNames: [
         /by plastic surgeon kamran azad/g,
         /a plastic surgeon gives in asps/g,
+        // The link to the BMI guide. It states no figure.
+        /our bmi guide/g,
     ],
+    // "How long does a BBL last?" was split from the final-results question.
+    faqCount: [10, 15],
+    requiredAnchors: bblAnchors,
     rules: [
         {
             rule: 'volume-figure',

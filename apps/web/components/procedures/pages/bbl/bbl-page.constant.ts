@@ -16,6 +16,24 @@ const BLOB =
 
 export type BblImage = ModuleImage
 
+/**
+ * The section anchors blog posts and other pages link to. The copy sweep
+ * fails if one goes missing (`scripts/procedure-copy.config.ts`), and
+ * `blog/tools/clusters.json` keeps the same list for post links. The results
+ * section is left out: the page drops it when the gallery is empty.
+ */
+export const bblAnchors = [
+    'what-is-a-bbl',
+    'candidate',
+    'pricing',
+    'safety',
+    'surgeon',
+    'options',
+    'procedure',
+    'recovery',
+    'faq',
+] as const
+
 const HERO_ALT =
     'Woman in a sand linen midi dress with one hand on the window frame, looking out over the bay in morning light'
 
