@@ -88,8 +88,10 @@ Until the owner confirms one in writing, no post states it:
 ## Photos
 
 - AI renders are editorial only, never a result, never the surgeon or
-  staff, never before/after framing. No swimwear, lingerie, nudity,
-  incisions or drains. Illustrations of the body are clothed or stylised.
+  staff, never before/after framing. No lingerie, nudity, incisions or
+  drains. A swimsuit is allowed only in a whole-person lifestyle photo, never
+  near a scar, anatomy or a result. Illustrations of the body are clothed or
+  stylised. Text appears only on cards, and never a phone number in an image.
 - Real patient photos only from the gallery with consent; a post never
   embeds an Instagram promotion that quotes a price.
 

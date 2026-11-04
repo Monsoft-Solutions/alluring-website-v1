@@ -65,7 +65,7 @@ database: each write is a `.sql` file that someone runs with `psql`.
 | `node blog/tools/slug_check.mjs <slug> --db D`                                       | Is the slug free (database, redirects, routes, public files, registry). Exit 1 = no                                                    |
 | `python3 blog/tools/check_post.py <slug> --db D [--final]`                           | The lint. Exit 1 on any problem; warnings never fail                                                                                   |
 | `python3 blog/tools/consistency.py <slug>`                                           | Figures on fact topics that the facts file doesn't declare (`?` lines)                                                                 |
-| `python3 blog/tools/images/generate.py <slug> [--dry-run]`                           | Renders on Higgsfield, about 3 credits each                                                                                            |
+| `python3 blog/tools/images/generate.py <slug> [--dry-run]`                           | Renders on fal, about $0.25 each (estimate)                                                                                            |
 | `node blog/tools/images/export_upload.mjs <slug> --db D [--dry-run]`                 | JPEG export of the picks, public upload to Blob, `blog/images/manifest.json`; skips images with `reuse_url`                            |
 | `python3 blog/tools/rewrite_base.py <slug> --db D [--out F] --save [--rebase]`       | Reads the live row a rewrite starts from (`F` + `F.row.json`); records its md5 as `meta.json` `base_md5`; `--rebase` diffs a moved row |
 | `python3 blog/tools/build_sql.py D <out_dir> --slug <slug> [--check] [--manifest P]` | Guarded SQL, backup, `code-changes.md`. `--slug` (or `--all`) is required. Exit 1 = nothing written                                    |
@@ -235,12 +235,12 @@ nothing until the user approves it.**
 and its uploads in `manifest.json`, so go straight to
 `check_post.py what-is-lipo-foam --db local --final`. (Its renders aren't
 on this machine; `export_upload.mjs` reports each pick as "already in the
-manifest (job <id>), nothing to export". Spend no credits on it.)
+manifest (job <id>), nothing to export". Spend nothing on it.)
 
 Follow [images](reference/images.md). A rewrite whose live hero (or
 infographic) still meets the image rules can keep it: set that image's
 `reuse_url` in `meta.json` and skip its render and upload. Check the
-Higgsfield balance and run `generate.py <slug> --dry-run`. Tell the user the credit estimate, then
+Run `generate.py <slug> --dry-run`. Tell the user the cost estimate, then
 render. Show the candidates, and the user picks. Picks go in
 `blog/images/picks.json`. Proofread every infographic word for word against
 the post. Then run `export_upload.mjs <slug> --db local` (uploads are public,
@@ -413,19 +413,19 @@ against the standard and the data. It changes nothing.
 The `blog-post-writer` agent does the non-interactive work. It can't ask the
 user anything, so **every gate stays in the main session**.
 
-| Step                         | `blog-post-writer`                                 | Main session and the user                                     |
-| ---------------------------- | -------------------------------------------------- | ------------------------------------------------------------- |
-| Evidence and brief           | Pulls the data, runs the gate, drafts the brief    | **The user approves the brief**                               |
-| Write and check              | Writes, reads sources, lints, runs consistency     | Runs the second-model fact check, shows the post              |
-| Image candidates             | Renders, after the main session gets the credit OK | **The user picks**; the main session writes `picks.json`      |
-| Export and upload            | Uploads the given picks                            | Gives the picks                                               |
-| Build and rehearse           | Throwaway database, SQL, apply, render, checks     | Reads the report                                              |
-| Production rebuild and diff  | Only when its prompt carries the user's OK         | Gets the OK for the production read                           |
-| v2 line (before the run)     | Prepares it                                        | **The user decides**; merged and deployed before the run      |
-| Production run               | Never                                              | **The user runs it**, or says "run it yourself" for that file |
-| Revalidate, indexing request | Never                                              | After the production run                                      |
-| Code PR                      | Prepares the changes; commits only when told       | **The user merges**                                           |
-| Review                       | Returns tagged findings                            | Publishes the review, decides                                 |
+| Step                         | `blog-post-writer`                               | Main session and the user                                     |
+| ---------------------------- | ------------------------------------------------ | ------------------------------------------------------------- |
+| Evidence and brief           | Pulls the data, runs the gate, drafts the brief  | **The user approves the brief**                               |
+| Write and check              | Writes, reads sources, lints, runs consistency   | Runs the second-model fact check, shows the post              |
+| Image candidates             | Renders, after the main session gets the cost OK | **The user picks**; the main session writes `picks.json`      |
+| Export and upload            | Uploads the given picks                          | Gives the picks                                               |
+| Build and rehearse           | Throwaway database, SQL, apply, render, checks   | Reads the report                                              |
+| Production rebuild and diff  | Only when its prompt carries the user's OK       | Gets the OK for the production read                           |
+| v2 line (before the run)     | Prepares it                                      | **The user decides**; merged and deployed before the run      |
+| Production run               | Never                                            | **The user runs it**, or says "run it yourself" for that file |
+| Revalidate, indexing request | Never                                            | After the production run                                      |
+| Code PR                      | Prepares the changes; commits only when told     | **The user merges**                                           |
+| Review                       | Returns tagged findings                          | Publishes the review, decides                                 |
 
 The `seo-strategist` agent and the `seo-plan` skill choose what to write and
 read the results; this skill writes it.

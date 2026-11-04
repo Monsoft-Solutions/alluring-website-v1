@@ -134,18 +134,20 @@ in the content (the template carries the CTAs).
 ## Images
 
 Every post gets a hero (featured image) and 0–2 inline images, made with
-GPT Image 2.5 on Higgsfield (see [images.md](images.md)). In `meta.json`,
+GPT Image 2.5 on fal (see [images.md](images.md)). In `meta.json`,
 describe them; in `content.md`, place inline images as
 `![alt text](IMAGE:key)`. The build script swaps in the Blob URL.
 
 - **Hero**: an editorial photograph of the reader's situation or the calm
   outcome. 3:2, subject in the upper two thirds (the template puts the
-  title over the bottom third). Modest clothing, no swimwear or glamour, no
-  text, no logos, varied women (age 25–55, skin tone, setting).
+  title over the bottom third). Modest clothing, no glamour, no text, no
+  logos, varied women (age 25–55, skin tone, setting). A swimsuit only in a
+  whole-person lifestyle photo, never near a scar, anatomy or a result.
 - **Inline**: only where it teaches something text can't: a timeline, a
   "normal vs call your surgeon" card, a stylised anatomy illustration, a
   flat lay. Text in an infographic matches the post's figures word for
-  word and credits the source in a footer. No practice name or phone.
+  word and credits the source in a footer. Text only on cards. No practice
+  name, and never a phone number in an image.
 - **Alt text** describes what the image shows; for infographics, it
   contains every figure the image states.
 
