@@ -216,5 +216,94 @@
     "normal-vs-call": "flare",
     "types": "flare",
     "what-affects": "flare"
+  },
+  "how-many-massages-after-bbl": {
+    "hero": "sunburst",
+    "no-agreed-number": "flare",
+    "lymph-diagram": "flare",
+    "when-to-start": "flare",
+    "questions-card": "flare",
+    "questions-photo": "flare"
+  },
+  "bbl-compression-garment-timeline": {
+    "hero": "flare",
+    "schedule": "flare",
+    "urgent": "flare"
+  },
+  "do-i-have-enough-fat-for-a-bbl": {
+    "hero": "flare",
+    "fat-card": "flare"
+  },
+  "exercises-after-bbl-timeline": {
+    "hero": "flare",
+    "timeline": "flare",
+    "moves": "flare",
+    "seats": "flare",
+    "standing": "flare",
+    "restart": "flare"
+  },
+  "flying-after-bbl-tips": {
+    "hero": "flare",
+    "before-you-fly": "flare"
+  },
+  "how-long-after-bbl-can-i-sit": {
+    "hero": "sunburst",
+    "timeline": "flare",
+    "pillow": "flare"
+  },
+  "how-long-to-recover-from-bbl": {
+    "hero": "flare",
+    "timeline-card": "flare"
+  },
+  "how-to-feed-the-fat-after-bbl": {
+    "hero": "flare",
+    "fat-cell": "flare",
+    "food-list": "flare"
+  },
+  "how-to-fix-dents-after-bbl": {
+    "hero": "flare",
+    "contour-card": "flare",
+    "dimple-diagram": "flare",
+    "options-card": "flare",
+    "graft-diagram": "flare",
+    "when-to-call": "flare"
+  },
+  "how-to-sleep-after-bbl": {
+    "hero": "flare",
+    "positions": "flare",
+    "pillow-setup": "flare"
+  },
+  "non-surgical-bbl": {
+    "hero": "flare",
+    "options-card": "flare"
+  },
+  "tummy-tuck-vs-bbl-miami": {
+    "hero": "flare",
+    "where-each-works": "flare",
+    "which-fixes-what": "flare",
+    "recovery-side-by-side": "flare"
+  },
+  "what-age-can-you-get-a-bbl": {
+    "hero": "flare",
+    "what-decides-candidacy": "flare"
+  },
+  "what-is-a-double-bbl": {
+    "hero": "flare",
+    "what-stays-the-same": "flare"
+  },
+  "what-is-more-painful-bbl-or-tummy-tuck": {
+    "hero": "flare",
+    "first-days": "flare",
+    "side-by-side": "flare"
+  },
+  "when-can-i-wear-jeans-after-bbl": {
+    "answer-card": "flare",
+    "clothing-timeline": "flare",
+    "jeans-tips": "flare"
+  },
+  "why-do-bbl-stink": {
+    "hero": "flare",
+    "causes": "flare",
+    "healing-or-infection": "flare"
   }
 }

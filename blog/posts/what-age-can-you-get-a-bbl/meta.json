@@ -1,0 +1,158 @@
+{
+  "slug": "what-age-can-you-get-a-bbl",
+  "mode": "rewrite",
+  "base_md5": "d8a3f132b78fb3cdaf8cdf54ea35896f",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T22:10:49Z",
+  "reader": "deciding",
+  "cluster": "bbl",
+  "title": "What Age Can You Get a BBL? 18 Minimum, and What Else Counts",
+  "meta_description": "Cleveland Clinic says you must be at least 18. No source sets an ideal age. What actually decides it: health, stable weight and enough fat.",
+  "excerpt": "You must be at least 18 for a BBL, and finished developing, Cleveland Clinic says. No source we rely on names an ideal age or an upper limit. What it means under 18, from 18 to 25 and over 40 or 50, and what matters more than your age.",
+  "quick_answer": "What age can you get a BBL?\n\nCleveland Clinic says you must be at least 18 and should be finished developing. No source we rely on names an ideal age. Your health, a stable weight and enough fat to move matter more, and your surgeon decides at consultation.",
+  "primary_keyword": "what age can you get a bbl",
+  "secondary_keywords": [
+    "how old do you have to be to get a bbl",
+    "how old do u have to be to get a bbl",
+    "at what age can you get a bbl",
+    "can i get a bbl at 18",
+    "can you get a bbl at 18",
+    "18 year old bbl",
+    "can you get a bbl at 16",
+    "can i get a bbl at 16",
+    "how old do you have to be to get a bbl with parental consent",
+    "can u get a bbl at 17",
+    "how old to get a bbl",
+    "bbl age"
+  ],
+  "owns_queries": [
+    "how old do you have to be to get a bbl",
+    "how old do i have to be to get a bbl",
+    "at what age can you get a bbl",
+    "can i get a bbl at 18",
+    "can you get a bbl at 18",
+    "bbl at 18",
+    "18 year old bbl",
+    "can you get a bbl at 16",
+    "how old do you have to be to get a bbl with parental consent",
+    "bbl age"
+  ],
+  "categories": [
+    "BBL",
+    "Post-Op Care",
+    "Recovery",
+    "Plastic Surgery After 40/50"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Recovery"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her late 40s in a soft cardigan stands at a sunlit table, reading a folder of notes with a calm, thoughtful expression.",
+      "prompt": "SCENE: Early morning in a bright Miami dining room, white plaster walls, a tall arched window, soft palm shadows on a pale oak table and limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 40s with deep brown skin, natural gray at her temples and short curly hair, standing at the table in a soft cream cardigan over a high-neck top and loose stone trousers, reading an open folder of notes with reading glasses in one hand. Three-quarter front view, calm and thoughtful. KEY DETAILS: Framed from the thighs up with generous space above her head, her face and hands in the upper two thirds of the frame, the lower third quiet table edge for a title. Editorial documentary photography, 50mm, natural color, real skin texture with visible fine lines, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. An adult woman only: no teenagers or children. Modest loose clothing fully covering the torso; no swimwear, lingerie, bodycon, cleavage or bare midriff; not photographed from behind; no focus on the hips or buttocks; no garments, bandages, drains or incisions; no surgeon or staff; no readable text in the notes; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "what-decides-candidacy",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled What decides BBL candidacy. At least 18 and finished developing. Good physical health. A stable weight. Enough excess fat to transfer. Realistic expectations. Your surgeon decides at consultation.",
+      "prompt": "SCENE: A clean editorial card on warm porcelain stone, with a thin brushed-gold rule at the top and generous margins. SUBJECT: A simple list of five short lines with small round gold ticks, and a closing line set slightly apart. No people and no anatomy. KEY DETAILS: Flat design, serif headline in dark espresso, sans-serif body, large legible type for phones, muted gold only for the rule and ticks. Source line small at the foot. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body shapes, no silhouettes, no age chart, no practice name, no logo, no phone number, no website address. Spell every word and number exactly as supplied; no extra numbers.",
+      "text_in_image": "What decides BBL candidacy\n\nAt least 18 and finished developing\nGood physical health\nA stable weight\nEnough excess fat to transfer\nRealistic expectations\n\nYour surgeon decides at consultation\n\nSource: Cleveland Clinic"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You must be at least 18 years old to get a Brazilian butt lift.",
+        "However, your body is unique — you may not complete puberty until you’re older than 18.",
+        "If you haven’t finished developing, the results of your Brazilian butt lift procedure may be affected.",
+        "Be finished developing.",
+        "Be in good physical health.",
+        "Have realistic expectations.",
+        "Have enough excess body fat available in other parts of your body to transfer to your butt.",
+        "If you don’t have enough excess body fat available, you may be a good candidate for butt implants.",
+        "You may need to get a Brazilian butt lift again during your life.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight.",
+        "You won’t be able to sit or lie down on your butt for at least two weeks.",
+        "go back to work between 10 and 14 days after your Brazilian butt lift procedure."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/briefing-papers/briefing-paper-plastic-surgery-for-teenagers",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Briefing Paper: Plastic Surgery for Teenagers",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "certain milestones in growth and physical maturity must be achieved before undergoing plastic surgery.",
+        "Teens must demonstrate emotional maturity and an understanding of the limitations of plastic surgery.",
+        "parental consent is required for all plastic surgery procedures performed on teens younger than 18 years old."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/seven-things-you-need-to-know-about-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Seven things you need to know about a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The patient should be relatively close to their ideal body weight and be in good health and a nonsmoker.",
+        "An ideal candidate is a patient who has realistic expectations about the results,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Buttock enhancement candidates",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Individuals with significant soft tissue looseness in the gluteal area"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/results",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Results",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "After a successful Brazilian butt lift (using fat transfer), the remaining fat will stay there for the rest of your life.",
+        "Like the rest of the tissue in your body, this fat will grow and age with you.",
+        "As with most body contouring surgeries, weight fluctuations, pregnancy, and aging will take a toll on the body"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Aftercare and Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "being in good health, not smoking, and having help after surgery will increase your healing"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (Winocour and colleagues, 2015)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "age 55 years or older (1.4)",
+        "body mass index greater than or equal to 30 (1.3)",
+        "multiple procedures (1.5)"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 14670,
+    "clicks": 74,
+    "position": 4.0
+  },
+  "notes": "Full rewrite to the plan's outline. Removes the invented 26 to 35 range, the mid-20s recommendation, 'guarantees', 'safest', 'top Miami surgeons', the 'medical boards such as the ASPS' line, 'thousands' and the age-by-age risk and recovery claims. The plan's quick answer and meta say 'best age'; the claims sweep rejects 'best', so both say 'ideal age'. 'Under 18, even with a parent's consent' comes from the live post's own notice and FAQ; the practice should confirm the wording. The plan's N2 link is left out until that post exists. All 5 old images and the hero are replaced at new addresses, per the plan's image table. Quotes came through WebFetch's extraction model, in fragments capped near 125 characters."
+}

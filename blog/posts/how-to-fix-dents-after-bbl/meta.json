@@ -1,0 +1,261 @@
+{
+  "slug": "how-to-fix-dents-after-bbl",
+  "mode": "rewrite",
+  "base_md5": "199d785988c0c8b15a3a0a34e0f12dcf",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:29Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "How to Fix Dents After BBL?",
+  "meta_description": "Swelling can hide your results for months. How often contour irregularities happen, what the FDA says about filler, and when to ask about a revision.",
+  "excerpt": "Swelling can hide your results, and it sometimes takes 3 to 6 months to subside. Here is how often contour irregularities are reported, what the FDA says about filler, what no source can tell you, and when to have a surgeon look.",
+  "quick_answer": "How do you fix dents after a BBL?\n\nStart with an exam, because The Aesthetic Society says swelling sometimes takes 3 to 6 months to subside. A 2026 meta-analysis found contour irregularities in 2.29% of cases. An ASPS article says some patients return for another BBL to smooth them. The FDA recommends against filler for body contouring, including the buttocks.",
+  "primary_keyword": "how to fix dents after bbl",
+  "secondary_keywords": [
+    "dents after bbl",
+    "bbl dents",
+    "bbl dimples",
+    "bbl touch up",
+    "how to get rid of butt dents",
+    "butt dents",
+    "dents in butt",
+    "dent in buttock",
+    "what causes dents in buttocks",
+    "how to get rid of dents in buttocks",
+    "why do i have dents in my butt",
+    "buttock dents"
+  ],
+  "owns_queries": [
+    "how to fix dents after bbl",
+    "dents after bbl",
+    "bbl dents",
+    "bbl dimples",
+    "bbl touch up",
+    "how to get rid of butt dents",
+    "butt dents",
+    "dents in butt",
+    "dent in buttock",
+    "what causes dents in buttocks"
+  ],
+  "categories": [
+    "BBL",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Lipo",
+    "Liposuction",
+    "Lymphatic Massage",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a loose stone-colored linen dress stands by a tall window holding a notebook, looking out, thoughtful and calm.",
+      "prompt": "SCENE: Morning in a bright room, white plaster walls, a tall arched window with sheer linen, soft palm shadows on pale limestone. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 30s with light olive skin and long dark hair tied back, standing by the window in a loose stone-colored linen dress, holding a small notebook and looking out. Three-quarter front view, thoughtful and calm. KEY DETAILS: Framed from the thighs up with generous space above her head, subject in the upper two thirds of a 3:2 frame; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, shapewear, cleavage or bare midriff; no garments, bandages, drains or incisions; not photographed from behind, no mirror showing her back; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "contour-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Contour irregularities after a BBL. 2.29% of cases in a 2026 meta-analysis of 38 studies and 22,151 patients. Minor complications overall: 3.58%. No source we rely on gives a dent-specific cause. Source: Elsaftawy and colleagues, Plastic and Reconstructive Surgery, 2026.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A single large figure, 2.29%, with one explanatory line and one smaller figure below it. KEY DETAILS: A serif title and figure, a clean sans-serif for the lines, dark espresso text on warm porcelain, a thin brushed-gold rule, a small source footer. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.\nREVISION: Clean flat background behind all type, with no smudges, stains or marks near any digit.",
+      "text_in_image": "Contour irregularities after a BBL\n2.29% of cases in a 2026 meta-analysis of 38 studies and 22,151 patients\nMinor complications overall: 3.58%\nNo source we rely on gives a dent-specific cause.\nSource: Elsaftawy and colleagues, Plastic and Reconstructive Surgery, 2026"
+    },
+    {
+      "key": "dimple-diagram",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Stylised cross-section of skin and fat layers with no body shown, comparing a small dimple at the surface with a broader dip, in stone and gold tones.",
+      "prompt": "SCENE: A clean textbook-style illustration on warm porcelain, flat lighting. SUBJECT: Two side-by-side stylised cross-sections of layered skin and fat: one with a small dimple at the surface, one with a broader shallow dip. KEY DETAILS: Soft stone and sand layers, thin brushed-gold outlines, simple and non-graphic, no blood. CONSTRAINTS: No body, no buttock shape, no silhouette, no rear view; not a real anatomical claim; no text, letters, numbers, labels, logos or watermarks.\nREVISION: Flat, abstract editorial illustration in stone, sand and brushed gold ONLY. Simple horizontal bands, not realistic tissue. No red, pink, flesh or saturated yellow tones."
+    },
+    {
+      "key": "options-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Before any dent treatment, ask. Filler: The FDA recommends against dermal fillers or any other injectable filler for body contouring, including the buttocks. Lymphatic drainage: no source we rely on says it moves fat or corrects a dent. Radiofrequency: no source we rely on tests radiofrequency on BBL dents.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: Three short rows, each with a bold lead word and one plain sentence, with a thin brushed-gold rule between rows. KEY DETAILS: A serif title, a clean sans-serif for the rows, dark espresso text on warm porcelain, generous margins. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.",
+      "text_in_image": "Before any dent treatment, ask\nFiller: The FDA recommends against dermal fillers or any other injectable filler for body contouring, including the buttocks.\nLymphatic drainage: No source we rely on says it moves fat or corrects a dent.\nRadiofrequency: No source we rely on tests radiofrequency on BBL dents."
+    },
+    {
+      "key": "graft-diagram",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Stylised cross-section of skin and fat layers with no body shown, with small soft droplets filling a shallow dip, in stone and gold tones.",
+      "prompt": "SCENE: A clean textbook-style illustration on warm porcelain, flat lighting. SUBJECT: A stylised cross-section of layered skin and fat with a shallow dip being filled by small soft droplets, all above a darker lower layer. KEY DETAILS: Soft stone and sand layers, thin brushed-gold outlines, simple and non-graphic, no blood, no instruments. CONSTRAINTS: No body, no buttock shape, no silhouette, no rear view; no droplets in the lower layer; no text, letters, numbers, labels, logos or watermarks.\nREVISION: Flat, abstract editorial illustration in stone, sand and brushed gold ONLY. Simple horizontal bands, not realistic tissue. No red, pink, flesh tones, muscle or blood. Small gold droplets fill a shallow dip in the middle sand-colored band, so the surface above looks level."
+    },
+    {
+      "key": "when-to-call",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Call your surgeon now. A firm lump that hurts, grows or drains (our own conservative advice). Redness, warmth, pus or fever. A fever above 101°F (38.4°C). Infection signs: Cleveland Clinic.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A short list of three warning signs with a simple line icon beside each. KEY DETAILS: A serif title, a clean sans-serif for the rows, dark espresso text on warm porcelain, a thin brushed-gold rule, a small source footer. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.",
+      "text_in_image": "Call your surgeon now\nA firm lump that hurts, grows or drains (our own conservative advice)\nRedness, warmth, pus or fever\nA fever above 101°F (38.4°C)\nInfection signs: Cleveland Clinic"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery & Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You must avoid direct pressure on the buttocks for at least eight weeks, so you must sit on a pillow during this period.",
+        "Your surgeon may recommend a treatment called lymphatic massage to try to reduce swelling",
+        "and facilitate better drainage of any fluid buildup.",
+        "You will likely need to wear a compression garment for six to eight weeks.",
+        "You should be able to get up and walk after the second postoperative day to help present blood clots.",
+        "you can return to work, drive, or go to the movies after ten to fourteen days, but you must use a pillow",
+        "When the swelling subsides, sometimes taking three to six months, your true results will be more evident.",
+        "The final results of your buttock augmentation may be initially obscured by swelling.",
+        "For this reason, you should not go clothes shopping for at least three months.",
+        "You can resume normal activities and exercise after eight weeks.",
+        "you still shouldn't do anything strenuous, including lifting, for four to six weeks.",
+        "you can sit with a soft pillow placed beneath your hamstring muscles but not touching your butt",
+        "You'll be tempted to try to help around the house quickly, but you won't feel like yourself for one or two weeks",
+        "No matter what procedure you undergo, being in good health, not smoking"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "I'm a very big fan of compression garments because they definitely help alleviate the swelling,",
+        "I advise patients to wear them as much as possible, but basically 24/7, except for showering, the first month",
+        "During that period, the fat is very susceptible to pressure necrosis, or pressure that kills off the fat cells,",
+        "So for the first six weeks, the patient has to be very careful about not putting undue or prolonged pressure on the buttocks.",
+        "But try to keep it within the 10-minute window, which is about as long as you should be sitting",
+        "most need some degree of pain medication for the first four to five days.",
+        "Patients return to work between days seven and 10, and if they're sitting at a desk all day,",
+        "or else they're at risk for asymmetrical or quickly diminishing results.",
+        "It's not uncommon for patients to return to their plastic surgeon for another BBL to smooth out any contour irregularities",
+        "and asymmetry that may have formed during healing,",
+        "especially as the amount of fat that \"takes\" is highly variable",
+        "We know from a number of studies that the average fat take or the amount of the transferred fat",
+        "that will survive is about 60%,",
+        "Around month three, the acute risk of losing fat from the buttock area subsides,",
+        "Dr. Williams notes that during months three to six, the shape \"should further refine and the curve should become more apparent.\""
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "on the average patients will retain 60-80% of the transferred fat, in some cases more in others less",
+        "you will not see your final results until a year after the surgery",
+        "As you gain or lose weight, your results may change",
+        "the transferred fat can grow or shrink just as any other fat in your body"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Your surgeon may encourage you to seek a lymphatic massage from a licensed massage therapist.",
+        "Small, thin tubes may be temporarily placed under the skin to drain any excess blood or fluid that may collect.",
+        "If you experience shortness of breath, chest pains or unusual heart beats, seek medical attention immediately."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/is-bbl-smell-real-heres-what-you-need-to-know",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Is \"BBL smell\" real? Here's what you need to know",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Professionally performed lymphatic drainage can assist in reducing fluid retention and swelling",
+        "which may indirectly help minimize odor.",
+        "Compression garments should be changed and washed regularly, ideally every 24 hours."
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1097/PRS.0000000000012437",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Gluteal Augmentation with Fat Grafting: A Systematic Review and Meta-Analysis of Complications and Procedural Factors (Elsaftawy and colleagues, 2026)",
+      "read_on": "2026-11-04",
+      "quotes": []
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/aesthetic-cosmetic-devices/dermal-fillers-soft-tissue-fillers",
+      "publisher": "FDA",
+      "title": "Dermal Fillers (Soft Tissue Fillers)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The FDA recommends against using dermal fillers or any injectable filler for body contouring and enhancement to:",
+        "Increase size of the buttocks",
+        "These uses for dermal fillers are not approved by the FDA."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Your body should fully recover between two and three months after your Brazilian butt lift procedure.",
+        "It may take up to six months for your body to fully recover after your Brazilian butt lift procedure.",
+        "You won't be able to sit or lie down on your butt for at least two weeks.",
+        "You won't be able to sit without your pillow for approximately eight weeks.",
+        "So, you'll need to stand rather than sit and sleep on your stomach or sides.",
+        "The first several days after your Brazilian butt lift procedure are often the most painful.",
+        "After one to two weeks, your pain should decrease.",
+        "At this point, you may be able to participate in light exercises.",
+        "However, you should avoid heavy lifting or strenuous activities for one month.",
+        "Depending on your job, you should be able to go back to work between 10 and 14 days",
+        "If you usually sit at a desk for long periods, it's advisable to use a standing desk until you've completely healed.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight.",
+        "You may need to get a Brazilian butt lift again during your life.",
+        "Your butt contains many blood vessels and nerves.",
+        "If the cannula strikes any of these structures during the surgery, it can lead to injury, a fat embolism or death."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/24187-fat-necrosis",
+      "publisher": "Cleveland Clinic",
+      "title": "Fat Necrosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Fat necrosis is death of fat tissue due to injury and loss of blood supply.",
+        "It may feel like a fatty lump or like a hard nodule.",
+        "You may feel a lump or a hard node under your skin, or the area may appear red, thickened or bruised.",
+        "As fat cells die, they release their oily contents, which collect into a pocket called an oil cyst.",
+        "Contact your healthcare provider if your fat necrosis:"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/surgical-wound-infection",
+      "publisher": "Cleveland Clinic",
+      "title": "Surgical Wound Infection",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Symptoms typically develop three to seven days after surgery.",
+        "Noticeable odor from the incision",
+        "The incision area feels warm or hot to your touch",
+        "Pain when you touch the wound or the area around the wound",
+        "Fever (greater than 101 degrees Fahrenheit or 38.4 degrees Celsius)",
+        "Smoking, including using e-cigarettes, increases your risk."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 8345,
+    "clicks": 212,
+    "position": 4.75
+  },
+  "notes": "Quotes came through WebFetch, whose extraction model caps a quote at about 125 characters, so long sentences are split or end early; the two ASPS PDFs were read with pdftotext instead (the report PDF exceeded WebFetch's size limit, so it was fetched with plain curl). Elsaftawy 2026 could not be opened this session (PubMed cookie notice, Ovid 402, Europe PMC 403), so its source entry has no quotes and its figures come from bbl.facts.ts. Redone 2026-11-04 as a sentence-level edit from the live text: every live sentence stays word for word, in order and section, unless it broke a rule. Title and H2 wording kept, opening H2 added with a short answer, FDA filler wording kept from the Batch 0 edit. Changed: \"10-20%\" (now Elsaftawy 2.29%, labelled as not a dent rate); massage redistributing fat and \"excellent results\"; \"viable solutions\"; the caffeine and retinol benefit claims; 6-month, 6-12 month, 4-6 week and 2-4 week figures; the 6-week garment line, because garment weeks can't be stated as the practice's protocol; plural and board-certified surgeons; \"countless patients\"; \"best\" (sweep); \"poor surgical technique\" (disparaging, and \"common\" is unsourced); phone numbers and #contactus. Added a table, because the lint requires one, plus the firm-lump sentence from the audit and the infection and emergency signs. Image address requests from the plan: new addresses for options-card (replaces filler table 1768929235068-sbmxsc-0.jpg) and contour-card (replaces the \"10-20%\" card 1768929176591-8k7ht0-0.jpg). Same address, staged after the canary: dimple-diagram over https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/ff9b1cbf-ad90-48e0-8604-f5d28141960f/1768929207056-jqe6zg-0.jpg and graft-diagram over https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/ff9b1cbf-ad90-48e0-8604-f5d28141960f/1768929263658-2x6xom-0.jpg. Hero replaces 1768929306112-6q73v3-0.jpg, which was also inline 5 (when-to-call takes that inline slot). Both diagrams are abstract with no body, under the BBL rule; confirm they suit the earner slots. Fact-check corrections applied 2026-11-04 at the coordinator's request; they override the kept-sentence target. Garment line: the fact check asked for \"helps limit swelling, bruising and discomfort (ASPS)\"; the ASPS pages opened give only swelling, from one surgeon, so the post says that."
+}

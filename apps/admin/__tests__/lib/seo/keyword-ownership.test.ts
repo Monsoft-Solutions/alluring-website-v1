@@ -47,8 +47,9 @@ describe('registry integrity', () => {
         // (breast-implants-over-or-under-the-muscle,
         // saline-vs-silicone-breast-implants, how-long-do-breast-implants-last,
         // capsular-contracture, breast-implant-rippling-bottoming-out,
-        // mammograms-breastfeeding-with-breast-implants).
-        expect(liveBlog.length).toBe(123)
+        // mammograms-breastfeeding-with-breast-implants), and the two BBL posts
+        // written 2026-11-04 (non-surgical-bbl, do-i-have-enough-fat-for-a-bbl).
+        expect(liveBlog.length).toBe(125)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 

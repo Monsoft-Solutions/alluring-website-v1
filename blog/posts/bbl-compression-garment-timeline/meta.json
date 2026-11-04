@@ -1,0 +1,243 @@
+{
+  "slug": "bbl-compression-garment-timeline",
+  "mode": "rewrite",
+  "base_md5": "ad9e3482365379e7df7a1a7d17351d4b",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:22Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "BBL Compression Garment: How Long to Wear It, Month by Month",
+  "meta_description": "Day and night except showering for the first month, then at least 12 hours a day in month 2, or as your surgeon directs. Fit, washing and warning signs.",
+  "excerpt": "Wear the garment day and night, except in the shower, for the first month, then at least 12 hours a day in the second month, or as your surgeon directs. Why the evidence is thin, how it should fit, how to wash it, and which symptoms need urgent care.",
+  "quick_answer": "How long do you wear a compression garment after a BBL?\n\nOne surgeon interviewed by ASPS advises day and night except showering in month 1, then at least 12 hours a day in month 2. A 2023 review found the evidence on duration is thin, so the schedule your own surgeon gives you comes first.",
+  "primary_keyword": "bbl compression garment timeline",
+  "secondary_keywords": [
+    "bbl compression garment",
+    "compression garment after bbl",
+    "how long do you have to wear a faja after a bbl",
+    "how long do you wear a faja after bbl",
+    "how long to wear faja after bbl",
+    "bbl garment",
+    "bbl garment after surgery",
+    "post bbl girdle",
+    "how long to wear compression socks after bbl",
+    "when to wear stage 2 garment after bbl",
+    "how long do i need to wear a compression garment after a bbl?",
+    "bbl compression garment stage 1",
+    "bbl compression garment stage 2",
+    "post bbl compression garment",
+    "when to switch to stage 2 faja after bbl",
+    "bbl recovery garment"
+  ],
+  "owns_queries": [
+    "compression garment after bbl timeline guide",
+    "bbl compression garment",
+    "compression garment after bbl",
+    "how long do you have to wear a faja after a bbl",
+    "how long do you wear a faja after bbl",
+    "how long to wear faja after bbl",
+    "how long to wear compression socks after bbl",
+    "when to wear stage 2 garment after bbl",
+    "when to switch to stage 2 faja after bbl",
+    "bbl garment after surgery",
+    "post bbl girdle"
+  ],
+  "categories": [
+    "Post-Op Care"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A plain beige compression garment folded on a pale oak chair beside a glass of water, in a bright bedroom with soft window light.",
+      "prompt": "SCENE: Morning in a calm Miami bedroom, white plaster walls, a tall window with sheer linen curtains, soft palm shadows on a pale limestone floor, a linen-covered bed softly out of focus. Palette of stone, sand, warm white and brushed gold. SUBJECT: A plain beige compression garment neatly folded on the seat of a pale oak chair, a second folded garment beneath it, with a glass of water on a small side table next to the chair. No person in the frame. KEY DETAILS: The chair and garment sit in the upper two thirds of the frame, with quiet floor in the lower third; editorial still-life photography, 50mm, natural color, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. No person, no body, no mannequin, no garment worn on a body; no bandages, drains or medical instruments; no text, letters, numbers, labels, brand names, logos or watermarks; not glamour, not a product ad."
+    },
+    {
+      "key": "schedule",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Schedule card titled BBL compression garment schedule. Month 1: day and night, except showering, or as your surgeon directs. Month 2: at least 12 hours a day, or as your surgeon directs. Source: a plastic surgeon interviewed by ASPS.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: Two stacked rows joined by a thin line, each with a short bold label on the left and its line of text on the right, and a small source footer. KEY DETAILS: Flat vector layout with no illustration of a person, serif headline in dark stone, sans-serif rows, muted gold only for the line and rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no garment shown on a body, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers, and no hour figures other than the one supplied.",
+      "text_in_image": "BBL compression garment schedule\n\nMonth 1\nDay and night, except showering, or as your surgeon directs\n\nMonth 2\nAt least 12 hours a day, or as your surgeon directs\n\nSource: a plastic surgeon interviewed by ASPS"
+    },
+    {
+      "key": "urgent",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled When it isn't about the garment. Trouble breathing, chest pain or an unusual heartbeat: seek medical attention immediately, call 911. Leg pain, swelling or warmth: seek medical care right away. Fever above 101°F, spreading redness or discharge: call your surgeon the same day. Numbness, tingling or skin color changes: call your surgeon right away. Sources: ASPS, Cleveland Clinic.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: Four stacked rows, each with the symptoms in dark text and the action beneath them in a slightly heavier weight, with the first row set apart in a deeper terracotta tone for urgency, and a small source footer. KEY DETAILS: Flat vector layout with no illustration of a person, serif headline in dark stone, sans-serif rows, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no alarming icons, no practice name, no logo, no phone number other than 911, no website address. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "When it isn't about the garment\n\nTrouble breathing, chest pain or an unusual heartbeat\nSeek medical attention immediately. Call 911\n\nLeg pain, swelling or warmth\nSeek medical care right away\n\nFever above 101°F, spreading redness or discharge\nCall your surgeon the same day\n\nNumbness, tingling or skin color changes\nCall your surgeon right away\n\nSources: ASPS, Cleveland Clinic"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift (Kaitlin Clark, August 11, 2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "I advise patients to wear them as much as possible, but basically 24/7, except for showering, the first month",
+        "and at least 12 hours a day the second, usually they can at least do it at night."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10519563/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open",
+      "title": "The Use of Postoperative Compression Garments in Plastic Surgery: Necessary or Not? A Practical Review (Ormseth BH et al., 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "there is currently limited high-quality evidence supporting the efficacy of postoperative compression garments",
+        "no RCTs or comparative studies have been conducted to evaluate the efficacy of compression in this setting.",
+        "there is little to no evidence available to objectively ascertain the value of compression in body contouring procedures",
+        "excessive or poorly distributed compression could result in venous stasis and thrombosis"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Recovering from a Brazilian butt lift (Kamran Azad, MD, May 12, 2016)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It is recommended that the patient wear the garment for eight weeks",
+        "Often the compression garment will have the rear end cut out",
+        "This also helps to minimize swelling, decrease discomfort, and help the skin retract."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery and Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You will likely need to wear a compression garment for six to eight weeks.",
+        "You will need to wear special tight garments to keep your buttock area compressed."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/keep-it-snatched-why-compression-garments-are-your-best-friends-in-recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Keep it snatched! Why compression garments are your best friends in recovery (Alia Willson, April 11, 2025)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Typically, stage 1 garments are worn immediately after surgery and are firmer to provide support",
+        "a stage 2 garment is worn, which is usually less firm and slightly more comfortable.",
+        "Stage 1 garments are typically worn one to two weeks after surgery 24/7,",
+        "Stage 2 garments are typically worn two to six weeks after surgery.",
+        "However, there are no firm guidelines for how long you'll be wearing each garment.",
+        "it's recommended to wear the garments around the clock for a minimum of six weeks,",
+        "followed by part-time wear if needed for several months,",
+        "you want the garment to feel snug against the skin while still allowing for some movement",
+        "a compression garment should never feel like it is cutting off your circulation.",
+        "Hand washing is best, but that may not be an option without help or support after surgery.",
+        "If you must use a machine, use cold water and keep it on a gentle cycle.",
+        "You can also use a delicates or garment bag to keep your compression garment safe in the wash.",
+        "Never machine dry compression garments, which can ruin the elastic",
+        "Always let them air dry."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/the-importance-of-compression-after-plastic-surgery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "The importance of compression after plastic surgery (Daniel Y. Maman, MD, September 25, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Compression garments are medical-grade articles of clothing",
+        "should be worn day and night (with the exception of showering or bathing) for anywhere between one to three weeks",
+        "After approval from your surgeon, you can expect to wear the garment at night for several weeks.",
+        "Maintaining constant pressure on the surgical site will prevent excess build-up of subcutaneous fluid",
+        "can help prevent blood cells from moving toward the skin's surface, minimizing the appearance of bruising",
+        "should fit snugly enough to perform its function but should not be so tight that it is uncomfortable",
+        "restricts breathing",
+        "If the garment becomes too loose after the swelling goes down",
+        "talk to your plastic surgeon to be fitted for a smaller size",
+        "should only be removed to bathe or shower."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You may have to wear a compression garment around the areas that were liposuctioned.",
+        "So, you'll need to stand rather than sit and sleep on your stomach or sides."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/is-bbl-smell-real-heres-what-you-need-to-know",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Is 'BBL smell' real? Here's what you need to know (Adrienne Santos-Longhurst, August 6, 2025)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Compression garments should be changed and washed regularly, ideally every 24 hours.",
+        "Bacterial overgrowth on the skin due to moisture, heat and friction,",
+        "especially if patients wear the same garment for long periods without cleaning it.",
+        "I recommend that patients purchase a backup garment in order to have something to wear while their garments are being washed.",
+        "Using clean, breathable dressings or liners inside the garment can help absorb moisture and reduce bacterial buildup."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "If you experience shortness of breath, chest pains or unusual heart beats, seek medical attention immediately."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/17400-pulmonary-embolism",
+      "publisher": "Cleveland Clinic",
+      "title": "Pulmonary Embolism",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Sharp chest pain that gets worse if you move around or take a deep breath",
+        "Sudden shortness of breath, even if you're at rest",
+        "Cough (you may cough up blood)",
+        "Fast heartbeat",
+        "Fainting",
+        "Call 911 or your local emergency number if you have these symptoms.",
+        "leg pain, swelling and warmth",
+        "seek medical care right away"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/surgical-wound-infection",
+      "publisher": "Cleveland Clinic",
+      "title": "Surgical Wound Infection",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Fever (greater than 101 degrees Fahrenheit or 38.4 degrees Celsius)",
+        "Redness or color changes in your skin that go beyond the edge of the incision",
+        "Thick, cloudy, white- or cream-colored discharge from the wound",
+        "Symptoms typically develop three to seven days after surgery."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/departments/heart/patient-education/recovery-care/general/dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis (DVT) Prevention",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "TED stockings are generally worn until you are back to your baseline activity.",
+        "It may be longer or shorter depending on medications you are on to prevent blood clots; examination of your legs; medical history and your risk of blood clots."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-10-05..2026-11-01",
+    "impressions": 1862,
+    "clicks": 18,
+    "position": 6.8
+  },
+  "notes": "Full rewrite. Fixes the unsafe line that answered labored breathing with fit advice, the inverted stage 1 and stage 2 description, the invented satisfaction correlation, 'ASPS recovery guidelines', the old 23 hrs and 12-18 hrs schedules, AAAASF, double board-certified, the ABCS link, the 0% APR financing line, phone and street address. Deviation from the plan: the plan's meta and quick answer say 24/7, but check_post's owner-claim rule bans that string everywhere (it is meant for 24/7 surgeon access), so this post says 'day and night' and the source quote keeps the original words. Images: hero plus 2 inline (plan 4 to 2); no live image reused, since each breaks a rule or prints the old schedule. Same-address candidate for the main session after the canary: the timeline infographic https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/4e7e6a9e-58fc-4845-abc8-19853aac310a/1769816495760-cgys90-0.jpg (the page has 4,003 image impressions, and Search Console can't say which file earns them). Quotes were read with WebFetch on 2026-11-04 and came through its summary model, usually in fragments under 125 characters; curly apostrophes straightened. The Ormseth review was read on PMC through WebFetch, without a bot check. Asked directly this session, the fetch tool reports that it does not mention gluteal fat grafting or BBL; its body-contouring section covers calf and ankle liposuction, brachioplasty and lipobrachioplasty. GSC figures are the plan's verdict table. Open for the practice: which garment patients get and whether it is included, and how long the practice asks patients to wear it."
+}

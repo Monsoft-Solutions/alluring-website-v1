@@ -1,0 +1,238 @@
+{
+  "slug": "why-do-bbl-stink",
+  "mode": "rewrite",
+  "base_md5": "de53795f8985419a15231be8bbaa6351",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:36Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "Do BBLs Stink? Causes, What's Normal and When to Call",
+  "meta_description": "BBL smell comes from moisture, heat and an unwashed garment, not the surgery itself. What helps today and which signs mean call your surgeon.",
+  "excerpt": "A plastic surgeon interviewed by ASPS says BBL smell is not a common or expected outcome. When odor happens, it usually comes from moisture, heat and friction under a garment. What's normal, what helps today and when a smell means you should call your surgeon.",
+  "quick_answer": "Do BBLs stink?\n\nA plastic surgeon interviewed by ASPS says BBL smell is not a common or expected outcome with sterile surgery and proper aftercare. Odor usually comes from moisture, heat and friction under a garment. If it comes from an incision, or with redness, fever, more pain or a tender lump, call your surgeon.",
+  "primary_keyword": "bbl smell",
+  "secondary_keywords": [
+    "do bbls stink",
+    "why do bbls stink",
+    "do bbls smell",
+    "what is bbl smell",
+    "bbl stink",
+    "do bbl stink",
+    "does bbl smell",
+    "do bbls smell bad",
+    "bbl smell meaning",
+    "bbl smell bad",
+    "how long does bbl smell last",
+    "why do bbls smell bad",
+    "brazilian butt lift smell",
+    "do bbls stink after 2 years",
+    "bbl fat necrosis smell",
+    "is bbl smell real"
+  ],
+  "owns_queries": [
+    "why do bbl stink",
+    "do bbls stink",
+    "why do bbls stink",
+    "do bbls smell",
+    "what is bbl smell",
+    "bbl stink",
+    "do bbl stink",
+    "does bbl smell",
+    "do bbls smell bad",
+    "bbl smell meaning",
+    "bbl smell bad",
+    "how long does bbl smell last",
+    "why do bbls smell bad",
+    "brazilian butt lift smell",
+    "do bbls stink after 2 years",
+    "bbl fat necrosis smell",
+    "is bbl smell real"
+  ],
+  "categories": [
+    "BBL",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Hygiene",
+    "Lipo",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "bbl",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her 30s in a loose linen shirt and trousers stands by a sunny bedroom window, folding clean white laundry into a woven basket.",
+      "prompt": "SCENE: Late morning in a bright Miami bedroom, warm white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid 30s with deep brown skin and short natural hair, wearing a loose sand-colored linen shirt buttoned high and wide stone-colored linen trousers, standing by the window and folding clean white towels and laundry into a woven basket on the bed, a calm small smile, three-quarter front view. KEY DETAILS: Subject in the upper two thirds of a 3:2 frame with quiet space below; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest everyday clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no compression garment on a body, no bandages, drains or incisions; not photographed from behind and no body-part framing; no text, letters, numbers, logos or watermarks; not the surgeon or staff; not glamour, not a fashion ad."
+    },
+    {
+      "key": "causes",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled What causes BBL smell. Most BBL odor comes from moisture: drainage from the liposuction incisions, a garment that traps heat and sweat, hard-to-reach hygiene. Less often it is a sign of a complication: infection, an infected seroma, fat necrosis, rarely. Sources named in the footer.",
+      "prompt": "SCENE: A clean editorial card on warm stone-white paper with a thin brushed-gold rule under the title. SUBJECT: Two stacked panels, each with a short heading and three short rows beside small simple line icons of a droplet, a folded garment, a sink, a thermometer and a small circle. KEY DETAILS: Fraunces-style serif for the title and panel headings, a clean humanist sans for the rows, generous margins, readable on a phone, a small one-line source footer. CONSTRAINTS: Text exactly as supplied and nothing else; no practice name, no logo, no phone number, no people, no bodies, no body silhouettes, no anatomy, no incisions; no before/after framing.\nREVISION: No icons or empty circles at all, type only.",
+      "text_in_image": "What causes BBL smell\n\nMost BBL odor comes from moisture:\nDrainage from the liposuction incisions\nA garment that traps heat and sweat\nHard-to-reach hygiene\n\nLess often it is a sign of a complication:\nInfection\nAn infected seroma\nFat necrosis, rarely\n\nSources: an ASPS article; The Aesthetic Society; Cleveland Clinic"
+    },
+    {
+      "key": "healing-or-infection",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Infographic: BBL odor, healing or infection? Less likely urgent: smell comes from the garment or pads, improves after washing and showering, some leaking from liposuction incisions for several days, normal temperature. Call your surgeon: smell comes from one incision, gets stronger, thick cloudy white or cream discharge, redness spreading past the incision with warmth, fever above 101°F (38.4°C). Not sure? Call your surgeon. Infection signs usually appear 3–7 days after surgery, according to Cleveland Clinic.",
+      "prompt": "SCENE: A clean flat medical information card on warm stone, cream, sage and terracotta panels, two columns, plenty of space. SUBJECT: Text only, with no people, bodies or anatomy. KEY DETAILS: Clear editorial type, high contrast, generous line spacing. CONSTRAINTS: No logos, phone numbers, practice names, photos or watermarks.",
+      "text_in_image": "BBL Odor: Healing or Infection?\n\nLess likely urgent\nSmell comes from the garment or pads\nImproves after washing and showering\nSome leaking from liposuction incisions for several days\nNormal temperature\n\nCall your surgeon\nSmell comes from one incision\nGets stronger\nThick, cloudy white or cream discharge\nRedness spreading past the incision, warmth\nFever above 101°F (38.4°C)\n\nNot sure? Call your surgeon.\nInfection signs usually appear 3–7 days after surgery. Source: Cleveland Clinic"
+    },
+    {
+      "key": "hygiene-kit",
+      "type": "inline",
+      "aspect": "1:1",
+      "alt": "Flat lay of a BBL recovery hygiene kit: two folded compression garments, absorbent pads, breathable garment liners, a handheld bidet bottle, a gentle cleanser, a white towel and a mesh laundry bag",
+      "prompt": "Overhead flat-lay product photograph on warm white marble: two folded nude-beige compression garments, absorbent foam pads and breathable garment liners, a handheld peri bidet bottle, a blank-label pump bottle of cleanser, a rolled white towel, a white mesh laundry bag, eucalyptus, brushed-gold tray edge. No text, no logos.",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/489bb3c0-5de9-4dc0-a773-3349c7352ac4/bbl-recovery-hygiene-kit-flat-lay.jpg"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/is-bbl-smell-real-heres-what-you-need-to-know",
+      "publisher": "American Society of Plastic Surgeons (ASPS), article by Adrienne Santos-Longhurst quoting Michael Keyes, MD",
+      "title": "Is \"BBL smell\" real? Here's what you need to know",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "is not a common or expected outcome of a BBL when performed under sterile conditions with proper postoperative care",
+        "The BBL smell is not due to the surgery itself, but rather a consequence of the postoperative recovery.",
+        "can sometimes exaggerate or misattribute postoperative experiences",
+        "due to moisture, heat and friction, especially if patients wear the same garment for long periods without cleaning it",
+        "Poor hygiene during recovery, such as not wiping well, can occur due to mobility limitations.",
+        "though that usually presents with additional symptoms like redness, fever, increasing pain and/or a firm, tender nodule",
+        "regularly, ideally every 24 hours",
+        "purchase a backup garment in order to have something to wear",
+        "can help absorb moisture and reduce bacterial buildup",
+        "I recommend that patients cleanse themselves with Hibiclens before and after their surgeries until the bottle is empty.",
+        "I recommend that patients invest in a bidet, especially if they have difficulty wiping after a bowel movement.",
+        "which may indirectly help minimize odor",
+        "BBL smell is often associated with high-volume fat transfers",
+        "In my opinion, skinny BBLs reduce the likelihood of odor-related issues",
+        "lower tumescent volumes I have to inject during surgery",
+        "This usually results in less postoperative fluid drainage",
+        "therefore less opportunity for bacterial overgrowth or garment saturation",
+        "BBL smell is not something I have really encountered in my practice",
+        "musty",
+        "rancid"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS), article by Kaitlin Clark quoting Chris Funderburk, MD",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "basically 24/7, except for showering, the first month and at least 12 hours a day the second"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/liposuction/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Liposuction aftercare and recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Your incisions may be leaky or drain fluids for several days."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You won't be able to sit or lie down on your butt for at least two weeks."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/surgical-wound-infection",
+      "publisher": "Cleveland Clinic",
+      "title": "Surgical Wound Infection",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Noticeable odor from the incision",
+        "Thick, cloudy, white- or cream-colored discharge from the wound",
+        "Redness or color changes in your skin that go beyond the edge of the incision",
+        "The incision area feels warm or hot to your touch",
+        "Fever (greater than 101 degrees Fahrenheit or 38.4 degrees Celsius)",
+        "Symptoms typically develop three to seven days after surgery.",
+        "Smoking, including using e-cigarettes, increases your risk."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/seroma",
+      "publisher": "Cleveland Clinic",
+      "title": "Seroma",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A seroma is a pocket of fluid that builds up under your skin, most often after surgery.",
+        "A seroma can collect bacteria and turn into an abscess (a pocket of pus).",
+        "Call your surgeon if the fluid looks like pus (thick, milky-white to yellow and stinky)",
+        "Getting bigger",
+        "Causing discomfort"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/24187-fat-necrosis",
+      "publisher": "Cleveland Clinic",
+      "title": "Fat Necrosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It may feel like a fatty lump or like a hard nodule.",
+        "As fat cells die, they release their oily contents, which collect into a pocket called an oil cyst.",
+        "It usually doesn't, but occasionally, the area may feel a little tender.",
+        "Causes pain",
+        "Seems to grow"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "chest pain, shortness of breath, cough with blood, lightheadedness and fainting",
+        "Don't wait to see if your symptoms go away."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "blog/baselines/bbl-cluster-2026-11-04.csv and queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 79376,
+    "clicks": 167,
+    "position": 7.78,
+    "top_queries": [
+      {
+        "query": "bbl smell",
+        "impressions": 6813,
+        "clicks": 15,
+        "position": 9.3
+      },
+      {
+        "query": "do bbls stink",
+        "impressions": 7275,
+        "clicks": 7,
+        "position": 7.8
+      },
+      {
+        "query": "do bbls stink after 2 years",
+        "impressions": 591,
+        "clicks": 5,
+        "position": 4.2
+      }
+    ]
+  },
+  "notes": "Gentle fix, BBL rewrite Batch 3 (title test: read at day 28, revert if smell-query CTR isn't up against controls). H2 topics kept. Plan's title, meta and quick answer used; the quick answer says 'a plastic surgeon interviewed by ASPS' where the plan says 'a surgeon', to meet the attribution rule. All must-fix lines closed: 'ASPS says' moved to Dr. Michael Keyes in ASPS's article; no odor day count (the page says no authoritative source gives one); 'common' removed; ABCS credential replaced with the verbatim sentence. Also softened 'a healed BBL doesn't smell', 'a smell like stool usually means', 'most often painless' and the phone and #contactus close. Images: the live hero and the inline causes illustration show a compression garment on a body, which images.md forbids, so both get new renders (causes is a card, hero is a new photo). Kept per the plan with reuse_url: the healing-or-infection card and the flat lay; I viewed both at full size and neither prints a practice name or phone. The table matches the card word for word. Open: 'Thin, clear to pinkish drainage' on the kept card has no source read (Cleveland's seroma page says thin, clear-yellow; ASPS and The Aesthetic Society name no color), so the body calls that column general guidance. #candidate isn't used here; #recovery and #surgeon are the plan's anchors. Quotes came through WebFetch's extraction model, which caps fragments at about 125 characters; none was read from raw page text this session. Registry: 'do bbls stink what bbl smell is and how long it lasts' was left out of owns_queries (old title; the registry entry can drop it)."
+}

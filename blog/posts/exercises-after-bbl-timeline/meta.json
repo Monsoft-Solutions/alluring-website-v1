@@ -1,0 +1,216 @@
+{
+  "slug": "exercises-after-bbl-timeline",
+  "mode": "rewrite",
+  "base_md5": "b0a030b6e850b08a555b1d2dcfd6e255",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:23Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "Exercise After a BBL: When to Walk, Lift and Train Glutes",
+  "meta_description": "Walk from day 1 or 2, nothing strenuous for about a month, normal exercise at about 8 weeks once your surgeon clears you. What comes back when.",
+  "excerpt": "Walk from day 1 or 2, avoid anything strenuous for about the first month, and return to normal exercise at about 8 weeks once your surgeon clears you. What comes back when, why seats wait, when squats return, and what no source can tell you yet.",
+  "quick_answer": "When can I exercise after a BBL?\n\nThe Aesthetic Society says you should be able to walk after the second day and can return to normal exercise after 8 weeks. Cleveland Clinic says to avoid heavy lifting and strenuous activity for one month, and an ASPS article allows light activity like fast walking after that.",
+  "primary_keyword": "exercises after bbl timeline",
+  "secondary_keywords": [
+    "bbl exercises",
+    "how long after bbl can i workout",
+    "bbl exercise",
+    "when can i workout after bbl",
+    "bbl workout plan",
+    "when can i start working out after bbl",
+    "exercise after bbl",
+    "working out after bbl",
+    "how long after a bbl can you workout",
+    "how to grow glutes after bbl",
+    "when can i start doing squats after bbl",
+    "bbl workouts",
+    "exercises to maintain bbl shape",
+    "bbl exercises at home",
+    "workout after bbl",
+    "will my bbl results get ruined if i exercise after surgery?"
+  ],
+  "owns_queries": [
+    "exercises after bbl safe recovery timeline",
+    "bbl exercises",
+    "how long after bbl can i workout",
+    "when can i workout after bbl",
+    "when can i start working out after bbl",
+    "exercise after bbl",
+    "working out after bbl",
+    "when can i start doing squats after bbl",
+    "exercises to maintain bbl shape",
+    "will my bbl results get ruined if i exercise after surgery?"
+  ],
+  "categories": [
+    "Post-Op Care"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Liposuction",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a loose long-sleeved linen shirt and full-length trousers walks along a shaded limestone path under palm trees, carrying a water bottle.",
+      "prompt": "SCENE: Early morning on a shaded limestone path beside a low white wall in Miami, palm shadows across the ground, soft daylight. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid 40s with olive skin and short dark curly hair, walking at an easy pace toward the camera in a loose long-sleeved linen shirt, full-length loose trousers and flat walking shoes, holding a water bottle. Three-quarter front view, mid-stride, relaxed expression. KEY DETAILS: Framed from the knees up with generous space above her head, the subject in the upper two thirds and the quiet path in the lower third; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest everyday clothing fully covering the torso and legs; no sports bra, leggings, swimwear, cleavage or bare midriff; no garments, bandages, drains or incisions; not photographed from behind, no crop on the hips or buttocks; no gym, no text, letters, numbers, logos or watermarks; not glamour, not a fitness ad."
+    },
+    {
+      "key": "timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Timeline card titled BBL exercise timeline. Day 1 or 2: short walks. First month: no heavy lifting or strenuous activity. After 1 month: light activity such as fast-paced walking. After 8 weeks: normal activities and exercise, once your surgeon clears you. Sources: The Aesthetic Society, Cleveland Clinic, ASPS.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: A simple vertical timeline with four rows joined by a thin line, each with a short bold time label on the left and its line of text on the right, and a small source footer. KEY DETAILS: Flat vector layout with no illustration of a person, serif headline in dark stone, sans-serif rows, muted gold only for the line and rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "BBL exercise timeline\n\nDay 1 or 2\nShort walks\n\nFirst month\nNo heavy lifting or strenuous activity\n\nAfter 1 month\nLight activity such as fast-paced walking\n\nAfter 8 weeks\nNormal activities and exercise, once your surgeon clears you\n\nSources: The Aesthetic Society, Cleveland Clinic, ASPS"
+    },
+    {
+      "key": "moves",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Diagram of three stylized, fully clothed women shown whole from the side, walking, walking fast and squatting. Labels: first, walking; next, fast-paced walking; last, once your surgeon clears you, squats, lunges and running.",
+      "prompt": "SCENE: A clean editorial diagram on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: Three stylized, simplified whole figures of a woman in loose long-sleeved tops and loose full-length trousers, stacked top to bottom: walking at an easy pace, walking briskly, and in a gentle bodyweight squat. Each is drawn in side profile or front three-quarter view, with its label beside it. KEY DETAILS: Flat vector illustration in stone and sand tones with no skin detail and no facial features, serif headline in dark stone, sans-serif labels, muted gold only for the rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. Figures are fully clothed in loose clothing and shown whole; no rear view, no crop on the hips or buttocks, no anatomy, no highlighted muscles, no sports bra or leggings. No practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no numbers.",
+      "text_in_image": "What comes back when\n\nFirst: walking\nNext: fast-paced walking\nLast, once your surgeon clears you: squats, lunges and running"
+    },
+    {
+      "key": "seats",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Why seats wait, with a simple bench icon. A bike seat or weight bench is direct pressure. The Aesthetic Society says to avoid direct pressure on the buttocks for at least 8 weeks. Source: The Aesthetic Society.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: A single simple line icon of an empty stool or weight bench above two short sentences and a small source footer. KEY DETAILS: Flat vector layout, serif headline in dark stone, sans-serif sentences, muted gold only for the icon and rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body or body parts, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "Why seats wait\n\nA bike seat or weight bench is direct pressure.\nThe Aesthetic Society says to avoid direct pressure on the buttocks for at least 8 weeks.\n\nSource: The Aesthetic Society"
+    },
+    {
+      "key": "standing",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "A woman in a long-sleeved top and loose joggers stands in a bright room, holding a light resistance band at chest height.",
+      "prompt": "SCENE: Mid-morning in a bright home room, white plaster walls, a tall window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 30s with light brown skin and a long dark braid, standing upright and at ease, holding a light resistance band at chest height with both hands, in a high-neck long-sleeved cream top and loose sand-colored joggers. Three-quarter front view, calm expression. KEY DETAILS: Framed from the knees up, with no bench or chair anywhere near her; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest everyday clothing fully covering the torso and legs; no sports bra, leggings, swimwear, cleavage or bare midriff; no garments, bandages, drains or incisions; not photographed from behind, no crop on the hips or buttocks; no text, letters, numbers, logos or watermarks; not glamour, not a fitness ad."
+    },
+    {
+      "key": "restart",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Checklist card titled Ask your surgeon before you restart: squats, lunges and leg lifts; hip thrusts and heavy deadlifts; running and jumping rope; stationary bikes and rowing machines; seated weights and leg presses.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: A short checklist of five rows, each with a small empty circle and its line of text. KEY DETAILS: Flat vector layout with no illustration of a person, serif headline in dark stone, sans-serif rows, muted gold only for the circles and rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no exercise pictures of bodies, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no numbers and no weeks.",
+      "text_in_image": "Ask your surgeon before you restart\n\nSquats, lunges and leg lifts\nHip thrusts and heavy deadlifts\nRunning and jumping rope\nStationary bikes and rowing machines\nSeated weights and leg presses"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery and Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You should be able to get up and walk after the second postoperative day to help present blood clots.",
+        "and you still shouldn't do anything strenuous, including lifting, for four to six weeks.",
+        "You must avoid direct pressure on the buttocks for at least eight weeks, so you must sit on a pillow during this period.",
+        "You can resume normal activities and exercise after eight weeks.",
+        "If the pain is extreme or long-lasting, contact your surgeon."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "However, you should avoid heavy lifting or strenuous activities for one month.",
+        "At this point, you may be able to participate in light exercises.",
+        "You may also have to incorporate lower body exercises that focus on your butt, including leg lifts, lunges and squats.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Recovering from a Brazilian butt lift (Kamran Azad, MD, May 12, 2016)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "most often one can expect to be up and walking a day or two after the procedure.",
+        "After one month, light activities, such as fast-paced walking, can be performed.",
+        "high impact activities should be avoided, especially any type of bouncing.",
+        "more vigorous activities can resume",
+        "fat-burning exercises such as jogging or running."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You can generally resume exercise after six to eight weeks.",
+        "If you experience shortness of breath, chest pains or unusual heart beats, seek medical attention immediately."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "As you gain or lose weight, your results may change as the transferred fat can grow or shrink",
+        "just as any other fat in your body."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift (Kaitlin Clark, August 11, 2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A lot of times during those first four to five days after surgery, the patient will just stay home",
+        "We encourage them to walk around their home or at most the little local neighborhood",
+        "try to keep it within the 10-minute window, which is about as long as you should be sitting at any given time for the first six weeks.",
+        "I advise patients to wear them as much as possible, but basically 24/7, except for showering, the first month",
+        "and at least 12 hours a day the second, usually they can at least do it at night."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/24187-fat-necrosis",
+      "publisher": "Cleveland Clinic",
+      "title": "Fat Necrosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It may feel like a fatty lump or like a hard nodule.",
+        "Causes pain.",
+        "Seems to grow."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/surgical-wound-infection",
+      "publisher": "Cleveland Clinic",
+      "title": "Surgical Wound Infection",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Fever (greater than 101 degrees Fahrenheit or 38.4 degrees Celsius)",
+        "Redness or color changes in your skin that go beyond the edge of the incision",
+        "Thick, cloudy, white- or cream-colored discharge from the wound"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/17400-pulmonary-embolism",
+      "publisher": "Cleveland Clinic",
+      "title": "Pulmonary Embolism",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Call 911 or your local emergency number if you have these symptoms.",
+        "leg pain, swelling and warmth",
+        "seek medical care right away"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-10-05..2026-11-01",
+    "impressions": 2844,
+    "clicks": 11,
+    "position": 6.9
+  },
+  "notes": "Full rewrite. Removes the week 4 cushioned bike and elliptical, 120 bpm, seated dumbbells at 2-5 lbs, 100 oz of water, 7-9 hours of sleep, the massage start date, the 12 versus 8 week contradiction, AAAASF, double board-certified, 'Luxury results', the 0% APR line, phone and street address, and currentresults.com. Deviation from the plan's quick answer: the plan credits the first-month limit on strenuous exercise and heavy lifting to 'an ASPS blog', but the Azad article doesn't discuss lifting (read this session; SOURCE-BANK A.3 agrees), so that clause is now Cleveland Clinic and the ASPS article keeps only light activity after a month. Images: hero plus 5 inline, the live count, because the task says to keep the count where Image Search earns and Search Console can't say which file earns (page has 9,441 image impressions). The plan's table says 5 to 3. To match it, remove `seats` and `restart`, images and placements, and keep their text in the body. No live image reused: all break a rule. Candidates for the same address after the canary: timeline https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/560d87ea-d7bd-41dd-958b-a462b1d82342/1769816504425-ym2pzn-0.jpg, pressure diagram https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/560d87ea-d7bd-41dd-958b-a462b1d82342/1769816471554-1bdlsv-0.jpg, exercises to avoid https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/560d87ea-d7bd-41dd-958b-a462b1d82342/1769816573324-8n710c-0.jpg. Quotes were read with WebFetch on 2026-11-04 and came through its summary model, usually in fragments under 125 characters; the Aesthetic Society's 'present blood clots' is the page's own typo. GSC figures are the plan's verdict table. Open for the practice: whether it wants its own return-to-exercise schedule stated."
+}

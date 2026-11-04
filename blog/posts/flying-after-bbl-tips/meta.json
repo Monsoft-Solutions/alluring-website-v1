@@ -1,0 +1,185 @@
+{
+  "slug": "flying-after-bbl-tips",
+  "mode": "rewrite",
+  "base_md5": "25c06e0626145d5079e01efe9def8392",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:24Z",
+  "reader": "deciding",
+  "cluster": "bbl",
+  "title": "When Can I Fly After a BBL? Nights to Stay Before Flying",
+  "meta_description": "Plan on 7 to 10 days in Miami after a BBL, cleared by your surgeon before you fly. How to sit, move and stay safe on the flight home.",
+  "excerpt": "If you are flying in for a BBL, plan on 7 to 10 days in Miami, seen at follow-up and cleared before you fly. How many nights to stay, how to sit on the plane, how to lower your risk of a blood clot, when to delay your flight, and who arranges what.",
+  "quick_answer": "When can I fly after a BBL?\n\nPlan on 7 to 10 days in Miami, so you can be seen at follow-up and cleared first. An ASPS article advises staying near your surgeon at least 4 to 5 days, or as long as possible, and a surgeon quoted there says infection typically shows up in 3 to 5 days.",
+  "primary_keyword": "flying after bbl tips",
+  "secondary_keywords": [
+    "flying after bbl",
+    "can you fly after a bbl",
+    "how long after a bbl can you fly",
+    "flying home after bbl",
+    "flying 5 days after bbl",
+    "bbl flight",
+    "bbl flight home",
+    "bbl travel",
+    "bbl on plane",
+    "bbl airplane",
+    "bbl plane ride",
+    "bbl sitting on plane",
+    "how to sit on plane after bbl",
+    "bbl pillow on plane"
+  ],
+  "owns_queries": [
+    "travel after bbl safe flying timeline tips",
+    "flying after bbl",
+    "can you fly after a bbl",
+    "how long after a bbl can you fly",
+    "flying home after bbl",
+    "flying 5 days after bbl",
+    "bbl flight",
+    "bbl flight home",
+    "bbl on plane",
+    "bbl airplane",
+    "bbl sitting on plane",
+    "how to sit on plane after bbl",
+    "bbl pillow on plane"
+  ],
+  "categories": [
+    "Post-Op Care",
+    "BBL",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Liposuction",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a loose linen shirt stands by a bright window with a small carry-on case beside her, checking a printed page of dates.",
+      "prompt": "SCENE: Late morning in a bright Miami apartment, white plaster walls, a tall arched window with sheer linen curtains and soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. A small sand-colored carry-on case stands on the floor beside her. SUBJECT: A woman in her early 40s with olive skin and shoulder-length dark hair, standing at ease near the window in a loose white linen shirt buttoned to the collarbone and wide-leg stone trousers, holding a single printed page and reading it with a calm, practical expression. Three-quarter front view. KEY DETAILS: Framed from the knees up with generous space above her head, her face and hands in the upper two thirds of the frame, the lower third quiet floor and case for a title. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest loose clothing fully covering the torso; no swimwear, lingerie, shapewear, bodycon, cleavage or bare midriff; not photographed from behind; no focus on the hips or buttocks; no garments, bandages, drains or incisions; no surgeon or staff; no aircraft, terminal or clinic signage; no readable text on the page; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "before-you-fly",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Before you fly after a BBL. Plan on 7 to 10 days in Miami, until follow-up and clearance. Walk for 5 to 10 minutes for every hour you sit. Remain well hydrated. Ask about compression stockings. Take your pillow on any flight. Breathing trouble, chest pain or an unusual heartbeat: seek medical attention immediately.",
+      "prompt": "SCENE: A clean editorial card on warm porcelain stone, with a thin brushed-gold rule at the top and generous margins. SUBJECT: A simple checklist of five lines with small round gold ticks, and below them one line set apart in a thin espresso outline box for the warning. No people and no anatomy. KEY DETAILS: Flat design, serif headline in dark espresso, sans-serif body, large legible type for phones, muted gold only for the rule and ticks. Source line small at the foot. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body shapes, no silhouettes, no aircraft photo, no practice name, no logo, no phone number, no website address. Spell every word and number exactly as supplied; no extra numbers.",
+      "text_in_image": "Before you fly after a BBL\n\nPlan on 7 to 10 days in Miami, until follow-up and clearance\nWalk for 5 to 10 minutes for every hour you sit\nRemain well hydrated\nAsk about compression stockings\nTake your pillow on any flight\n\nBreathing trouble, chest pain or an unusual heartbeat: seek medical attention immediately\n\nSources: ASPS, Cleveland Clinic, CDC"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/boarding-groups-added-complications-from-traveling-after-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Boarding groups: Added complications from traveling after a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "stay in the area you had the surgery for at least four to five days, or as long as possible",
+        "It typically can occur in three to five days.",
+        "most surgeons advise against travel in the days following surgery",
+        "get up and walk around for at least five to 10 minutes for every hour spent sitting.",
+        "You want to remain well hydrated.",
+        "his patients who are traveling wear compression stockings",
+        "which can develop in the days and even weeks following travel.",
+        "the longer time a person spends flying similarly leads to a higher risk of developing these blood clots",
+        "If you go and sit on them for a couple of hours on a plane, you're at risk of killing the cells",
+        "The seatbelt sign is a federal regulation, so they have to sit down when that sign is on",
+        "I can't sit down, I need to lay down the entire flight,",
+        "No, you can't travel unless you can sit up."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "try to keep it within the 10-minute window, which is about as long as you should be sitting at any given time"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You won’t be able to sit or lie down on your butt for at least two weeks.",
+        "You won’t be able to sit without your pillow for approximately eight weeks."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/surgical-wound-infection",
+      "publisher": "Cleveland Clinic",
+      "title": "Surgical Wound Infection",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Symptoms typically develop three to seven days after surgery.",
+        "Fever (greater than 101 degrees Fahrenheit or 38.4 degrees Celsius)",
+        "Noticeable odor from the incision",
+        "Thick, cloudy, white- or cream-colored discharge from the wound",
+        "The incision area feels warm or hot to your touch",
+        "Redness or color changes in your skin that go beyond the edge of the incision"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Aftercare and Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You must avoid direct pressure on the buttocks for at least eight weeks",
+        "being in good health, not smoking, and having help after surgery will increase your healing"
+      ]
+    },
+    {
+      "url": "https://www.cdc.gov/blood-clots/risk-factors/travel.html",
+      "publisher": "Centers for Disease Control and Prevention",
+      "title": "Understanding Your Risk for Blood Clots with Travel",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "anyone traveling more than 4 hours, whether by air, car, bus, or train, can be at risk for blood clots.",
+        "Recent surgery or injury (within 3 months).",
+        "Move your legs frequently when on long trips and exercise your calf muscles to improve the flow of blood.",
+        "some people may benefit by wearing graduated compression stockings."
+      ]
+    },
+    {
+      "url": "https://www.cdc.gov/blood-clots/about/index.html",
+      "publisher": "Centers for Disease Control and Prevention",
+      "title": "About Venous Thromboembolism",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "If you have any of these signs or symptoms, you should see your doctor as soon as possible.",
+        "Difficulty breathing",
+        "Faster than normal or irregular heartbeat",
+        "Chest pain or discomfort, which usually worsens with a deep breath or coughing",
+        "Cough or coughing up blood",
+        "Very low blood pressure, lightheadedness, or fainting",
+        "If you have any of these signs or symptoms, you should seek medical help immediately."
+      ]
+    },
+    {
+      "url": "http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&URL=0400-0499/0458/Sections/0458.328.html",
+      "publisher": "Florida Statutes",
+      "title": "Section 458.328",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A physician performing a gluteal fat grafting procedure in an office surgery setting shall adhere to standards of practice",
+        "conduct an in-person examination of the patient while physically present in the same room as the patient",
+        "no later than the day before the procedure"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 7642,
+    "clicks": 105,
+    "position": 5.24
+  },
+  "notes": "Full rewrite to the plan's outline, replacing wrong figures with right ones. Removes 'week 3+', the weeks 1-2 / 3-4 / 6+ schedule, 'every 30-60 minutes', days 1, 7 and 14 follow-ups, Colombia and medical tourism, AAAASF, 0% APR and unsourced cabin-pressure and crowd claims. New point the live post missed: a flight at 7 to 10 days falls inside Cleveland Clinic's first 2 weeks. The 7 to 10 days is the practice's figure (facts file). Open with the practice: is 7 to 10 days right, and what is the real follow-up schedule. Quotes came through WebFetch's extraction model, in fragments capped near 125 characters. New hero at a new address (old hero breaks the image rules: shapewear under an open robe)."
+}

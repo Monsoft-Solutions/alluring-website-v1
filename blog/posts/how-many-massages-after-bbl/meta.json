@@ -1,0 +1,241 @@
+{
+  "slug": "how-many-massages-after-bbl",
+  "mode": "rewrite",
+  "base_md5": "4b01e626bced102020153965d8506928",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:27Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "How Many Massages After BBL?",
+  "meta_description": "There is no agreed number of massages after a BBL. What The Aesthetic Society and a narrative review say, when to start, and what to ask your surgeon.",
+  "excerpt": "There is no agreed number of massages after a BBL. Here is what The Aesthetic Society and a narrative review actually say, what massage can and can't do, and the questions to ask your surgeon before you book sessions.",
+  "quick_answer": "How many massages do you need after a BBL?\n\nThere is no agreed number. The Aesthetic Society says your surgeon may recommend lymphatic massage. A narrative review reports 2 to 3 times a week for 3 to 4 weeks, in cosmetic surgery generally, not BBL. Follow your surgeon's schedule, and ask for it before you book sessions.",
+  "primary_keyword": "how many massages after bbl",
+  "secondary_keywords": [
+    "how many lymphatic massages after bbl",
+    "how many massages do you need after bbl",
+    "how many massages after lipo 360 and bbl",
+    "how many massages after bbl and lipo 360",
+    "bbl massages",
+    "bbl massage",
+    "massage after bbl",
+    "massages after bbl",
+    "post bbl massage",
+    "lymphatic massage after bbl",
+    "lymphatic drainage massage after bbl",
+    "lymphatic drainage after bbl",
+    "bbl lymphatic drainage massage",
+    "bbl drainage",
+    "bbl massages after surgery",
+    "bbl post op care massages"
+  ],
+  "owns_queries": [
+    "how many massages after lipo 360 and bbl",
+    "how many massages after bbl and lipo 360",
+    "how many massages after bbl",
+    "how many lymphatic massages after bbl",
+    "how many massages do you need after bbl",
+    "bbl massages",
+    "massage after bbl",
+    "massages after bbl",
+    "post bbl massage",
+    "lymphatic massage after bbl",
+    "lymphatic drainage massage after bbl",
+    "lymphatic massage after a bbl, how soon and how often?"
+  ],
+  "categories": [
+    "BBL",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Lymphatic Massage",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in soft loungewear rests on her side on a linen daybed in a bright room, reading a paperback, calm and fully clothed.",
+      "prompt": "SCENE: Mid-morning in a bright room, white plaster walls, a tall window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 30s with deep brown skin and short natural hair, resting on her side on a linen daybed in loose sand-colored loungewear, reading a paperback. Front three-quarter view from the head end, calm. KEY DETAILS: Framed from the waist up with generous space above her, subject in the upper two thirds of a 3:2 frame; a glass of water on a side table; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest loungewear fully covering the torso; no swimwear, lingerie, shapewear, cleavage or bare midriff; no massage being given, no hands on her body; no garments, bandages, drains or incisions; not photographed from behind; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "no-agreed-number",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled How many massages after a BBL? There is no agreed number. The Aesthetic Society says your surgeon may recommend lymphatic massage. A narrative review reports 2 to 3 times a week for 3 to 4 weeks, in cosmetic surgery generally, not BBL. Sources: The Aesthetic Society; Marxen and colleagues, 2023.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A title question, one large plain answer line, and two short sentences beneath it. KEY DETAILS: A serif title and answer line, a clean sans-serif for the sentences, dark espresso text on warm porcelain, a thin brushed-gold rule, a small source footer. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.",
+      "text_in_image": "How many massages after a BBL?\nThere is no agreed number.\nThe Aesthetic Society says your surgeon may recommend lymphatic massage.\nA narrative review reports 2 to 3 times a week for 3 to 4 weeks, in cosmetic surgery generally, not BBL.\nSources: The Aesthetic Society; Marxen and colleagues, 2023"
+    },
+    {
+      "key": "lymph-diagram",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Stylised full-figure front-view illustration of a clothed woman standing, with simple lymph pathways drawn as thin gold lines over her clothing, in stone tones.",
+      "prompt": "SCENE: A clean textbook-style illustration on warm porcelain, flat lighting. SUBJECT: A stylised full-figure woman seen from the front, standing at ease in a simple long dress, with lymph pathways drawn as thin brushed-gold lines and small dots over the whole body. KEY DETAILS: Soft stone and sand tones, simple and non-graphic, the whole person in frame. CONSTRAINTS: Clothed; not from behind; no rear view; no crop on the hips or buttocks; no skin detail; no text, letters, numbers, labels, logos or watermarks.\nREVISION: Abstract clothed figure in an opaque, high-neck, long-sleeved, floor-length loose dress with no skin showing below the neck except hands. Nothing sheer. Lines are simple and few, drawn over the clothing only, not across the face, neck or hands."
+    },
+    {
+      "key": "when-to-start",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled When to start massage after a BBL. Ask your surgeon. No source we rely on says how soon massage can touch grafted buttocks.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A title, one large plain answer line, and one sentence beneath it, with a simple line icon of a calendar. KEY DETAILS: A serif title and answer line, a clean sans-serif for the sentence, dark espresso text on warm porcelain, a thin brushed-gold rule. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.",
+      "text_in_image": "When to start massage after a BBL\nAsk your surgeon.\nNo source we rely on says how soon massage can touch grafted buttocks."
+    },
+    {
+      "key": "questions-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Ask your surgeon before massage. Do you want me to have lymphatic massage? How many sessions, and when do they start? Which areas are off limits? Who do you trust to do it?",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A short numbered list of four questions. KEY DETAILS: A serif title, a clean sans-serif for the questions, dark espresso text on warm porcelain, a thin brushed-gold rule. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.\nREVISION: No list numbers or bullets before the questions. Only the exact words.",
+      "text_in_image": "Ask your surgeon before massage\nDo you want me to have lymphatic massage?\nHow many sessions, and when do they start?\nWhich areas are off limits?\nWho do you trust to do it?"
+    },
+    {
+      "key": "questions-photo",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "A woman in loose linen loungewear stands at a kitchen counter in a bright room, reading a handwritten list of questions next to a glass of water.",
+      "prompt": "SCENE: A bright kitchen in the morning, white plaster walls, an arched window, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 40s with light skin and shoulder-length gray-blond hair, standing at the counter in loose linen loungewear, reading a sheet of paper. Three-quarter front view. KEY DETAILS: Framed from the thighs up; a glass of water beside her; the writing on the paper is not legible; editorial documentary photography, 50mm, natural color, real skin texture. CONSTRAINTS: Modest loungewear fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no clinician, no staff, no practice sign; no garments, bandages, drains or incisions; not photographed from behind; no readable text, letters, numbers, logos or watermarks.\nREVISION: The sheet clearly shows a handwritten list of illegible short lines. The shirt is buttoned up to the collarbone, with no open neckline."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery & Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You must avoid direct pressure on the buttocks for at least eight weeks, so you must sit on a pillow during this period.",
+        "Your surgeon may recommend a treatment called lymphatic massage to try to reduce swelling",
+        "and facilitate better drainage of any fluid buildup.",
+        "You will likely need to wear a compression garment for six to eight weeks.",
+        "You should be able to get up and walk after the second postoperative day to help present blood clots.",
+        "you can return to work, drive, or go to the movies after ten to fourteen days, but you must use a pillow",
+        "When the swelling subsides, sometimes taking three to six months, your true results will be more evident.",
+        "The final results of your buttock augmentation may be initially obscured by swelling.",
+        "For this reason, you should not go clothes shopping for at least three months.",
+        "You can resume normal activities and exercise after eight weeks.",
+        "you still shouldn't do anything strenuous, including lifting, for four to six weeks.",
+        "you can sit with a soft pillow placed beneath your hamstring muscles but not touching your butt",
+        "You'll be tempted to try to help around the house quickly, but you won't feel like yourself for one or two weeks",
+        "No matter what procedure you undergo, being in good health, not smoking"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10045879/",
+      "publisher": "Aesthetic Surgery Journal Open Forum",
+      "title": "The Utility of Lymphatic Massage in Cosmetic Procedures (Marxen and colleagues, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "General postoperative manual lymphatic massage recommendations consist of manual lymphatic massage 2 to 3 times per week",
+        "during the initial 3 to 4 weeks of recovery",
+        "Due to the paucity of research on MLD in aesthetic procedures, more studies on the topic are warranted.",
+        "Level of Evidence: 5."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Your surgeon may encourage you to seek a lymphatic massage from a licensed massage therapist.",
+        "Small, thin tubes may be temporarily placed under the skin to drain any excess blood or fluid that may collect.",
+        "If you experience shortness of breath, chest pains or unusual heart beats, seek medical attention immediately."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/eight-ways-to-make-liposuction-recovery-a-breeze",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Eight ways to make liposuction recovery a breeze",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "many have their liposuction patients begin lymphatic massages the day after surgery, and continue the appointments several times each week for two months.",
+        "prevent fibrosis, contour irregularities and lumps and bumps,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/is-bbl-smell-real-heres-what-you-need-to-know",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Is \"BBL smell\" real? Here's what you need to know",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Professionally performed lymphatic drainage can assist in reducing fluid retention and swelling",
+        "which may indirectly help minimize odor.",
+        "Compression garments should be changed and washed regularly, ideally every 24 hours."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "I'm a very big fan of compression garments because they definitely help alleviate the swelling,",
+        "I advise patients to wear them as much as possible, but basically 24/7, except for showering, the first month",
+        "During that period, the fat is very susceptible to pressure necrosis, or pressure that kills off the fat cells,",
+        "So for the first six weeks, the patient has to be very careful about not putting undue or prolonged pressure on the buttocks.",
+        "But try to keep it within the 10-minute window, which is about as long as you should be sitting",
+        "most need some degree of pain medication for the first four to five days.",
+        "Patients return to work between days seven and 10, and if they're sitting at a desk all day,",
+        "or else they're at risk for asymmetrical or quickly diminishing results.",
+        "It's not uncommon for patients to return to their plastic surgeon for another BBL to smooth out any contour irregularities",
+        "and asymmetry that may have formed during healing,",
+        "especially as the amount of fat that \"takes\" is highly variable",
+        "We know from a number of studies that the average fat take or the amount of the transferred fat",
+        "that will survive is about 60%,",
+        "Around month three, the acute risk of losing fat from the buttock area subsides,",
+        "Dr. Williams notes that during months three to six, the shape \"should further refine and the curve should become more apparent.\""
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/body/21199-lymphatic-system",
+      "publisher": "Cleveland Clinic",
+      "title": "Lymphatic System",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Collecting excess fluid from your body's tissues and returning it to your bloodstream",
+        "Lymph, also called lymphatic fluid, is a collection of the extra fluid that drains from cells and tissues",
+        "about 600 lymph nodes scattered throughout your body.",
+        "in areas like your armpits, groin or neck"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/21768-lymphatic-drainage-massage",
+      "publisher": "Cleveland Clinic",
+      "title": "Lymphatic Drainage Massage",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Lymphatic drainage massage is a gentle form of massage used to relieve inflammation related to lymphedema.",
+        "you should avoid it if you have:",
+        "Blood clots",
+        "Infection"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Swelling of your leg or arm on one side (sometimes, this happens suddenly)",
+        "Pain or tenderness in your leg or arm (may only happen when standing or walking)",
+        "Warmth in the area of your leg or arm that's swollen or painful",
+        "Discolored or red skin",
+        "It's important to call your provider right away or go to the emergency room if you have deep vein thrombosis or PE symptoms."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 13498,
+    "clicks": 252,
+    "position": 5.13
+  },
+  "notes": "Quotes came through WebFetch, whose extraction model caps a quote at about 125 characters, so long sentences are split or end early; the two ASPS PDFs were read with pdftotext instead (the report PDF exceeded WebFetch's size limit, so it was fetched with plain curl). Elsaftawy 2026 could not be opened this session (PubMed cookie notice, Ovid 402, Europe PMC 403), so its source entry has no quotes and its figures come from bbl.facts.ts. Redone 2026-11-04 as a sentence-level edit from the live text: every live sentence stays word for word, in order and section, unless it broke a rule. Title and H2 wording kept; opening H2 added, with the plan's fallback wording in the first lines, since the practice has given no schedule (Marxen 2023, Level of Evidence 5, does not mention BBL). Changed: the 10-12 sessions, daily and every-other-day schedule, 24-48 hour and 1-3 day starts, 30-60 minute sessions, weekly for 2-3 months; \"studies suggest\", \"higher complication rates\" and the rest of the skipping section; \"guarantee\"; toxins, clots, scars, faster healing; \"superior results\"; \"journey\" (sweep); \"final post-operative massage\", because it implies a practice protocol; plural surgeons; phone numbers and #contactus. The live at-a-glance list keeps its label and becomes the table the lint requires, with sourced answers. Image address requests from the plan, all staged after the canary and changed last: lymph-diagram at the same address as https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/1811c6b6-65f6-41a0-9b8a-561fc65a7137/1768930727933-3appjq-0.jpg (largest Images risk: 16 image clicks, 46,657 impressions on \"bbl\" in 90 days per the plan). no-agreed-number replaces the schedule card 1768929181929-udmw4w-0.jpg, which prints 10-12; when-to-start replaces 1768930732140-putnmh-0.jpg; questions-card replaces the unclothed rear map 1768930733195-g0s2d5-0.jpg; questions-photo replaces the clinic scene 1768930751833-0cfyza-0.jpg; hero replaces 1768929272134-2fkfyo-0.jpg. Fact-check corrections applied 2026-11-04 at the coordinator's request; they override the kept-sentence target. The unsourced benefit lines and the incision and harvest-area line are out; massage benefits now use The Aesthetic Society's hedged wording."
+}

@@ -1,0 +1,190 @@
+{
+  "slug": "when-can-i-wear-jeans-after-bbl",
+  "mode": "rewrite",
+  "base_md5": "f5147a60bb2678f901dddc42d3cf7e77",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:35Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "When Can I Wear Jeans After a BBL?",
+  "meta_description": "No source sets a date for jeans after a BBL. Avoid direct pressure for at least 8 weeks and wait 3 months to shop for clothes, The Aesthetic Society says.",
+  "excerpt": "No source sets a date for jeans after a BBL. Here is the closest guidance, from The Aesthetic Society, what to wear until your surgeon clears you, and how to choose jeans when you get there.",
+  "quick_answer": "When can I wear jeans after a BBL?\n\nNo source sets a date. The Aesthetic Society says to avoid direct pressure on the buttocks for at least 8 weeks and not to shop for clothes for at least 3 months, because swelling hides your final results. Ask your surgeon at follow-up, and wear loose clothes over your garment until then.",
+  "primary_keyword": "when can i wear jeans after bbl",
+  "secondary_keywords": [
+    "when can i wear jeans after a bbl",
+    "when can you wear jeans after bbl",
+    "jeans after bbl",
+    "how long after bbl can i wear jeans",
+    "bbl and jeans",
+    "clothes to wear after bbl surgery",
+    "what to wear after bbl surgery",
+    "what to wear after bbl",
+    "what kind of clothing to wear after bbl",
+    "bbl clothes",
+    "bbl clothing",
+    "when can i wear leggings after bbl"
+  ],
+  "owns_queries": [
+    "when can i wear jeans after bbl",
+    "when can i wear jeans after a bbl",
+    "when can you wear jeans after bbl",
+    "jeans after bbl",
+    "how long after bbl can i wear jeans",
+    "bbl and jeans",
+    "clothes to wear after bbl surgery",
+    "what to wear after bbl surgery",
+    "what to wear after bbl",
+    "what kind of clothing to wear after bbl",
+    "when can i wear leggings after bbl"
+  ],
+  "categories": [
+    "BBL",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a loose cream linen dress stands in a bright bedroom, smiling, with folded loungewear and a glass of water on the bench beside her.",
+      "prompt": "SCENE: A bright bedroom with sheer curtains and a view of palms through tall glass, white linen bed, warm neutral palette. SUBJECT: A woman in her late 30s with medium skin and shoulder-length dark hair, standing in a loose cream linen dress, whole and at ease. KEY DETAILS: Folded loungewear, flat sandals and a glass of water on a low bench; editorial natural light. CONSTRAINTS: Modest clothing; no swimwear, lingerie or bodycon; no garments, bandages, drains or incisions; not from behind; no text, logos or watermarks.",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/a1efa334-5685-4331-82ec-8145e96ea901/1768933190022-0na984-0.jpg"
+    },
+    {
+      "key": "answer-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Jeans after a BBL. No source sets a date. At least 8 weeks: avoid direct pressure on the buttocks. At least 3 months: no clothes shopping yet. Source: The Aesthetic Society.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A short answer card with a title, one plain sentence and two rows with simple line icons of a calendar and a cushion. KEY DETAILS: A serif title, a clean sans-serif for the rows, dark espresso text on warm porcelain, a thin brushed-gold rule, a small source footer. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.\nREVISION: No icons at all, type only.",
+      "text_in_image": "Jeans after a BBL\nNo source sets a date.\nAt least 8 weeks: Avoid direct pressure on the buttocks\nAt least 3 months: No clothes shopping yet\nSource: The Aesthetic Society"
+    },
+    {
+      "key": "clothing-timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "BBL clothing timeline card. First month: compression garment around the clock, except in the shower, or as your surgeon directs. Second month: garment at least 12 hours a day, or as your surgeon directs. At least 8 weeks: avoid direct pressure on the buttocks. At least 3 months: no clothes shopping yet. 3 to 6 months: true results more evident as swelling subsides. Sources: The Aesthetic Society and a plastic surgeon interviewed by ASPS.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A vertical timeline with five rows, a thin brushed-gold rule down the left, a simple dot at each row. KEY DETAILS: A serif title, a clean sans-serif for the rows, dark espresso text on warm porcelain, generous margins, a small source footer. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.",
+      "text_in_image": "BBL clothing timeline\nFirst month: Compression garment around the clock, except in the shower, or as your surgeon directs\nSecond month: Garment at least 12 hours a day, or as your surgeon directs\nAt least 8 weeks: Avoid direct pressure on the buttocks\nAt least 3 months: No clothes shopping yet\n3 to 6 months: True results more evident as swelling subsides\nSources: The Aesthetic Society and a plastic surgeon interviewed by ASPS"
+    },
+    {
+      "key": "jeans-tips",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Jeans after a BBL: common sense, not evidence. Soft, stretchy fabrics (avoid stiff denim). High-waisted or bootcut styles. Flat pockets to prevent added bulk. Adjustable waistbands offer a flexible fit.",
+      "prompt": "SCENE: A clean editorial card on warm stone-colored paper, soft even light, flat front-on view. SUBJECT: A short list of four tips with simple line icons of folded denim, a waistband and a pocket, no person wearing them. KEY DETAILS: A serif title, a clean sans-serif for the rows, dark espresso text on warm porcelain, a thin brushed-gold rule. CONSTRAINTS: no people, no bodies, no body-part shapes; no phone number, no practice name, no surgeon name, no logos or watermarks; the text exactly as given, nothing added, nothing misspelled.",
+      "text_in_image": "Jeans after a BBL: common sense, not evidence\nSoft, stretchy fabrics (avoid stiff denim)\nHigh-waisted or bootcut styles\nFlat pockets to prevent added bulk\nAdjustable waistbands offer a flexible fit"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery & Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You must avoid direct pressure on the buttocks for at least eight weeks, so you must sit on a pillow during this period.",
+        "Your surgeon may recommend a treatment called lymphatic massage to try to reduce swelling",
+        "and facilitate better drainage of any fluid buildup.",
+        "You will likely need to wear a compression garment for six to eight weeks.",
+        "You should be able to get up and walk after the second postoperative day to help present blood clots.",
+        "you can return to work, drive, or go to the movies after ten to fourteen days, but you must use a pillow",
+        "When the swelling subsides, sometimes taking three to six months, your true results will be more evident.",
+        "The final results of your buttock augmentation may be initially obscured by swelling.",
+        "For this reason, you should not go clothes shopping for at least three months.",
+        "You can resume normal activities and exercise after eight weeks.",
+        "you still shouldn't do anything strenuous, including lifting, for four to six weeks.",
+        "you can sit with a soft pillow placed beneath your hamstring muscles but not touching your butt",
+        "You'll be tempted to try to help around the house quickly, but you won't feel like yourself for one or two weeks",
+        "No matter what procedure you undergo, being in good health, not smoking"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Your body should fully recover between two and three months after your Brazilian butt lift procedure.",
+        "It may take up to six months for your body to fully recover after your Brazilian butt lift procedure.",
+        "You won't be able to sit or lie down on your butt for at least two weeks.",
+        "You won't be able to sit without your pillow for approximately eight weeks.",
+        "So, you'll need to stand rather than sit and sleep on your stomach or sides.",
+        "The first several days after your Brazilian butt lift procedure are often the most painful.",
+        "After one to two weeks, your pain should decrease.",
+        "At this point, you may be able to participate in light exercises.",
+        "However, you should avoid heavy lifting or strenuous activities for one month.",
+        "Depending on your job, you should be able to go back to work between 10 and 14 days",
+        "If you usually sit at a desk for long periods, it's advisable to use a standing desk until you've completely healed.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight.",
+        "You may need to get a Brazilian butt lift again during your life.",
+        "Your butt contains many blood vessels and nerves.",
+        "If the cannula strikes any of these structures during the surgery, it can lead to injury, a fat embolism or death."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "I'm a very big fan of compression garments because they definitely help alleviate the swelling,",
+        "I advise patients to wear them as much as possible, but basically 24/7, except for showering, the first month",
+        "During that period, the fat is very susceptible to pressure necrosis, or pressure that kills off the fat cells,",
+        "So for the first six weeks, the patient has to be very careful about not putting undue or prolonged pressure on the buttocks.",
+        "But try to keep it within the 10-minute window, which is about as long as you should be sitting",
+        "most need some degree of pain medication for the first four to five days.",
+        "Patients return to work between days seven and 10, and if they're sitting at a desk all day,",
+        "or else they're at risk for asymmetrical or quickly diminishing results.",
+        "It's not uncommon for patients to return to their plastic surgeon for another BBL to smooth out any contour irregularities",
+        "and asymmetry that may have formed during healing,",
+        "especially as the amount of fat that \"takes\" is highly variable",
+        "We know from a number of studies that the average fat take or the amount of the transferred fat",
+        "that will survive is about 60%,",
+        "Around month three, the acute risk of losing fat from the buttock area subsides,",
+        "Dr. Williams notes that during months three to six, the shape \"should further refine and the curve should become more apparent.\""
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Your surgeon may encourage you to seek a lymphatic massage from a licensed massage therapist.",
+        "Small, thin tubes may be temporarily placed under the skin to drain any excess blood or fluid that may collect.",
+        "If you experience shortness of breath, chest pains or unusual heart beats, seek medical attention immediately."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Swelling of your leg or arm on one side (sometimes, this happens suddenly)",
+        "Pain or tenderness in your leg or arm (may only happen when standing or walking)",
+        "Warmth in the area of your leg or arm that's swollen or painful",
+        "Discolored or red skin",
+        "It's important to call your provider right away or go to the emergency room if you have deep vein thrombosis or PE symptoms."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 5034,
+    "clicks": 33,
+    "position": 5.57
+  },
+  "notes": "Quotes came through WebFetch, whose extraction model caps a quote at about 125 characters, so long sentences are split or end early; the two ASPS PDFs were read with pdftotext instead (the report PDF exceeded WebFetch's size limit, so it was fetched with plain curl). Elsaftawy 2026 could not be opened this session (PubMed cookie notice, Ovid 402, Europe PMC 403), so its source entry has no quotes and its figures come from bbl.facts.ts. Redone 2026-11-04 as a sentence-level edit from the live text: every live sentence stays word for word, in order and section, unless it broke a rule. H2 wording kept, except \"Best\" removed from two H2s and two FAQ questions, because the sweep fails it. Opening H2 added, with one short answer sentence. One answer: no source sets a date; at least 8 weeks without direct pressure; at least 3 months before clothes shopping. Changed: the dates 6-8 weeks, 2-3 months, 8-12 weeks and the week-by-week list; 4-6 weeks; blood-flow and \"permanent indentations\" claims; \"full fat cell stabilization\"; board-certified surgeons and the broken fragment after them; phone numbers and #contactus; three result promises (\"ensures optimal healing\", \"will deliver lasting, natural-looking results\", \"ensure your BBL results last\"). \"These habits help support the long-term survival of transferred fat cells\" now gives Cleveland Clinic's weight line, because no source shows a food or habit makes grafted fat survive. Added a table, because the lint requires one, and the sentence labelling the style tips as common sense. Same-address request from the plan: answer-card replaces the buttock cutaway at https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/a1efa334-5685-4331-82ec-8145e96ea901/1768933086378-iitsbb-0.jpg, which prints \"Wait 6-8 weeks\". clothing-timeline and jeans-tips take new addresses, replacing 1768933148919-8e1h8v-0.jpg and 1768933221607-neqqj3-0.jpg (the latter prints a phone number and names the surgeon); 1768933126145-zi6qv8-0.jpg is dropped (\"Weeks 4-6\" text). Hero reused with a new alt: the old alt said \"luxe\". It needs a full-size check, and it is not 3:2 on the contact sheet (subject fills the frame; the row has no size). Spanish query \"cuándo puedo usar jeans después de un bbl\" (118 impressions, position 7.0, 90 days) is for the Spanish plan, not targeted here. Fact-check corrections applied 2026-11-04 at the coordinator's request; they override the kept-sentence target. Garment line: the fact check asked for \"Help limit swelling and discomfort (ASPS)\"; the ASPS pages opened give only swelling, from one surgeon, so the post says that."
+}
