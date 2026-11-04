@@ -479,7 +479,8 @@ def apply_images(post: Post, manifest: list[dict], placeholder_ok: bool,
             alt = a.group(1) if a else alt
         images.append(dict(url=url, alt=alt, file=url.rsplit('/', 1)[1], w=m.get('width'), h=m.get('height'),
                            size=m.get('size'), prompt=m.get('prompt') or img.get('prompt') or alt,
-                           type=img.get('type'), key=img.get('key'), reuse=bool(m.get('reuse'))))
+                           type=img.get('type'), key=img.get('key'), reuse=bool(m.get('reuse')),
+                           generated_by=m.get('generated_by') or GENERATED_BY))
     if not placeholder_ok and PLACEHOLDER_RX.search(content):
         problems.append(f'leftover placeholders: {sorted(set(PLACEHOLDER_RX.findall(content)))}')
     return content, images, problems
