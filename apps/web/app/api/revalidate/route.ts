@@ -1,10 +1,12 @@
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { env } from '@/env'
+import { BLOG_SITEMAP_PATH } from '@/lib/cache/blog-sitemap-path.constant'
 import {
     ALLOWED_STATIC_TAGS,
+    CACHE_TAGS,
     DYNAMIC_TAG_PREFIXES,
     isValidCacheTag,
 } from '@/lib/cache/cache-tags.constant'
@@ -31,6 +33,9 @@ const revalidateRequestSchema = z.object({
  * Security:
  * - Requires a secret token matching REVALIDATION_SECRET env variable
  * - Validates all tags against allowed list before revalidating
+ *
+ * `sitemap-urls` also expires /sitemap/blog.xml by path: that route is ISR with
+ * no data cache tag, so revalidating the tag alone would not reach it.
  *
  * @example
  * // Request body
@@ -104,6 +109,10 @@ export async function POST(request: NextRequest) {
         for (const tag of tags) {
             revalidateTag(tag, { expire: 0 })
             revalidated.push(tag)
+        }
+
+        if (tags.includes(CACHE_TAGS.SITEMAP_URLS)) {
+            revalidatePath(BLOG_SITEMAP_PATH)
         }
 
         return NextResponse.json({

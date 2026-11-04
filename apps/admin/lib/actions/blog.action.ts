@@ -118,6 +118,7 @@ export async function createBlogPost(
         // Invalidate URL registry cache when a post is published
         // This ensures page classification stays accurate
         if (data.status === 'published') {
+            await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
             revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
         }
 
@@ -255,6 +256,7 @@ export async function updateBlogPost(
         // Invalidate URL registry cache when publish status changes
         // This ensures page classification stays accurate
         if (wasPublished !== isNowPublished) {
+            await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
             revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
         }
 
@@ -316,6 +318,7 @@ export async function deleteBlogPost(id: string): Promise<ActionResult> {
 
         // Invalidate URL registry cache when a post is deleted
         // This ensures page classification stays accurate
+        await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
         revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
 
         return { success: true }
@@ -395,6 +398,7 @@ export async function updateBlogPostStatus(
         // Invalidate URL registry cache when publish status changes
         // This ensures page classification stays accurate
         if (wasAlreadyPublished !== isNowPublished) {
+            await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
             revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
         }
 
@@ -653,6 +657,7 @@ export async function updatePipelineStatus(
 
         // Invalidate URL registry cache when publish status changes
         if (wasPublished !== isNowPublished) {
+            await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
             revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
         }
 
@@ -946,6 +951,7 @@ export async function updatePipelinePost(
 
         // Invalidate URL registry cache when publish status changes
         if (wasPublished !== isNowPublished) {
+            await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
             revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
         }
 

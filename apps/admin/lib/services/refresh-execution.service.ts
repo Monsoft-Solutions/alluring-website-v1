@@ -374,6 +374,7 @@ async function revalidateAfterInPlaceUpdate(slug: string | null) {
     if (slug) {
         await revalidateWebAppCache([
             CACHE_TAGS.BLOG_POSTS,
+            CACHE_TAGS.SITEMAP_URLS,
             CACHE_TAGS.blogPostBySlug(slug),
         ])
     }
