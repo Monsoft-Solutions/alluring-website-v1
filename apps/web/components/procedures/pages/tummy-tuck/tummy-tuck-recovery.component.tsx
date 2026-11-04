@@ -86,8 +86,8 @@ const guides: ModuleGuide[] = [
         href: '/blog/exercises-after-tummy-tuck-miami',
     },
     {
-        label: 'Tummy tuck recovery on a GLP-1 medication',
-        href: '/blog/tummy-tuck-recovery-ozempic-miami',
+        label: 'A tummy tuck after Ozempic or another GLP-1',
+        href: '/blog/ozempic-tummy-tuck-myths-miami',
     },
     {
         label: 'Is a tummy tuck more painful than a BBL?',
@@ -133,6 +133,14 @@ export function TummyTuckRecovery() {
                 {tummyTuckFigure('sunscreen-12-18-months')}, as Cleveland Clinic
                 advises.
             </p>
+            <p className={cn(moduleBody, 'mt-4')}>
+                <Link
+                    href='/blog/tummy-tuck-scars-miami'
+                    className={moduleLink}
+                >
+                    Tummy tuck scar: where it sits and how it fades
+                </Link>
+            </p>
 
             <h3 className={cn(moduleH3, 'mt-8')}>
                 Can I have a baby after a tummy tuck?
@@ -166,6 +174,12 @@ export function TummyTuckRecovery() {
                     Start with a virtual consultation
                 </Link>{' '}
                 and have your dates in writing before you book a flight.
+            </p>
+            <p className={cn(moduleBody, 'mt-4')}>
+                Want your surgery, pre-op and follow-up dates in writing?{' '}
+                <a href='#book' className={cn(moduleLink, 'font-bold')}>
+                    Book a consultation
+                </a>
             </p>
 
             <ModuleGuideLinks

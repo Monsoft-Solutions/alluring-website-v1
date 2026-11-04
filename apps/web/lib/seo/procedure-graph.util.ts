@@ -218,6 +218,9 @@ export function buildProcedureGraph({
         '@type': 'SurgicalProcedure',
         '@id': procedureId,
         name: procedure.title,
+        ...(procedure.alternateName && {
+            alternateName: procedure.alternateName,
+        }),
         description: procedure.description,
         url: pageUrl,
         mainEntityOfPage: { '@id': webPageId },

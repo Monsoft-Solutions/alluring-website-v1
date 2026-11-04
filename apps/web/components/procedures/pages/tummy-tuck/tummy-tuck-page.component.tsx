@@ -45,6 +45,7 @@ import { TummyTuckProcedureSteps } from './tummy-tuck-procedure-steps.component'
 import { TummyTuckRecovery } from './tummy-tuck-recovery.component'
 import { TummyTuckSafety } from './tummy-tuck-safety.component'
 import { TummyTuckSurgeon } from './tummy-tuck-surgeon.component'
+import { TummyTuckWhichType } from './tummy-tuck-which-type.component'
 
 /** Gallery items read for the results rail; the gallery link has the rest. */
 const GALLERY_POOL = 24
@@ -94,8 +95,8 @@ function captionOf(photo: GalleryMediaCard): string {
  * structured-data graph; this module lays out everything else, in the
  * 2026-09-28 brief's order (https://claude.ai/artifact/6SsAr3a8Zp7mzWUK4G8x2q,
  * the "Tummy tuck" tab): real results straight after the hero and a
- * two-field form after them, then the price by type, because which tummy
- * tuck she needs decides what she pays, then what a tummy tuck is and who
+ * two-field form after them, then which tummy tuck she needs and the price
+ * by type, because the first decides the second, then what a tummy tuck is and who
  * it suits, then the page's one dark band: what the surgery repairs, how
  * often it goes wrong and what Florida law sets for office surgery.
  *
@@ -162,15 +163,17 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
                 breadcrumb='Tummy tuck'
                 lede={
                     <>
-                        A tummy tuck removes loose skin and fat from the abdomen
-                        and, when they have separated, repairs the muscles
-                        underneath. At Alluring, one surgeon performs every
-                        tummy tuck: {KARLINSKY_NAME}.
+                        A tummy tuck, or abdominoplasty, removes loose skin and
+                        fat from the abdomen and, when they have separated,
+                        repairs the muscles underneath. We publish a price for
+                        each type, and one surgeon performs every tummy tuck:{' '}
+                        {KARLINSKY_NAME}.
                     </>
                 }
                 rating={rating}
                 chips={[
                     { label: `Mini from ${tummyTuckFigure('price-mini')}` },
+                    { label: `Full from ${tummyTuckFigure('price-full')}` },
                     { label: 'Financing available' },
                     { label: 'Hablamos español', lang: 'es' },
                 ]}
@@ -198,6 +201,7 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
             />
 
             <ModuleBand rail={rail('Tummy tuck at Alluring, key facts')}>
+                <TummyTuckWhichType />
                 {procedure.pricing && (
                     <TummyTuckCost pricing={procedure.pricing} />
                 )}
@@ -235,7 +239,7 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
             />
             <ModuleSources
                 sources={tummyTuckSources}
-                answer="Every recovery, results and safety figure on this page, the Florida rules and the national average fee come from the sources below, checked in September 2026. Our own figures, the prices, are stated as ours. Your surgeon's instructions always come first, and they may differ from these general ranges."
+                answer="Every recovery, results and safety figure on this page, the Florida rules and the national average fee come from the sources below, checked in November 2026. Our own figures, the prices, are stated as ours. Your surgeon's instructions always come first, and they may differ from these general ranges."
                 updatedOn={procedure.dateModified}
             />
 

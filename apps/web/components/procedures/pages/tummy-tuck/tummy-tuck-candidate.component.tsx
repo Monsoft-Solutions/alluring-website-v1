@@ -60,11 +60,11 @@ export function TummyTuckCandidate() {
                     href: '/blog/tummy-tuck-vs-liposuction',
                 },
                 {
-                    label: 'Tummy tuck or mommy makeover: which one do you need?',
-                    href: '/blog/tummy-tuck-mommy-makeover-miami',
+                    label: 'When a mommy makeover fits better',
+                    href: '/procedures/mommy-makeover-miami',
                 },
                 {
-                    label: 'Separated muscles after pregnancy and the tummy tuck',
+                    label: 'Diastasis recti surgery: when a tummy tuck repairs it',
                     href: '/blog/tummy-tuck-diastasis-recti-miami',
                 },
             ]}

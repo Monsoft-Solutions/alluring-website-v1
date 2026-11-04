@@ -5,8 +5,9 @@
  * `check-procedure-copy.ts` fails a figure its page's facts file doesn't
  * declare and any number left over, so a unit the reader doesn't know is a
  * number the sweep fails. Units: %, $, cc (implant and fat volumes), BMI,
- * minutes to years, nights (a stay), inches (an incision), ages ("22 or
- * older"), deaths, studies and patients, plus "1 in N" and temperatures.
+ * minutes to years, nights (a stay), inches (an incision), centimeters,
+ * ages ("22 or older"), deaths, studies and patients, plus "N in M" and
+ * temperatures.
  *
  * Pure: no page, config or process state, so a unit test can read it.
  *
@@ -15,7 +16,7 @@
 
 import type { ProcedureFigure } from '../lib/data/procedures/facts/procedure-facts'
 
-export type Unit = ProcedureFigure['unit'] | 'ratio' | 'temperature'
+export type Unit = ProcedureFigure['unit'] | 'temperature'
 
 export interface Extracted {
     unit: Unit
@@ -222,6 +223,14 @@ const PATTERNS: Pattern[] = [
         read: range('inch'),
     },
     {
+        // "2 centimeters". "Cubic centimeters" was read as cc above.
+        re: new RegExp(
+            `${NUM}(?:\\s*-\\s*${NUM})?[\\s-]*(?:centimet(?:er|re)s?|cm)\\b`,
+            'g'
+        ),
+        read: range('centimeter'),
+    },
+    {
         // "age 22", "aged 18", "ages 18-22", "the age of 18".
         re: new RegExp(
             `\\b(?:age[sd]?|the age of)\\s+${NUM}(?:\\s*-\\s*${NUM})?(?:\\s*(?:years?(?:\\s*old)?|or (?:older|over)|and (?:older|over|up)))?`,
@@ -239,8 +248,16 @@ const PATTERNS: Pattern[] = [
         read: range('age'),
     },
     {
-        re: new RegExp(`\\b1\\s+in\\s+${NUM}`, 'g'),
-        read: (m) => ({ unit: 'ratio', min: 1, max: toNumber(m[1]!) }),
+        // "1 in 3,000", "6 in 10". Never "6 in 2026", which is a year.
+        re: new RegExp(
+            `\\b(\\d{1,2})\\s+in\\s+(?!(?:19|20)\\d\\d\\b)${NUM}`,
+            'g'
+        ),
+        read: (m) => ({
+            unit: 'ratio',
+            min: toNumber(m[1]!),
+            max: toNumber(m[2]!),
+        }),
     },
     {
         re: new RegExp(`${NUM}\\s*°\\s*[fc]\\b`, 'g'),

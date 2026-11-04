@@ -54,13 +54,14 @@
             "procedure",
             "recovery",
             "safety",
+            "which-tummy-tuck",
             "pricing",
             "tummy-tuck-prices",
             "surgeon",
             "faq"
         ],
         "facts": ["tummy-tuck.facts.ts"],
-        "old_figures": []
+        "old_figures": ["\\$5[Kk]\\s*[–-]\\s*\\$?8[Kk]", "\\$8,?000\\b"]
     },
     "mommy-makeover": {
         "label": "Mommy makeover",
