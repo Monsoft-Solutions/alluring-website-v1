@@ -34,11 +34,13 @@ describe('evaluateTopicCandidate', () => {
 
     it('follows duplicate clusters to the canonical owner on refresh', () => {
         const verdict = evaluateTopicCandidate({
-            title: 'Tummy Tuck Recovery Myths for Miami Moms',
-            primaryKeyword: 'tummy tuck recovery myths miami moms',
+            title: 'How to Choose Plastic Surgeons in Miami',
+            primaryKeyword: 'choose plastic surgeons miami',
         })
         expect(verdict.verdict).toBe('refresh')
-        expect(verdict.owningUrl).toBe('/blog/tummy-tuck-myths-miami-moms')
+        expect(verdict.owningUrl).toBe(
+            '/how-to-choose-the-best-plastic-surgeon-in-miami-10-things-to-look-for'
+        )
     })
 
     it('rejects retired topics', () => {
@@ -293,6 +295,41 @@ describe('gate guards — real near-duplicates still collide (#357)', () => {
             })
             expect(verdict.verdict, query).not.toBe('new')
         }
+    })
+})
+
+describe("gate — the tummy tuck plan's topics (#357)", () => {
+    it.each([
+        [
+            'Pregnancy After a Tummy Tuck: What Happens and When to Wait',
+            'pregnancy after tummy tuck',
+        ],
+        [
+            'Tummy Tuck After a C-Section: How Long to Wait',
+            'tummy tuck after c section',
+        ],
+        [
+            'Mini vs Full Tummy Tuck: Which One Do You Need?',
+            'mini vs full tummy tuck',
+        ],
+    ])('clears the new post %s', (title, primaryKeyword) => {
+        const verdict = evaluateTopicCandidate({ title, primaryKeyword })
+        expect(verdict.verdict).toBe('new')
+        expect(verdict.warnings).toEqual([])
+    })
+
+    it.each([
+        ['diastasis recti surgery', 'tummy-tuck-diastasis-recti-miami'],
+        ['tummy tuck scar', 'tummy-tuck-scars-miami'],
+        ['tummy tuck recovery time', 'how-long-to-recover-tummy-tuck'],
+        ['tummy tuck after ozempic', 'ozempic-tummy-tuck-myths-miami'],
+    ])('sends %s to refresh its post', (primaryKeyword, owningSlug) => {
+        const verdict = evaluateTopicCandidate({
+            title: primaryKeyword,
+            primaryKeyword,
+        })
+        expect(verdict.verdict).toBe('refresh')
+        expect(verdict.owningSlug).toBe(owningSlug)
     })
 })
 

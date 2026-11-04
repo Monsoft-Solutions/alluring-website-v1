@@ -38,10 +38,6 @@ const DUPLICATE_OF = {
     // Surgeon selection — credential intent owner
     'best-board-certified-plastic-surgeons-miami':
         '/blog/board-certified-plastic-surgeon-miami',
-    // Tummy tuck × Ozempic
-    'ozempic-tummy-tuck-myths-miami': '/blog/tummy-tuck-recovery-ozempic-miami',
-    // Tummy tuck myths
-    'tummy-tuck-recovery-myths-miami-moms': '/blog/tummy-tuck-myths-miami-moms',
     // Mommy makeover recovery — owner /blog/mommy-makeover-recovery-timeline-miami
     'mommy-makeover-recovery-miami':
         '/blog/mommy-makeover-recovery-timeline-miami',
@@ -154,6 +150,18 @@ const RETIRED = {
     '/how-to-maintain-liposuction-results': '/procedures/liposuction-miami',
     '/blog/liposuction-vs-breast-augmentation-miami':
         '/procedures/mommy-makeover-miami',
+    // Tummy tuck folds (#357)
+    '/blog/best-age-tummy-tuck-miami': '/procedures/tummy-tuck-miami',
+    '/blog/tummy-tuck-myths-miami-moms': '/procedures/tummy-tuck-miami',
+    '/blog/tummy-tuck-miami-candidate-checklist':
+        '/procedures/tummy-tuck-miami',
+    '/blog/tummy-tuck-mommy-makeover-miami': '/procedures/tummy-tuck-miami',
+    '/blog/tummy-tuck-recovery-time-miami': '/how-long-to-recover-tummy-tuck',
+    '/blog/tummy-tuck-recovery-myths-miami-moms':
+        '/how-long-to-recover-tummy-tuck',
+    '/blog/mini-tummy-tuck-miami-recovery': '/how-long-to-recover-tummy-tuck',
+    '/blog/tummy-tuck-recovery-ozempic-miami':
+        '/blog/ozempic-tummy-tuck-myths-miami',
 }
 
 const inputPath = process.argv[2]

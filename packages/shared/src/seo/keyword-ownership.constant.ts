@@ -113,8 +113,7 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             // /tummy-tuck-cost-miami is retired to this page, which carries
             // the five prices from the practice's 2026-09-15 price sheet.
             // The blog post that held these searches,
-            // /blog/tummy-tuck-mommy-makeover-miami, was re-scoped to the
-            // comparison in #309.
+            // /blog/tummy-tuck-mommy-makeover-miami, was folded here in #357.
             'tummy tuck cost miami',
             'how much is a tummy tuck',
             'how much does a tummy tuck cost',
@@ -122,6 +121,16 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'abdominoplasty cost',
             'tummy tuck cost',
             'tummy tuck prices in miami',
+            // The head, Miami price and folded-post queries (#357).
+            'tummy tuck in miami',
+            'miami tummy tuck',
+            'mini tummy tuck miami',
+            'tummy tuck miami price',
+            'how much is a tummy tuck in miami',
+            'tummy tuck cost in miami',
+            'abdominoplastia miami',
+            'tummy tuck or mommy makeover',
+            'best age for tummy tuck',
         ],
         mustNotTarget: [
             {

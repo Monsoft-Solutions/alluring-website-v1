@@ -1011,6 +1011,90 @@ const nextConfig = {
                 destination: '/how-to-reduce-swelling-after-liposuction',
                 permanent: true,
             },
+            // Tummy tuck blog consolidation (#357, the 2026-11-03 plan). Eight posts
+            // fold into the page, the recovery post and the Ozempic post, which
+            // both keep their URLs. mini-tummy-tuck-miami-recovery points at the
+            // recovery post until /blog/mini-vs-full-tummy-tuck is live.
+            {
+                source: '/blog/best-age-tummy-tuck-miami',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/best-age-tummy-tuck-miami',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/tummy-tuck-myths-miami-moms',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/tummy-tuck-myths-miami-moms',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/tummy-tuck-miami-candidate-checklist',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/tummy-tuck-miami-candidate-checklist',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/tummy-tuck-mommy-makeover-miami',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/tummy-tuck-mommy-makeover-miami',
+                destination: '/procedures/tummy-tuck-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/tummy-tuck-recovery-time-miami',
+                destination: '/how-long-to-recover-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/tummy-tuck-recovery-time-miami',
+                destination: '/how-long-to-recover-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/blog/tummy-tuck-recovery-myths-miami-moms',
+                destination: '/how-long-to-recover-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/tummy-tuck-recovery-myths-miami-moms',
+                destination: '/how-long-to-recover-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/blog/mini-tummy-tuck-miami-recovery',
+                destination: '/how-long-to-recover-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/mini-tummy-tuck-miami-recovery',
+                destination: '/how-long-to-recover-tummy-tuck',
+                permanent: true,
+            },
+            {
+                source: '/blog/tummy-tuck-recovery-ozempic-miami',
+                destination: '/blog/ozempic-tummy-tuck-myths-miami',
+                permanent: true,
+            },
+            {
+                source: '/tummy-tuck-recovery-ozempic-miami',
+                destination: '/blog/ozempic-tummy-tuck-myths-miami',
+                permanent: true,
+            },
             {
                 source: '/blog/what-is-the-difference-between-tummy-tuck-and-liposuction',
                 destination: '/blog/tummy-tuck-vs-liposuction',
