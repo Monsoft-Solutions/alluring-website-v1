@@ -20,6 +20,7 @@ import Link from 'next/link'
 import { siteConfig } from '@/lib/data/site-config'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
+import { formatPostCardDate } from '@/lib/blog/post-date.util'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type MobilePostCardProps = {
@@ -38,13 +39,7 @@ export function MobilePostCard({
         name: siteConfig.business.name,
     }
 
-    const publishedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-          })
-        : null
+    const publishedDate = formatPostCardDate(post.publishedAt)
 
     const handleClick = () => {
         track('content_click', {

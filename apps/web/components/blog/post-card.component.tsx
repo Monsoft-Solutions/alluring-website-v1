@@ -20,6 +20,7 @@ import { cn } from '@workspace/ui/lib/utils'
 
 import type { BlogPostCard } from '@/lib/types/blog/post-card.type'
 import { useAnalyticsEvent } from '@/lib/analytics/useAnalyticsEvent.hook'
+import { formatPostCardDate } from '@/lib/blog/post-date.util'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 type PostCardProps = {
@@ -40,13 +41,7 @@ export function PostCard({
         name: siteConfig.business.name,
     }
 
-    const publishedDate = post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-          })
-        : null
+    const publishedDate = formatPostCardDate(post.publishedAt)
 
     const titleId = `post-title-${post.id}`
 
