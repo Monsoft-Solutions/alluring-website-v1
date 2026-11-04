@@ -58,10 +58,11 @@
       "key": "hero",
       "type": "featured",
       "aspect": "3:2",
-      "alt": "A woman in a high-neck sand sweater sits in the passenger seat of a parked car with her seat belt on, looking out of the window in soft morning light.",
-      "prompt": "SCENE: A parked car on a quiet tree-lined residential street in Miami in soft morning light, palm shadows on the pavement outside, a pale neutral interior. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid 40s with deep brown skin and short natural hair, sitting in the front passenger seat in a thick high-neck sand-colored knit sweater, seat belt on, hands resting in her lap, looking out of the side window with a calm, relaxed expression. KEY DETAILS: Seen through the open driver's side from the waist up, with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, drains or incisions; not photographed from behind; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "alt": "A woman in a high-neck sand sweater sits in the driver's seat of a parked car with her seat belt on and both hands on the steering wheel, looking ahead calmly in soft morning light, with the dashboard in view.",
+      "prompt": "SCENE: A car parked on a quiet tree-lined residential street in Miami in soft morning light, palm shadows on the pavement outside the windows, a pale neutral interior. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A woman in her mid 40s with deep brown skin and short natural hair, sitting in the driver's seat of a left-hand-drive car in a thick high-neck sand-colored knit sweater, seat belt on, both hands resting on the steering wheel at the sides of the rim, a calm, relaxed expression, looking ahead through the windshield.\nKEY DETAILS: Seen from the front passenger seat, looking across the cabin at her, from the waist up, with generous space above her head and the subject in the upper two thirds. The steering wheel and the dashboard are clearly visible in the frame. The car is parked and switched off, so the instrument cluster and screens are dark. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. Nothing in the foreground: no mirror, no door panel, no out-of-focus white or pale shape.\nCONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, drains or incisions; not photographed from behind; no text, letters, numbers, logos, badges or watermarks, and a plain steering wheel hub with no emblem; not glamour, not a fashion ad.",
       "variants": [
-        "flare"
+        "flare",
+        "sunburst"
       ]
     },
     {

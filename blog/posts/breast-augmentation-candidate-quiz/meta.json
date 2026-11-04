@@ -66,9 +66,9 @@
     {
       "key": "age-chart",
       "type": "inline",
-      "aspect": "3:2",
+      "aspect": "4:5",
       "alt": "Bar chart of breast implant placements by age in 2025, from ASPS, including revisions. 18 to 25: 15,292. 26 to 35: 57,821. 36 to 45: 96,016. 46 to 55: 65,410. 56 to 65: 44,748. 66 and older: 24,946.",
-      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. A simple horizontal bar chart with six bars in brushed gold on a stone-grey hairline axis, bar lengths in proportion to the counts, the age band on the left of each bar and the exact count at its end, largest bar 96,016. No gridlines, no 3D, no people.",
+      "prompt": "Portrait horizontal bar chart with six bars in one colour, starting from zero, each bar's length in exact proportion to its count (the largest, 96,016, is the full width), the age band above the left end of each bar and its exact count above the right end. Hand-built vector card (HTML and SVG rendered in headless Chrome at 1280x1600), not a model render. Warm porcelain background, a thin brushed-gold rule at the top, Fraunces title and Instrument Sans text in dark stone ink, large type for phones. No people's faces, no practice name, no logo, no phone number, no watermark.",
       "text_in_image": "Breast Implant Placements by Age, 2025\n18 to 25: 15,292\n26 to 35: 57,821\n36 to 45: 96,016\n46 to 55: 65,410\n56 to 65: 44,748\n66 and older: 24,946\nIncludes revisions. Source: ASPS 2025 Procedural Statistics"
     },
     {

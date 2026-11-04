@@ -30,7 +30,7 @@ Nobody has published a week-by-week schedule that we could find, so treat this a
 | Months 3–6 | The process can finish | The entire process can take 3 to 6 months (Mariotti) |
 | Up to 12 months | Small changes only | Subtle changes can continue through the 12 months after surgery (University of Utah Health) |
 
-![Chart titled Drop and Fluff, Week by Week, with six simple side-view drawings of a woman's torso, with no head, in a plain high-neck top and a dashed outline showing where the implant sits. Week 1: sits high, feels tight. Weeks 2–3: swelling eases, starting to settle. Weeks 4–6: softer, may still sit high. Months 2–3: still settling, final results begin to show around month 3. Months 3–6: the process can finish. Up to 12 months: subtle changes only.](IMAGE:week-by-week)
+![Chart titled Drop and Fluff, Week by Week, as six rows of text. Week 1: sits high, feels tight. Weeks 2–3: swelling eases, starting to settle. Weeks 4–6: softer, may still sit high. Months 2–3: still settling, final results begin to show around month 3. Months 3–6: the process can finish. Up to 12 months: subtle changes only.](IMAGE:week-by-week)
 
 For what else is normal around the middle of this timeline, see [what to expect at 5 weeks post-op](/weeks-post-op-breast-augmentation-what-to-expect), or the whole picture in [breast augmentation recovery, week by week](/blog/breast-augmentation-recovery-miami).
 

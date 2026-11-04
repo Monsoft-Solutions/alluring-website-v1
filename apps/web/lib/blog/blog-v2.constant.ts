@@ -81,7 +81,9 @@ export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'how-long-after-breast-augmentation-can-i-swim',
     'how-often-to-massage-breast-after-augmentation',
     'swelling-and-asymmetry-after-breast-augmentation-faq',
-    'when-can-i-do-push-ups-after-breast-augmentation',
+    // when-can-i-do-push-ups-after-breast-augmentation joins with its rewrite:
+    // its diagram is the canary for the same-URL image swap (read from 18 Nov),
+    // and a template move on the same day would blur that reading.
     'when-can-i-sleep-on-my-side-after-breast-augmentation',
     'when-can-i-sleep-without-a-bra-after-breast-augmentation',
     'when-can-you-work-out-after-breast-augmentation',

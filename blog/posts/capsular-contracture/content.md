@@ -15,7 +15,7 @@ There are four, called Baker grades and sometimes stages. Grades III and IV are 
 | Grade III | Breast is firm and looks abnormal | Considered severe; may require reoperation |
 | Grade IV | Breast is hard, painful, and looks abnormal | Considered severe; may require reoperation |
 
-![Diagram of the four Baker grades of capsular contracture using a simple oval implant inside a ring. Grade I: breast is normally soft and looks natural. Grade II: a little firm but looks normal. Grade III: firm and looks abnormal. Grade IV: hard, painful and looks abnormal. A note says grades III and IV are considered severe and may require reoperation.](IMAGE:baker-grades)
+![Reference card listing the four Baker grades of capsular contracture. Grade I: breast is normally soft and looks natural. Grade II: a little firm but looks normal. Grade III: firm and looks abnormal. Grade IV: hard, painful and looks abnormal. A note says grades III and IV are considered severe and may require reoperation.](IMAGE:baker-grades)
 
 ## What are the symptoms of capsular contracture?
 
@@ -34,7 +34,7 @@ Early recovery also feels stiff and sore, so this table separates the two as far
 
 Lines marked practical advice are not from a study. They apply the FDA's simple rule: for any abnormal change, see your surgeon or health care provider promptly. Our [recovery timeline](/blog/breast-augmentation-recovery-miami) has more on what each week looks like.
 
-![Two-column card comparing normal healing with reasons to call a surgeon. Usually normal: chest stiff and sore for two to five days, soreness and swelling for a few weeks, implants still sitting high after the first month, some unevenness. Call your surgeon: a breast turning firm again, firmness with pain or a change in shape, sudden swelling of a breast, fever, redness or heat, new swelling or a lump at any time.](IMAGE:normal-vs-call)
+![Card comparing normal healing with reasons to call a surgeon, one list above the other. Usually normal: chest stiff and sore for two to five days, soreness and swelling for a few weeks, implants still sitting high after the first month, some unevenness. Call your surgeon: a breast turning firm again, firmness with pain or a change in shape, sudden swelling of a breast, fever, redness or heat, new swelling or a lump at any time.](IMAGE:normal-vs-call)
 
 ## When does capsular contracture happen?
 
