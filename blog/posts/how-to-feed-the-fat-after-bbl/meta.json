@@ -1,0 +1,233 @@
+{
+  "slug": "how-to-feed-the-fat-after-bbl",
+  "mode": "rewrite",
+  "base_md5": "a7459d331f43f84008af0d99596c6bf4",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:28Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "How to Feed the Fat After a BBL: What to Eat, What's Myth",
+  "meta_description": "No food is shown to make grafted fat survive in people. What to eat for healing, why not to crash diet, and what to do about weight after a BBL.",
+  "excerpt": "We found no study in people showing that a food makes grafted fat survive. Here is what to eat to heal after a BBL, a food list, what to avoid, why crash dieting is a poor idea, and what to do about your weight.",
+  "quick_answer": "Do you need to feed the fat after a BBL?\n\nNo source we rely on shows that a food makes grafted fat survive in people. Eat enough protein and calories to heal, avoid crash dieting, and keep your weight steady, which Cleveland Clinic advises to preserve your result. Your surgeon or a dietitian can set your target.",
+  "primary_keyword": "how to feed the fat after bbl",
+  "secondary_keywords": [
+    "what to eat after bbl to feed the fat",
+    "what to eat after bbl",
+    "bbl food",
+    "what to eat after bbl and lipo",
+    "what to eat after lipo 360 and bbl",
+    "feed the fat",
+    "bbl diet",
+    "how to feed the fat after fat transfer",
+    "vitamins to take after bbl surgery",
+    "feed the fat after bbl",
+    "best foods to eat after bbl surgery",
+    "best foods to feed the fat after bbl",
+    "list of foods to eat after bbl",
+    "bbl protein",
+    "does alcohol kill fat cells after bbl",
+    "how long to feed the fat after bbl"
+  ],
+  "owns_queries": [
+    "what to eat after bbl and lipo",
+    "what to eat after lipo 360 and bbl",
+    "what to eat after bbl to feed the fat",
+    "what to eat after bbl",
+    "feed the fat",
+    "feed the fat after bbl",
+    "bbl diet",
+    "bbl food",
+    "list of foods to eat after bbl",
+    "how to feed the fat after fat transfer",
+    "vitamins to take after bbl surgery",
+    "does alcohol kill fat cells after bbl",
+    "how long to feed the fat after bbl"
+  ],
+  "categories": [
+    "BBL",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Recovery",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a high-neck cardigan stands at a stone kitchen counter, spooning yogurt and berries into a bowl beside eggs, fruit and a glass of water.",
+      "prompt": "SCENE: Mid-morning in a bright Miami kitchen, pale limestone counter, white plaster walls, a tall window with sheer linen curtains and soft palm shadows. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 30s with East Asian features and shoulder-length black hair, standing at the counter in a high-neck oatmeal cardigan and loose trousers, spooning yogurt and berries into a bowl, with a small plate of eggs, a bowl of fruit and a glass of water beside her. Three-quarter front view, calm, looking down at the bowl. KEY DETAILS: Framed from the hips up with generous space above her head, the subject in the upper two thirds and the quiet counter in the lower third; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest everyday clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions; no cushions; not photographed from behind; no notebooks, cards, labels, text, letters, numbers, logos or watermarks anywhere; not glamour, not a food ad."
+    },
+    {
+      "key": "fat-cell",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Illustration of a cluster of pale gold fat cells with fine blood vessels growing toward them, one cell enlarged in a circle. Text: What grafted fat needs. A new blood supply. Time without pressure on it. A body with enough protein and calories to heal. No food is shown to make grafted fat survive in people. Sources: ASPS, Cleveland Clinic.",
+      "prompt": "SCENE: A clean editorial medical illustration on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: An abstract cluster of round pale-gold fat cells with fine branching vessels reaching toward them, floating free with no body around them, and one cell enlarged in a circular inset, cut away to show its single large droplet. Three short lines, a closing sentence and a small source footer sit below it. KEY DETAILS: Soft flat vector with gentle shading, serif headline in dark stone, sans-serif text, muted gold only for the rule and the circle, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No body, no silhouette, no hips or buttocks, no rear view, no skin or layered tissue block, no food icons, no equal signs linking a food to a cell. No practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no numbers.",
+      "text_in_image": "What grafted fat needs\n\nA new blood supply\nTime without pressure on it\nA body with enough protein and calories to heal\n\nNo food is shown to make grafted fat survive in people.\n\nSources: ASPS, Cleveland Clinic"
+    },
+    {
+      "key": "food-list",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Food list card titled Foods for BBL recovery. Protein: meat, fish, eggs, milk, soy, beans. Vitamin C: citrus, broccoli, tomatoes. Zinc: beef, nuts, whole grains. Fiber: fruit, vegetables, whole grains. Fluids: water through the day. Sources: Cleveland Clinic, MedlinePlus.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: Five stacked rows, each with a short bold label on the left, its foods on the right, and a small simple line drawing of one food at the end of the row, then a small source footer. KEY DETAILS: Flat vector layout with no illustration of a person, serif headline in dark stone, sans-serif rows, muted gold only for the line drawings and rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no fat cells, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no numbers.",
+      "text_in_image": "Foods for BBL recovery\n\nProtein\nMeat, fish, eggs, milk, soy, beans\n\nVitamin C\nCitrus, broccoli, tomatoes\n\nZinc\nBeef, nuts, whole grains\n\nFiber\nFruit, vegetables, whole grains\n\nFluids\nWater through the day\n\nSources: Cleveland Clinic, MedlinePlus"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "(on the average patients will retain 60-80% of the transferred fat, in some cases more in others less).",
+        "As you gain or lose weight, your results may change as the transferred fat can grow or shrink",
+        "just as any other fat in your body."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/seven-things-you-need-to-know-about-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Seven things you need to know about a Brazilian butt lift (Kaitlin Clark, March 28, 2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Dr. Rubin estimates that anywhere from 20 to 40% of the injected fat will be absorbed by the body during the healing process."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift (Kaitlin Clark, August 11, 2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "the fat is very susceptible to pressure necrosis, or pressure that kills off the fat cells,",
+        "the amount of fat that \"takes\" is highly variable and dependent upon a patient's compliance to the recovery guidelines.",
+        "Around month three, the acute risk of losing fat from the buttock area subsides"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8968084/",
+      "publisher": "Frontiers in Cell and Developmental Biology",
+      "title": "A Short-Term High-Fat Diet Improved the Survival of Fat Grafts in Mice by Promoting Macrophage Infiltration and Angiogenesis (Niu X et al., 2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "mice (n = 54) were randomized into three groups",
+        "HF, 60% Kcal from fat, 20% Kcal from carbohydrate",
+        "for 1 month, and then all the fat-grafted mice were fed with a normal diet until execution.",
+        "The volume retention of fat grafts in the HC (0.21 ± 0.01 ml, p < 0.05) and HF (0.25 ± 0.01 ml, p < 0.01) group",
+        "was higher than that of the ND group (0.18 ± 0.01 ml) in 90 days",
+        "further clinical research is warranted to validate our results."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It may take up to six months for your body to fully recover after your Brazilian butt lift procedure.",
+        "During this time, you may have to eat a high-protein diet to assist your healing.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight.",
+        "removing fat from other parts of your body"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2642618/",
+      "publisher": "ePlasty",
+      "title": "Nutrition, Anabolism, and the Wound Healing Process: An Overview (Demling RH, 2009)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A healthy adult requires about 0.8 g of protein per kilogram of body weight per day",
+        "Stressed patients need more protein, in the range of 1.5 g of protein per kilogram of body weight per day.",
+        "The metabolic rate (energy demands) increases 20% after elective surgery and 100% after a severe burn.",
+        "zinc supplementation over and above replacement has no added benefit in wound healing"
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/article/002467.htm",
+      "publisher": "MedlinePlus",
+      "title": "Protein in diet",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Amino acids are found in animal sources such as meats, milk, fish, and eggs.",
+        "They are also found in plant sources such as soy, beans, legumes, nut butters, and some grains."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/article/002404.htm",
+      "publisher": "MedlinePlus",
+      "title": "Vitamin C",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Heal wounds and form scar tissue",
+        "Form an important protein called collagen, used to make skin, tendons, ligaments, and blood vessels.",
+        "Citrus fruits and juices, such as orange and grapefruit",
+        "amounts greater than 2,000 mg/day are not recommended"
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/article/002416.htm",
+      "publisher": "MedlinePlus",
+      "title": "Zinc in diet",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "plays a role in cell division, cell growth, wound healing, and the breakdown of carbohydrates."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000120.htm",
+      "publisher": "MedlinePlus",
+      "title": "Constipation - self-care",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Drink 8 to 10 cups (2 to 2.5 L) of liquids, particularly water, every day.",
+        "Some medicines, and even some vitamins, can make you constipated.",
+        "High-fiber foods help move waste through your body"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery and Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Many surgeons do not allow sitting in the first 10-14 days except for using the toilet and eating.",
+        "No matter what procedure you undergo, being in good health, not smoking, and having help after surgery",
+        "will increase your healing, improve your results, and prevent complications."
+      ]
+    },
+    {
+      "url": "https://www.niaaa.nih.gov/publications/brochures-and-fact-sheets/harmful-interactions-mixing-alcohol-with-medicines",
+      "publisher": "National Institute on Alcohol Abuse and Alcoholism",
+      "title": "Harmful Interactions: Mixing Alcohol with Medicines",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Drowsiness, dizziness; increased risk for overdose; slowed or difficulty breathing",
+        "liver damage (acetaminophen)"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/preparation",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement preparation",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Avoid taking aspirin and certain anti-inflammatory drugs as they can increase bleeding."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-10-05..2026-11-01",
+    "impressions": 1984,
+    "clicks": 21,
+    "position": 6.5
+  },
+  "notes": "Full rewrite. Drops the premise that healthy fats nourish grafted fat, that calorie restriction starves it, that water or alcohol changes graft survival, and the unsourced 50-80% figure, along with board-certified surgeons, phone and #contactus links. Deviation from the plan, for accuracy: the plan's quick answer and meta say no source shows a food makes grafted fat survive, but this session found one mouse study that reports exactly that (Niu 2022, 54 mice). Both now add 'in people', the post states the mouse study openly, and it says no human study was found. PubMed search used, 2026-11-04: \"fat grafting\"[tiab] AND (diet[tiab] OR dietary[tiab] OR nutrition[tiab] OR nutritional[tiab]), 20 results read as titles through WebFetch, none a diet tested in patients. That is one narrow search, not a systematic review. Not read, so not cited: two more animal or preconditioning papers seen by title only (PMID 40278876 on postoperative intermittent fasting in mice, PMID 34676429 on fasting before grafting): PubMed article pages returned a cookie notice and Springer redirected to a sign-in, neither pursued. PMC12368828 returned a reCAPTCHA, not bypassed, not used. Protein range: 150 lb converted to 68 kg, then 0.8 and 1.5 g per kg, is our arithmetic on the review's figures. Images: hero plus 2 inline (plan 2 to 2). Hero not reused despite the plan's option: at full size the live hero prints 'Protein, Hydration, Balanced Meals' on a notebook (text on a photo), and shows a posed glamour look and a donut cushion. Same-address candidate for the main session after the canary: the fat cell diagram https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/6d76b506-115d-4aae-be08-4254a29e7fa7/1768927690450-xkp3cj-0.jpg, whose new version drops the rear-view body, the practice name and the 'healthy fats = cell support' claim. Quotes were read with WebFetch on 2026-11-04 and came through its summary model, usually in fragments under 125 characters. GSC figures are the plan's verdict table. Open for the practice: whether it gives patients its own nutrition guidance."
+}

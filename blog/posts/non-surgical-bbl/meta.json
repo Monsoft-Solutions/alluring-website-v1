@@ -1,0 +1,316 @@
+{
+  "slug": "non-surgical-bbl",
+  "id": "d85c77e6-767d-4938-ac76-3e84bc5342b0",
+  "mode": "new",
+  "reader": "deciding",
+  "cluster": "bbl",
+  "title": "Non-Surgical BBL: What Works and What the FDA Warns About",
+  "meta_description": "No injection is FDA approved to enlarge the buttocks, and the FDA recommends against fillers for it. What each non-surgical BBL option can and can't do.",
+  "excerpt": "The FDA has not approved any injectable filler for body contouring, and it recommends against using fillers to enlarge the buttocks. Here is what the sources say about fillers, silicone, Sculptra, devices and training, and what to do if you have already had injections.",
+  "quick_answer": "Is there a non-surgical BBL?\n\nNot one the FDA has approved. The FDA says it has not approved injectable silicone or any injectable fillers for body contouring or enhancement, and it recommends against using them to increase the size of the buttocks. Glute training can build muscle, but lasting volume from your own fat takes surgery, which has its own risks.",
+  "primary_keyword": "non surgical bbl",
+  "secondary_keywords": [
+    "what is a non surgical bbl",
+    "non surgical butt lift",
+    "bbl without surgery",
+    "how much is a non surgical bbl",
+    "butt injections",
+    "are butt injections safe",
+    "how long do butt injections last",
+    "butt injections vs bbl",
+    "sculptra bbl",
+    "sculptra butt injections",
+    "bbl filler",
+    "dermal filler bbl",
+    "buttock filler injections",
+    "can you sit after bum filler",
+    "illegal butt injections",
+    "bbl without fat transfer"
+  ],
+  "owns_queries": [
+    "non surgical bbl",
+    "what is a non surgical bbl",
+    "non surgical butt lift",
+    "bbl without surgery",
+    "butt injections",
+    "are butt injections safe",
+    "how long do butt injections last",
+    "butt injections vs bbl",
+    "sculptra bbl",
+    "sculptra butt injections",
+    "bbl filler",
+    "dermal filler bbl",
+    "buttock filler injections",
+    "can you sit after bum filler",
+    "illegal butt injections"
+  ],
+  "categories": [
+    "BBL"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a sand-colored linen shirt sits at a table in a sunlit room, reading printed pages with a pen in her hand.",
+      "prompt": "SCENE: Late morning at a pale oak table in a bright Miami apartment, white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows on the wall. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 40s with medium brown skin and shoulder-length curly dark hair, wearing a loose sand-colored linen shirt buttoned high and relaxed wide-leg trousers, seated at the table in a three-quarter view facing the camera, reading a few blank printed pages with a pen in her hand, her expression thoughtful and calm. A glass of water and a closed laptop sit on the table. KEY DETAILS: Framed from the waist up with generous space above her head; her face and hands sit in the upper two thirds of the frame and the lower third is quiet tabletop so a title can sit over it; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; not photographed from behind; no body-part framing; no syringes, needles, injections, clinics, garments, bandages or incisions; no clinician; no readable text, letters, numbers, logos or watermarks on the pages or anywhere; not glamour, not a fashion ad."
+    },
+    {
+      "key": "options-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "A card on warm stone titled Non-surgical BBL options: what to know. It lists butt fillers, injectable silicone, Sculptra, glute training and padded shapewear, each with one line, and credits the FDA and Frontiers in Physiology.",
+      "prompt": "SCENE: A clean, calm editorial information card on a warm stone background, with thin brushed-gold rules between rows. SUBJECT: A title at the top, then five rows, each with a short option name on the left and one line of text on the right, then a small source footer. KEY DETAILS: A refined serif for the title, a clear humanist sans serif for the rows, generous margins, high contrast espresso text on warm porcelain, easy to read on a phone. CONSTRAINTS: Use the text exactly as given, word for word, and add no other words or numbers. No people, no bodies, no anatomy, no syringes or needles, no icons of body parts, no practice name, no phone number, no logos or watermarks.",
+      "text_in_image": "Non-surgical BBL options: what to know\nButt fillers | The FDA recommends against them to increase the size of the buttocks\nInjectable silicone | Not approved for any aesthetic procedure, the FDA says\nSculptra | Off-label on the buttocks, with small studies\nGlute training | Builds muscle, not fat volume\nPadded shapewear | Changes your outline only while you wear it\nSources: FDA; Frontiers in Physiology"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/dermal-filler-dos-and-donts-wrinkles-lips-and-more",
+      "publisher": "FDA",
+      "title": "Dermal Filler Do's and Don'ts for Wrinkles, Lips and More (content current as of 07/07/2023)",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "The FDA has not approved injectable silicone or any injectable fillers for body contouring or enhancement.",
+        "The FDA has warned against getting filler injected into the breasts, buttocks, or spaces between the muscles.",
+        "Using injectable filler for large-scale body contouring or body enhancement can lead to serious injury,",
+        "including long-term pain, infection, permanent scarring or disfigurement, and even death.",
+        "Do not get any type of filler or liquid silicone injected for body contouring."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/aesthetic-cosmetic-devices/dermal-fillers-soft-tissue-fillers",
+      "publisher": "FDA",
+      "title": "Dermal Fillers (Soft Tissue Fillers) (content current as of 07/06/2023)",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "The FDA recommends against using dermal fillers or any injectable filler for body contouring and enhancement to:",
+        "Increase size of the buttocks",
+        "Injectable silicone is not approved for any aesthetic procedure including facial and body contouring or enhancement.",
+        "Silicone injections can lead to long term pain, infections, and serious injuries, such as scarring",
+        "and permanent disfigurement, embolism (blockage of a blood vessel), stroke, and death.",
+        "Do not purchase dermal filler products online, because they could be counterfeit products",
+        "Having filler injected should be considered a medical procedure, not a cosmetic treatment.",
+        "Seek immediate medical attention if you experience unusual pain, vision changes",
+        "a white, gray, or blue appearance of skin near the injection site",
+        "please report the problem to the FDA."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/news-events/press-announcements/fda-warns-about-illegal-use-injectable-silicone-body-contouring-and-associated-health-risks",
+      "publisher": "FDA",
+      "title": "FDA warns about illegal use of injectable silicone for body contouring and associated health risks (November 13, 2017)",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "FDA warns about illegal use of injectable silicone for body contouring and associated health risks",
+        "products being falsely marketed as FDA-approved dermal fillers",
+        "Silicone injections for body contouring are often performed by unlicensed and non-medical practitioners"
+      ]
+    },
+    {
+      "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P030050",
+      "publisher": "FDA",
+      "title": "Premarket approval P030050, Sculptra and Sculptra Aesthetic (decision August 3, 2004)",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "APPROVAL FOR SCULPTRA. THE DEVICE IS INTENDED FOR RESTORATION AND/OR CORRECTION OF THE SIGNS OF FACIAL FAT LOSS",
+        "(LIPOATROPHY) IN PEOPLE WITH HUMAN IMMUNODEFICIENCY VIRUS."
+      ]
+    },
+    {
+      "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf3/P030050S002a.pdf",
+      "publisher": "FDA",
+      "title": "Approval letter P030050/S2, Sculptra Aesthetic (July 28, 2009)",
+      "read_on": "2026-11-04",
+      "read_via": "Read directly from the scanned PDF page image",
+      "quotes": [
+        "The device is indicated for use in immune-competent people as a single regimen for correction of shallow to deep nasolabial fold contour deficiencies and other facial wrinkles in which deep dermal grid pattern (cross-hatch) injection technique is appropriate."
+      ]
+    },
+    {
+      "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K192224.pdf",
+      "publisher": "FDA",
+      "title": "510(k) K192224, BTL-899, Indications for Use and summary (December 2019)",
+      "read_on": "2026-11-04",
+      "read_via": "Read directly from the PDF page image",
+      "quotes": [
+        "Non-invasive lipolysis (breakdown of fat) of the abdomen."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift and Augmentation Procedure Overviews",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "Silicone injections are an unsafe and unacceptable option for buttock augmentation."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/the-rising-popularity-of-non-hyaluronic-acid-fillers-what-you-should-know-about-these-biostimulators",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "The rising popularity of non-hyaluronic acid fillers: What you should know about these biostimulators (Alia Willson, July 31, 2025)",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "Sculptra, one of the first non-HA fillers marketed in the U.S., uses poly-L-lactic acid, or PLLA.",
+        "Sculptra is best thought of as a collagen stimulator rather than a volumizer in the traditional sense,",
+        "It is also being used more frequently in off-face applications like buttock augmentation and cellulite improvement,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; also [raw] in SOURCE-BANK A.9",
+      "quotes": [
+        "on the average patients will retain 60-80% of the transferred fat, in some cases more in others less"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32976171/",
+      "publisher": "Dermatologic Surgery",
+      "title": "Poly-L-Lactic Acid for Gluteal Augmentation found to be Safe and Effective in Retrospective Clinical Review of 60 Patients (Durairaj and colleagues, 2020;46(Suppl 1):S46-S53)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract through WebFetch, because the PubMed page returned only a cookie notice; abstract only",
+      "quotes": [
+        "A clinical retrospective review of 60 patients",
+        "1 to 3 treatments",
+        "spaced 4 to 6 weeks apart",
+        "2 to 12 vials per session",
+        "(based on the patient budget)",
+        "at least 20 vials",
+        "followed for 2 years",
+        "Poly-L-lactic acid is safe and effective for overall aesthetic enhancement of the buttocks"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31188150/",
+      "publisher": "Dermatologic Surgery",
+      "title": "Poly-L-Lactic Acid for Minimally Invasive Gluteal Augmentation (Lin, Dubin, Khorasani, 2020;46(3):386-394)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract through WebFetch, because the PubMed page returned only a cookie notice; abstract only",
+      "quotes": [
+        "Gluteal augmentation with fillers can safely and effectively improve gluteal firmness, shape, proportion, and projection.",
+        "avoid injecting deeply in the danger triangle to prevent intravascular injection into the gluteal vessels"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37361362/",
+      "publisher": "Journal of Clinical and Aesthetic Dermatology",
+      "title": "Targeted and Individualized Gluteal Poly-L-Lactic Acid Injection for Optimal Aesthetic Results in the Gluteal Region (Sarubi and colleagues, 2023;16(6):30-36)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract through WebFetch, because the PubMed page returned only a cookie notice; abstract only",
+      "quotes": [
+        "growing interest in off-label use for various aesthetic applications, including gluteal augmentation",
+        "Assessment of patient outcomes with this technique have, to date, been subjective clinical observations"
+      ],
+      "notes": "The E-utilities record reports that several authors disclose relationships with Galderma; that line is the extraction model's paraphrase, not a verbatim quote."
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39503574/",
+      "publisher": "Dermatologic Surgery",
+      "title": "SPLASH: Split-Body Randomized Clinical Trial of Poly-L-Lactic Acid for Adipogenesis and Volumization of the Hip Dell (Zubair and colleagues, 2024;50(12):1155-1162)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract through WebFetch, because the PubMed page returned only a cookie notice; abstract only",
+      "quotes": [
+        "This was a double-blinded, split-body trial of 15 women with hip dell volume deficits."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36826378/",
+      "publisher": "Dermatologic Surgery",
+      "title": "A Randomized, Single-Center, Double-Blinded, Split-Body Clinical Trial of Poly-L-Lactic Acid for the Treatment of Cellulite of the Buttocks and Thighs (Almukhtar and colleagues, 2023;49(4):378-382)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract through WebFetch, because the PubMed page returned only a cookie notice; abstract only",
+      "quotes": [
+        "clinical trial of 20 women with slight to moderate skin laxity of the buttocks and/or thighs"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37877099/",
+      "publisher": "Frontiers in Physiology",
+      "title": "Hip thrust and back squat training elicit similar gluteus muscle hypertrophy and transfer similarly to the deadlift (Plotkin and colleagues, 2023;14:1279170)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract through WebFetch, because the PubMed page returned only a cookie notice; abstract only",
+      "quotes": [
+        "Untrained college-aged participants",
+        "15-17 sessions",
+        "Hip thrust and back squat training elicit similar gluteus muscle hypertrophy and transfer similarly to the deadlift."
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1097/PRS.0000000000012437",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Gluteal Augmentation with Fat Grafting: A Systematic Review and Meta-Analysis of Complications and Procedural Factors (Elsaftawy and colleagues, 2026;157(3):381e-393e)",
+      "read_on": "2026-11-04",
+      "read_via": "NCBI E-utilities abstract (PMID 41051287) through WebFetch; abstract only; figures match bbl.facts.ts",
+      "quotes": [
+        "A total of 38 studies comprising 22,151 patients were included.",
+        "Pulmonary embolism had a pooled incidence of 0.04%."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift (last updated 06/19/2022)",
+      "read_on": "2026-11-04",
+      "read_via": "WebFetch extraction; quote marks are the fetch model's, spot-check before publishing",
+      "quotes": [
+        "If you don't have enough excess body fat available, you may be a good candidate for butt implants.",
+        "Your body should fully recover between two and three months after your Brazilian butt lift procedure.",
+        "It may take up to six months for your body to fully recover after your Brazilian butt lift procedure."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 14,
+    "clicks": 0,
+    "position": 3.1,
+    "query": "non surgical bbl"
+  },
+  "notes": "New post, plan item N1. Volumes from the plan: Keyword Planner 4,400 non-surgical + 1,900 Sculptra a month. States no non-surgical offer by the practice; the practice has not said what it offers. No link to N2 or N3 yet: they are not live, and check_post rejects a link to a post that isn't live; add them after they go live.",
+  "gate": {
+    "verdict": "new",
+    "reason": "Cluster is unclaimed — safe to write",
+    "owningUrl": null,
+    "owningSlug": null,
+    "matchedQuery": null,
+    "similarityScore": null,
+    "claimedQueries": [
+      "non surgical bbl",
+      "what is a non surgical bbl",
+      "non surgical butt lift",
+      "bbl without surgery",
+      "how much is a non surgical bbl",
+      "butt injections",
+      "are butt injections safe",
+      "how long do butt injections last",
+      "butt injections vs bbl",
+      "sculptra bbl",
+      "sculptra butt injections",
+      "bbl filler",
+      "dermal filler bbl",
+      "buttock filler injections",
+      "can you sit after bum filler",
+      "illegal butt injections",
+      "bbl without fat transfer"
+    ],
+    "warnings": [],
+    "checkedAt": "2026-11-04T11:45:24.128Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_bbl_rewrite_2026_11"
+  }
+}

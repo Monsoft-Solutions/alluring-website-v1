@@ -1,0 +1,188 @@
+{
+  "slug": "what-is-a-double-bbl",
+  "mode": "rewrite",
+  "base_md5": "926184ab9786c28b2b181696727f1502",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:33Z",
+  "reader": "deciding",
+  "cluster": "bbl",
+  "title": "What Is a Double BBL? Second Brazilian Butt Lift Explained",
+  "meta_description": "A double BBL is a second fat transfer, not twice the volume at once. When it helps, how long to wait, and why recovery is no shorter.",
+  "excerpt": "A double BBL usually means a second BBL after the first has healed, not twice the fat in one surgery. Why people get one, why no source gives a waiting period, whether you have enough fat left, and why recovery is no shorter than the first time.",
+  "quick_answer": "What is a double BBL?\n\nIt usually means a second BBL, done after the first has healed, to add volume or even out shape. ASPS mentions another BBL as a way to smooth contour irregularities. It needs enough donor fat, and recovery is the same as a first BBL. Your surgeon decides after an exam.",
+  "primary_keyword": "what is a double bbl",
+  "secondary_keywords": [
+    "double bbl",
+    "double bbl surgery",
+    "double bbl meaning",
+    "double bbl vs bbl",
+    "whats a double bbl",
+    "second bbl",
+    "2nd bbl",
+    "second round bbl",
+    "2nd round bbl",
+    "2 bbls",
+    "how many bbls can you get",
+    "can you get another bbl",
+    "multiple bbls"
+  ],
+  "owns_queries": [
+    "double bbl",
+    "double bbl surgery",
+    "double bbl meaning",
+    "double bbl vs bbl",
+    "second bbl",
+    "2nd bbl",
+    "second round bbl",
+    "2nd round bbl",
+    "how many bbls can you get",
+    "can you get another bbl",
+    "multiple bbls"
+  ],
+  "categories": [
+    "BBL",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Lipo",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a soft knit top and loose trousers stands by a bright window with a notebook, looking up as if thinking through a question.",
+      "prompt": "SCENE: Afternoon in a calm Miami living room, white plaster walls, a tall arched window with sheer curtains, soft palm shadows on a pale limestone floor and a linen armchair in the background. Palette of stone, sand, warm white and brushed gold. SUBJECT: A Latina woman in her mid-30s with medium tan skin and long dark hair worn loose, standing by the window in a soft oatmeal knit top with a high neckline and loose stone trousers, holding a small notebook and pen, looking up slightly as if thinking through a question. Three-quarter front view, calm and thoughtful. KEY DETAILS: Framed from the thighs up with generous space above her head, her face and hands in the upper two thirds of the frame, the lower third quiet floor and curtain for a title. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest loose clothing fully covering the torso; no swimwear, lingerie, bodycon, cleavage or bare midriff; not photographed from behind; no focus on the hips or buttocks; no garments, bandages, drains or incisions; no before-and-after framing; no surgeon or staff; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "what-stays-the-same",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled First BBL and second BBL: what stays the same. Liposuction and fat grafting again. Not on your buttocks for at least 2 weeks. A pillow for about 8 weeks. Back to work in 10 to 14 days. Normal exercise after 8 weeks, once your surgeon clears you. What can differ: how much fat you have left.",
+      "prompt": "SCENE: A clean editorial card on warm porcelain stone, with a thin brushed-gold rule at the top and generous margins. SUBJECT: A simple list of five short lines with small round gold ticks under the title, and below them one line set apart with a hairline rule above it. No people and no anatomy. KEY DETAILS: Flat design, serif headline in dark espresso, sans-serif body, large legible type for phones, muted gold only for the rule and ticks. Source line small at the foot. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body shapes, no silhouettes, no before-and-after framing, no practice name, no logo, no phone number, no website address. Spell every word and number exactly as supplied; no extra numbers.",
+      "text_in_image": "First BBL and second BBL: what stays the same\n\nLiposuction and fat grafting again\nNot on your buttocks for at least 2 weeks\nA pillow for about 8 weeks\nBack to work in 10 to 14 days\nNormal exercise after 8 weeks, once your surgeon clears you\n\nWhat can differ: how much fat you have left\n\nSources: Cleveland Clinic, The Aesthetic Society"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "for another BBL to smooth out any contour irregularities and asymmetry",
+        "others return seeking a bigger butt",
+        "the average fat take or the amount of the transferred fat that will survive is about 60%",
+        "Around month three, the acute risk of losing fat from the buttock area subsides",
+        "should further refine and the curve should become more apparent.",
+        "basically 24/7, except for showering, the first month and at least 12 hours a day the second"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "on the average patients will retain 60-80% of the transferred fat, in some cases more in others less",
+        "your surgeon may liposuction up to three times the amount of fat than what will actually be injected into the buttocks",
+        "you will not see your final results until a year after the surgery",
+        "As you gain or lose weight, your results may change as the transferred fat can grow or shrink"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Buttock enhancement candidates",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Individuals with significant soft tissue looseness in the gluteal area"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/documents/Patient-Safety/BBL/Gluteal-Fat-Grafting-Safety-Advisory_Jan18.pdf",
+      "publisher": "Inter-Society Gluteal Fat Grafting Task Force (ASPS, ASAPS, ISAPS, ISPRES, IFATS)",
+      "title": "Multisociety Gluteal Fat Grafting Task Force Issues Safety Advisory Urging Practitioners to Reevaluate Technique, January 31, 2018",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "If the aesthetic goal requires more fat than can be placed in the subcutaneous layer the surgeon should consider staging the procedure rather than injecting deep."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You may need to get a Brazilian butt lift again during your life.",
+        "Have enough excess body fat available in other parts of your body to transfer to your butt.",
+        "If you don’t have enough excess body fat available, you may be a good candidate for butt implants.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight.",
+        "You won’t be able to sit or lie down on your butt for at least two weeks.",
+        "You won’t be able to sit without your pillow for approximately eight weeks.",
+        "go back to work between 10 and 14 days after your Brazilian butt lift procedure."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Aftercare and Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You should be able to get up and walk after the second postoperative day to help present blood clots.",
+        "You can resume normal activities and exercise after eight weeks.",
+        "When the swelling subsides, sometimes taking three to six months, your true results will be more evident."
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1097/PRS.0000000000012437",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Gluteal Augmentation with Fat Grafting: A Systematic Review and Meta-Analysis of Complications and Procedural Factors (Elsaftawy and colleagues, 2026)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A total of 38 studies comprising 22,151 patients were included.",
+        "The pooled incidence of minor complications was 3.58% (95% CI, 1.75% to 5.99%),",
+        "with seromas occurring in 2.03% and contour irregularities in 2.29% of cases.",
+        "Pulmonary embolism had a pooled incidence of 0.04%."
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1093/asj/sjac224",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "Brazilian Butt Lift–Associated Mortality: The South Florida Experience (Pazmiño and Garcia, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "South Florida has experienced 25 BBL-related fat emboli deaths between 2010 and 2022",
+        "14 of these occurred after publication of the Aesthetic Surgery Education and Research Foundation's 2018 guidelines",
+        "12 deaths since the 2019 \"subcutaneous-only injection\" emergency rule was enacted.",
+        "The authors observed 11 postmortem gluteal dissections (22 hemibuttocks)."
+      ]
+    },
+    {
+      "url": "https://www.flsenate.gov/Laws/Statutes/2026/458.328",
+      "publisher": "Florida Statutes",
+      "title": "Section 458.328",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A physician performing a gluteal fat grafting procedure in an office surgery setting shall adhere to standards of practice",
+        "Fat may only be injected into the subcutaneous space of the patient"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 5764,
+    "clicks": 55,
+    "position": 5.77
+  },
+  "notes": "Full rewrite to the plan's outline. Title kept: it is the live meta title, shipped 24 Oct, and the post now uses it as its title too. Removes the 6 to 12 month waiting period, local anesthesia, 'streamlined' and faster recovery, 'superior results', 'ensures safer outcomes', 'board-certified surgeons' and 'countless patients'. The post had no images, so hero and card are new. Open with the practice: how it handles second BBLs and revisions, timing and cost; the post says exam first and gives no policy. Quotes came through WebFetch's extraction model, in fragments capped near 125 characters, except the 2018 advisory, which was read in full from the PDF WebFetch saved."
+}

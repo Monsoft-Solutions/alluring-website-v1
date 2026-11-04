@@ -1,0 +1,160 @@
+{
+  "slug": "how-to-sleep-after-bbl",
+  "mode": "rewrite",
+  "base_md5": "f28149a3fb26177d5f75ac8510326869",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:30Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "How to Sleep After BBL?",
+  "meta_description": "How to Sleep After BBL? Discover safe sleep positions, accessories, and recovery tips to protect your results.",
+  "excerpt": "Recovering properly after your Brazilian Butt Lift requires careful attention to your sleeping position. How to sleep after BBL is a critical factor in ensuring optimal results, as you'll need to sleep on your stomach or your side, and stay off your back until your surgeon clears it.",
+  "quick_answer": "How do you sleep after a BBL?\n\nOn your stomach or your side, as Cleveland Clinic advises, and off your back until your surgeon clears it. The Aesthetic Society says to avoid direct pressure on your buttocks for at least 8 weeks. The same holds after a BBL with lipo 360, and pillows can help you stay in position.",
+  "primary_keyword": "how to sleep after bbl",
+  "secondary_keywords": [
+    "how to sleep after bbl and lipo 360",
+    "how to sleep after lipo 360 and bbl",
+    "how to sleep with bbl",
+    "when can i sleep on my side after bbl and hips",
+    "bbl and breast augmentation how to sleep",
+    "bbl and tummy tuck sleeping ideas",
+    "bbl pillow for sleeping",
+    "bbl pillow to sleep",
+    "bbl pillow to sleep on back",
+    "bbl donut pillow",
+    "bbl bed with hole",
+    "bbl position"
+  ],
+  "owns_queries": [
+    "how to sleep after bbl and lipo 360",
+    "how to sleep after lipo 360 and bbl",
+    "how to sleep with bbl",
+    "when can i sleep on my side after bbl and hips",
+    "bbl pillow for sleeping",
+    "bbl pillow to sleep"
+  ],
+  "categories": [
+    "BBL",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Lipo",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her early 30s in long-sleeved linen pajamas rests on her side in a sunlit bed, eyes closed, with a long body pillow in front of her.",
+      "prompt": "SCENE: Early morning in a bright Miami bedroom, white plaster walls, a tall window with sheer linen curtains, soft palm shadows across pale bedding, a small oak nightstand with a glass of water. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 30s with warm tan skin and long dark hair, wearing long-sleeved loose oat-colored linen pajamas buttoned high, resting on her side facing the camera with her eyes closed, a long body pillow in front of her, calm and at ease, a light blanket over her from the hips down. KEY DETAILS: Viewed from the front at mattress height, head and upper body in the upper two thirds of a 3:2 frame with quiet bedding below; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest sleepwear fully covering the torso; no swimwear, lingerie, satin, cleavage or bare midriff; no garments on a body, bandages, drains or incisions; not photographed from behind and no body-part framing; no text, letters, numbers, logos or watermarks; not the surgeon or staff; not glamour, not a fashion ad."
+    },
+    {
+      "key": "positions",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled How to sleep after BBL. Sleep on your stomach or side, as Cleveland Clinic advises. Stay off your back until your surgeon clears it. Avoid direct pressure on the buttocks for at least 8 weeks. Sources: Cleveland Clinic and The Aesthetic Society.",
+      "prompt": "SCENE: A clean editorial card on warm stone-white paper with a thin brushed-gold rule under the title. SUBJECT: Three stacked rows of short text, separated by thin rules, with small simple line icons of a pillow, a clock and a pause mark. KEY DETAILS: Fraunces-style serif for the title, a clean humanist sans for the rows, generous margins, readable on a phone, a small one-line source footer. CONSTRAINTS: Text exactly as supplied and nothing else; no practice name, no logo, no phone number, no people, no bodies, no body silhouettes, no anatomy; no before/after framing.\nREVISION: All text in one single dark ink color. No colored tints or fringing on any letters.",
+      "text_in_image": "How to sleep after BBL\n\nSleep on your stomach or side, as Cleveland Clinic advises\nStay off your back until your surgeon clears it\nAvoid direct pressure on the buttocks for at least 8 weeks\n\nSources: Cleveland Clinic; The Aesthetic Society"
+    },
+    {
+      "key": "pillow-setup",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Line illustration of a fully clothed woman lying on her side in bed, seen from the front, with a long body pillow in front of her a second pillow behind her back to keep her from rolling over, and a third under her head.",
+      "prompt": "SCENE: A simple editorial line illustration on warm stone-white paper, a low bed with a plain mattress drawn in thin charcoal lines, with brushed-gold accents on the two pillows. SUBJECT: A woman in long-sleeved loose pajamas lying on her side facing the viewer, eyes closed, one long body pillow in front of her and one firm pillow behind her back. KEY DETAILS: Stylised and calm, whole figure in frame, seen from the front, flat color fills in sand and warm white, generous empty space. CONSTRAINTS: Fully clothed and stylised; not photographed or drawn from behind; no anatomy, no cutaway, no highlighting or glow on any body part, no body-part framing; no garments, bandages, drains or incisions; no text, letters, numbers, arrows, labels, logos or watermarks; no before/after framing."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You won't be able to sit or lie down on your butt for at least two weeks.",
+        "you'll need to stand rather than sit and sleep on your stomach or sides."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt lift aftercare and recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You must avoid direct pressure on the buttocks for at least eight weeks",
+        "Ask your surgeon how to sit and sleep, including the use of pillows",
+        "If the pain is extreme or long-lasting, contact your surgeon."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS), article by Kaitlin Clark quoting Chris Funderburk, MD, and Steven Williams, MD",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Patients are advised to sleep on their stomachs for the first night postop, and until given the clear from their surgeon.",
+        "For patients who absolutely cannot sleep on their tummies, we recommend a pool float that looks like an avocado,",
+        "many find the liposuctioned areas to be tender, but not overly sensitive.",
+        "the fat is very susceptible to pressure necrosis, or pressure that kills off the fat cells"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/recovering-from-a-brazilian-butt-lift",
+      "publisher": "ASPS blog, a post by Kamran Azad, MD",
+      "title": "Recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It is also advised to continue to avoid sleeping on your back for the first eight weeks after your surgery."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "chest pain, shortness of breath, cough with blood, lightheadedness and fainting",
+        "Swelling of your leg or arm on one side",
+        "Pain or tenderness in your leg or arm"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "blog/baselines/bbl-cluster-2026-11-04.csv and queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 10006,
+    "clicks": 65,
+    "position": 5.23,
+    "top_queries": [
+      {
+        "query": "how to sleep after bbl and lipo 360",
+        "impressions": 186,
+        "clicks": 3,
+        "position": 2.4
+      },
+      {
+        "query": "how to sleep after bbl",
+        "impressions": 166,
+        "clicks": 3,
+        "position": 2.4
+      },
+      {
+        "query": "when can i sleep on my side after bbl and hips",
+        "impressions": 166,
+        "clicks": 2,
+        "position": 4.8
+      }
+    ]
+  },
+  "notes": "Gentle fix, BBL rewrite Batch 3, redone as a sentence-level edit from the live text at the coordinator's request. Title, live H2s, section order and the live FAQs are kept. Changed only: must-fix lines from post-audit.md (the one-month line, the vital six-week line, the donut-cushion line, the plural and board-certified surgeon lines, the stomach-only six-week FAQ), sweep breaks ('Best' in one H2, 'guarantee' twice, 'best' in one FAQ, phone and #contactus lines), practice protocol stated as fact ('We recommend', 'We typically employ 360 liposuction'), healing-speed claims ('accelerating the healing process', 'accelerated healing', 'speed up healing' in the meta), fear language the brief forbids ('could undo the effects of your surgery, wasting time, money, and effort'), and stomach-only wording, which now follows Cleveland Clinic: stomach or side. 'Up to eight weeks' became 'about eight weeks': no source says 'up to', and The Aesthetic Society says at least. Added: an opening H2 question and a table (the lint requires both), sources, a common-practice label on the positioning tips, the hips sentence, the lipo 360 sentence and FAQ, one pain and emergency paragraph, and page and sibling links. Independent fact check applied on 2026-11-04: unsourced pillow, circulation, thigh-elevation, healing and fat-integration claims cut, side sleeping from the first night now 'ask your surgeon', the back rule credited to Azad, the pressure rule to a plastic surgeon interviewed by ASPS, and a leg-clot line added. Links: #recovery and #candidate per the plan, plus #procedure. Images: all three are new. The hero prints 'Heal 30% Faster' and a phone number, the first inline prints 'Sleep on stomach only for 6 weeks' and a phone number, the second is buttock anatomy with labels. Same-address canary per the plan: the new hero should overwrite https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/66f747b5-208d-481a-94cf-014b05f9afb6/1768929321610-es76sp-0.jpg (16 image clicks, 11,488 impressions). The plan's table also says same address, staged, for the two inline files: positions card over .../1768929178431-jpibia-0.jpg and pillow-setup over .../1768929209343-prd0z2-0.jpg. The main session handles that. Quotes came through WebFetch's extraction model, capped at about 125 characters; none was read from raw page text this session."
+}

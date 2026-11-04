@@ -1,0 +1,235 @@
+{
+  "slug": "how-long-after-bbl-can-i-sit",
+  "mode": "rewrite",
+  "base_md5": "a5f1ba216a615eb57d6324d22857d6cd",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:25Z",
+  "reader": "recovering",
+  "cluster": "bbl",
+  "title": "How Long After a BBL Can I Sit? Week by Week, With a Pillow",
+  "meta_description": "Not on your buttocks for at least 2 weeks, then briefly on a pillow until about week 8. What to do at work, in the car and at home.",
+  "excerpt": "Cleveland Clinic says not to sit on your buttocks for at least 2 weeks, and most people need a BBL pillow for about 8 weeks. Here is the timeline, how to use the pillow, what to do at a desk, in a car and on the toilet, and what to do if you sat by accident.",
+  "quick_answer": "How long after a BBL can I sit?\n\nCleveland Clinic says not on your buttocks for at least 2 weeks. A surgeon interviewed by ASPS allows about 10 minutes at a time for the first six weeks. Most people use a pillow for about 8 weeks. Your surgeon clears you.",
+  "primary_keyword": "how long after bbl can i sit",
+  "secondary_keywords": [
+    "how long after bbl can i sit without pillow",
+    "sitting after bbl myth",
+    "how long after a bbl can you sit",
+    "can you sit after a bbl",
+    "when can you sit after a bbl",
+    "how long can you not sit after a bbl",
+    "how to sit on bbl pillow",
+    "how long after bbl surgery can you sit",
+    "when can i stop using bbl pillow",
+    "i sat after my bbl",
+    "sitting on bbl after 2 weeks",
+    "when can i sit after bbl",
+    "when can i sit normally after bbl",
+    "how to sit after a bbl",
+    "why can't you sit after a bbl",
+    "bbl pillow"
+  ],
+  "owns_queries": [
+    "how long after a bbl can you sit",
+    "how long after bbl can i sit without pillow",
+    "when can you sit after a bbl",
+    "when can i sit after bbl",
+    "how long can you not sit after a bbl",
+    "how to sit on bbl pillow",
+    "when can i stop using bbl pillow",
+    "sitting after bbl myth",
+    "i sat after my bbl",
+    "sitting after bbl"
+  ],
+  "categories": [
+    "BBL",
+    "Post-Op Care",
+    "Recovery"
+  ],
+  "tags": [
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Lymphatic Massage",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in loose linen trousers and a long-sleeved top sits upright on a sofa with a cushion under the backs of her thighs, reading in a bright room.",
+      "prompt": "SCENE: Late morning in a bright Miami living room, white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows across a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 30s with deep brown skin and short natural hair, sitting upright on the edge of a firm linen sofa in loose sand-colored linen trousers and a long-sleeved cream top, with a plain wedge-shaped cushion under the backs of her thighs and a paperback open in her hands. Three-quarter front view, calm, looking at the book. KEY DETAILS: Framed from the knees up with generous space above her head, the subject in the upper two thirds and the quiet floor in the lower third; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso and legs; no swimwear, lingerie, cleavage or bare midriff; no compression garment, bandages, drains or incisions; not photographed from behind, no crop on the hips or buttocks; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Timeline card titled When can you sit after a BBL? First 2 weeks: no sitting or lying on your buttocks. First 6 weeks: keep any sitting to about 10 minutes at a time. About 8 weeks: most people still need the pillow. Your surgeon clears you. Sources: Cleveland Clinic, ASPS, The Aesthetic Society.",
+      "prompt": "SCENE: A clean editorial card on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: A simple vertical timeline with three rows joined by a thin line, each with a short bold time label on the left and its line of text on the right, then a closing line and a small source footer. KEY DETAILS: Flat vector layout with no illustration of a person, serif headline in dark stone, sans-serif rows, muted gold only for the line and rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "When can you sit after a BBL?\n\nFirst 2 weeks\nNo sitting or lying on your buttocks\n\nFirst 6 weeks\nKeep any sitting to about 10 minutes at a time\n\nAbout 8 weeks\nMost people still need the pillow\n\nYour surgeon clears you\n\nSources: Cleveland Clinic, ASPS, The Aesthetic Society"
+    },
+    {
+      "key": "pillow",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Diagram of a stylized, fully clothed woman seen from the side, seated with a cushion under the backs of her thighs. Labels: under the backs of your thighs; buttocks clear of the seat; about 10 minutes at a time for the first 6 weeks. Sources: The Aesthetic Society, ASPS.",
+      "prompt": "SCENE: A clean editorial diagram on a warm off-white stone background with a thin muted-gold rule at the top. SUBJECT: A stylized, simplified whole figure of a woman in loose full-length clothing, seen in plain side profile, seated on a simple chair with a soft wedge cushion under the backs of her thighs, upright and at ease. Thin leader lines connect the cushion and the seat gap to their labels. KEY DETAILS: Flat vector illustration in stone and sand tones with no skin detail and no facial features, serif headline in dark stone, sans-serif labels, muted gold only for leader lines and the rule, large legible type for phones. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. The figure is fully clothed in loose clothing and shown whole; no rear view, no crop on the hips or buttocks, no anatomy or cutaway, no fat cells, no garment, no incisions. No practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.\nREVISION: Show a clear visible gap between the buttocks and the seat, with the buttocks resting on nothing. The 'Buttocks clear of the seat' leader line must end exactly at that gap.",
+      "text_in_image": "Where the BBL pillow goes\n\nUnder the backs of your thighs\nButtocks clear of the seat\nAbout 10 minutes at a time for the first 6 weeks\n\nSources: The Aesthetic Society, ASPS"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You won't be able to sit or lie down on your butt for at least two weeks.",
+        "So, you'll need to stand rather than sit and sleep on your stomach or sides.",
+        "You won't be able to sit without your pillow for approximately eight weeks.",
+        "Depending on your job, you should be able to go back to work between 10 and 14 days",
+        "If you usually sit at a desk for long periods, it's advisable to use a standing desk until you've completely healed.",
+        "However, you should avoid heavy lifting or strenuous activities for one month.",
+        "After one to two weeks, your pain should decrease.",
+        "To preserve the effects of your Brazilian butt lift, you should maintain a consistent weight.",
+        "The effects of a Brazilian butt lift are semi-permanent."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Recovery and Aftercare",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Many surgeons do not allow sitting in the first 10-14 days except for using the toilet and eating.",
+        "After this time, you can sit with a soft pillow placed beneath your hamstring muscles but not touching your butt",
+        "so that your butt is in the air, and there is no pressure on your newly shaped buttock.",
+        "You must avoid direct pressure on the buttocks for at least eight weeks, so you must sit on a pillow during this period.",
+        "After fat grafting, you can return to work, drive, or go to the movies after ten to fourteen days,",
+        "but you must use a pillow when sitting, so there is no pressure on your buttocks.",
+        "When going home or to your first post-op follow-up visit, you should lie on your stomach in the back seat of the car",
+        "This is normal and will begin to subside after a few days or weeks.",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "Make sure you continue to have help at home",
+        "If you have small children, you must put someone else totally in charge of their care for two weeks."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift (Kaitlin Clark, August 11, 2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "try to keep it within the 10-minute window, which is about as long as you should be sitting at any given time for the first six weeks.",
+        "just go to the bathroom, it's fine,",
+        "for the first six weeks, the patient has to be very careful about not putting undue or prolonged pressure on the buttocks.",
+        "the fat is very susceptible to pressure necrosis, or pressure that kills off the fat cells,",
+        "they're at risk for asymmetrical or quickly diminishing results.",
+        "Patients return to work between days seven and 10",
+        "if they're sitting at a desk all day, they need to be using the BBL pillow, or some type of cushioning and padding.",
+        "offset the pressure onto their thighs.",
+        "discreet, triangle-shaped pillow",
+        "is small enough to be carried to restaurants"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Recovering from a Brazilian butt lift (Kamran Azad, MD, May 12, 2016)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "to not sit directly on your buttocks for at least eight weeks after the procedure",
+        "if you absolutely do have to sit, it is recommended to use a donut pillow or inflatable pillow"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You will be asked to avoid prolonged sitting for about two weeks (some surgeons prefer longer).",
+        "This is very important because prolonged sitting will damage the fat.",
+        "When you do have to sit, you will have to use a pillow or cushion placed behind the legs",
+        "(hamstring muscles) to help raise the buttocks, avoiding pressure onto the fat grafts.",
+        "If you experience shortness of breath, chest pains or unusual heart beats, seek medical attention immediately."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "As you gain or lose weight, your results may change as the transferred fat can grow or shrink",
+        "just as any other fat in your body."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/boarding-groups-added-complications-from-traveling-after-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Boarding groups: Added complications from traveling after a Brazilian butt lift (Madison Freeman, June 9, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "And if you are going to be sitting for long periods of time, get up and walk around for at least five to 10 minutes",
+        "for every hour spent sitting."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/is-bbl-smell-real-heres-what-you-need-to-know",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "Is 'BBL smell' real? Here's what you need to know (Adrienne Santos-Longhurst, August 6, 2025)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Poor hygiene during recovery, such as not wiping well, can occur due to mobility limitations.",
+        "I recommend that patients invest in a bidet, especially if they have difficulty wiping after a bowel movement."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/24187-fat-necrosis",
+      "publisher": "Cleveland Clinic",
+      "title": "Fat Necrosis",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Fat necrosis is death of fat tissue due to injury and loss of blood supply.",
+        "It may feel like a fatty lump or like a hard nodule.",
+        "Causes pain.",
+        "Seems to grow."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/surgical-wound-infection",
+      "publisher": "Cleveland Clinic",
+      "title": "Surgical Wound Infection",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Fever (greater than 101 degrees Fahrenheit or 38.4 degrees Celsius)",
+        "Noticeable odor from the incision",
+        "Redness or color changes in your skin that go beyond the edge of the incision",
+        "Thick, cloudy, white- or cream-colored discharge from the wound"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/17400-pulmonary-embolism",
+      "publisher": "Cleveland Clinic",
+      "title": "Pulmonary Embolism",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Call 911 or your local emergency number if you have these symptoms.",
+        "leg pain, swelling and warmth",
+        "seek medical care right away"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-10-05..2026-11-01",
+    "impressions": 1342,
+    "clicks": 3,
+    "position": 7.5
+  },
+  "notes": "Full rewrite. Replaces the wrong answer (no sitting 2-3 weeks, normal sitting at week 6) with the corrected standard; removes invented numbness sign, squatting and hovering, 10-15 minute sessions, practice observations, fat necrosis as the most serious complication, board-certified surgeons, phone and #contactus links. Images: hero plus 2 inline (plan 5 to 2); all 5 live images fail a rule, so none reused. Same-address candidates for the main session after the canary: the bbl pillow photo https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/37d1c966-d538-406f-a3ed-2900eb8341f9/1768932978631-vjrg01-0.jpg (live hero and inline) and the timeline card https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/37d1c966-d538-406f-a3ed-2900eb8341f9/1768932885690-sdquy5-0.jpg. Quotes were read with WebFetch on 2026-11-04 and came through its summary model, usually in fragments under 125 characters; curly apostrophes straightened. Quotes also in SOURCE-BANK tagged [raw] match it. Added beyond the plan's FAQ list: long-term maintenance, because the page ranks position 2 for bbl maintenance and the live post had that section. GSC figures are the plan's verdict table (web, #anchors excluded). Open for the practice: one description of the BBL pillow (the posts disagree: triangle or donut), and the follow-up schedule."
+}

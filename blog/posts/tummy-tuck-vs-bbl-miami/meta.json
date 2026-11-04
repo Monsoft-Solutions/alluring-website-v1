@@ -1,0 +1,390 @@
+{
+  "slug": "tummy-tuck-vs-bbl-miami",
+  "mode": "rewrite",
+  "base_md5": "710317610d879b7356c46fc58dbd98b4",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:31Z",
+  "reader": "deciding",
+  "cluster": "bbl",
+  "title": "BBL vs Tummy Tuck: Which Fixes What, and Can You Do Both?",
+  "meta_description": "A BBL adds shape with your own fat. A tummy tuck removes loose skin and repairs muscle. Compare recovery, risks and when both make sense.",
+  "excerpt": "A tummy tuck removes loose skin and can repair separated muscles. A BBL moves your own fat to your buttocks. What each one fixes, how recovery compares, when both can be done in one surgery, and how a BBL compares with liposuction, butt implants and a mommy makeover.",
+  "quick_answer": "Which is better, a BBL or a tummy tuck?\n\nThey fix different things. A tummy tuck removes loose skin and can repair separated muscles. A BBL moves your own fat to your buttocks. If your main concern is your stomach, start with a tummy tuck. If it's shape from behind, a BBL. Your surgeon decides at consultation whether to combine them.",
+  "primary_keyword": "bbl vs tummy tuck",
+  "secondary_keywords": [
+    "tummy tuck vs bbl",
+    "bbl and tummy tuck",
+    "bbl with tummy tuck",
+    "liposuction vs bbl",
+    "bbl vs lipo",
+    "bbl vs butt implants",
+    "bbl vs implants",
+    "bbl vs mommy makeover",
+    "difference between mommy makeover and bbl",
+    "bbl hourglass tummy tuck",
+    "breast augmentation vs bbl",
+    "tummy tuck vs bbl miami"
+  ],
+  "owns_queries": [
+    "tummy tuck vs bbl",
+    "tummy tuck vs bbl miami",
+    "liposuction vs bbl",
+    "bbl vs lipo",
+    "bbl vs butt implants",
+    "bbl vs implants",
+    "bbl vs mommy makeover",
+    "difference between mommy makeover and bbl",
+    "bbl and tummy tuck",
+    "bbl with tummy tuck",
+    "bbl hourglass tummy tuck",
+    "breast augmentation vs bbl"
+  ],
+  "categories": [
+    "Mommy Makeover",
+    "BBL",
+    "Tummy Tuck"
+  ],
+  "tags": [
+    "Abdominoplasty",
+    "BBL",
+    "Brazilian Butt Lift",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Tummy Tuck",
+    "Mommy Makeover",
+    "Liposuction"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a loose linen shirt stands at a bright kitchen counter, reading her handwritten notes beside a cup of coffee, in morning light from a tall window.",
+      "prompt": "SCENE: Mid-morning in a bright Miami kitchen, white plaster walls, a tall arched window with soft palm shadows on a pale limestone counter. Palette of stone, sand, warm white and brushed gold. A child's small wooden toy sits at the far end of the counter. SUBJECT: A woman in her late 30s with warm brown skin and dark curly hair tied back, standing at the counter in a loose sand-colored linen shirt buttoned to the collarbone and wide stone-colored trousers, reading a page of handwritten notes, a cup of coffee at her hand. Three-quarter front view, calm, thoughtful expression. KEY DETAILS: Framed from the thighs up with generous space above her head, her face and hands in the upper two thirds of the frame, the lower third a quiet counter edge for a title. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest loose clothing fully covering the torso; no swimwear, lingerie, bodycon, cleavage or bare midriff; not photographed from behind; no focus on the abdomen or buttocks; no garments, bandages, drains or incisions; no before-and-after framing; no surgeon or staff; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "where-each-works",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Diagram of a fully clothed standing figure in a long loose dress, seen from the side, with two labels. Tummy tuck: the front of the abdomen. BBL: fat taken by liposuction and moved to the buttocks.",
+      "prompt": "SCENE: A clean editorial diagram on a warm porcelain background with a thin brushed-gold rule at the top. SUBJECT: A stylised, whole-body, fully clothed line figure of a woman standing at ease, seen from the side, wearing a long loose dress that hides the body's contours. Two small soft gold markers sit on the dress, one at the front of the abdomen and one at the hip, each with a thin leader line to its label. KEY DETAILS: Flat vector illustration with a serif headline in dark espresso, sans-serif labels, large legible type for phones, muted gold for leader lines. No anatomy, no skin, no muscles. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. Clothed and stylised; no nudity, no bare skin, no rear view, no crop on any body part, no incisions or markings, no before-and-after framing, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.\nREVISION: A simple whole-figure icon facing the viewer in a long loose straight dress that hides body shape, with no curves drawn. Place markers beside the figure at hip height, not on a body contour. Never a side or rear view.",
+      "text_in_image": "Where each surgery works\n\nTummy tuck: the front of the abdomen\nBBL: fat taken by liposuction and moved to the buttocks\n\nSource: ASPS"
+    },
+    {
+      "key": "which-fixes-what",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Which fixes what. Loose skin on the stomach: tummy tuck. Separated abdominal muscles: tummy tuck, in most cases. More volume or shape in the buttocks: BBL. Stretch marks: only those on the skin it removes. Your surgeon decides at consultation.",
+      "prompt": "SCENE: A clean editorial card on warm porcelain stone, with a thin brushed-gold rule at the top and generous margins. SUBJECT: A simple four-row list, each row with a short concern on the left and the answer on the right, separated by hairline rules. No people and no anatomy. KEY DETAILS: Flat design, serif headline in dark espresso, sans-serif body, large legible type for phones, muted gold only for the rules. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body shapes, no silhouettes, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "Which fixes what\n\nLoose skin on the stomach: tummy tuck\nSeparated abdominal muscles: tummy tuck, in most cases\nMore volume or shape in the buttocks: BBL\nStretch marks: only those on the skin it removes\n\nYour surgeon decides at consultation\n\nSources: ASPS, Cleveland Clinic"
+    },
+    {
+      "key": "recovery-side-by-side",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Recovery side by side. Walking: tummy tuck the same day, bent at the waist for 7 to 10 days; BBL up and walking after the second day. Sitting: BBL not on your buttocks for at least 2 weeks, a pillow for about 8 weeks. Back to work: tummy tuck about 2 weeks; BBL 10 to 14 days. Exercise: tummy tuck no running or lifting for 6 weeks; BBL normal exercise after 8 weeks, once your surgeon clears you.",
+      "prompt": "SCENE: A clean editorial card on warm porcelain stone, with a thin brushed-gold rule at the top and generous margins. SUBJECT: A two-column comparison with four stacked rows, one column headed Tummy tuck and one headed BBL, each row with a short heading. No people and no anatomy. KEY DETAILS: Flat design, serif headline in dark espresso, sans-serif body, large legible type for phones, muted gold only for rules and row headings. Source line small at the foot. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body shapes, no silhouettes, no practice name, no logo, no phone number, no website address. Spell every word and number exactly as supplied; no extra numbers.\nREVISION: Use normal single word spacing everywhere. '7 to 10' has a space on both sides of 'to', and 'Recovery side by side' has even spacing.",
+      "text_in_image": "Recovery side by side\n\nWalking\nTummy tuck: the same day, bent at the waist for 7 to 10 days\nBBL: up and walking after the second day\n\nSitting\nBBL: not on your buttocks for at least 2 weeks, a pillow for about 8 weeks\n\nBack to work\nTummy tuck: about 2 weeks\nBBL: 10 to 14 days\n\nExercise\nTummy tuck: no running or lifting for 6 weeks\nBBL: normal exercise after 8 weeks, once your surgeon clears you\n\nSources: Cleveland Clinic, The Aesthetic Society, ASPS website"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Tummy Tuck",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "removes excess fat and skin and, in most cases, restores weakened or separated muscles",
+        "women who may be considering future pregnancies would be advised to postpone a tummy tuck",
+        "A tummy tuck cannot correct stretch marks, although these may be removed or somewhat improved"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Are you a good candidate for a tummy tuck?",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You are physically healthy and at a stable weight"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD",
+      "title": "Answers to common tummy tuck questions",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You will be bent at the waist while standing or lying down for 7-10 days after surgery",
+        "You can walk the day of surgery.",
+        "However, running or lifting should be avoided for six weeks after the procedure.",
+        "Patients typically return to work in approximately two weeks.",
+        "which will be worn for 4-6 weeks after surgery to help with reducing swelling"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-you-need-to-know-about-your-tummy-tuck-recovery",
+      "publisher": "ASPS website, a post by Shahram Salemy, MD, FACS",
+      "title": "What you need to know about your tummy tuck recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "If you have young children, you will want to enlist help to assist with childcare",
+        "squatting or picking up children"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "most need some degree of pain medication for the first four to five days.",
+        "basically 24/7, except for showering, the first month and at least 12 hours a day the second",
+        "Patients return to work between days seven and 10"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Buttock enhancement procedure steps",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "on the average patients will retain 60-80% of the transferred fat, in some cases more in others less",
+        "you will not see your final results until a year after the surgery"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Buttock enhancement candidates",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Individuals with significant soft tissue looseness in the gluteal area"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/mommy-makeover",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Mommy makeover",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The goal of a mommy makeover is to restore the shape and appearance of a woman's body after childbearing.",
+        "Possible procedures in a mommy makeover"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/liposuction/recovery",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "What should I expect during my liposuction recovery?",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Return to work (depending on your job)"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Have enough excess body fat available in other parts of your body to transfer to your butt.",
+        "Make small incisions (cuts) in your body and insert the cannula into the fatty areas between your skin and muscle.",
+        "Make three to five small incisions in specific areas around your buttock.",
+        "You won’t be able to sit or lie down on your butt for at least two weeks.",
+        "You won’t be able to sit without your pillow for approximately eight weeks.",
+        "After one to two weeks, your pain should decrease.",
+        "go back to work between 10 and 14 days after your Brazilian butt lift procedure.",
+        "The effects of a Brazilian butt lift are semi-permanent.",
+        "They should last several years and may even last for over a decade without any follow-up treatments."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23353-butt-implants",
+      "publisher": "Cleveland Clinic",
+      "title": "Butt Implants",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "BBL tends to look and feel more natural than butt implants.",
+        "It may also have a lower risk of complications.",
+        "Butt implants may be a good option for people with a smaller, leaner frame",
+        "who don't have enough fat for a Brazilian butt lift (BBL).",
+        "Inserts the implants inside or below your butt muscle.",
+        "In two to three weeks, you can return to work, but you'll need to use a pillow.",
+        "After eight to 10 weeks, you can start exercising."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Depending on the results you want, a tummy tuck can take anywhere from one to five hours.",
+        "It could take up to up to three months to see the final result.",
+        "A tummy tuck is permanent and can last a lifetime."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck Scar",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The scar for a standard tummy tuck usually spans your abdomen, from hip bone to hip bone, just above your pubic area.",
+        "You may also have a scar around your belly button."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Aftercare and Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You should be able to get up and walk after the second postoperative day to help present blood clots.",
+        "you can return to work, drive, or go to the movies after ten to fourteen days",
+        "You can resume normal activities and exercise after eight weeks.",
+        "When the swelling subsides, sometimes taking three to six months, your true results will be more evident.",
+        "After implant surgery, you can return to work in two to three weeks",
+        "You can resume exercise eight to ten weeks after surgery."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/results",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift Results",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "After a successful Brazilian butt lift (using fat transfer), the remaining fat will stay there for the rest of your life.",
+        "You will not need to remove or replace your implants unless you develop a complication."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/liposuction",
+      "publisher": "The Aesthetic Society",
+      "title": "Liposuction",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Liposuction removes fat but does not tighten skin, and it does not improve the look of cellulite."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/liposuction/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Liposuction Aftercare and Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You will likely be able to return to work within a few days following your liposuction procedure",
+        "You will wear a compression garment over the treated areas for four to six weeks",
+        "avoid strenuous exercise for four to six weeks"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (Winocour and colleagues, 2015)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The authors identified 25,478 abdominoplasties from 183,914 procedures in the database.",
+        "abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent",
+        "Of these, 31.5 percent were hematomas, 27.2 percent were infections",
+        "20.2 percent were suspected or confirmed venous thromboembolism",
+        "age 55 years or older (1.4)",
+        "body mass index greater than or equal to 30 (1.3)",
+        "multiple procedures (1.5)"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31858207/",
+      "publisher": "Aesthetic Plastic Surgery",
+      "title": "Venous Thromboembolism (VTE) Prophylaxis After Abdominoplasty and Liposuction: A Review of the Literature (Mittal and colleagues, 2020)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Abdominoplasty has the highest occurrence of VTE among aesthetic procedures.",
+        "A higher incidence of VTE was noted when abdominoplasty was combined with liposuction."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30511162/",
+      "publisher": "Aesthetic Plastic Surgery",
+      "title": "Comparison of Complications Between Lipoabdominoplasty and Traditional Abdominoplasty (Xia and colleagues, 2019)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Overall, 17 trials enrolling 14,061 adult patients were searched.",
+        "Of these patients, 577 (4.1%) developed seroma"
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1097/PRS.0000000000002005",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Determining the Safety and Efficacy of Gluteal Augmentation: A Systematic Review of Outcomes and Complications (Sinno and colleagues, 2016)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The overall complication rate with autologous fat grafting (9.9 percent) is lower than that with silicone buttock implants",
+        "with an overall complication rate of 21.6 percent",
+        "RESULTS: Forty-four articles met inclusion criteria."
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1097/PRS.0000000000012437",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Gluteal Augmentation with Fat Grafting: A Systematic Review and Meta-Analysis of Complications and Procedural Factors (Elsaftawy and colleagues, 2026)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A total of 38 studies comprising 22,151 patients were included.",
+        "with seromas occurring in 2.03% and contour irregularities in 2.29% of cases.",
+        "Pulmonary embolism had a pooled incidence of 0.04%.",
+        "Ultrasound-guided fat grafting was associated with lower rates of both major (0.02% versus 0.08%)"
+      ]
+    },
+    {
+      "url": "https://doi.org/10.1093/asj/sjac224",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "Brazilian Butt Lift–Associated Mortality: The South Florida Experience (Pazmiño and Garcia, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "South Florida has experienced 25 BBL-related fat emboli deaths between 2010 and 2022",
+        "14 of these occurred after publication of the Aesthetic Surgery Education and Research Foundation's 2018 guidelines",
+        "12 deaths since the 2019 \"subcutaneous-only injection\" emergency rule was enacted.",
+        "The authors observed 11 postmortem gluteal dissections (22 hemibuttocks)."
+      ]
+    },
+    {
+      "url": "https://www.flrules.org/gateway/readFile.asp?sid=0&tid=28691065&type=1&file=64B8-9.009.doc",
+      "publisher": "Florida Board of Medicine",
+      "title": "Rule 64B8-9.009, Standard of Care for Office Surgery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "When combined with abdominoplasty, liposuction may not exceed 1000cc of supernatant fat,",
+        "the maximum planned duration of all surgical procedures combined must not exceed 8 hours.",
+        "office surgery is defined as surgery which is performed in an office maintained by a physician for the practice of medicine"
+      ]
+    },
+    {
+      "url": "https://www.flsenate.gov/Laws/Statutes/2026/458.328",
+      "publisher": "Florida Statutes",
+      "title": "Section 458.328",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A physician performing a gluteal fat grafting procedure in an office surgery setting shall adhere to standards of practice",
+        "Fat may only be injected into the subcutaneous space of the patient"
+      ]
+    },
+    {
+      "url": "docs/pricing/practice-price-list.md",
+      "publisher": "Alluring Plastic Surgery",
+      "title": "Practice price list (2026-09-15)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "2 procedure combo | −500",
+        "3 procedure combo | −1,000"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 4699,
+    "clicks": 15,
+    "position": 7.59
+  },
+  "notes": "Full rewrite to the plan's outline (implementation-plans/2026-11-03-bbl-rewrite/plan.html). Adds the BBL vs butt implants H2 and the mommy makeover with a BBL section. Removes 'removed the fat embolism risk', AAAASF, 'double board-certified', 5,000, the 0% APR line, unsourced four-to-six-hour and six-hour staging figures, BMI 22 to 30, and the NIH misattribution. Open with the practice: the 1,000 cc office limit defaults to 'your surgeon tells you whether to do both in one surgery'; where surgery is done is not stated. The ASPS count of 25,662 BBLs is left out: the report PDF exceeds WebFetch's size limit, so it wasn't read in this job. Quotes came through WebFetch's extraction model unless otherwise noted, in fragments capped near 125 characters; several match the SOURCE-BANK [raw] reads of 3 Nov. Every old inline image and the hero are replaced at new addresses, per the plan's image table."
+}
