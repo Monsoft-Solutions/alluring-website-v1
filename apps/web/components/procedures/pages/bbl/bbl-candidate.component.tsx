@@ -22,9 +22,16 @@ export function BblCandidate() {
             className={moduleSectionPad}
             answer={
                 <>
-                    Cleveland Clinic says you need enough excess fat elsewhere
-                    on your body. Leaner patients may suit a smaller transfer,
-                    and some may suit implants instead. Only an exam tells you.{' '}
+                    Cleveland Clinic says you need{' '}
+                    <Link
+                        href='/blog/do-i-have-enough-fat-for-a-bbl'
+                        className={moduleLink}
+                    >
+                        enough excess fat
+                    </Link>{' '}
+                    elsewhere on your body. Leaner patients may suit a smaller
+                    transfer, and some may suit implants instead. Only an exam
+                    tells you.{' '}
                     <Link href='/bmi-calculator#bbl' className={moduleLink}>
                         Our BMI guide
                     </Link>{' '}
