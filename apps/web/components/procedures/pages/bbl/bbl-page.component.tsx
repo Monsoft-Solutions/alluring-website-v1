@@ -33,6 +33,7 @@ import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 import type { ProcedurePageModuleProps } from '@/lib/types/procedure-page-module.type'
 
 import { BblAtAGlance } from './bbl-at-a-glance.component'
+import { BblCandidate } from './bbl-candidate.component'
 import { BblCost } from './bbl-cost.component'
 import { BblOptions } from './bbl-options.component'
 import { bblImages } from './bbl-page.constant'
@@ -140,15 +141,15 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
                     <>
                         A BBL moves your own fat to your buttocks for more shape
                         and fullness, with no implants. At Alluring, one surgeon
-                        performs every BBL: {KARLINSKY_NAME}, who places the fat
-                        under the skin with ultrasound guidance, as Florida law
-                        requires.
+                        performs every BBL: {KARLINSKY_NAME}, who examines you
+                        and confirms your price. Your surgery, pre-op and
+                        follow-up dates come in writing.
                     </>
                 }
                 rating={rating}
-                // Surgery length and the law are in the lede and the fact
-                // table; the chips answer the next two questions: can I pay
-                // over time, and will someone speak my language.
+                // Surgery length and Florida's rule are in the fact table; the
+                // chips answer the next two questions: can I pay over time,
+                // and will someone speak my language.
                 chips={[
                     { label: `Starting at ${bblFigure('price-starting-at')}` },
                     { label: 'Financing available' },
@@ -156,7 +157,7 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
                 ]}
                 chipsLabel='BBL at Alluring in brief'
                 image={bblImages.hero}
-                cardNote='Ultrasound-guided under Florida law'
+                cardNote='Starting price published'
             />
             <ModuleJumpNav links={jumpLinks} />
 
@@ -165,7 +166,7 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
                 photos={photos}
                 gallerySlug={gallery.groupSlug}
                 question='BBL before and after: what do real results look like?'
-                answer='These are photos of real Alluring patients, shared with their consent. Results differ from person to person, and your final shape shows 3 to 6 months after surgery, once swelling settles and the grafted fat that will survive has taken hold.'
+                answer='These are photos of real Alluring patients, shared with their consent. Results differ from person to person, and your final shape shows 3 to 6 months after surgery, once swelling settles and the grafted fat that will survive has taken hold, and results can keep settling after that.'
                 railId='bbl-results-rail'
                 railLabel='BBL before and after photos from the gallery'
                 galleryLinkLabel='See every BBL photo and video in the gallery'
@@ -179,6 +180,7 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
 
             <ModuleBand rail={rail('BBL at Alluring, key facts')}>
                 <BblAtAGlance />
+                <BblCandidate />
                 {procedure.pricing && <BblCost pricing={procedure.pricing} />}
             </ModuleBand>
 
@@ -211,7 +213,7 @@ export async function BblPage({ procedure }: ProcedurePageModuleProps) {
             />
             <ModuleSources
                 sources={bblSources}
-                answer="Every recovery, results and safety figure on this page, and the national average cost, comes from the sources below, checked in September 2026. Where a figure is one surgeon's advice rather than a society's guidance, we say so. Your own surgeon's instructions always come first, and they may differ from these general ranges."
+                answer="Every recovery, results and safety figure on this page, and the national average cost, comes from the sources below, checked in November 2026. Where a figure is one surgeon's advice rather than a society's guidance, we say so. Your own surgeon's instructions always come first, and they may differ from these general ranges."
                 updatedOn={procedure.dateModified}
             />
 

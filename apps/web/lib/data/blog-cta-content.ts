@@ -77,9 +77,9 @@ export const blogCTAContents = [
     },
     {
         id: 'bbl',
-        heading: 'Transform Your Curves with BBL',
+        heading: 'Considering a BBL?',
         description:
-            "Miami's premier Brazilian Butt Lift specialists. Our signature technique combines liposuction with precise fat transfer for natural, stunning results.",
+            'See what a BBL at Alluring involves, what it costs and what recovery looks like, then ask your surgeon the rest at consultation.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {

@@ -294,6 +294,7 @@ for (const slug of slugs) {
             quality,
             variant,
             job_id: job.id,
+            generated_by: job.generated_by ?? job.model,
             prompt: job.params?.prompt ?? img.prompt,
         })
         console.log(

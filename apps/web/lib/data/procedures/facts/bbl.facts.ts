@@ -8,7 +8,8 @@
  * hour, day, week, month or year figure that is not declared below.
  *
  * The recovery figures are the sourced standard approved on 2026-09-14 and
- * re-verified against the live source pages on 2026-09-15 (plan behind #243).
+ * re-verified against the live source pages on 2026-09-15 (plan behind #243)
+ * and corrected on 2026-11-04 after a full source re-read.
  * The price is the 2026-09-15 decision. Each fact carries the attribution the
  * copy must use: several figures are one surgeon's advice quoted by ASPS, not
  * ASPS guidance, and the copy has to say so.
@@ -31,13 +32,14 @@ import {
 
 export type BblSourceId =
     | 'asps-bbl-cost'
+    | 'asps-bbl-procedure'
     | 'asps-bbl-recovery-2022'
     | 'asps-blog-azad-2016'
     | 'asps-bbl-travel-2023'
     | 'aesthetic-society-bbl-aftercare'
+    | 'aesthetic-society-bbl-results'
     | 'cleveland-clinic-bbl'
     | 'ormseth-garments-2023'
-    | 'semin-plast-surg-fat-grafting-2020'
     | 'florida-statutes-458-328'
     | 'pazmino-garcia-2023'
     | 'elsaftawy-meta-analysis-2026'
@@ -55,13 +57,21 @@ export const bblSources: readonly BblSource[] = [
             'Read on 2026-09-22. "The average cost of buttock augmentation with fat grafting (Brazilian butt lift) is $7,264" and "it does not include anesthesia, operating room facilities or other related expenses." The page gives no year, so neither does the copy: never "in 2024" or "2025".',
     },
     {
+        id: 'asps-bbl-procedure',
+        publisher: 'American Society of Plastic Surgeons (ASPS)',
+        title: 'Buttock enhancement procedure steps',
+        url: 'https://www.plasticsurgery.org/cosmetic-procedures/buttock-enhancement/procedure',
+        attribution:
+            'Read on 2026-11-03. "on the average patients will retain 60-80% of the transferred fat, in some cases more in others less". The page gives no date.',
+    },
+    {
         id: 'asps-bbl-recovery-2022',
         publisher: 'American Society of Plastic Surgeons (ASPS)',
         title: 'Six things you need to know about recovering from a Brazilian butt lift',
         date: '2022-08-11',
         url: 'https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift',
         attribution:
-            'The garment schedule and the ~60% average take are quotes from Dr. Chris Funderburk; pain medication for 4–5 days is Dr. Steven Williams; the month-3 fat-loss plateau is Dr. J. Peter Rubin. Attribute these as "a plastic surgeon interviewed by ASPS", never as ASPS guidance. Only the "days seven and 10" return-to-work line is ASPS\'s own guidance.',
+            'The garment schedule, the 10-minute sitting limit and the ~60% average take are quotes from one surgeon, Dr. Chris Funderburk; pain medication for 4–5 days is Dr. Steven Williams; the month-3 fat-loss plateau is reported from Dr. J. Peter Rubin. Attribute these as "a plastic surgeon interviewed by ASPS", never as ASPS guidance. The "days seven and 10" return-to-work line is the article\'s own voice: "an ASPS article", not a surgeon quote.',
     },
     {
         id: 'asps-blog-azad-2016',
@@ -88,7 +98,15 @@ export const bblSources: readonly BblSource[] = [
         title: 'Butt Lift – Aftercare & Recovery',
         url: 'https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery',
         attribution:
-            'Work and driving after 10–14 days on a pillow; walking after the second postoperative day; no direct pressure on the buttocks for at least 8 weeks; normal activities and exercise after 8 weeks; final results at 3–6 months.',
+            'Work and driving after 10–14 days on a pillow; walking after the second postoperative day; no direct pressure on the buttocks for at least 8 weeks; normal activities and exercise after 8 weeks; true results more evident as swelling subsides, sometimes 3–6 months. Its "eight to ten weeks" sentence is about butt implants, not BBL.',
+    },
+    {
+        id: 'aesthetic-society-bbl-results',
+        publisher: 'The Aesthetic Society',
+        title: 'Butt Lift – Results',
+        url: 'https://www.theaestheticsociety.org/procedures/body/butt-lift/results',
+        attribution:
+            'Read on 2026-11-03. "the remaining fat will stay there for the rest of your life. Like the rest of the tissue in your body, this fat will grow and age with you." The page gives no date.',
     },
     {
         id: 'cleveland-clinic-bbl',
@@ -96,7 +114,7 @@ export const bblSources: readonly BblSource[] = [
         title: 'Brazilian Butt Lift',
         url: 'https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift',
         attribution:
-            'Recovery "between two and three months" and, on the same page, "up to six months": say both. No sitting or lying on the buttocks for at least 2 weeks; pillow for about 8 weeks; stomach or side sleeping; pain decreases after 1–2 weeks; no heavy lifting in about the first month. Cleveland Clinic gives no fat-survival percentage — never credit it with one.',
+            'Recovery "between two and three months" and, on the same page, "up to six months": say both. No sitting or lying on the buttocks for at least 2 weeks; pillow for about 8 weeks; stomach or side sleeping; pain decreases after 1–2 weeks; no heavy lifting in about the first month; back to work between 10 and 14 days. It gives no driving or pillow-at-work line and no 3–6 month final-shape line. Cleveland Clinic gives no fat-survival percentage — never credit it with one.',
     },
     {
         id: 'ormseth-garments-2023',
@@ -109,22 +127,13 @@ export const bblSources: readonly BblSource[] = [
             'Evidence for any exact garment duration is limited, which is why every garment figure ends with "or as your surgeon directs".',
     },
     {
-        id: 'semin-plast-surg-fat-grafting-2020',
-        publisher: 'Seminars in Plastic Surgery',
-        title: 'The Role of Fat Grafting in Buttock Augmentation',
-        date: '2020',
-        url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7023974/',
-        attribution:
-            'Estimates that 20–50% of grafted fat is reabsorbed; "about 50–80% survives" is the complement of that estimate. Attribute to "a 2020 review in Seminars in Plastic Surgery".',
-    },
-    {
         id: 'florida-statutes-458-328',
         publisher: 'Florida Statutes',
         title: 'Section 458.328',
         date: '2026',
         url: 'https://www.flsenate.gov/Laws/Statutes/2026/458.328',
         attribution:
-            '2026 text, last amended by ch. 2024-181. Fat only in the subcutaneous space, never crossing the gluteal fascia; ultrasound guidance while moving the cannula; one physician to one patient from anesthesia to extubation; an in-person exam no later than the day before; harvest and injection not delegated. There is no per-day case cap in force (the 2022 three-a-day rule was a 90-day emergency rule) — do not claim one.',
+            '2026 text, last amended by ch. 2024-181. Subsection (2)(c) applies to "a physician performing a gluteal fat grafting procedure in an office surgery setting": fat only in the subcutaneous space, never crossing the gluteal fascia; ultrasound guidance, or other technology authorized under board rule, while placing and moving the cannula; one physician to one patient from anesthesia to extubation; an in-person exam no later than the day before; fat extraction and injection not delegated. Say "Florida\'s rule for office surgery", never an unqualified "Florida law requires". There is no per-day case cap in force (the 2022 three-a-day rule was a 90-day emergency rule) — do not claim one.',
     },
     {
         id: 'pazmino-garcia-2023',
@@ -134,7 +143,7 @@ export const bblSources: readonly BblSource[] = [
         date: '2023-02',
         url: 'https://doi.org/10.1093/asj/sjac224',
         attribution:
-            '25 South Florida fat-embolism deaths 2010–2022, 14 after the 2019 rule, 92% at high-volume budget clinics. Intramuscular fat was found in every autopsied case — 11 of them — so say "in every case examined at autopsy", never "all 25". Aesthet Surg J 2023;43(2):162–178, verified in PubMed (35959568) on 2026-09-18.',
+            '25 South Florida fat-embolism deaths 2010–2022: 14 after the 2018 ASERF guidelines, 12 since the 2019 emergency rule. The authors describe 11 gluteal dissections with fat in the muscle and print no per-case tally: say "in the 11 cases they examined at autopsy, the authors describe fat in the muscle", never "all 25". Do not repeat the budget-clinic split in copy (no implied attacks on other clinics). Aesthet Surg J 2023;43(2):162–178, verified in PubMed (35959568) on 2026-09-18.',
     },
     {
         id: 'elsaftawy-meta-analysis-2026',
@@ -144,7 +153,7 @@ export const bblSources: readonly BblSource[] = [
         date: '2026-03',
         url: 'https://doi.org/10.1097/PRS.0000000000012437',
         attribution:
-            'Meta-analysis of 38 studies and 22,151 patients: minor complications 3.58%, seroma 2.03%, pulmonary embolism 0.04%; major complications 0.02% with ultrasound guidance vs 0.08% without. Plast Reconstr Surg 2026;157(3):381e–393e (epub 2025-10-06), verified in PubMed (41051287) on 2026-09-18.',
+            'Meta-analysis of 38 studies and 22,151 patients: minor complications 3.58%, contour irregularities 2.29%, seroma 2.03%, pulmonary embolism 0.04%; major complications 0.02% with ultrasound guidance vs 0.08% without, an association, not proof of cause. Plast Reconstr Surg 2026;157(3):381e–393e (epub 2025-10-06), verified in PubMed (41051287) on 2026-09-18.',
     },
     {
         id: 'alluring-practice',
@@ -219,7 +228,7 @@ export const bblFacts = [
             { value: 6, unit: 'week' },
         ],
         statement:
-            'After 2 weeks, sit only on a BBL pillow and only briefly: about 10 minutes at a time through week 6, as a plastic surgeon interviewed by ASPS advises.',
+            'A plastic surgeon interviewed by ASPS advises keeping any sitting to about 10 minutes at a time for the first 6 weeks. Cleveland Clinic says not to sit on your buttocks at all for at least 2 weeks, so your surgeon clears you first.',
         sourceIds: ['asps-bbl-recovery-2022'],
         caveat: "One surgeon's rule, quoted by ASPS.",
     },
@@ -261,7 +270,7 @@ export const bblFacts = [
         concepts: ['work', 'desk', 'job', 'driv'],
         figures: [{ min: 10, max: 14, unit: 'day' }],
         statement:
-            'Most people return to desk work and driving 10 to 14 days after a BBL, sitting on a pillow, according to Cleveland Clinic and The Aesthetic Society.',
+            'Cleveland Clinic says you should be able to go back to work between 10 and 14 days, and The Aesthetic Society says you can work and drive after 10 to 14 days if you sit on a pillow.',
         sourceIds: ['cleveland-clinic-bbl', 'aesthetic-society-bbl-aftercare'],
     },
     {
@@ -270,9 +279,9 @@ export const bblFacts = [
         concepts: ['work', 'job'],
         figures: [{ min: 7, max: 10, unit: 'day' }],
         statement:
-            'Some surgeons allow work sooner: ASPS says patients go back between days 7 and 10.',
+            'Some patients go back sooner: an ASPS article says patients return to work between days 7 and 10.',
         sourceIds: ['asps-bbl-recovery-2022'],
-        caveat: "ASPS's own guidance, and the less cautious figure. Always pair it with the 10–14 days above.",
+        caveat: "The article's own voice, and the less cautious figure. Always pair it with the 10–14 days above.",
     },
     {
         id: 'no-heavy-lifting-month-1',
@@ -300,7 +309,7 @@ export const bblFacts = [
         statement:
             'The Aesthetic Society says normal activities and exercise can resume after 8 weeks, once your surgeon clears you.',
         sourceIds: ['aesthetic-society-bbl-aftercare'],
-        caveat: 'Another paragraph on the same page says 8–10 weeks; do not publish 10.',
+        caveat: 'The 8–10 week sentence on the same page is about butt implants, not BBL. Do not publish 10.',
     },
     {
         id: 'recovered-2-3-months',
@@ -371,17 +380,18 @@ export const bblFacts = [
         sourceIds: [
             'asps-bbl-recovery-2022',
             'aesthetic-society-bbl-aftercare',
-            'cleveland-clinic-bbl',
         ],
+        caveat: "Not from Cleveland Clinic. ASPS's procedure page says final results take a year: don't call 3–6 months final without saying results keep settling.",
     },
     {
-        id: 'fat-survival-50-80',
+        id: 'fat-survival-60-80',
         topic: 'results',
-        concepts: ['surviv'],
-        figures: [{ min: 50, max: 80, unit: 'percent' }],
-        statement: 'About 50% to 80% of grafted fat survives a BBL.',
-        sourceIds: ['semin-plast-surg-fat-grafting-2020'],
-        caveat: "The complement of the review's 20–50% resorption estimate. Never credit Cleveland Clinic with it; never invert it.",
+        concepts: ['surviv', 'retain'],
+        figures: [{ min: 60, max: 80, unit: 'percent' }],
+        statement:
+            'ASPS says patients retain 60% to 80% of the transferred fat on average, in some cases more and in others less.',
+        sourceIds: ['asps-bbl-procedure'],
+        caveat: 'Replaces the 50–80% figure, whose source (Semin Plast Surg 2020) could not be opened on 2026-11-03. Never credit Cleveland Clinic with it; never invert it.',
     },
     {
         id: 'fat-take-average-60',
@@ -389,33 +399,55 @@ export const bblFacts = [
         concepts: ['take', 'average'],
         figures: [{ value: 60, unit: 'percent' }],
         statement:
-            'Plastic surgeons interviewed by ASPS put the average "take" around 60%.',
+            'A plastic surgeon interviewed by ASPS puts the average "take" at about 60%.',
         sourceIds: ['asps-bbl-recovery-2022'],
     },
     {
-        id: 'fat-resorbed-20-50',
+        id: 'fat-absorbed-20-40',
         topic: 'results',
-        concepts: ['reabsorb', 'resorb'],
-        figures: [{ min: 20, max: 50, unit: 'percent' }],
+        concepts: ['reabsorb', 'resorb', 'absorb'],
+        figures: [{ min: 20, max: 40, unit: 'percent' }],
         statement:
-            'A 2020 review in Seminars in Plastic Surgery estimates that 20% to 50% of grafted fat is reabsorbed.',
-        sourceIds: ['semin-plast-surg-fat-grafting-2020'],
+            'A plastic surgeon interviewed by ASPS says 20% to 40% of the injected fat is absorbed by the body during healing.',
+        sourceIds: ['asps-bbl-recovery-2022'],
+        caveat: 'Dr. Rubin, in ASPS\'s "Seven things you need to know about a Brazilian butt lift" (2022).',
+    },
+    {
+        id: 'results-how-long-they-last',
+        topic: 'results',
+        concepts: ['last', 'semi-permanent'],
+        figures: [],
+        statement:
+            'Cleveland Clinic calls results semi-permanent, lasting several years and possibly over a decade. The Aesthetic Society says fat that survives stays for life and ages with you.',
+        sourceIds: ['cleveland-clinic-bbl', 'aesthetic-society-bbl-results'],
+        caveat: 'The two differ, so say both, with attribution. No long-term volume study of BBL was found (source bank C.3).',
+    },
+    {
+        id: 'candidate-enough-fat',
+        topic: 'procedure',
+        concepts: ['fat', 'implant'],
+        figures: [],
+        statement:
+            "Cleveland Clinic says you need enough excess fat elsewhere on your body, and that if you don't have enough, you may be a good candidate for butt implants.",
+        sourceIds: ['cleveland-clinic-bbl'],
+        caveat: 'No source read gives a minimum amount of fat, and no society publishes a BMI cutoff for a BBL (source bank C.1, C.2). State no number.',
     },
 
     // ── Safety evidence ──────────────────────────────────────────────────
     {
         id: 'south-florida-deaths-2010-2022',
         topic: 'safety',
-        concepts: ['death', 'embolism', 'clinic'],
+        concepts: ['death', 'embolism', 'clinic', 'autopsy'],
         figures: [
             { value: 25, unit: 'death' },
-            { value: 92, unit: 'percent' },
+            { value: 12, unit: 'death' },
+            { value: 11, unit: 'death' },
         ],
-        years: [2010, 2022],
+        years: [2010, 2019, 2022],
         statement:
-            'South Florida recorded 25 deaths from BBL fat embolism between 2010 and 2022. 92% of those patients had surgery at high-volume, budget clinics, and in every case examined at autopsy, fat had been injected into the muscle (Pazmiño and Garcia, Aesthetic Surgery Journal, 2023).',
+            "South Florida recorded 25 deaths from BBL fat embolism between 2010 and 2022, 12 of them after Florida's 2019 emergency rule (Pazmiño and Garcia, Aesthetic Surgery Journal, 2023). In the 11 cases they examined at autopsy, the authors describe fat in the muscle.",
         sourceIds: ['pazmino-garcia-2023'],
-        caveat: 'Autopsy finding covers the 11 autopsied cases, not all 25.',
+        caveat: "The autopsy finding covers the 11 dissections the authors describe, not all 25. Historical figures, not today's risk. No implied attacks on budget clinics.",
     },
     {
         id: 'complications-meta-analysis-2026',
@@ -425,11 +457,12 @@ export const bblFacts = [
             { value: 38, unit: 'study' },
             { value: 22151, unit: 'patient' },
             { value: 3.58, unit: 'percent' },
+            { value: 2.29, unit: 'percent' },
             { value: 2.03, unit: 'percent' },
             { value: 0.04, unit: 'percent' },
         ],
         statement:
-            'A 2026 meta-analysis of 38 studies and 22,151 patients found minor complications in 3.58% of BBL patients, most often a seroma (a pocket of fluid) in 2.03%, and pulmonary embolism in 0.04%.',
+            'A 2026 meta-analysis of 38 studies and 22,151 patients found minor complications in 3.58% of BBL patients, including uneven contours in 2.29% and seroma, a pocket of fluid, in 2.03%. Pulmonary embolism, a blood clot in the lungs, was reported separately, at 0.04%.',
         sourceIds: ['elsaftawy-meta-analysis-2026'],
     },
     {
@@ -452,7 +485,7 @@ export const bblFacts = [
         concepts: ['fascia', 'under the skin'],
         figures: [],
         statement:
-            'Under Florida Statutes §458.328, fat may only be injected into the layer under the skin and may not cross the fascia over the gluteal muscle.',
+            'Under Florida Statutes §458.328, in an office surgery setting, fat may only be injected into the layer under the skin and may not cross the fascia over the gluteal muscle.',
         sourceIds: ['florida-statutes-458-328'],
     },
     {
@@ -461,9 +494,9 @@ export const bblFacts = [
         concepts: ['ultrasound'],
         figures: [],
         statement:
-            'Florida law requires the surgeon to use ultrasound guidance while moving the cannula.',
+            'In an office surgery setting, Florida law requires the physician to use ultrasound guidance, or other technology authorized under board rule, while placing and moving the cannula.',
         sourceIds: ['florida-statutes-458-328'],
-        caveat: 'State the law. That Alluring uses ultrasound "on every case" is a practice claim awaiting the owner (#247) — do not state it separately.',
+        caveat: 'State the law with its setting. Where Alluring performs BBLs and whether it uses ultrasound "on every case" are practice claims awaiting the owner (#247) and counsel — do not state them.',
     },
     {
         id: 'florida-one-surgeon-one-patient',
@@ -471,7 +504,7 @@ export const bblFacts = [
         concepts: ['one patient', 'one surgeon'],
         figures: [],
         statement:
-            'Florida law requires one surgeon to stay with one patient for the whole procedure.',
+            'In an office surgery setting, Florida law requires a ratio of one physician to one patient from the start of anesthesia until extubation.',
         sourceIds: ['florida-statutes-458-328'],
         caveat: 'No per-day cap is in force; never claim one.',
     },
@@ -481,7 +514,7 @@ export const bblFacts = [
         concepts: ['exam'],
         figures: [],
         statement:
-            'Florida law requires the surgeon to examine you in person no later than the day before surgery.',
+            'In an office surgery setting, Florida law requires the physician to examine you in person no later than the day before surgery.',
         sourceIds: ['florida-statutes-458-328'],
     },
     {
@@ -490,7 +523,7 @@ export const bblFacts = [
         concepts: ['personally', 'inject'],
         figures: [],
         statement:
-            'Florida law requires the surgeon to remove and inject the fat personally; it cannot be delegated.',
+            'In an office surgery setting, Florida law says the physician must perform the fat extraction and injection personally. Other duties can be delegated with your written consent, under direct supervision.',
         sourceIds: ['florida-statutes-458-328'],
     },
 

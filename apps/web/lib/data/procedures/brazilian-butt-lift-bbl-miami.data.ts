@@ -13,7 +13,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // landing page. The "board-certified surgeons, 5,000+ procedures" claims
     // it carried wait on the owner (#247), so they are out until confirmed.
     description:
-        'BBL Miami starting at $5,500, priced for each patient, with financing available. Fat stays under the skin, placed with ultrasound guidance as Florida law requires. Free consultation.',
+        'BBL Miami starting at $5,500, priced for each patient, with financing available. One surgeon performs every BBL and examines you first. Free consultation.',
 
     // Hand-written metadata. This page competes for "bbl miami" and the
     // generic "bbl" / "brazilian butt lift" head terms, so it cannot run on
@@ -34,23 +34,21 @@ export const brazilianButtLiftBblMiami: Procedure = {
     // 64B8-11.001(2)(j) does not allow. It names the one surgeon, as an MD,
     // which is what (7) asks for.
     //
-    // Written for the searches the page already ranks for: the cost cluster
-    // sits at positions 10–18 with almost no clicks (Search Console, 90 days
-    // to 2026-09-19). Those searchers know what a BBL is, so the snippet
-    // spends its characters on the price, the surgeon and the law, the three
-    // things a discount clinic can't match. 151 characters, under the 160
+    // Written for the searches the page already ranks for: searchers on the
+    // cost cluster know what a BBL is, so the snippet spends its characters on
+    // the price, the surgeon and the dates in writing. Under the 160
     // `clampMetaDescription` limit.
-    metaDescription: `BBL in Miami starting at $5,500, performed by one surgeon: ${KARLINSKY_NAME}. Ultrasound-guided, as Florida law requires. Free consultation.`,
+    metaDescription: `BBL in Miami starting at $5,500; most patients pay $5,500–$10,000. One surgeon, ${KARLINSKY_NAME}. Your dates in writing.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `BBL in Miami starting at $5,500. Every BBL at Alluring is performed by ${KARLINSKY_NAME}, who places the fat under the skin with ultrasound guidance, as Florida law requires.`,
+    shortDescription: `BBL in Miami starting at $5,500. Every BBL at Alluring is performed by ${KARLINSKY_NAME}, who examines you and confirms your price.`,
     heroSubtitle: 'Enhance Your Curves with a Brazilian Butt Lift',
     category: 'body',
     bodyLocation: 'Buttocks',
     // og:image, the home signature card, procedure cards and the sitemap.
     // #254 shot 1 in its 16:9 crop; the page hero uses the 4:5 master.
     image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/brazilian-butt-lift/2026-09/hero-wide-alluring-plastic-surgery-miami.jpg',
-    dateModified: '2026-09-22T00:00:00.000Z',
+    dateModified: '2026-11-04T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing. No weekly figure: BBL financing is offered but
@@ -153,12 +151,12 @@ export const brazilianButtLiftBblMiami: Procedure = {
         },
         {
             title: 'One surgeon, start to finish',
-            description: `${KARLINSKY_NAME} examines you before surgery, removes and injects the fat herself and stays with you throughout.`,
+            description: `${KARLINSKY_NAME} examines you before surgery, confirms your price and performs your BBL.`,
         },
         {
-            title: 'Placed as Florida law requires',
+            title: 'Fat under the skin',
             description:
-                'The fat goes only into the layer under the skin, placed with ultrasound guidance.',
+                "Safety guidance says to keep fat under the skin, and Florida's rule for office surgery requires it.",
         },
     ],
     // Also the SurgicalProcedure's `howPerformed` in the page graph, so it
@@ -187,7 +185,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
             step: 4,
             title: 'Placing the fat',
             description:
-                'The surgeon injects the fat into the layer under the skin of the buttocks, watching the cannula on ultrasound so it never passes into the muscle.',
+                'The surgeon injects the fat into the layer under the skin of the buttocks, never into the muscle.',
         },
         {
             step: 5,
@@ -202,7 +200,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
         question: 'What is a Brazilian Butt Lift (BBL)?',
         answer: 'A Brazilian butt lift (BBL) is a fat transfer to the buttocks. A surgeon uses liposuction to remove fat from areas such as the abdomen, flanks or back, processes it, and injects it under the skin of the buttocks to add volume and shape. Because it uses your own fat, there is no implant.',
         details:
-            'A BBL at Alluring takes 3 to 5 hours under general anesthesia, and you go home the same day. Your final shape shows 3 to 6 months after surgery. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
+            'A BBL at Alluring takes 3 to 5 hours under general anesthesia, and you go home the same day. Your final shape shows 3 to 6 months after surgery, and results can keep settling after that. A BBL at Alluring starts at $5,500, and most patients pay between $5,500 and $10,000. Every price is personalized, and financing is available.',
     },
     // The page's FAQ, its FAQPage node and the paid landing page all read
     // this list. Copy from #252; every figure is declared in `bbl.facts.ts`
@@ -212,7 +210,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     faqs: [
         {
             question: 'Who performs BBLs at Alluring?',
-            answer: `Every BBL at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} Florida law requires the operating surgeon to examine you in person no later than the day before surgery and to remove and inject the fat personally.`,
+            answer: `Every BBL at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} Florida's rule for office surgery requires the physician to examine you in person no later than the day before surgery and to perform the fat extraction and injection personally.`,
         },
         // The cost cluster is the only group of searches this page ranks for
         // on Google's first two pages, and the FAQ had no plain price
@@ -222,12 +220,12 @@ export const brazilianButtLiftBblMiami: Procedure = {
             answer: `A BBL at Alluring starts at ${bblFigure('price-starting-at')}, and most patients pay between $5,500 and $10,000. Your price is set after an exam, because it depends on how much fat is moved, how many areas are treated and what else is done. It includes anesthesia, the surgical facility, your garment and your follow-up visits. Financing is available.`,
         },
         {
-            question: 'What does Florida law require for a BBL?',
-            answer: 'Florida Statutes §458.328 requires the surgeon to inject fat only into the layer under the skin, never crossing the fascia over the gluteal muscle, and to use ultrasound guidance while moving the cannula. The surgeon must also stay with one patient for the whole procedure, examine you in person no later than the day before, and do the fat removal and injection personally.',
+            question: 'What does Florida law say about BBL surgery?',
+            answer: "Florida's rule for office surgery, Florida Statutes §458.328, says fat may only be injected into the layer under the skin and may not cross the fascia over the gluteal muscle. The physician uses ultrasound, or other technology authorized under board rule, while placing and moving the cannula. The rule also sets one physician to one patient from the start of anesthesia until extubation, an in-person exam no later than the day before, and fat extraction and injection performed by the physician personally.",
         },
         {
             question: 'What are the risks of a BBL?',
-            answer: 'The most serious risk is a fat embolism, which is why Florida requires the fat to stay under the skin. Common complications are minor: a 2026 meta-analysis found minor complications in 3.58% of patients, most often a seroma, a pocket of fluid, in 2.03%. Other risks include infection, loss of grafted fat, unevenness and firm lumps of hardened fat.',
+            answer: "The most serious risk is a fat embolism, which is why safety guidance says to keep fat under the skin and Florida's rule for office surgery requires it. Common complications are minor: a 2026 meta-analysis found minor complications in 3.58% of patients, including uneven contours in 2.29% and seroma, a pocket of fluid, in 2.03%. Other risks include infection, loss of grafted fat and firm lumps of hardened fat.",
         },
         {
             question: 'How long does BBL surgery take?',
@@ -247,21 +245,25 @@ export const brazilianButtLiftBblMiami: Procedure = {
         },
         {
             question: 'When can I sit after a BBL?',
-            answer: 'Not on your buttocks for at least 2 weeks, according to Cleveland Clinic. After that, sit only briefly on a BBL pillow, about 10 minutes at a time through week 6, as a plastic surgeon interviewed by ASPS advises. Most people sit without a pillow at about 8 weeks, once their surgeon clears them.',
+            answer: 'Not on your buttocks for at least 2 weeks, according to Cleveland Clinic. A plastic surgeon interviewed by ASPS advises keeping any sitting to about 10 minutes at a time for the first 6 weeks. Use a BBL pillow when you sit. Most people sit without a pillow at about 8 weeks, once their surgeon clears them.',
         },
         {
             question: 'What share of the transferred fat survives?',
-            answer: 'About 50% to 80% of grafted fat survives a BBL. Plastic surgeons interviewed by ASPS put the average "take" around 60%, and a 2020 review in Seminars in Plastic Surgery estimates that 20% to 50% is reabsorbed. Keeping pressure off your buttocks for the first 8 weeks protects the fat that is taking hold.',
+            answer: 'Of the transferred fat, ASPS says patients retain 60–80% on average, in some cases more and in others less. A plastic surgeon interviewed by ASPS puts the average "take" at about 60%. Keeping pressure off your buttocks for the first 8 weeks protects the fat that is taking hold.',
         },
         {
-            question: 'When will I see my final results, and do they last?',
-            answer: 'Your final shape shows 3 to 6 months after surgery, once swelling settles. The fat that survives stays where it was placed and changes with your weight like the rest of your body fat, so the result lasts as long as your weight stays steady. Cleveland Clinic advises keeping your weight consistent to preserve it.',
+            question: 'When will I see my final results?',
+            answer: 'Your final shape shows 3 to 6 months after surgery, once swelling settles, and results can keep settling after that. Swelling hides your result at first, so the early weeks are not the final picture.',
+        },
+        {
+            question: 'How long does a BBL last?',
+            answer: 'Cleveland Clinic calls results semi-permanent, lasting several years and possibly over a decade. The Aesthetic Society says fat that survives stays for life and ages with you. Weight changes can change your result.',
         },
         // What `/fly-in-consultation` offers, and the law that still applies.
         {
             question:
                 'Can I start with a virtual consultation if I live in another state?',
-            answer: 'Yes. You can start with a virtual consultation and have your surgery, pre-op and follow-up dates in writing before you book a flight. Florida law still requires your surgeon to examine you in person no later than the day before surgery, so your plan is confirmed at that exam.',
+            answer: "Yes. You can start with a virtual consultation and have your surgery, pre-op and follow-up dates in writing before you book a flight. Your surgeon still examines you in person before surgery, and your plan is confirmed at that exam. Florida's rule for office surgery sets that exam no later than the day before.",
         },
         {
             question:

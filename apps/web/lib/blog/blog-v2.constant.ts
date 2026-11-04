@@ -95,6 +95,21 @@ export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'capsular-contracture',
     'breast-implant-rippling-bottoming-out',
     'mammograms-breastfeeding-with-breast-implants',
+    // The 2026-11-04 BBL rewrite: on v2 with their rewrites, so they aren't
+    // published beside the old sidebar's claims.
+    'bbl-compression-garment-timeline',
+    'exercises-after-bbl-timeline',
+    'flying-after-bbl-tips',
+    'how-long-after-bbl-can-i-sit',
+    'how-long-to-recover-from-bbl',
+    'how-to-feed-the-fat-after-bbl',
+    'tummy-tuck-vs-bbl-miami',
+    'what-age-can-you-get-a-bbl',
+    'what-is-a-double-bbl',
+    'what-is-more-painful-bbl-or-tummy-tuck',
+    'when-can-i-wear-jeans-after-bbl',
+    'non-surgical-bbl',
+    'do-i-have-enough-fat-for-a-bbl',
 ])
 
 /** The two variables the switch reads; the routes pass `env`. */

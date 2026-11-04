@@ -187,7 +187,7 @@ def images_sql(p: dict) -> tuple[str, str, int]:
     -- image {i['key']} ({i['type']})
     INSERT INTO images (id, url, alt, title, width, height, file_size, mime_type, original_filename, generation_prompt, generated_by)
     VALUES ('{uuid.uuid5(uuid.NAMESPACE_URL, i['url'])}', {bl.lit(i['url'])}, {bl.lit(i['alt'])}, {bl.lit(i['file'])},
-            {num(i['w'])}, {num(i['h'])}, {num(i['size'])}, 'image/jpeg', {bl.lit(i['file'])}, {bl.lit(i['prompt'])}, '{bl.GENERATED_BY}')
+            {num(i['w'])}, {num(i['h'])}, {num(i['size'])}, 'image/jpeg', {bl.lit(i['file'])}, {bl.lit(i['prompt'])}, {bl.lit(i['generated_by'])})
     ON CONFLICT (url) DO UPDATE SET alt = EXCLUDED.alt, updated_at = now()
     RETURNING id INTO {v};
     INSERT INTO blog_post_images (blog_post_id, image_id, prompt, image_type)

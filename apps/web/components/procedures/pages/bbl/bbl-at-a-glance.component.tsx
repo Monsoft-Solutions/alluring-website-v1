@@ -33,8 +33,8 @@ export function BblAtAGlance() {
         },
         { label: 'Your surgeon', value: KARLINSKY_NAME },
         {
-            label: 'Florida standard',
-            value: 'Fat under the skin only, placed with ultrasound guidance, one surgeon for one patient',
+            label: "Florida's rule for office surgery",
+            value: 'Fat under the skin only; ultrasound or other authorized guidance; one physician to one patient',
         },
         {
             label: 'Back to a desk job',
@@ -52,7 +52,10 @@ export function BblAtAGlance() {
             label: 'Flying in from another state',
             value: 'Plan on 7 to 10 days in Miami',
         },
-        { label: 'Final shape', value: '3 to 6 months after surgery' },
+        {
+            label: 'Final shape',
+            value: '3 to 6 months after surgery, and can keep settling',
+        },
     ]
 
     return (
