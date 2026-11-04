@@ -1,0 +1,477 @@
+{
+  "slug": "tummy-tuck-diastasis-recti-miami",
+  "mode": "rewrite",
+  "base_md5": "9db0511e9feca6e6a2a6ac50536b58fd",
+  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:39:20Z",
+  "reader": "deciding",
+  "cluster": "tummy-tuck",
+  "title": "Diastasis Recti Surgery: When a Tummy Tuck Repairs It",
+  "meta_description": "Diastasis recti surgery is usually a tummy tuck with muscle repair. How to check for a gap, when physical therapy comes first and what insurance covers.",
+  "excerpt": "Diastasis recti surgery is usually a tummy tuck with muscle repair. Here is how to check for a gap, when physical therapy comes first, what insurance covers and how often the gap comes back, with the evidence stated plainly.",
+  "quick_answer": "Does a tummy tuck fix diastasis recti?\n\nUsually, when the surgery includes muscle repair. ASPS describes a tummy tuck as restoring weakened or separated muscles in most cases. Cleveland Clinic says diastasis recti affects 6 in 10 women after childbirth, counts a gap wider than 2 centimeters, and suggests working with a physical therapist. Skin-only surgery does not close the gap.",
+  "primary_keyword": "diastasis recti surgery",
+  "secondary_keywords": [
+    "diastasis recti repair",
+    "repair of diastasis recti",
+    "abdominoplasty for diastasis recti",
+    "tummy tuck diastasis recti",
+    "diastasis recti repair surgery",
+    "surgery to fix diastasis recti",
+    "rectus diastasis surgery",
+    "does diastasis recti require surgery",
+    "how to fix diastasis recti",
+    "how to heal diastasis recti",
+    "how do i know i have diastasis recti",
+    "symptoms of diastasis recti",
+    "diastasis recti physical therapy",
+    "is diastasis recti covered by insurance",
+    "diastasis recti in men",
+    "diastasis recti"
+  ],
+  "owns_queries": [
+    "diastasis recti surgery",
+    "diastasis recti repair",
+    "repair of diastasis recti",
+    "abdominoplasty for diastasis recti",
+    "tummy tuck diastasis recti",
+    "diastasis recti repair surgery",
+    "surgery to fix diastasis recti",
+    "rectus diastasis surgery",
+    "does diastasis recti require surgery",
+    "how to fix diastasis recti",
+    "diastasis recti"
+  ],
+  "categories": [
+    "Tummy Tuck"
+  ],
+  "tags": [
+    "Tummy Tuck",
+    "Abdominoplasty",
+    "Mommy Makeover",
+    "Recovery",
+    "Recovery Timeline",
+    "Post-Op Care"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman with shoulder-length dark hair and an oatmeal knit sweater sits on a sofa in a bright living room, writing in a notebook, with wooden toy blocks on the rug nearby.",
+      "prompt": "SCENE: Late morning in a bright family living room, warm white walls, a tall arched window with sheer linen curtains, soft palm shadows on a pale limestone floor, a few wooden toy blocks on a sand-colored rug. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 40s with light olive skin and shoulder-length dark hair, wearing an oversized oatmeal knit sweater and loose trousers, sitting on a linen sofa and writing in a notebook on her lap. Three-quarter view, focused and calm. KEY DETAILS: Her face and hands in the upper two thirds, the lower third a quiet stretch of rug for a title. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. No children in frame. Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no scars, incisions, garments, bandages or drains; not photographed from behind; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "separation",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Stylized diagram of the stomach muscles in two panels. Left: the two sides of the rectus abdominis sit close together, joined by the linea alba. Right: the same muscles with a gap between them. A gap wider than 2 centimeters is considered diastasis recti.",
+      "same_address_url": "https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/blog-images/1a95b26e-8e4a-44f2-bcda-f9636b46e2a1/1768920607327-u20y88-0.jpg",
+      "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top. SUBJECT: Two side-by-side panels of a stylised, abstract anatomy diagram showing only two vertical columns of muscle in muted terracotta with a narrow pale band between them: in the first panel the columns sit close together; in the second the band is wide and pale, leaving a clear gap, marked with a small gold measuring bracket. Thin gold leader lines run to the labels. KEY DETAILS: Flat, schematic medical illustration with no skin, no navel, no torso outline, no realism; serif headline in dark stone, sans-serif labels large enough to read on a phone. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions, no before-and-after framing. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. Muscle columns only, never a body, breasts or a figure.",
+      "text_in_image": "Diastasis recti\n\nClose together: the two sides of the rectus abdominis, joined by the linea alba\nDiastasis recti: a gap between them\n\nA gap wider than 2 centimeters is considered diastasis recti\n\nSource: Cleveland Clinic"
+    },
+    {
+      "key": "finger-check",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Stylized drawing of a clothed woman lying on her back on a mat with her knees bent and shoulders lifted, one hand behind her head and the other above her belly button, with four steps beside her. A gap of two or more finger widths means talk to your healthcare provider.",
+      "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top. SUBJECT: A simple flat illustration, in a side view, of a woman fully clothed in a long-sleeved top and leggings, lying on an exercise mat with knees bent and feet flat, shoulders slightly lifted, one hand behind her head and the other resting over her clothes above the belly button. The figure is stylised, with no facial detail. Four short lines of text sit below the figure, then one highlighted line and a one-line source footer. KEY DETAILS: Flat vector style in stone, sand and muted gold, serif headline in dark stone, sans-serif text large enough to read on a phone. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions, no before-and-after framing. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. Fully clothed figure, no bare midriff, no anatomy shown.",
+      "text_in_image": "How to check for a gap at home\n\nLie on your back with your knees bent and your feet flat on the floor\nLift your shoulders slightly off the ground, keeping one hand behind your head\nPut your other hand above your belly button, palm down and fingers toward your toes\nFeel for a gap between your stomach muscles and count how many fingers fit\n\nTwo or more finger widths: talk to your healthcare provider\n\nSource: Cleveland Clinic"
+    },
+    {
+      "key": "pt-or-surgery",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Two-column card titled Physical therapy or surgery. Start with physical therapy: you gave birth recently and the gap may still be closing, you may want more children, you are still losing weight, your separation is mild. Talk to a surgeon: your symptoms remain after working with a physical therapist, you have finished having children, you are at or near a stable weight, you also have loose skin that exercise can't remove, you have an umbilical hernia.",
+      "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top. SUBJECT: A two-column checklist under one serif headline, each column with its own small heading and short rows, and a one-line source footer. KEY DETAILS: Flat vector layout with generous spacing, muted gold ticks, serif headline in dark stone, sans-serif rows large enough to read on a phone. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions, no before-and-after framing. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. No people and no anatomy.",
+      "text_in_image": "Physical therapy or surgery?\n\nStart with physical therapy\nYou gave birth recently and the gap may still be closing\nYou may want more children\nYou are still losing weight\nYour separation is mild\n\nTalk to a surgeon\nYour symptoms remain after working with a physical therapist\nYou have finished having children\nYou are at or near a stable weight\nYou also have loose skin that exercise can't remove\nYou have an umbilical hernia\n\nSources: Cleveland Clinic; the ASPS website"
+    },
+    {
+      "key": "core-exercise",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "A woman in a long-sleeved top and leggings lies on a mat with her knees bent in a bright room, breathing slowly with her eyes closed.",
+      "prompt": "SCENE: A bright, quiet room in the morning with white plaster walls, a tall window and soft palm shadows on a limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A Black woman in her early 30s with short natural hair, wearing a loose long-sleeved sage top and full-length dark leggings, lying on her back on an exercise mat with knees bent and feet flat, arms relaxed at her sides, eyes closed, breathing slowly. Side view of her whole body. KEY DETAILS: Editorial documentary photography, 35mm, natural color, real skin texture, gentle depth of field, fine film grain, the whole person in frame with space around her. CONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no scars, incisions, garments, bandages or drains; not photographed from behind; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/22346-diastasis-recti",
+      "publisher": "Cleveland Clinic",
+      "title": "Diastasis Recti (last updated 04/21/2025)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It’s a common condition that affects 6 in 10 women after childbirth.",
+        "An abdominal gap wider than 2 centimeters is considered diastasis recti.",
+        "The rectus abdominis is divided into left and right sides by a band of tissue called the linea alba.",
+        "As your uterus expands during pregnancy, your linea alba thins and pulls apart.",
+        "A visible bulge or “pooch” that protrudes just above or below your belly button (even after losing any weight you may have gained during pregnancy)",
+        "Coning or doming when you contract your ab muscles or lean back in a chair",
+        "Diastasis recti isn’t painful. You may feel pain due to some of the side effects of diastasis, but the ab separation itself doesn’t hurt.",
+        "Diastasis recti can occur above your belly button, below your belly button and at your belly button",
+        "Some providers may use ultrasound, measuring tape or a tool called a caliper for a more accurate measurement.",
+        "Lie on your back with your knees bent and feet flat on the floor.",
+        "Lift your shoulders slightly off the ground, keeping one hand behind your head for support, almost like you are doing a sit-up.",
+        "Move your other hand above your belly button area, palms down and fingers towards your toes.",
+        "If you feel a gap of two or more finger widths, discuss your concerns with your healthcare provider.",
+        "Work with a physical therapist who has experience with diastasis recti.",
+        "Yes, it’s possible to fix diastasis recti without surgery.",
+        "They might do surgery if you have an umbilical hernia or if you want diastasis recti surgery (a tummy tuck).",
+        "mild cases with a little separation may improve with minimal effort",
+        "Most diastasis recti exercises involve deep breathing and slow, controlled movements.",
+        "Planks or push-ups (unless using modifications)",
+        "Wearing binders can’t heal diastasis recti and won’t strengthen your core muscles.",
+        "If you have more than a two-finger gap between your abdominals or are experiencing pain, contact your healthcare provider for a diagnosis.",
+        "Men can get it from excessive or chronic straining. Things like lifting heavy weights, constipation or sudden weight gain/weight loss can contribute to men getting diastasis.",
+        "Crunches or sit-ups of any kind"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Depending on the results you want, a tummy tuck can take anywhere from one to five hours.",
+        "A tummy tuck is usually an outpatient procedure."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Tummy Tuck",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Tummy tuck surgery, also known as abdominoplasty, removes excess fat and skin and, in most cases, restores weakened or separated muscles creating an abdominal profile that is smoother and firmer.",
+        "For this reason, individuals who are planning substantial weight loss or women who may be considering future pregnancies would be advised to postpone a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/cost",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "How much does a tummy tuck cost?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Most health insurance plans do not cover tummy tuck surgery or its complications, but many plastic surgeons offer patient financing plans, so be sure to ask."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/diastasis-recti-repair-restoring-core-strength-and-abdominal-integrity",
+      "publisher": "ASPS website, an article by Ariel Frankeny, freelance writer, interviewing ASPS member surgeon Tomer Avraham, MD",
+      "title": "Diastasis recti repair: Restoring core strength and abdominal integrity (September 22, 2025)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "We most often do it as part of an abdominoplasty (tummy tuck) – it's actually an integral part of a tummy tuck.",
+        "We'll do a low transverse incision, which allows us to access the abdominal wall and remove the excess skin and fat in the lower belly. At the same time, we use surgery and sutures to reposition and repair the diastasis recti.",
+        "However, this does not give a solution to people, particularly women, who don't have a lot of skin and fat in their lower belly but still suffer from diastasis recti. To address this issue, there have been laparoscopic and robotic techniques that have been developed, allowing you to repair it from inside the abdomen. For us, I generally do this in cooperation with a general surgeon",
+        "And very often, this is also done in conjunction with hernia repairs.",
+        "I am not aware of any nonsurgical techniques that can effectively repair diastasis recti.",
+        "The ideal candidate is someone who feels like they want this surgery and is also at or near their goal weight or a healthy weight. If you're very large or overweight and you carry a lot of extra fatty tissue around your organs, it will limit our ability to repair the diastasis.",
+        "This is a surgery that requires real recovery. I usually tell women to expect up to two weeks out of work.",
+        "You could have a sensation of tightness, but that should improve over time.",
+        "it can also occur in both men and women due to weight fluctuations, abdominal surgeries and improper exercise techniques.",
+        "Obviously, a rare complication is an injury to intra-abdominal structures. That's why it's important to have a multidisciplinary surgical team."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-is-diastasis-recti-and-how-can-a-tummy-tuck-help",
+      "publisher": "ASPS website, a post by Frank E. Campanile, MD (the views are the author's)",
+      "title": "What is diastasis recti, and how can a tummy tuck help? (March 13, 2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "However, this condition only becomes concerning if a separation greater than 2.7 centimeters remains six or more weeks after birth.",
+        "For roughly half of these women, the condition will resolve on its own within 12 months of delivery.",
+        "Even if these do not fully correct the problem, they will help position you to achieve better results from surgery and make the process less invasive.",
+        "When compared to an aesthetic tummy tuck, this involves more complexity, increasing the cost and recovery time. However, if you have health insurance, the procedure should be covered, at least in part, by your provider.",
+        "The views expressed in this blog are those of the author and do not necessarily reflect the opinions of the American Society of Plastic Surgeons."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD (the views are the author's)",
+      "title": "Answers to common tummy tuck questions (December 17, 2019)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "After surgery, you will be placed in a compression garment, which will be worn for 4-6 weeks after surgery to help with reducing swelling.",
+        "You will be bent at the waist while standing or lying down for 7-10 days after surgery to protect the incision and to allow for your skin to adapt. After this time, you will be able to stand up straight.",
+        "You can walk the day of surgery. In fact, most plastic surgeons encourage patients to walk three times the day of surgery to improve blood circulation to keep the risk of blood clots in the legs to a minimum. However, running or lifting should be avoided for six weeks after the procedure.",
+        "Patients typically return to work in approximately two weeks.",
+        "the swelling will continue to diminish until approximately three months post-procedure.",
+        "With stable weight, tummy tuck results are stable over time. If you experience any weight fluctuations or become pregnant, this may change your tummy tuck result."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/understanding-the-different-types-of-tummy-tucks",
+      "publisher": "ASPS website, a post by Samir Rao, MD (the views are the author's)",
+      "title": "Understanding the different types of tummy tucks (July 19, 2024)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It improves only the area below the belly button, removing lax skin and strengthening muscles in the lower stomach.",
+        "Standard tummy tucks are best for men and women who want to firm and tighten the area above and below the belly button. It can also help people who have separated abdominal muscles – a condition called diastasis recti.",
+        "An extended tummy tuck usually requires a longer recovery. You'll typically need about four to six weeks of downtime before returning to work"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/five-things-to-consider-before-getting-a-tummy-tuck",
+      "publisher": "ASPS website, a post by Paul Vitenas, Jr., MD (the views are the author's)",
+      "title": "Five things to consider before getting a tummy tuck (February 23, 2018)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It is important that you be close to your desired weight for six to twelve months before undergoing a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/post-pregnancy-plastic-surgery-what-can-you-do-now-and-what-needs-to-wait",
+      "publisher": "ASPS website, an article by Alia Willson quoting Kristy Hamilton, MD, and Karen Horton, MD",
+      "title": "Post-pregnancy plastic surgery: What can you do now, and what needs to wait (June 18, 2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This typically means waiting a minimum of six months postpartum, and longer if breastfeeding.",
+        "The post-pregnancy body continues to change for up to a full year after delivering a baby, so I recommend waiting up to a full year before considering any plastic surgery procedure,"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "you still shouldn't do any heavy lifting (such as picking up your children or baskets of laundry) for four to six weeks. If you have small children, you must put someone else totally in charge of their care for at least two weeks."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/results",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck - Results",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Barring pregnancy or significant weight gain, your tummy tuck results should be permanent, though plastic surgery cannot stop normal aging."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7839807/",
+      "publisher": "Cureus (PMC full text)",
+      "title": "Impact of Rectus Diastasis Repair on Abdominal Strength and Function: A Systematic Review (Gormley J and colleagues, 2020;12(12):e12358)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A total of 497 patients from seven articles were included.",
+        "Three articles reported abdominal strength measurements, with two showing significant improvement. Four articles used the SF-36 survey, all demonstrating improvement in physical function subscale postoperatively.",
+        "While the literature to date is encouraging with respect to functional outcomes, improvements in abdominal strength are less consistent. Heterogeneity in patient population, outcome measures, and comparison groups limit the strength of our conclusions.",
+        "Furthermore, even if abdominal strength and function improve, it may be temporary, as the recurrence rate of ARD has been reported as high as 40% [3].",
+        "5 seromas (3 Quill, 2 mesh), 1 ARD recurrence (1 Quill), 26 (81.25%) dissatisfied with training only, and were offered operative repair.",
+        "Post-operative complications were reported in five articles in patients who had received rectus plication (276 patients), with an overall complication rate of 17.0% (47/276). Of the 47 complications recorded, the three most common complications were seroma (12 patients, 27.7%), wound dehiscence (11 patients, 23.4%), and minor bleeding episodes (10 patients, 21.3%).",
+        "Unfortunately, neither article reported on complications and therefore we were unable to assess whether adding rectus plication affects the complication rate.",
+        "Additionally, the existing literature does not differentiate based on the severity of rectus diastasis, and therefore we are unable to determine the degree of defect that results in weakness, pain, or disability.",
+        "The mean age was 44.5 years (SD 4.1, range 20.5-72) and 94.4% were female (469/497 patients).",
+        "*Median, **12-month follow-up for operative groups, three-month follow-up for training group.",
+        "Two of the included randomized trials were overlapping reports of the same cohort of patients"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36934466/",
+      "publisher": "Physiotherapy (PubMed abstract)",
+      "title": "Conservative interventions may have little effect on reducing diastasis of the rectus abdominis in postnatal women: A systematic review and meta-analysis (Benjamin DR and colleagues, 2023, PMID 36934466)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Sixteen trials with 698 women during the postnatal period were included.",
+        "There was moderate certainty evidence from six trials (n = 161) that abdominal exercise led to a small reduction in inter-recti distance (MD -0.43 cm, 95% CI -0.82 to -0.05) in postnatal women compared to usual care.",
+        "Conservative interventions do not lead to clinically significant reductions in inter-recti distance in women postnatally but abdominal exercises may have other physical and psychosocial benefits in the management of DRAM."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27475817/",
+      "publisher": "Surgery (PubMed abstract)",
+      "title": "Operative correction of abdominal rectus diastasis (ARD) reduces pain and improves abdominal wall muscle strength (Emanuelsson P and colleagues, 2016, PMID 27475817)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Thirty-two patients participated in a 3-month training program.",
+        "Significant muscular improvement was obtained in all groups (Biodex System-4). Patient perceived gain in muscle strength assessed with a visual analog scale improved similarly in both operative groups. This improvement was significantly greater than that seen in the training group.",
+        "Training strengthens the abdominal muscles, but patients still experience discomfort and pain.",
+        "One early recurrence occurred in the Quill group",
+        "The primary aim of this prospective, randomized, clinical, 2-armed trial was to evaluate the risk for recurrence using 2 different operative techniques for repair of abdominal rectus diastasis."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32299300/",
+      "publisher": "Scandinavian Journal of Surgery (PubMed abstract)",
+      "title": "Long-term follow-up after surgical repair of abdominal rectus diastasis: A Prospective Randomized Study (Swedenhammar E and colleagues, 2021, PMID 32299300)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "patients randomized to surgery using either Quill self-retaining sutures or retromuscular mesh",
+        "A total of 57 patients were eligible and 52 were investigated.",
+        "a median of 5 years (3.8-6.5 years) after surgery",
+        "No recurrence of abdominal rectus diastasis was found.",
+        "followed up by clinical examination for recurrence"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8551425/",
+      "publisher": "Scandinavian Journal of Surgery (PMC full text)",
+      "title": "Long-term follow-up after surgical repair of abdominal rectus diastasis: A Prospective Randomized Study (Swedenhammar E and colleagues, 2021, PMC8551425)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "One early recurrence in the Quill group was repaired with retromuscular mesh within 6 weeks after index surgery. This patient was excluded from further follow-up within the frame of our research protocol."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15861083/",
+      "publisher": "Plastic and Reconstructive Surgery (PubMed abstract)",
+      "title": "Long-term follow-up of correction of rectus diastasis (Nahas FX and colleagues, 2005, PMID 15861083)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Twelve female patients who underwent abdominoplasty were studied.",
+        "A long-term follow-up scan was obtained from 76 to 84 months postoperatively for every patient.",
+        "the long-term computed tomographic scans showed that there was no recurrence of rectus diastasis in any patient of this series",
+        "Plication of the anterior rectus sheath with nonabsorbable suture appears to be a long-lasting procedure for correcting rectus diastasis."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23897333/",
+      "publisher": "Plastic and Reconstructive Surgery (PubMed abstract)",
+      "title": "Long-term ultrasonographic evaluation of midline aponeurotic plication during abdominoplasty (de Castro EJP and colleagues, 2013, PMID 23897333)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Thirty-eight patients were selected.",
+        "group A, 18 patients who had undergone surgery 5 years previously; and group B, 20 patients who had undergone surgery 1 year before.",
+        "There was no recurrence of diastasis in any cases of the group with a follow-up of more than 5 years, whereas in the 1-year follow-up group there were two cases of recurrence of the diastasis. Only one of the patients who had recurrence of rectus diastasis had a clinical complaint."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11335840/",
+      "publisher": "Plastic and Reconstructive Surgery (PubMed abstract)",
+      "title": "The long-term durability of plication of the anterior rectus sheath assessed by ultrasonography (van Uchelen JH and colleagues, 2001, PMID 11335840)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A total of 63 patients returned the questionnaire, and 40 were willing to attend a follow-up consultation and ultrasound investigation.",
+        "The study showed that after a follow-up of 32 to 109 months (mean, 64 months), standard plication of the abdominal wall with absorbable material led to residual or recurrent diastasis in 40 percent of the patients."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21688021/",
+      "publisher": "Hernia (PubMed abstract)",
+      "title": "A systematic review on the outcomes of correction of diastasis of the recti (Hickey F and colleagues, 2011, PMID 21688021)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Other common complications included haematomas, minor skin necrosis, wound infections, dehiscence, post-operative pain, nerve damage and recurrence, the rate of which may be as high as 40%.",
+        "Patients and physicians should be advised that correction is largely cosmetic"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+      "publisher": "Plastic and Reconstructive Surgery (PubMed abstract)",
+      "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (Winocour J and colleagues, 2015, PMID 26505716)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The authors identified 25,478 abdominoplasties from 183,914 procedures in the database.",
+        "Combined procedures increased the risk of complication (abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent;",
+        "Of these, 31.5 percent were hematomas, 27.2 percent were infections and 20.2 percent were suspected or confirmed venous thromboembolism."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37266593/",
+      "publisher": "Aesthetic Plastic Surgery (PubMed abstract)",
+      "title": "The Safety and Effects of Pregnancy after Abdominoplasty: A Systematic Review of the Literature (Karunaratne YG and colleagues, 2023, PMID 37266593)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "17 studies encompassing 237 patients met inclusion.",
+        "There were no neonatal or maternal mortalities in any study.",
+        "Pregnancy should not be contraindicated after abdominoplasty.",
+        "These were grouped as foetal/neonatal (n = 21), maternal (n = 104) or abdominal wall/aesthetic (n = 96); and are detailed within.",
+        "Mean follow-up was 8.5 months."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38447678/",
+      "publisher": "American Journal of Obstetrics & Gynecology MFM (PubMed abstract)",
+      "title": "Perinatal outcomes following abdominoplasty: a retrospective study and review of current literature (Cheng C and colleagues, 2024, PMID 38447678)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "abdominoplasty was associated with an increased risk of preterm delivery (odds ratio, 2.15; 95% confidence interval, 1.48-3.13; P=.0002)"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 1465,
+    "clicks": 2,
+    "position": 9.58,
+    "top_queries": [
+      {
+        "query": "tummy tuck miami",
+        "impressions": 131,
+        "clicks": 0,
+        "position": 10.6
+      },
+      {
+        "query": "abdominoplasty miami",
+        "impressions": 49,
+        "clicks": 0,
+        "position": 5
+      },
+      {
+        "query": "best miami abdominoplasty surgeons for post-pregnancy muscle repair with natural results",
+        "impressions": 47,
+        "clicks": 0,
+        "position": 6
+      },
+      {
+        "query": "diastasis recti surgery",
+        "impressions": 21,
+        "clicks": 0,
+        "position": 19.1
+      },
+      {
+        "query": "tummy tuck in miami",
+        "impressions": 19,
+        "clicks": 0,
+        "position": 10.2
+      },
+      {
+        "query": "miami tummy tuck",
+        "impressions": 15,
+        "clicks": 0,
+        "position": 12.6
+      },
+      {
+        "query": "diastasis recti repair",
+        "impressions": 14,
+        "clicks": 0,
+        "position": 26.2
+      },
+      {
+        "query": "mini tummy tuck miami",
+        "impressions": 14,
+        "clicks": 0,
+        "position": 9.2
+      },
+      {
+        "query": "abdominoplasty for diastasis recti",
+        "impressions": 12,
+        "clicks": 0,
+        "position": 26.5
+      },
+      {
+        "query": "tummy tuck miami beach",
+        "impressions": 11,
+        "clicks": 0,
+        "position": 5.4
+      }
+    ],
+    "demand_note": "Keyword Planner (Ads UI, 3 Nov 2026, US monthly): diastasis recti surgery 5,400 up 23%; tummy tuck for diastasis recti 1,900 up 81%; surgery cost 720; insurance 210. Totals are baseline.mts's total row in research/baselines/tummy-tuck-2026-11-04.csv. The Miami queries above are what this rewrite stops targeting, so a fall in them is the goal, not a loss."
+  },
+  "notes": "Retargeted from 'Tummy Tuck Diastasis Recti Miami: Restore Your Core' under issue #357, reversing the fold in the 2026-10-05 plan. About half the post's named impressions were Miami head terms that belong to the page. Written fresh for readers deciding. Removed: Miami targeting in title, headings and body; double board-certified, AAAASF, 20 years and 4.9 rating claims; phone number; financing terms; '60% ... 32.6-45.4%'; 'gold standard'; 'BMI under 30' attributed to Cleveland Clinic; 'Mayo Clinic notes'; 'rarely closes gaps wider than two centimeters'; 'lifelong strength'; 'reduced back pain within weeks'; 2-5 hours; 6-8 weeks of lifting; humidity and swelling; all first-person voice. Sources: the review the brief names (PMC7839807) is Gormley and colleagues, Cureus, published 29 Dec 2020, so the post says 2020, not the plan's 2021. What it says on recurrence, read in full text: it did not analyze recurrence as such; its Introduction says 'the recurrence rate of ARD has been reported as high as 40% [3]', where [3] is Hickey 2011, and its Table 5 lists 1 ARD recurrence in Emanuelsson. The post attributes it that way and doesn't present 40% as that review's finding. To answer 'Will it come back?' honestly I also read the abstracts of Swedenhammar 2021, Nahas 2005, de Castro 2013, van Uchelen 2001, Hickey 2011 and Emanuelsson 2016: no recurrence to 40%, small studies, no direct absorbable vs nonabsorbable comparison among them. Whether Hickey's 40% comes from van Uchelen is not stated in the abstract, so the post doesn't claim it. Exercise evidence added beyond the card: Benjamin 2023 and Emanuelsson 2016. Sources that disagree are shown as disagreeing: Cleveland Clinic ('possible to fix without surgery') vs Tomer Avraham, MD ('not aware of any nonsurgical techniques'); ASPS on insurance vs Frank Campanile, MD ('should be covered, at least in part'); 2 centimeters (Cleveland Clinic) vs 2.7 centimeters (Campanile). Avraham and Campanile are attributed by name: the ASPS article is a freelance writer's interview, the post is the author's view. The ASPS insurance sentence is from the cost page. The Avraham line on hernia repair sits in his answer on laparoscopic and robotic repair, so the post places it there. Nothing says which technique, sutures or hernia and laparoscopic options the practice offers: owner questions, stated as questions to ask. The mini and extended mini lines come from the facts file (the price sheet says no muscle repair). No price appears; the post links #pricing. FAQ 'does it cost more' is link only. Live FAQs kept in spirit: exercise, Ozempic; recovery and risks moved to the body. Figures not in tummy-tuck.facts.ts have their own quotes here: 0.43 cm, 16 trials and 698 women, 3-month program, 81.25%, 7 studies and 497 patients, 17.0% of 276, 94.4%, 2.7 cm, 12 months, up to a full year, and the recurrence table. Deviations from the card: the mini vs full and pregnancy posts (N3, N1) are not linked because they ship in Batch 3 and this post ships in Batch 1, so a link would 404 until then; the page's #which-tummy-tuck and #recovery carry those readers. Add both links when Batch 3 goes live. Images: all 6 live images are retired (hero alt 'sculpted flat abdomen', one shows the surgeon, old infographics carry old figures). New set: hero + 4 inline. The separation image carries same_address_url, the live rectus diagram (blog-images/1a95b26e.../1768920607327-u20y88-0.jpg, 168 image impressions): plan section 6 replaces it at the same address only after the canary passes, using overwrite_same_path.mjs. That key is a note for the main session; the kit ignores it, and export_upload.mjs would otherwise give a new URL. The registry entry still lists 'tummy tuck diastasis recti miami' strings in ownsQueries; they are left out of owns_queries here. Sources were read as text with curl (PubMed through eutils) on 2026-11-03, the ASPS article also through WebFetch, and every quote was machine-checked against that text. Fact-check of 4 Nov applied (factcheck/scar-diastasis.md, plus the pregnancy wording from factcheck/new-posts.md): Emanuelsson randomized between two repairs with training as a control followed for 3 months, not surgery against training; the Swedenhammar row is the same cohort with its one early recurrence excluded before the 5-year count (full text PMC8551425); 'newborns' replaces 'babies' to match the abstract's 'neonatal'; Cheng 2024 added for preterm delivery; Hickey's 'largely cosmetic' conclusion added. Owner question still open: whether the regular or extended price includes muscle repair, so the mini section is unchanged. Sources with read_on 2026-11-04 were re-read that day and their quotes machine-checked.",
+  "gate": {
+    "verdict": "refresh",
+    "reason": "Cluster already owned by /blog/tummy-tuck-diastasis-recti-miami — refresh that post instead of creating a competing URL",
+    "owningUrl": "/blog/tummy-tuck-diastasis-recti-miami",
+    "owningSlug": "tummy-tuck-diastasis-recti-miami",
+    "matchedQuery": "diastasis recti surgery",
+    "similarityScore": null,
+    "claimedQueries": [],
+    "warnings": [],
+    "checkedAt": "2026-11-04T04:59:05.079Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_tt_rewrite"
+  }
+}

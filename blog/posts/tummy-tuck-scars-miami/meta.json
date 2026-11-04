@@ -1,0 +1,327 @@
+{
+  "slug": "tummy-tuck-scars-miami",
+  "mode": "rewrite",
+  "base_md5": "96acb4b608411d8ab23a39638e61bb1b",
+  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T17:28:19Z",
+  "reader": "deciding",
+  "cluster": "tummy-tuck",
+  "title": "Tummy Tuck Scar: Where It Sits and How It Fades",
+  "meta_description": "A full tummy tuck scar usually runs hip bone to hip bone, placed low so underwear can cover it. Where it sits by type and how it fades over a year or more.",
+  "excerpt": "A full tummy tuck scar usually runs from hip bone to hip bone, placed low so underwear or swimsuit bottoms can cover it. Here is where it sits for each type, how it fades, and what the evidence does and doesn't show on silicone and scar creams.",
+  "quick_answer": "Where is a tummy tuck scar, and does it fade?\n\nA full tummy tuck scar usually runs hip bone to hip bone, just above the pubic area, often with a scar around the belly button (Cleveland Clinic). It is placed low so underwear or swimsuit bottoms can cover it (Jonathan Weiler, MD, on the ASPS website) and turns thinner and lighter at around 12 to 18 months (Cindy Wu, MD).",
+  "primary_keyword": "tummy tuck scar",
+  "secondary_keywords": [
+    "tummy tuck scars",
+    "tummy tuck scar placement",
+    "where is the tummy tuck scar",
+    "tummy tuck scar healing",
+    "tummy tuck scars after 1 year",
+    "tummy tuck scar removal",
+    "tummy tuck scar revision",
+    "mini tummy tuck scar",
+    "full tummy tuck scar",
+    "no scar tummy tuck",
+    "tummy tuck without scars",
+    "tummy tuck no scar"
+  ],
+  "owns_queries": [
+    "tummy tuck scar",
+    "tummy tuck scars",
+    "tummy tuck scar placement",
+    "where is the tummy tuck scar",
+    "tummy tuck scar healing",
+    "tummy tuck scars after 1 year",
+    "tummy tuck scar removal",
+    "tummy tuck scar revision",
+    "no scar tummy tuck",
+    "tummy tuck without scars"
+  ],
+  "categories": [
+    "Tummy Tuck",
+    "Results & Maintenance"
+  ],
+  "tags": [
+    "Tummy Tuck",
+    "Abdominoplasty",
+    "Recovery",
+    "Recovery Timeline",
+    "Post-Op Care",
+    "Mommy Makeover"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman with short natural hair and a loose terracotta linen shirt sits at a limestone kitchen table by an arched window, reading printed notes with a cup beside her.",
+      "prompt": "SCENE: Mid-morning in a bright kitchen with white plaster walls, an arched window and a pale limestone table, soft palm shadows falling across the wall. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 30s with deep brown skin, short natural hair and a full, curvy build, wearing a loose terracotta linen button-up shirt and sand-colored trousers, sitting at the table reading a few printed pages, a ceramic cup beside her. Three-quarter view, thoughtful and calm. KEY DETAILS: Whole upper body and table in frame, her face and hands in the upper two thirds, the lower third a quiet stretch of table for a title. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no scars, incisions, garments, bandages or drains; not photographed from behind; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "placement",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Illustrated card with four fabric dress forms, each with gold lines marking where a tummy tuck scar sits. Mini: short and low, 3 to 6 inches. Full: hip bone to hip bone, often with a scar around the belly button. Extended: longer and often higher, around the flanks. Fleur-de-lis: across the abdomen, plus a vertical scar.",
+      "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top. SUBJECT: Four identical tailor's dress forms in plain sand-colored fabric, drawn from the front in a soft flat illustration, in a two-by-two grid. On each form, a thin dashed gold line marks a scar position on the fabric: first, a short low line; second, a long low line from hip to hip plus a small circle at the navel point; third, a longer line reaching around the sides and sitting a little higher; fourth, a long low line plus a vertical line up the center. One label under each form. KEY DETAILS: Flat vector illustration with subtle depth, serif headline in dark stone, sans-serif labels large enough to read on a phone. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions on a body, no before-and-after framing, no people except what is described. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. Dress forms only, never a human body or skin.",
+      "text_in_image": "Where the scar sits, by type\n\nMini: short and low, 3 to 6 inches\nFull: hip bone to hip bone, often with a scar around the belly button\nExtended: longer and often higher, around the flanks\nFleur-de-lis: across the abdomen, plus a vertical scar\n\nSources: Cleveland Clinic; The Aesthetic Society; Samir Rao, MD"
+    },
+    {
+      "key": "timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Timeline card for a fading tummy tuck scar. Several months: still visible. About 1 year: small or fine scars may fade completely, but most people still have a visible scar. 12 to 18 months: thinner and lighter in color. 3 months to 2 years: fading and flattening.",
+      "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top. SUBJECT: A simple vertical timeline: a slim gold line with four small gold circles, each with one short line of text beside it, and a one-line source footer. KEY DETAILS: Flat vector layout, generous spacing, serif headline in dark stone, sans-serif rows large enough to read on a phone. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions on a body, no before-and-after framing, no people except what is described. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. No body, no anatomy, no icons of skin or scars.",
+      "text_in_image": "How a tummy tuck scar fades\n\nSeveral months: still visible\nAbout 1 year: small or fine scars may fade completely, but most people still have a visible scar\n12 to 18 months: thinner and lighter in color\n3 months to 2 years: fading and flattening\n\nSources: Jonathan Weiler, MD; Cleveland Clinic; Cindy Wu, MD; The Aesthetic Society"
+    },
+    {
+      "key": "sun",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card on protecting a new scar from the sun. Stay out of the sun as the wound heals. Cover the scar with clothing when you can. Sunscreen with an SPF of 30 for 12 to 18 months if you have to be in the sun. Ultraviolet light can make a scar discolored or thicker.",
+      "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top and a small, simple gold sun line-icon. SUBJECT: A short list of three rows, each with a small gold tick, then one explanatory line and a one-line source footer. KEY DETAILS: Flat vector layout, generous spacing, serif headline in dark stone, sans-serif rows large enough to read on a phone. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions on a body, no before-and-after framing, no people except what is described. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. No people, no beach scene, no swimwear.",
+      "text_in_image": "Protecting a new scar from the sun\n\nStay out of the sun as the wound heals\nCover the scar with clothing when you can\nSunscreen with an SPF of 30 for 12 to 18 months if you have to be in the sun\n\nUltraviolet light can make a scar discolored or thicker\n\nSources: Cleveland Clinic; an article on the ASPS website"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck Scar (last updated 08/16/2022)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Full tummy tuck: The scar for a standard tummy tuck usually spans your abdomen, from hip bone to hip bone, just above your pubic area. You may also have a scar around your belly button.",
+        "It’s about the length of a C-section scar (between 3 inches and 6 inches).",
+        "A second vertical scar runs from your lower breastbone to your pubic bone.",
+        "The scar is usually thin. It may be raised, recessed, slightly pink or lighter than the surrounding skin.",
+        "You can’t completely prevent a tummy tuck scar.",
+        "Small or fine tummy tuck scars may fade completely after about a year. However, most people will still have a visible scar.",
+        "Your surgeon will likely use special glue, tape or bandages on your incision. These surgical dressings can reduce scarring by holding the skin of the incision together and keeping it moist.",
+        "Avoid heavy lifting, strenuous exercise, sexual activity and stretching until your provider says it’s safe to do these activities (usually four to eight weeks after the procedure).",
+        "Quitting smoking several months before your procedure can help your surgical wound heal.",
+        "Some corticosteroids can slow wound healing.",
+        "Some conditions, such as diabetes, can complicate wound healing.",
+        "About 2 to 3 weeks after your surgery, you may consider scar massage.",
+        "Ultraviolet radiation can make your scar discolored or change its texture, making it thicker. For 12 to 18 months after your tummy tuck, wear sunscreen with an SPF (sun protection factor) of 30 if you have to be in the sun.",
+        "Steroid injections may help reduce the appearance of a thick, raised or red tummy tuck scar. Most providers reserve these injections for abnormal scarring",
+        "Laser skin resurfacing may reduce the appearance of a tummy tuck scar. This is another treatment usually reserved for abnormal scaring.",
+        "During scar revision, a surgeon cuts the scar out of your skin and then closes the wound with stitches. Most people need to wait 12 to 18 months after their tummy tuck for scar revision surgery. This is a time when the scar is about as good as it is going to get",
+        "Laser skin resurfacing can cause swelling, blistering and skin redness. Surgical scar revision may cause infection, bleeding or additional scarring.",
+        "Contact your healthcare provider if you notice your incision is:",
+        "Infected (pus or foul-smelling drainage coming from the wound)."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "In a mini tummy tuck, there’s generally no cut around the belly button.",
+        "For example, you may need to stop using tobacco products for at least one month before surgery and for at least two weeks after."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Tummy Tuck",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A tummy tuck cannot correct stretch marks, although these may be removed or somewhat improved if they are located on the areas of excess skin that will be excised."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/results",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Tummy Tuck Results",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "In women who have undergone cesarean section, the existing scars may be incorporated into the new scar.",
+        "The tummy tuck scar may take several months to a year to fade as much as it will.",
+        "Previous abdominal surgery may limit the potential results of a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/incisions-and-scars",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck - Incisions and Scars",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The incision for a full abdominoplasty usually runs from hip bone to hip bone, and may be in a V-cut or U-cut shape, so that the scar can be hidden in a bikini. Your surgeon will determine the shape and length of the incision based on your preferences and the amount of correction you need.",
+        "The length of the mini-tummy tuck incision and scarring can range from a few inches to the entire span of your abdomen.",
+        "There are no incisions around the navel.",
+        "With a high lateral tension abdominoplasty, scars are longer and often higher than scars in more traditional tummy tucks and mini-tummy tucks.",
+        "Your incision healing and resulting scars will depend on the surgical technique, the steps you take to prevent infection (nutrition, not smoking, hydrating), and any underlying medical conditions or genetic tendencies."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck - Aftercare & Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Fading and flattening of scars typically take three months to two years.",
+        "Call your surgeon immediately if you notice an increase in swelling, pain, redness, drainage, or bleeding in the surgical area, or if you develop fever, dizziness, nausea, or vomiting."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD (the views are the author's)",
+      "title": "Answers to common tummy tuck questions (December 17, 2019)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The scars will continue to heal and will become thinner and lighter in color at around 12-18 months."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/your-guide-to-a-tummy-tuck-before-during-and-after",
+      "publisher": "ASPS website, a post by Jonathan Weiler, MD (the views are the author's)",
+      "title": "Your guide to a tummy tuck – before, during and after (June 7, 2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A skilled surgeon will make the hip-to-hip incision straight and as low as possible so that underwear or swimsuit bottoms easily conceal the scar.",
+        "The scars will be visible for several months after the surgery but typically fade over time."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/understanding-the-different-types-of-tummy-tucks",
+      "publisher": "ASPS website, a post by Samir Rao, MD (the views are the author's)",
+      "title": "Understanding the different types of tummy tucks (July 19, 2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It uses a longer incision that stretches up and around the flanks to contour the tummy, waist and hips."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/worried-about-surgery-scars-here-are-some-tips",
+      "publisher": "ASPS website, an article by Daisy Brumby quoting ASPS member surgeons Michelle Roughton, MD, and Nneamaka Nwubah, MD",
+      "title": "Worried about surgery scars? Here are some tips (January 25, 2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Everyday activities such as cooking, cleaning, laundry and lifting can all increase tension and sometimes even cause wound separation.",
+        "\"Ideally, in a perfect world, you do it for a year,\" said Roughton. \"We think that scars take a year to be as mature as they will ultimately be. I don't think that's realistic for most people, so if I can get three to six months, I'd be thrilled.\"",
+        "\"If you expose it to sunlight too early, you can risk hyperpigmentation – too dark. And if you burn it, you can see hypopigmentation where it's too light.\"",
+        "In that case, protective clothing is often enough to protect them from the sun.",
+        "\"A lot of my tummy tuck patients, they're excited to get back in their two-piece bathing suits, but there's a scar around their belly button,\" said Roughton. \"And you have to be diligent about either deciding you're going to wear a one-piece for a little bit longer or you're going to put a ton of sunscreen on the scar around your belly button.\""
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/post-pregnancy-plastic-surgery-what-can-you-do-now-and-what-needs-to-wait",
+      "publisher": "ASPS website, an article by Alia Willson quoting Kristy Hamilton, MD",
+      "title": "Post-pregnancy plastic surgery: What can you do now, and what needs to wait (June 18, 2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This typically means waiting a minimum of six months postpartum, and longer if breastfeeding.",
+        "Patients will often ask if they can get a tummy tuck at the same time as a C-section. Not only is that not a good idea medically and aesthetically, but it also doesn't make sense."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24030657/",
+      "publisher": "Cochrane Database of Systematic Reviews (PubMed abstract)",
+      "title": "Silicone gel sheeting for preventing and treating hypertrophic and keloid scars (O'Brien L, Jones DJ, 2013, PMID 24030657)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "We included 20 trials involving 873 people",
+        "There is weak evidence of a benefit of silicone gel sheeting as a prevention for abnormal scarring in high-risk individuals but the poor quality of research means a great deal of uncertainty prevails.",
+        "Trials evaluating silicone gel sheeting as a treatment for hypertrophic and keloid scarring showed improvements in scar thickness and scar colour but are of poor quality and highly susceptible to bias."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/32932267/",
+      "publisher": "Dermatologic Surgery (PubMed abstract)",
+      "title": "Topical Scar Treatment Products for Wounds: A Systematic Review (Tran B and colleagues, 2020, PMID 32932267)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A total of 34 trials were included in this study. Of the 16 trials investigating silicone gel sheets, numerous high-quality RCTs found that silicone gel sheets and silicone gels significantly improved scar outcomes. Only a limited number of studies supported the effectiveness of onion extract, vitamin E, trolamine, and microporous tape products.",
+        "Further high-quality studies are needed to elucidate the long-term effectiveness of these therapies."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26977069/",
+      "publisher": "Aesthetic Surgery Journal (PubMed abstract)",
+      "title": "The Role of Topical Vitamin E in Scar Management: A Systematic Review (Tanaydin V and colleagues, 2016, PMID 26977069)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Only six studies met the inclusion criteria. Of these six included studies, three reported a significant improvement in the cosmetic appearance of scars when using vitamin E",
+        "The other three selected studies showed no significant improvement in scar appearance when using topical vitamin E as monotherapy. Two of the six included studies reported adverse events of vitamin E application: contact dermatitis and increased incidence of itching and rash.",
+        "We conclude that there is not yet sufficient evidence that monotherapy with topical vitamin E has a significant beneficial effect on scar appearance to justify its widespread use.",
+        "one study used topical vitamin E in white children as monotherapy, and two studies used vitamin E in an adult population as combination therapy."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4961501/",
+      "publisher": "Seminars in Plastic Surgery (PMC full text)",
+      "title": "Update on Postsurgical Scar Management (Commander SJ and colleagues, 2016;30(3):122-128)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It is important to note that scar massage should not be started until the wound has closed completely.",
+        "Ideally, they should be worn for at least 12 h/d for 3 to 4 months, making sure not to exceed a 6-month total treatment duration as this longer course may negatively affect healing.",
+        "The benefits of these ointments seem to arise from the act of scar massage and from providing moisture to the scar.",
+        "Hypertrophic scars are elevated scars, but remain confined to the margins of the incision",
+        "Hypertrophic scars tend to occur earlier in the course of healing, most commonly around the first month, increase in size for several more months, with many improving and regressing spontaneously over time.",
+        "In contrast, keloid scars are characterized by overgrowth of scar tissue beyond the margins of the original incision",
+        "Trauma seems to be the most common predisposing factor to the development of keloids, with a high predilection for darkly pigmented skin.",
+        "They do not regress spontaneously over time and can continue to grow indefinitely.",
+        "more conservative treatment modalities should be instituted first before discussion of scar revision."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22093081/",
+      "publisher": "Dermatologic Surgery (PubMed abstract)",
+      "title": "The role of massage in scar management: a literature review (Shin TM, Bordeaux JS, 2012, PMID 22093081)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Of 30 surgical scars treated with massage, 27 (90%) had improved appearance or Patient Observer Scar Assessment Scale score.",
+        "The evidence for the use of scar massage is weak"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28669442/",
+      "publisher": "Burns (PubMed abstract)",
+      "title": "Scar massage for hypertrophic burns scarring: A systematic review (Ault P and colleagues, 2018, PMID 28669442)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It appears that there is preliminary evidence to suggest that scar massage may be effective to decrease scar height, vascularity, pliability, pain, pruritus and depression in hypertrophic burns scaring. This review reflects the poor quality of evidence and lack of consistent and valid scar assessment tools."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36161591/",
+      "publisher": "Cochrane Database of Systematic Reviews (PubMed abstract)",
+      "title": "Laser therapy for treating hypertrophic and keloid scars (Leszczynski R and colleagues, 2022, PMID 36161591)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "We included 15 RCTs, involving 604 participants",
+        "There is insufficient evidence to support or refute the effectiveness of laser therapy for treating hypertrophic and keloid scars."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 78,
+    "clicks": 0,
+    "position": 13.26,
+    "top_queries": [
+      {
+        "query": "best miami abdominoplasty surgeons for post-pregnancy muscle repair with natural results",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 9
+      }
+    ],
+    "demand_note": "The post has almost no named queries, so its keywords come from Keyword Planner (Ads UI, 3 Nov 2026, US monthly): tummy tuck scar 9,900; scar healing 1,300; scars after 1 year 720; scar removal 720. Search Console, all pages, 180 days (research/data/topics-L180.json): no scar tummy tuck 13, tummy tuck without scars 9, tummy tuck scar 7. Totals are baseline.mts's total row in research/baselines/tummy-tuck-2026-11-04.csv."
+  },
+  "notes": "Retargeted from 'Tummy Tuck Scars Miami: What to Expect & Fade Fast' under issue #357, reversing the fold in the 2026-10-05 plan (9,900 US searches a month, 78 impressions in 90 days). Written fresh for readers deciding. Removed: Miami targeting in title, headings and body; the double board-certified, accredited-facility and Luxury lines; the invented patient quote ('Maria'); phone numbers; financing partners and terms; the unsourced week-by-week colour stages; SPF 50+, reapply every 2 hours, shade 10 to 4; silicone from week 3 for 3 to 12 months; massage at week 4 for 5 to 10 minutes; garment 6 to 8 weeks; 'accelerates fading'; the 4% major complication line. Figures follow tummy-tuck.facts.ts where it covers them; figures it does not declare have their own quotes here: 3 months to 2 years (The Aesthetic Society aftercare), 2 to 3 weeks for massage, 12 to 18 months for revision (Cleveland Clinic), 3 to 6 months of silicone (Michelle Roughton, MD, in an ASPS website article), 12 hours a day for 3 to 4 months and a 6-month limit (Commander 2016), and the trial counts in the reviews. Two reviews on silicone disagree, and the post says so: Cochrane 2013 finds weak evidence from poor-quality trials, Tran 2020 is more positive. The line 'no controlled trial of silicone on tummy tuck scars' rests on PubMed searches on 2026-11-03: abdominoplasty silicone (22 results), abdominoplasty scar topical (9), abdominoplasty scar silicone randomized (0), tummy tuck scar silicone (0); titles read, none is a controlled silicone trial (31565401 is a gene-expression case series). Massage: the fact-check of 4 Nov found Shin and Bordeaux 2012 (22093081), which covers surgical scars and is now cited; the other reviews found are on burn scars (28669442, 35758338, 38072714). Weight limits from the ASPS article (ten pounds) are left out on purpose: the facts file carries no weight limit. Nothing says what the practice uses or offers for scar care, lasers or revision: owner questions, stated as questions to ask. The extended mini line comes from the practice's price sheet via the facts file, with no price. No price appears anywhere; the post links #pricing. Deviation from the plan's card: the C-section and mini vs full posts (N2, N3) are not linked because they ship in Batch 3 and this post ships in Batch 1, so a link would 404 until then; the page's #which-tummy-tuck and #candidate carry those readers. Add both links when Batch 3 goes live. The live FAQs on Miami sun, vitamins C and E, IPL and hyperpigmentation were dropped as unsourced or Miami-targeted; healing and fading questions are answered in the body and FAQ. Images: the 7 live images are all retired, none reused: the hero alt says 'post-tummy tuck scar on sculpted abdomen', and others carry old claims or a phone number. New set is 3 inline cards, new URLs. The registry entry still lists 'tummy tuck scars miami' strings in ownsQueries; they are left out of owns_queries here. Sources were read as text with curl (PubMed through eutils) on 2026-11-03, and every quote was machine-checked against that text. Fact-check of 4 Nov applied (factcheck/scar-diastasis.md): 'low enough' became 'placed low' in the meta, excerpt and quick answer because it is a surgeon's aim, not a result. Owner question still open: whether Alluring's regular scar runs hip to hip and whether its extended reaches around the flanks, so the placement rows keep the outside sources' wording. Sources with read_on 2026-11-04 were re-read that day and their quotes machine-checked.",
+  "gate": {
+    "verdict": "refresh",
+    "reason": "Cluster already owned by /blog/tummy-tuck-scars-miami — refresh that post instead of creating a competing URL",
+    "owningUrl": "/blog/tummy-tuck-scars-miami",
+    "owningSlug": "tummy-tuck-scars-miami",
+    "matchedQuery": "tummy tuck scar",
+    "similarityScore": null,
+    "claimedQueries": [],
+    "warnings": [],
+    "checkedAt": "2026-11-04T04:59:04.437Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_tt_rewrite"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "_about": "OWNER DECISION, not applied, and separate from claims-fix.json. Removes the four inline images whose pixels state a forbidden claim. Removing images could cost Google Images traffic, so neither the writer nor the fact-checker decided this. The alternative is replacing the pixels.",
+  "slug": "tummy-tuck-vs-bbl-miami",
+  "post_id": "c31d6857-62de-4311-9380-fa0488255098",
+  "live_md5": "0f6f4bad197e6a99c18a988019733424",
+  "how_to_run": "Pass update_post.edits to the admin MCP's update_post, before or after claims-fix.json, or in the same call; the result is the same. Always pass faqs too, or update_post re-parses the FAQ section and the last FAQ answer swallows the two closing paragraphs: claims-fix.json's update_post.faqs if that file has run or runs in the same call, otherwise the post's current faqs from get_post. If claims-fix.json ran with edit_if_images_kept, swap edit 1's oldText for inline_1_oldText_if_alt_edit_already_applied.",
+  "expected_md5_alone_on_live": "1b6843be116f8297213edc4df1e48f2d",
+  "expected_md5_with_claims_fix": "c022adc1cffb4a9c4323c04d3ae0ee14",
+  "update_post": {
+    "id": "c31d6857-62de-4311-9380-fa0488255098",
+    "edits": [
+      {
+        "oldText": "![5-step visual flow: 1) Marking/photos 2) Liposuction harvest 3) Sterile purification/centrifuge 4) Tummy tuck muscle repair + skin removal 5) Strategic fat transfer + compression/drains; include “AAAASF-accredited setting” note.](https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/0861e3e7-d7a0-45b6-ac00-a142a2253d12/1769524700975-l8rspj-0.jpg)",
+        "newText": ""
+      },
+      {
+        "oldText": "![Side-by-side “Choose Your Path” comparison card (Mommy Makeover vs BBL) summarizing focus, downtime, key restrictions, and top candidate traits](https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/2720ada4-1304-4114-a7b2-fadb8aadbbbc/1768993436790-yj01h3-0.jpg)",
+        "newText": ""
+      },
+      {
+        "oldText": "![Side-by-side infographic of BBL fat transfer versus butt implants: pros and cons of each, 60 to 80% long-term fat retention, and who each option suits](https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/e931e22d-890f-431d-8fbb-5d3a7fd8c025/1768841896592-k76fah-0.jpg)",
+        "newText": ""
+      },
+      {
+        "oldText": "![3–4 step BBL process infographic: ‘Liposuction donor areas → Purification/processing → Strategic fat transfer → Recovery positioning basics,’ using stone tones + gold accents and minimal icons.](https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/blog-images/c31d6857-62de-4311-9380-fa0488255098/1768918190139-qouqti-0.jpg)",
+        "newText": ""
+      }
+    ]
+  },
+  "inline_1_oldText_if_alt_edit_already_applied": "![5-step visual flow: 1) Marking/photos 2) Liposuction harvest 3) Sterile purification/centrifuge 4) Tummy tuck muscle repair + skin removal 5) Strategic fat transfer + compression/drains.](https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/0861e3e7-d7a0-45b6-ac00-a142a2253d12/1769524700975-l8rspj-0.jpg)",
+  "pixels": [
+    {
+      "key": "inline-1",
+      "url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/0861e3e7-d7a0-45b6-ac00-a142a2253d12/1769524700975-l8rspj-0.jpg",
+      "says": "Seal: 'AAAASF-Accredited Setting'"
+    },
+    {
+      "key": "inline-2",
+      "url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/2720ada4-1304-4114-a7b2-fadb8aadbbbc/1768993436790-yj01h3-0.jpg",
+      "says": "Footer: 'Consult Dr. Karlinsky • (786) 305-8649'"
+    },
+    {
+      "key": "inline-3",
+      "url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/e931e22d-890f-431d-8fbb-5d3a7fd8c025/1768841896592-k76fah-0.jpg",
+      "says": "Footer: 'Consult a board-certified surgeon'"
+    },
+    {
+      "key": "inline-7",
+      "url": "https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/blog-images/c31d6857-62de-4311-9380-fa0488255098/1768918190139-qouqti-0.jpg",
+      "says": "Title: 'The Alluring BBL Journey: 4-Step Luxury Process'"
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "slug": "how-to-reduce-pubic-swelling-after-tummy-tuck",
+  "mode": "rewrite",
+  "base_md5": "1cd3af23869364d72711d57c8a8b87bd",
+  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:39:09Z",
+  "reader": "recovering",
+  "cluster": "tummy-tuck",
+  "title": "How to Reduce Pubic Swelling After Tummy Tuck?",
+  "meta_description": "Swelling is a common side effect of a tummy tuck and keeps going down until about 3 months. What helps in the pubic area and when to call your surgeon.",
+  "excerpt": "Swelling is a common side effect of a tummy tuck. What to know about the pubic area, mons and labia, how long swelling lasts, the steps that help and the signs that need a call.",
+  "quick_answer": "How do you reduce pubic swelling after a tummy tuck?\n\nWear your compression garment as directed, usually for 4 to 6 weeks, walk a little from the day of surgery and avoid lifting for 6 weeks (Cindy Wu, MD, on the ASPS website). Keep your follow-ups. Swelling keeps going down for about 3 months, she says. One-sided, hot or fast-growing swelling needs a call.",
+  "primary_keyword": "how to reduce pubic swelling after tummy tuck",
+  "secondary_keywords": [
+    "vagina after tummy tuck",
+    "vagina after a tummy tuck",
+    "mons pubis after tummy tuck",
+    "swollen mons pubis after tummy tuck",
+    "mons swelling after tummy tuck",
+    "vulva after tummy tuck",
+    "pubic area after tummy tuck",
+    "tummy tuck pubic area",
+    "pubic swelling after tummy tuck",
+    "labia after tummy tuck",
+    "swollen labia after tummy tuck",
+    "pubic mound swelling"
+  ],
+  "owns_queries": [
+    "how to reduce pubic swelling after tummy tuck",
+    "pubic swelling after tummy tuck",
+    "swollen mons pubis after tummy tuck",
+    "mons swelling after tummy tuck",
+    "mons pubis after tummy tuck",
+    "vagina after tummy tuck",
+    "vagina after a tummy tuck",
+    "vulva after tummy tuck",
+    "pubic area after tummy tuck",
+    "tummy tuck pubic area",
+    "labia after tummy tuck",
+    "swollen labia after tummy tuck"
+  ],
+  "categories": [
+    "Post-Op Care",
+    "Recovery",
+    "Tummy Tuck"
+  ],
+  "tags": [
+    "Abdominoplasty",
+    "Compression Garments",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling",
+    "Tummy Tuck"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "1:1",
+      "alt": "A woman in a beige compression garment under a robe, tying the robe's belt.",
+      "prompt": "Tasteful clinic/lifestyle scene: patient (non-identifiable or cropped) wearing a high-waisted abdominal compression garment under a robe, with subtle fit indicators (smooth compression, no rolling/pinching).",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/08890b0d-0725-4b94-8f77-463a02aa2f55/1768927350918-2dloln-0.jpg"
+    },
+    {
+      "key": "inline-1",
+      "type": "inline",
+      "aspect": "1:1",
+      "alt": "Illustration of a woman's torso with labels for lower abdomen swelling, pubic mound swelling and the tummy tuck incision.",
+      "prompt": "Clean anatomical illustration showing tummy tuck incision region and typical postoperative swelling areas (lower abdomen/pubic mound), using discreet labeling and brand-appropriate stone/gold accents.",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/08890b0d-0725-4b94-8f77-463a02aa2f55/1768927280419-5av4l7-0.jpg"
+    },
+    {
+      "key": "inline-2",
+      "type": "inline",
+      "aspect": "1:1",
+      "alt": "Two-column infographic: “Normal” vs “Concerning” swelling with icons (symmetry, thermometer/heat, pain bolt, speed/rapid change) and a subtle callout “Contact your surgeon if concerned.”",
+      "prompt": "Two-column infographic: “Normal” vs “Concerning” swelling with icons (symmetry, thermometer/heat, pain bolt, speed/rapid change) and a subtle callout “Contact your surgeon if concerned.”",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/08890b0d-0725-4b94-8f77-463a02aa2f55/1768927310036-u1zmmc-0.jpg"
+    },
+    {
+      "key": "nutrition-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Recovery nutrition with five simple line icons: a glass of water, lean protein, fresh fruit and leafy greens, a crossed-out packaged snack, and iron- and zinc-rich beans and spinach.",
+      "prompt": "SCENE: A clean editorial card on warm stone, with a porcelain background, thin brushed gold rules and generous margins. SUBJECT: A title and five short rows, one simple line icon per row: a glass of water, a piece of fish, fruit and leafy greens, a crossed-out packaged snack, and beans with spinach. KEY DETAILS: Replaces the old nutrition card at the same body position. It states no figure, so there is no hydration count, no badge and no source footer. CONSTRAINTS: Text only as given in text_in_image, word for word, with nothing added; every figure exactly as written; no phone number, practice name, logo or watermark; no body shape, torso, photograph, garment on a body, incision or drain; icons are simple flat line drawings; large text that reads on a phone.",
+      "text_in_image": "Recovery nutrition\nDrink water through the day\nChoose lean protein\nEat fresh fruits and leafy greens\nAvoid salty, packaged, or processed foods\nInclude iron- and zinc-rich ingredients"
+    },
+    {
+      "key": "timeline-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Three-step timeline card. Week 1–2: swelling is expected, wear your garment as directed, and bruising subsides in a couple of weeks. Week 3–6: swelling gradually subsides, within 5 weeks according to The Aesthetic Society, and the garment is worn for 4 to 6 weeks. By about 3 months: swelling keeps going down until about now, and the final result can take up to 3 months to show.",
+      "prompt": "SCENE: A clean editorial card on warm stone, with a porcelain background, thin brushed gold rules and generous margins. SUBJECT: A title, then a simple vertical timeline with three steps joined by a thin gold line, then a one-line reminder and a small source footer. KEY DETAILS: Replaces the old timeline at the same body position. Nothing past 3 months: no Months 4–6. The footer is small but legible. CONSTRAINTS: Text only as given in text_in_image, word for word, with nothing added; every figure exactly as written; no phone number, practice name, logo or watermark; no body shape, torso, photograph, garment on a body, incision or drain; icons are simple flat line drawings; large text that reads on a phone.",
+      "text_in_image": "Swelling after a tummy tuck\nWeek 1–2: Swelling is expected; wear your garment as directed. Bruising subsides in a couple of weeks.\nWeek 3–6: Swelling gradually subsides. The Aesthetic Society says it should subside within 5 weeks. The garment is worn for 4 to 6 weeks.\nBy about 3 months: Swelling keeps going down until about now. The final result can take up to 3 months to show.\nHealing varies. Follow your surgeon’s plan.\nSources. Bruising, garment and 3 months of swelling: Cindy Wu, MD, on the ASPS website. 5 weeks: The Aesthetic Society. Final result: Cleveland Clinic."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD",
+      "title": "Answers to common tummy tuck questions (2019)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "After surgery, you will be placed in a compression garment, which will be worn for 4-6 weeks after surgery to help with reducing swelling.",
+        "You can walk the day of surgery.",
+        "However, running or lifting should be avoided for six weeks after the procedure.",
+        "The bruising will subside in a couple of weeks, and the swelling will continue to diminish until approximately three months post-procedure.",
+        "Adequate hydration and ambulation are also important to lower the risk of blood clots after surgery."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck Aftercare & Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Common side effects associated with a tummy tuck include redness, bruising, and swelling.",
+        "Swelling should subside within five weeks.",
+        "Call your surgeon immediately if you notice an increase in swelling, pain, redness, drainage, or bleeding in the surgical area, or if you develop fever, dizziness, nausea, or vomiting.",
+        "Other red flags include shortness of breath, chest pains, and an unusual heartbeat.",
+        "You will also need to wear a wide elastic compression garment to reduce swelling and provide support to the skin as it tightens.",
+        "It is important to walk to discourage swelling and to prevent blood clots in the legs.",
+        "However, avoid strenuous exercise for four to six weeks, because it can trigger unnecessary fluid retention in the treated areas.",
+        "It is also important to know that the amount of time it takes for recovery varies greatly among individuals."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck Scar",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The scar for a standard tummy tuck usually spans your abdomen, from hip bone to hip bone, just above your pubic area."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "It could take up to up to three months to see the final result.",
+        "Achieving proper nutrition can help your body heal."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/articles/21104-jackson-pratt-jp-drain",
+      "publisher": "Cleveland Clinic",
+      "title": "Jackson-Pratt (JP) Drain",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Contact your provider immediately if you notice signs of an infection, including:",
+        "A fever of 100.4 degrees Fahrenheit (38 degrees Celsius) or more.",
+        "Sometimes, after providers remove JP drains, fluid collects and swells at the surgical site (wound).",
+        "This fluid is called a seroma."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27561133/",
+      "publisher": "Whitis and colleagues, Journal of Lower Genital Tract Disease",
+      "title": "Vulvar Concerns in Women With a History of Abdominoplasty: A Case Series (2016)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "We describe 5 women with a history of abdominoplasty who were referred with symptoms of vulvar pain, dyspareunia, lower urinary tract symptoms, and/or lesion/mass.",
+        "Abdominoplasty can result in anatomic changes to the female pubic region after elevation of the mons pubis and consequent elevation of the clitoris with or without retraction of the clitoral hood.",
+        "Although causation cannot be confirmed from this series, a temporal association of vulvar/clitoral pain, pelvic floor dysfunction, and anatomic alterations with or without lesions after abdominoplasty was present in each case.",
+        "The aim of the study was to present a series of women with a history of traditional abdominoplasty or circumferential abdominoplasty (belt lipectomy) with vulvar concerns and anatomic changes."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30511162/",
+      "publisher": "Xia and colleagues, Aesthetic Plastic Surgery",
+      "title": "Safety of Lipoabdominoplasty Versus Abdominoplasty: A Systematic Review and Meta-analysis (2019)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Overall, 17 trials enrolling 14,061 adult patients were searched.",
+        "Of these patients, 577 (4.1%) developed seroma;",
+        "Subgroup analysis showed that the lipoabdominoplasty group had a lower incidence of hematoma (RR = 0.56; 95% CI 0.36-0.86; p = 0.009) and seroma (RR = 0.69; 95% CI 0.57-0.85; p = 0.000)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+      "publisher": "Winocour and colleagues, Plastic and Reconstructive Surgery",
+      "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (2015)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The authors identified 25,478 abdominoplasties from 183,914 procedures in the database.",
+        "Major complications were recorded.",
+        "Combined procedures increased the risk of complication (abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent;"
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "baseline.mts total row (research/baselines/tummy-tuck-2026-11-04.csv) and its queries_for_page rows",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 22843,
+    "clicks": 560,
+    "position": 5.17,
+    "top_queries": [
+      {
+        "query": "vagina after tummy tuck",
+        "impressions": 1273,
+        "clicks": 0,
+        "position": 5.54
+      },
+      {
+        "query": "mons pubis after tummy tuck",
+        "impressions": 176,
+        "clicks": 1,
+        "position": 7.78
+      },
+      {
+        "query": "how to reduce pubic swelling after tummy tuck",
+        "impressions": 122,
+        "clicks": 0,
+        "position": 1.67
+      },
+      {
+        "query": "vagina after a tummy tuck",
+        "impressions": 105,
+        "clicks": 0,
+        "position": 5.21
+      },
+      {
+        "query": "swollen mons pubis after tummy tuck",
+        "impressions": 101,
+        "clicks": 7,
+        "position": 1.67
+      },
+      {
+        "query": "vulva after tummy tuck",
+        "impressions": 84,
+        "clicks": 0,
+        "position": 6.46
+      },
+      {
+        "query": "pubic area after tummy tuck",
+        "impressions": 80,
+        "clicks": 0,
+        "position": 4.17
+      },
+      {
+        "query": "tummy tuck swelling",
+        "impressions": 78,
+        "clicks": 0,
+        "position": 40.72
+      },
+      {
+        "query": "pubic swelling",
+        "impressions": 71,
+        "clicks": 0,
+        "position": 4.04
+      },
+      {
+        "query": "pubis area swollen",
+        "impressions": 67,
+        "clicks": 0,
+        "position": 9.28
+      }
+    ]
+  },
+  "notes": "Batch 2 gentle fix (issue #357), text only apart from the new cards below. Title, slug, publish date and all 5 topic H2s kept word for word and in order. Added: the opening H2 question the kit requires, above the live opening; one new H2 on labia or vagina swelling; FAQ and Sources; a #procedure link and a closing planning line to #pricing. Cut: hydration counts, 24/7, the 10 lbs limit, 5-10 minutes 2-3 times a day, the 4-6 month lines, the medication sentence, phone and tel: links, #contactus, board-certified and the Learn More block. Reworded only what the sweep requires: bold, journey, best. The H3 \"The First Two Weeks Are Essential\" and its \"fourteen days\" lost their figure, which had no source. Normal vs concerning lists became one table with the same words, because a recovery post needs a table. IMAGES: the count stays at 5 body positions plus the hero, to protect Google Images. Two live cards had figures the post no longer supports and left the body, with their files kept on Blob: aez5wg, the nutrition card (\"8+ GLASSES / DAY\"), and ayz61s, the timeline (\"Months 4-6\", \"Normal activity\"). New briefs nutrition-card and timeline-card take the same positions at new URLs and must be rendered and uploaded before check_post --final and the SQL build can pass. Their text states only figures the post states, credited in a footer, with no phone or practice name. Kept with reuse_url and no pixel change (alts on hero and inline-1 corrected on 2026-11-04): hero and garment inline 2dloln, illustration 5av4l7, normal vs concerning card u1zmmc. They state no retired figure, but break image rules to fix later: u1zmmc shows the phone number in its footer and waits for the same-address canary; 2dloln is a cropped body in a post-op garment with the practice name on a wall sign, and its live alt said \"patient\"; 5av4l7 and u1zmmc carry the practice name. Those replacement briefs are in later-images.json, which the kit ignores. DEVIATIONS FROM THE CARD: (a) The meta and excerpt no longer say swelling of the labia is common, because no source read says so. The Aesthetic Society calls swelling a common side effect without naming the labia. The post says people search for it, based on Search Console queries such as \"swollen labia after tummy tuck\" (31 impressions, 90 days), and tells her to ask her surgeon. (b) The unsourced lines on fluid settling at the pubic area and on spreading into the labia in the first weeks are gone. (c) The quick answer keeps \"keep your follow-ups\" outside Wu's citation, because she does not mention follow-ups, and follows her on walking. SOURCES: every quote re-read on 2026-11-03, PubMed abstracts by efetch. The PubMed title of Xia 2019 differs from tummy-tuck.facts.ts, which calls it \"Comparison of Complications...\"; the PMID, 14,061 and 4.1% match. OPEN: (1) Fontes de Moraes, Aesthet Surg J 2023 (PMID 36282895), found less edema after day 24 without a garment; it is not in the post, and the coordinator is raising it with the owner. (2) The 8 FAQs in the faqs column are replaced by the 5 on the card; their topics are covered in the body. FACT-CHECK 2026-11-04 (factcheck/earners-bbl.md): live claims that garments improve circulation or prevent seromas, the invented garment schedule, flushing, inflammation and speed-of-recovery claims were corrected with the smallest wording change. All quotes re-read on 2026-11-04. OWNER items left as they are: card u1zmmc, the garment evidence (Fontes de Moraes, Bruno, Arkoubi), a surgeon's line for the labia H2, and the unsourced lines passed as common knowledge.",
+  "gate": {
+    "verdict": "refresh",
+    "reason": "Cluster already owned by /how-to-reduce-pubic-swelling-after-tummy-tuck — refresh that post instead of creating a competing URL",
+    "owningUrl": "/how-to-reduce-pubic-swelling-after-tummy-tuck",
+    "owningSlug": "how-to-reduce-pubic-swelling-after-tummy-tuck",
+    "matchedQuery": "how to reduce pubic swelling after tummy tuck",
+    "similarityScore": null,
+    "claimedQueries": [],
+    "warnings": [],
+    "checkedAt": "2026-11-04T05:00:21.657Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_tt_rewrite"
+  }
+}

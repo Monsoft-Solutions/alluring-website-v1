@@ -1,0 +1,363 @@
+{
+  "slug": "what-is-more-painful-bbl-or-tummy-tuck",
+  "mode": "rewrite",
+  "base_md5": "ffef2536d7fcaae255698f0e7bdd8be0",
+  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:39:11Z",
+  "reader": "deciding",
+  "cluster": "tummy-tuck",
+  "title": "What Is More Painful, a BBL or a Tummy Tuck?",
+  "meta_description": "Neither is proven to hurt more: we found no study comparing them. How a BBL and a tummy tuck each feel, day by day, how long it lasts and when to call.",
+  "excerpt": "We found no study that compares BBL and tummy tuck pain head to head, but medical sources describe each clearly. Where it hurts, the hardest days, how long pain medicine is needed and when you can work again.",
+  "quick_answer": "What is more painful, a BBL or a tummy tuck?\n\nNeither is proven to hurt more: we found no study comparing them. After a tummy tuck with muscle repair, you use those muscles to stand, and The Aesthetic Society says discomfort eases to a nagging level by 5 to 7 days. After a BBL, most need pain medication for 4 to 5 days, a plastic surgeon interviewed by ASPS says.",
+  "primary_keyword": "what is more painful bbl or tummy tuck",
+  "secondary_keywords": [
+    "is a tummy tuck painful",
+    "is tummy tuck painful",
+    "are tummy tucks painful",
+    "tummy tuck pain",
+    "how painful is a bbl",
+    "how painful is bbl",
+    "is bbl painful",
+    "is bbl surgery painful",
+    "bbl pain",
+    "bbl pain level",
+    "bbl painful",
+    "does bbl hurt",
+    "how bad does a bbl hurt"
+  ],
+  "owns_queries": [
+    "is a tummy tuck painful",
+    "is tummy tuck painful",
+    "are tummy tucks painful",
+    "tummy tuck pain",
+    "how painful is a bbl",
+    "is bbl painful",
+    "bbl pain",
+    "bbl pain level"
+  ],
+  "categories": [
+    "BBL",
+    "Liposuction",
+    "Post-Op Care",
+    "Recovery",
+    "Tummy Tuck"
+  ],
+  "tags": [
+    "Abdominoplasty",
+    "BBL",
+    "Brazilian Butt Lift",
+    "Compression Garments",
+    "Lipo",
+    "Liposuction",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling",
+    "Tummy Tuck"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her 40s sits in a linen armchair by an arched window, writing in a notebook, with a cup of tea on the table beside her.",
+      "prompt": "SCENE: Late morning in a bright Miami sitting room, warm white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows on a pale limestone floor, a small oak side table with a cup of tea. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid 40s with light olive skin and shoulder-length dark curly hair, wearing a soft oat knit cardigan over a high-neck cream top and loose stone-colored trousers, sitting in a linen armchair and writing in a notebook, looking thoughtful and at ease, three-quarter view. KEY DETAILS: Subject in the upper two thirds of a 3:2 frame with quiet space below; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest everyday clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments on a body, bandages, drains or incisions; not photographed from behind; no text, letters, numbers, logos or watermarks; not the surgeon or staff; not glamour, not a fashion ad."
+    },
+    {
+      "key": "day-by-day",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled The first days of pain. Tummy tuck: first 2 days most uncomfortable; a nagging level by 5 to 7 days; bent at the waist for 7 to 10 days. BBL: first several days often the most painful; some pain medication for the first 4 to 5 days; pain should decrease after 1 to 2 weeks. Sources named in the footer.",
+      "prompt": "SCENE: A clean editorial card on warm stone-white paper with a thin brushed-gold rule under the title. SUBJECT: Two stacked panels, one headed Tummy tuck and one headed BBL, each with three short rows set on a simple vertical timeline with small gold dots. KEY DETAILS: Fraunces-style serif for the title and panel heads, a clean humanist sans for the rows, generous margins, readable on a phone, a small one-line source footer. CONSTRAINTS: Text exactly as supplied and nothing else; no practice name, no logo, no phone number, no people, no bodies, no body silhouettes, no anatomy; no before/after framing.",
+      "text_in_image": "The first days of pain\n\nTummy tuck\nFirst 2 days: most uncomfortable\nBy 5 to 7 days: a nagging level\n7 to 10 days: bent at the waist\n\nBBL\nFirst several days: often the most painful\nFirst 4 to 5 days: some pain medication\nAfter 1 to 2 weeks: pain should decrease\n\nSources: The Aesthetic Society; Cindy Wu, MD; a plastic surgeon interviewed by ASPS; Cleveland Clinic"
+    },
+    {
+      "key": "side-by-side",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Recovery side by side, tummy tuck and BBL. Biggest limit: bent at the waist for 7 to 10 days; no sitting on your buttocks for at least 2 weeks. Back to work: about 2 weeks; 10 to 14 days, on a pillow or at a standing desk. Lifting: no heavy lifting for 4 to 6 weeks; nothing strenuous, including lifting, for 4 to 6 weeks, normal activities and exercise after 8 weeks. Full recovery: around 3 months, or over a period of 6 months or more; 2 to 3 months, and up to 6. Sources named in the footer.",
+      "prompt": "SCENE: A clean editorial card on warm stone-white paper with a thin brushed-gold rule under the title. SUBJECT: Four stacked rows, each with a small heading and two short lines, one for Tummy tuck and one for BBL, laid out in two even columns. KEY DETAILS: Fraunces-style serif for the title, a clean humanist sans for the rows, generous margins, readable on a phone, a small one-line source footer. CONSTRAINTS: Text exactly as supplied and nothing else; no practice name, no logo, no phone number, no people, no bodies, no body silhouettes, no anatomy; no before/after framing.",
+      "text_in_image": "Recovery side by side\n\nBiggest limit\nTummy tuck: bent at the waist for 7 to 10 days\nBBL: no sitting on your buttocks for at least 2 weeks\n\nBack to work\nTummy tuck: about 2 weeks\nBBL: 10 to 14 days, on a pillow or at a standing desk\n\nLifting\nTummy tuck: no heavy lifting for 4 to 6 weeks\nBBL: nothing strenuous, including lifting, for 4 to 6 weeks; normal activities and exercise after 8 weeks\n\nFull recovery\nTummy tuck: around 3 months, or over a period of 6 months or more\nBBL: 2 to 3 months, and up to 6\n\nSources: Cindy Wu, MD; Samir Rao, MD; Cleveland Clinic; The Aesthetic Society"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck - Aftercare & Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The first two days are the most uncomfortable, so if you have to take medications at certain times, stay on the schedule. Discomfort typically drops down to a \"nagging\" level by five to seven days.",
+        "The first week will be the worst, and you will still feel like you are recovering for about two to three weeks.",
+        "Call your surgeon immediately if you notice an increase in swelling, pain, redness, drainage, or bleeding in the surgical area, or if you develop fever, dizziness, nausea, or vomiting. Other red flags include shortness of breath, chest pains, and an unusual heartbeat.",
+        "Remember, you must not take aspirin or certain anti-inflammatory medications.",
+        "You won't feel like yourself for at least seven to ten days and you still shouldn't do any heavy lifting (such as picking up your children or baskets of laundry) for four to six weeks.",
+        "Recovery from a tummy tuck procedure occurs over a period of six months or more.",
+        "You will also need to wear a wide elastic compression garment to reduce swelling and provide support to the skin as it tightens.",
+        "The first few days after surgery, you should rest.",
+        "Plan to take about two weeks off from work, depending on the physical demands of your job.",
+        "You should be up and walking the day after surgery, but take it slow."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/butt-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Butt Lift - Aftercare & Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "After fat grafting, you can return to work, drive, or go to the movies after ten to fourteen days, but you must use a pillow when sitting, so there is no pressure on your buttocks.",
+        "In general, the recovery period is slightly longer and more painful in the buttock area than other body areas because you use this region for physical activities such as walking, running, and even standing.",
+        "You'll be tempted to try to help around the house quickly, but you won't feel like yourself for one or two weeks, and you still shouldn't do anything strenuous, including lifting, for four to six weeks.",
+        "When the swelling subsides, sometimes taking three to six months, your true results will be more evident.",
+        "Significant fluid drainage is not uncommon after large volume liposuction, and bruising is common.",
+        "The pain usually begins to resolve after a few days.",
+        "If the pain is extreme or long-lasting, contact your surgeon.",
+        "You can resume normal activities and exercise after eight weeks."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD",
+      "title": "Answers to common tummy tuck questions",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You may feel some pain or discomfort, but most patients are able to manage post-procedure pain or discomfort with just a few days of pain medications.",
+        "You will be bent at the waist while standing or lying down for 7-10 days after surgery to protect the incision and to allow for your skin to adapt.",
+        "However, running or lifting should be avoided for six weeks after the procedure.",
+        "Patients typically return to work in approximately two weeks.",
+        "the swelling will continue to diminish until approximately three months post-procedure.",
+        "Adequate hydration and ambulation are also important to lower the risk of blood clots after surgery.",
+        "In fact, most plastic surgeons encourage patients to walk three times the day of surgery to improve blood circulation to keep the risk of blood clots in the legs to a minimum."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/five-things-to-consider-before-getting-a-tummy-tuck",
+      "publisher": "ASPS website, a post by Paul Vitenas, MD",
+      "title": "Five things to consider before getting a tummy tuck",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "However, residual swelling can linger for six months or longer."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/understanding-the-different-types-of-tummy-tucks",
+      "publisher": "ASPS website, a post by Samir Rao, MD",
+      "title": "Understanding the different types of tummy tucks",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Most patients can return to nonstrenuous work after a couple of weeks, but it takes around three months to fully recover from a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Tummy Tuck",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Tummy tuck surgery, also known as abdominoplasty, removes excess fat and skin and, in most cases, restores weakened or separated muscles creating an abdominal profile that is smoother and firmer."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/six-things-you-need-to-know-about-recovering-from-a-brazilian-butt-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS), quoting plastic surgeons Steven Williams, MD, and Chris Funderburk, MD",
+      "title": "Six things you need to know about recovering from a Brazilian butt lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "\"Patients should expect to have a recovery period that consists of mild to moderate pain and most need some degree of pain medication for the first four to five days.\"",
+        "who adds that many find the liposuctioned areas to be tender, but not overly sensitive.",
+        "\"I'm a very big fan of compression garments because they definitely help alleviate the swelling,\""
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Brazilian Butt Lift",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "The first several days after your Brazilian butt lift procedure are often the most painful.",
+        "After one to two weeks, your pain should decrease.",
+        "You won’t be able to sit or lie down on your butt for at least two weeks. So, you’ll need to stand rather than sit and sleep on your stomach or sides.",
+        "You won’t be able to sit without your pillow for approximately eight weeks.",
+        "However, you should avoid heavy lifting or strenuous activities for one month.",
+        "Your body should fully recover between two and three months after your Brazilian butt lift procedure.",
+        "It may take up to six months for your body to fully recover after your Brazilian butt lift procedure.",
+        "To manage pain, some people take either a prescribed pain medication or OTC acetaminophen.",
+        "If you’re taking a prescription pain medication, it’s a good idea to have a family member or friend help take care of you because you shouldn’t drive.",
+        "Your butt may be swollen and bruised.",
+        "Make three to five small incisions in specific areas around your buttock.",
+        "If you usually sit at a desk for long periods, it’s advisable to use a standing desk until you’ve completely healed.",
+        "After several weeks, you may be able to sit for short periods of time on a specially designed pillow that evenly distributes pressure.",
+        "During this time, your healthcare provider will also evaluate how well your body is healing and determine whether you have recovered enough to sit for short periods on a special pillow.",
+        "Depending on your job, you should be able to go back to work between 10 and 14 days after your Brazilian butt lift procedure."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck Scar",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Full tummy tuck: The scar for a standard tummy tuck usually spans your abdomen, from hip bone to hip bone, just above your pubic area."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You may feel a tightness or pulling sensation around your abdomen as you heal."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/17400-pulmonary-embolism",
+      "publisher": "Cleveland Clinic",
+      "title": "Pulmonary Embolism",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Sharp chest pain that gets worse if you move around or take a deep breath",
+        "Sudden shortness of breath, even if you’re at rest",
+        "Call 911 or your local emergency number if you have these symptoms.",
+        "However, symptoms of a blood clot waiting to dislodge and travel to the lungs may include leg pain, swelling and warmth.",
+        "Take those signs just as seriously and seek medical care right away."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31858207/",
+      "publisher": "Aesthetic Plastic Surgery",
+      "title": "Venous Thromboembolism (VTE) Prophylaxis After Abdominoplasty and Liposuction: A Review of the Literature (Mittal and colleagues, 2020)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Abdominoplasty has the highest occurrence of VTE among aesthetic procedures.",
+        "A higher incidence of VTE was noted when abdominoplasty was combined with liposuction."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35959568/",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "Brazilian Butt Lift-Associated Mortality: The South Florida Experience (Pazmiño and Garcia, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "South Florida has experienced 25 BBL-related fat emboli deaths between 2010 and 2022",
+        "All BBL PFE cases had fat grafts injected into the gluteal musculature in multiple different levels."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36472239/",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "The Efficacy of Different Nerve Blocks on Postoperative Pain and Sequelae in Patients Undergoing Abdominoplasty: A Network Meta-Analysis (Seretis and Bounas, 2023)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "A total of 12 studies, containing 543 patients",
+        "Transversus abdominis plane blocks have been found to reduce 24-hour and 48-hour opioid consumption"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (Winocour and colleagues, 2015)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Combined procedures increased the risk of complication (abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent;"
+      ]
+    },
+    {
+      "url": "https://www.flrules.org/gateway/ruleNo.asp?id=64B8-9.009",
+      "publisher": "Florida Board of Medicine",
+      "title": "Rule 64B8-9.009, Standard of Care for Office Surgery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "For elective cosmetic and plastic surgery procedures performed in a physician’s office, the maximum planned duration of all surgical procedures combined must not exceed 8 hours."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-04..2026-11-01",
+    "impressions": 8982,
+    "clicks": 29,
+    "position": 3.7,
+    "last_28": {
+      "window": "2026-10-05..2026-11-01",
+      "impressions": 2046,
+      "clicks": 9,
+      "position": 3.9
+    },
+    "top_queries": [
+      {
+        "query": "what is a bbl",
+        "impressions": 117,
+        "clicks": 0,
+        "position": 2.5
+      },
+      {
+        "query": "bbl surgery",
+        "impressions": 99,
+        "clicks": 0,
+        "position": 2.9
+      },
+      {
+        "query": "bbl vs tummy tuck",
+        "impressions": 93,
+        "clicks": 0,
+        "position": 17.6
+      },
+      {
+        "query": "bbl",
+        "impressions": 91,
+        "clicks": 0,
+        "position": 2.7
+      },
+      {
+        "query": "bbl recovery time",
+        "impressions": 77,
+        "clicks": 0,
+        "position": 2.6
+      },
+      {
+        "query": "bbl cost",
+        "impressions": 60,
+        "clicks": 0,
+        "position": 2.6
+      },
+      {
+        "query": "bbl pain",
+        "impressions": 54,
+        "clicks": 0,
+        "position": 2.9
+      },
+      {
+        "query": "how much is a bbl",
+        "impressions": 51,
+        "clicks": 0,
+        "position": 2.6
+      },
+      {
+        "query": "bbl and tummy tuck",
+        "impressions": 44,
+        "clicks": 0,
+        "position": 4.8
+      },
+      {
+        "query": "how much does a bbl cost",
+        "impressions": 44,
+        "clicks": 0,
+        "position": 2.5
+      }
+    ]
+  },
+  "notes": "Gentle fix, issue #357, plan card Pain. Rebuilt on 4 Nov from the live text after a first draft turned out to be a rewrite: every sentence is the live one unless it failed a check, and factcheck/pain-restore.md lists each change with its reason and source. Title gains only a comma. All five live content H2s are kept word for word, including 'How Long Is Recovery for BBL vs Tummy Tuck?', which the task's rule overrides the plan's 'stay off vs queries' note on; the closing H2 is kept with a short next step. A head-question H2 is added first because the lint requires it. When-to-call and 911 lines sit at the end of the managing-pain section, not in an H2 of their own. Added only: the corrected answer, the BBL safety sentence in place of 'minimally invasive', the tummy tuck clot-risk sentence the fact-check required for balance, the table, the links, FAQs and sources. 'We found no study' rests on a PubMed search on 2026-11-03 for abdominoplasty or tummy tuck, with gluteal fat grafting or Brazilian butt lift, and pain: one result (PMID 38213470, on plastic surgery tourism), no comparison. FACT-CHECK 4 NOV, OWNER NOTE: the plan's quick answer 'Usually a tummy tuck' and 'usually the harder first week' are gone, and so are the live 'significantly more', 'greater discomfort', 'more quickly' and 'considerably less intense'. No source read compares the two, and the sources' figures don't support that ranking (a few days of pain medicine versus 4 to 5, nagging by 5 to 7 days versus easing after 1 to 2 weeks, and The Aesthetic Society's 'slightly longer and more painful in the buttock area'). It may say more only as Dr. Karlinsky's own experience, if she confirms it in writing. Live 'moderate to severe' is dropped: no source read says it is typical (a PubMed search found it only as a trial's entry criterion, PMID 30276064), and set against the BBL's 'mild to moderate' it restates the ranking. All sources re-read 2026-11-04. All three images are new and not rendered yet; the live hero and inline images break the rules ('luxury' alt, pain-scale chart). Registry change still open for the main session: add mustNotTarget both ways with the comparison post, per the plan. No practice protocol, price or surgeon name is stated. RECHECK 4 NOV (factcheck/pain-recheck.md): 5 BLOCKERs and 18 of 19 FIXes applied. The 10-minute pillow line is gone: in Funderburk's article the 10 minutes is sitting without a pillow, and the pillow is the workaround, so the table now follows Cleveland Clinic, including its point that the provider decides when she can sit on the pillow. bbl.facts.ts and the BBL page still carry the misreading and were not touched. Skipped as style-only: 'with the first week the worst'; the kept wording says the same thing and stays closer to the live sentence.",
+  "gate": {
+    "verdict": "refresh",
+    "reason": "Cluster already owned by /what-is-more-painful-bbl-or-tummy-tuck — refresh that post instead of creating a competing URL",
+    "owningUrl": "/what-is-more-painful-bbl-or-tummy-tuck",
+    "owningSlug": "what-is-more-painful-bbl-or-tummy-tuck",
+    "matchedQuery": "what is more painful bbl or tummy tuck",
+    "similarityScore": null,
+    "claimedQueries": [],
+    "warnings": [],
+    "checkedAt": "2026-11-04T04:54:31.266Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_tt_rewrite"
+  }
+}

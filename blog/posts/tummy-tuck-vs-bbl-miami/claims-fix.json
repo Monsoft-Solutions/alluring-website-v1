@@ -1,0 +1,295 @@
+{
+  "_about": "Claims-only fix for /blog/tummy-tuck-vs-bbl-miami (issue #357, decision 6). Not applied. The kit can't build this post under its rules, so this is the find-and-replace list for the admin MCP's update_post. Removing inline images is a separate owner decision: see claims-fix-images.json.",
+  "slug": "tummy-tuck-vs-bbl-miami",
+  "post_id": "c31d6857-62de-4311-9380-fa0488255098",
+  "live_md5": "0f6f4bad197e6a99c18a988019733424",
+  "md5_read_from": "localhost:5432/alluring_wt_tt_rewrite, the production clone refreshed 2026-11-04, after the mcp-edit of 2026-11-04 (fat embolism wording, one link, the faqs column); production itself was not read",
+  "expected_md5_after_edits": "b2665fad31c648410e237fe01f074351",
+  "before_applying": "get_post on production and compare md5(content) with live_md5. If it differs, re-check that each oldText still occurs once.",
+  "why_not_the_kit": "check_post.py fails on structure unrelated to claims, and build_sql.py runs the same rules: title 68 chars; meta 157 chars; no opening H2 question; no Sources section; closing paragraphs inside the last FAQ section; bold outside list lead-ins; 9 inline images not in IMAGE:key form; a 29-word FAQ. Fixing those means restructuring the post, which this task forbids.",
+  "format_note": "The task described {find, replace}. update_post's schema is {oldText, newText}, so 'update_post.edits' uses those names and can be passed as is.",
+  "faqs_note": "Pass update_post.faqs explicitly. Without it, update_post re-parses the FAQ section from the body, and because this post has no later H2, the last FAQ answer swallows the two closing paragraphs. The 2026-11-04 mcp-edit already did that: the live last answer now carries them, including 'double board-certified', 'AAAASF-accredited', '5,000 procedures' and the phone number. This list is the live faqs column with only the pain answer's first sentence and the combining answer's first two sentences changed, and the last answer without those swallowed paragraphs (its text before the 4 Nov edit). UPDATE 4 Nov, 17:32 UTC: the BBL session restored the live faqs column on production; the swept-in paragraphs are gone from it. Passing update_post.faqs is still required, for the reason above.",
+  "update_post": {
+    "id": "c31d6857-62de-4311-9380-fa0488255098",
+    "edits": [
+      {
+        "oldText": "![Luxury comparison graphic: Liposuction vs BBL",
+        "newText": "![Comparison graphic: Liposuction vs BBL"
+      },
+      {
+        "oldText": "Fat is injected above the muscle, never into it, under real-time ultrasound guidance, which Florida now requires.",
+        "newText": "Florida now requires fat to be injected above the muscle, never into it, with ultrasound guidance."
+      },
+      {
+        "oldText": "For most patients with a BMI between about 22 and 30, the BBL is the better operation because it also reshapes the waist.",
+        "newText": "If you have enough fat to transfer, a BBL also reshapes the waist, which implants do not."
+      },
+      {
+        "oldText": "Three things keep it safe:",
+        "newText": "Three things to go over with your surgeon:"
+      },
+      {
+        "oldText": "BMI under 30, non-smoker, no uncontrolled medical conditions",
+        "newText": "Non-smoker, no uncontrolled medical conditions"
+      },
+      {
+        "oldText": "and enough fat that the BBL is worth doing.",
+        "newText": "and enough fat that the BBL is worth doing. In one large tummy tuck study, a BMI of 30 or more raised the risk of major complications ([Winocour and colleagues, Plastic and Reconstructive Surgery, 2015](https://pubmed.ncbi.nlm.nih.gov/26505716/))."
+      },
+      {
+        "oldText": "Combined cases belong in an accredited surgical facility with a board-certified anesthesiologist, not an office procedure room.",
+        "newText": "Ask where the surgery will be done and who will give the anesthesia."
+      },
+      {
+        "oldText": "never had the shape you want, you have donor fat in the abdomen, flanks, or thighs, and your BMI is roughly 22 to 30.",
+        "newText": "never had the shape you want and you have donor fat in the abdomen, flanks, or thighs."
+      },
+      {
+        "oldText": "Dr. Victoria Karlinsky reviews your health history",
+        "newText": "Dr. Victoria Karlinsky, MD, FACS, reviews your health history"
+      },
+      {
+        "oldText": "and a fair share of patients leave with a different plan than the one they came in for.",
+        "newText": "and your plan may change after that exam."
+      },
+      {
+        "oldText": "usually seven to ten days for a BBL or tummy tuck and closer to two weeks for a combination.",
+        "newText": "usually seven to ten days for a BBL; your surgeon tells you how many nights to stay after a tummy tuck or a combination."
+      },
+      {
+        "oldText": "Combining procedures in one surgery saves you a second facility and anesthesia fee, which is",
+        "newText": "Combining procedures in one surgery means one anesthesia and one recovery, which is"
+      },
+      {
+        "oldText": "are so often done together.",
+        "newText": "are so often done together, though [The Aesthetic Society](https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery) says recovery is typically longest for those who combine a tummy tuck with other surgery."
+      },
+      {
+        "oldText": "is available for all of them, with 0% APR promotional plans subject to approval.",
+        "newText": "is available for all of them, subject to approval."
+      },
+      {
+        "oldText": "Most patients rate the tummy tuck as the harder first week, because the muscle repair makes standing upright, coughing, and getting out of bed sore.",
+        "newText": "We found no study that measures the two side by side, but a tummy tuck with muscle repair may feel harder in the first days, because the repair makes standing upright, coughing, and getting out of bed sore."
+      },
+      {
+        "oldText": "Yes, for healthy candidates with a BMI under 30. The tummy tuck liposuction provides the fat for the BBL, so nothing is wasted.",
+        "newText": "Yes, for healthy candidates, and your surgeon decides at consultation. The tummy tuck liposuction provides the fat for the BBL."
+      },
+      {
+        "oldText": "Dr. Victoria Karlinsky is double board-certified and operates in our AAAASF-accredited facility in Miami, with more than 5,000 procedures behind her. [Book a free consultation](/free-consultation/miami) or call (786) 305-8649 and bring",
+        "newText": "Surgery at Alluring is performed by Dr. Karlinsky. She is board certified in general surgery by the American Board of Surgery and is a Fellow of the American College of Surgeons. [Book a free consultation](/free-consultation/miami) and bring"
+      }
+    ],
+    "quickAnswer": "Is a BBL or a tummy tuck the right procedure?\n\nA tummy tuck removes loose abdominal skin and repairs separated muscles. A BBL moves your own fat to the buttocks. Loose skin or a muscle gap means tummy tuck; a flat backside with fat to spare means BBL. Healthy candidates can combine the two in one surgery, using the tummy tuck's liposuction fat for the transfer.",
+    "faqs": [
+      {
+        "question": "Is a BBL or a tummy tuck more painful?",
+        "answer": "We found no study that measures the two side by side, but a tummy tuck with muscle repair may feel harder in the first days, because the repair makes standing upright, coughing, and getting out of bed sore. BBL discomfort is mostly at the liposuction donor sites and feels like deep bruising. Both are managed with prescribed medication for a few days and over-the-counter medication after that."
+      },
+      {
+        "question": "Can you get a BBL and a tummy tuck at the same time?",
+        "answer": "Yes, for healthy candidates, and your surgeon decides at consultation. The tummy tuck liposuction provides the fat for the BBL. If the combined plan would exceed roughly six hours of surgery, your surgeon stages the two procedures a few months apart."
+      },
+      {
+        "question": "Is liposuction the same as a BBL?",
+        "answer": "No. Liposuction removes fat. A BBL removes fat and transfers it to the buttocks. Every BBL includes liposuction; liposuction alone includes no transfer and has no sitting restriction afterward."
+      },
+      {
+        "question": "Are butt implants safer than a BBL?",
+        "answer": "Not as a rule. Implants avoid fat reabsorption but carry implant-specific risks: shifting, capsular contracture, infection, and wound breakdown at the gluteal crease. A BBL performed above the muscle under ultrasound guidance has a low serious-complication rate. The right choice depends on how much fat you have, not on which is safer in the abstract."
+      },
+      {
+        "question": "What is the difference between a mommy makeover and a BBL?",
+        "answer": "A BBL is one procedure that reshapes the buttocks with your own fat. A mommy makeover is a combination, usually a tummy tuck, liposuction, and breast surgery, and a BBL can be one of its parts. If pregnancy changed only your backside, you want a BBL. If it changed your abdomen and breasts, you want a mommy makeover."
+      },
+      {
+        "question": "How long do BBL results last compared with a tummy tuck?",
+        "answer": "Both are permanent with stable weight. The fat that survives the first three to six months after a BBL behaves like any other fat on your body, growing or shrinking with your weight. A tummy tuck's muscle repair and skin removal do not reverse, though a future pregnancy or a large weight gain can stretch the result."
+      },
+      {
+        "question": "Which should I do first if I want both but need to stage them?",
+        "answer": "Usually the tummy tuck, because it is the more involved recovery and its liposuction can be planned with a later BBL in mind. If the buttocks are your main concern and your abdomen is minor, reverse the order. Your surgeon will have a view once they have examined you."
+      }
+    ]
+  },
+  "edit_reasons": [
+    {
+      "oldText": "![Luxury comparison graphic: Liposuction vs BBL",
+      "why": "Alt text said 'Luxury'."
+    },
+    {
+      "oldText": "Fat is injected above the muscle, never into it, under real-time ultra",
+      "why": "Stated as fact what Pazmiño and Garcia 2023 show does not always happen, and read as a practice claim; bbl.facts.ts says to state the law."
+    },
+    {
+      "oldText": "For most patients with a BMI between about 22 and 30, the BBL is the b",
+      "why": "BMI range presented as a rule, and 'the better operation' for 'most patients' has no source."
+    },
+    {
+      "oldText": "Three things keep it safe:",
+      "why": "Safety promise after a sentence about seroma and clots; the list's third item is now a question to ask."
+    },
+    {
+      "oldText": "BMI under 30, non-smoker, no uncontrolled medical conditions",
+      "why": "BMI under 30 presented as a rule."
+    },
+    {
+      "oldText": "and enough fat that the BBL is worth doing.",
+      "why": "Keeps BMI as a sourced risk factor, not a cutoff (tummy-tuck.facts.ts). PMID 26505716, re-read 2026-11-04: 'body mass index greater than or equal to 30 (1.3)'."
+    },
+    {
+      "oldText": "Combined cases belong in an accredited surgical facility with a board-",
+      "why": "Forbidden: accredited, board-certified anesthesiologist."
+    },
+    {
+      "oldText": "never had the shape you want, you have donor fat in the abdomen, flank",
+      "why": "BMI range presented as a rule."
+    },
+    {
+      "oldText": "Dr. Victoria Karlinsky reviews your health history",
+      "why": "First mention must name her as MD (compliance.md, Rule 64B8-11.001(7))."
+    },
+    {
+      "oldText": "and a fair share of patients leave with a different plan than the one ",
+      "why": "Unverified claim about patient outcomes."
+    },
+    {
+      "oldText": "usually seven to ten days for a BBL or tummy tuck and closer to two we",
+      "why": "Only the BBL stay is in the facts files; nights for a tummy tuck or a combination are not confirmed by the practice."
+    },
+    {
+      "oldText": "Combining procedures in one surgery saves you a second facility and an",
+      "why": "Said what a price includes, which the owner has not confirmed."
+    },
+    {
+      "oldText": "are so often done together.",
+      "why": "'One recovery' alone reads as easier. The Aesthetic Society, re-read 2026-11-04: 'The recovery period is typically longest for patients undergoing a traditional abdominoplasty, rather than a mini-tummy tuck, and for those who are combining a tummy tuck with other surgical procedures.'"
+    },
+    {
+      "oldText": "is available for all of them, with 0% APR promotional plans subject to",
+      "why": "Financing figure (compliance.md: quote no financing number)."
+    },
+    {
+      "oldText": "Most patients rate the tummy tuck as the harder first week, because th",
+      "why": "Unsourced survey-style claim (factcheck/muscle-exercise-pain-drains.md, Outside this group; same finding as the pain post's head answer, so the two posts agree). faqs[0].answer changed identically."
+    },
+    {
+      "oldText": "Yes, for healthy candidates with a BMI under 30. The tummy tuck liposu",
+      "why": "BMI under 30 presented as a rule; candidacy answers close with the surgeon's decision (compliance.md). faqs[1].answer changed identically."
+    },
+    {
+      "oldText": "Dr. Victoria Karlinsky is double board-certified and operates in our A",
+      "why": "Forbidden: double board-certified, AAAASF, accredited, 5,000+, phone number. Replaced with the verbatim credentials constant."
+    },
+    {
+      "field": "quickAnswer",
+      "why": "BMI under 30 presented as a rule."
+    }
+  ],
+  "fields_with_no_claim_problem": [
+    "title",
+    "meta_description",
+    "excerpt"
+  ],
+  "image_problems": {
+    "note": "The edits here fix text only. The four pixel problems below stay live until the owner decides: run claims-fix-images.json, replace the pixels, or accept them. Removing images could cost Google Images traffic.",
+    "pixels_state_a_forbidden_claim": [
+      {
+        "key": "inline-1",
+        "url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/0861e3e7-d7a0-45b6-ac00-a142a2253d12/1769524700975-l8rspj-0.jpg",
+        "says": "Seal: 'AAAASF-Accredited Setting'"
+      },
+      {
+        "key": "inline-2",
+        "url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/2720ada4-1304-4114-a7b2-fadb8aadbbbc/1768993436790-yj01h3-0.jpg",
+        "says": "Footer: 'Consult Dr. Karlinsky • (786) 305-8649'"
+      },
+      {
+        "key": "inline-3",
+        "url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/e931e22d-890f-431d-8fbb-5d3a7fd8c025/1768841896592-k76fah-0.jpg",
+        "says": "Footer: 'Consult a board-certified surgeon'"
+      },
+      {
+        "key": "inline-7",
+        "url": "https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/blog-images/c31d6857-62de-4311-9380-fa0488255098/1768918190139-qouqti-0.jpg",
+        "says": "Title: 'The Alluring BBL Journey: 4-Step Luxury Process'"
+      }
+    ],
+    "alts": [],
+    "other_rule_breaks_no_forbidden_claim": [
+      {
+        "key": "hero",
+        "problem": "Glamour shot with a bare midriff."
+      },
+      {
+        "key": "inline-9",
+        "problem": "Post-op garment on a body, and text over a photo."
+      }
+    ],
+    "alts_note": "The hero alt and the inline-1 and inline-4 images.alt rows are fixed by images_alt_rows_sql."
+  },
+  "left_unchanged_for_the_bbl_rewrite": {
+    "note": "Outside the claims list, so not changed. They conflict with the facts files or have no source.",
+    "items": [
+      "Table: BBL surgery time '2 to 4 hours'; bbl.facts.ts says 3 to 5 hours at Alluring. inline-4 pixels repeat ~2-4 hrs.",
+      "Tummy tuck 'two to four hours', and combined 'four to six hours', staging past 'about six hours': unconfirmed practice protocol.",
+      "'Expect to keep 60 to 80%' and '20 to 40% reabsorbs'; bbl.facts.ts has 50-80%, 60% average and 20-50%. inline-3 pixels repeat 60-80%.",
+      "'SPF 50 ... for a full year'; Cleveland Clinic says SPF 30 for 12 to 18 months.",
+      "'stop eight weeks before and after'; Cleveland Clinic's example is 1 month before and 2 weeks after.",
+      "Tummy tuck exercise '6 to 8 weeks', garment '6 weeks', result '3 to 6 months'; tummy-tuck.facts.ts has 4 to 6 and 6 weeks, 4 to 6 weeks, and up to 3 months.",
+      "'Research from the National Institutes of Health' for 'up to 60%': a paper hosted on PMC, not NIH research.",
+      "'one of the most requested combinations at our practice': unverified, no figure.",
+      "'Lymphatic drainage massage ... helps every procedure on this list': no source.",
+      "Recovery table '24/7 for a month': the lint flags it, but it is the garment schedule in bbl.facts.ts, not a surgeon-access claim.",
+      "'BBL discomfort is mostly at the liposuction donor sites and feels like deep bruising': no source; the pain post's finding describes it differently."
+    ]
+  },
+  "expected_md5_after_edits_means": "update_post.edits alone on live. Not a finished state: inline-1's alt still names AAAASF. Finish with one of the two variants below.",
+  "expected_md5_variants": {
+    "images_kept": {
+      "md5": "f62ca6e846f029269ecea337b78e8f41",
+      "means": "update_post.edits plus edit_if_images_kept."
+    },
+    "images_removed": {
+      "md5": "c022adc1cffb4a9c4323c04d3ae0ee14",
+      "means": "update_post.edits plus claims-fix-images.json, in either order."
+    }
+  },
+  "edit_if_images_kept": {
+    "note": "This edit sits inside the inline-1 image line, so it can't exist once that image is removed, and removing the image can't match after it. It therefore stays out of update_post.edits, so that list runs whatever the owner decides. If the owner keeps the images, or hasn't decided when this ships, add it to update_post.edits: otherwise AAAASF stays in the served alt text. Leave it out only if claims-fix-images.json runs.",
+    "edit": {
+      "oldText": "+ compression/drains; include “AAAASF-accredited setting” note.](",
+      "newText": "+ compression/drains.]("
+    },
+    "why": "Alt text named AAAASF accreditation. The image's pixels still say it: see claims-fix-images.json."
+  },
+  "featured_image_note": "Don't pass update_post.featuredImage to fix the hero alt. resolveImageId in apps/admin/lib/services/mcp-post.service.ts reuses the existing images row for a URL and ignores the alt, so it reports nothing changed. Use images_alt_rows_sql.",
+  "images_alt_rows_sql": {
+    "note": "Not applied. update_post can't reach images.alt. Each row is referenced only by this post on the 4 Nov clone. Guarded on id, url and the current alt, so a row that has changed is left alone. Expect UPDATE 1 each. Safe with or without claims-fix-images.json.",
+    "sql": [
+      "UPDATE images SET alt = 'A woman with long dark hair reclining on a linen daybed by a window, with palm trees and the ocean behind her.', updated_at = now() WHERE id = 'ae610ff6-e6b0-4c89-82a4-c89686466b02' AND url LIKE '%blog-tummy-tuck-vs-bbl-miami-featured-1768909272993.jpg' AND alt LIKE 'Confident Latina mom%';",
+      "UPDATE images SET alt = replace(alt, '; include “AAAASF-accredited setting” note.', '.'), updated_at = now() WHERE id = '746e047b-b3ee-485a-91bd-f8866b7bcf0d' AND url LIKE '%1769524700975-l8rspj-0.jpg' AND alt LIKE '%AAAASF-accredited setting%';",
+      "UPDATE images SET alt = replace(alt, 'Luxury comparison graphic', 'Comparison graphic'), updated_at = now() WHERE id = '11eb1c62-26ce-45d6-ad3c-ab190fdfd791' AND url LIKE '%1768918447075-ywnugi-0.jpg' AND alt LIKE 'Luxury comparison graphic%';"
+    ]
+  },
+  "owner_items": {
+    "note": "From factcheck/earners-bbl.md. Not applied.",
+    "items": [
+      "Images inline-1, inline-2, inline-3 and inline-7: run claims-fix-images.json or not, or replace the pixels.",
+      "'If the combined plan would exceed roughly six hours of surgery, your surgeon stages the two procedures a few months apart.' (FAQ) If the owner won't confirm, cut the sentence from both the body and faqs. The same claim is list item 2, 'Time limits', under 'Three things to go over with your surgeon:'; cutting that too makes the count two.",
+      "Quick answer: 'using the tummy tuck's liposuction fat for the transfer.' Leave as is until she answers whether the 1,000 cc Florida cap limits the fat available for a combined case."
+    ]
+  },
+  "rechecked_2026_11_04": {
+    "note": "Rechecked against the row that the 2026-11-04 mcp-edit left. md5s recomputed by applying the edits in order to the current content with str.replace, each oldText required to occur exactly once; the method reproduced all the previous values on the old row first.",
+    "no_longer_applies": [
+      {
+        "oldText": "That single rule is what removed the fat embolism risk that gave the BBL its old reputation.",
+        "why": "The live row now reads 'That is meant to lower the risk of a fat embolism, one of a BBL's most serious risks, but no rule removes it.' The false claim is gone, so the edit was dropped."
+      }
+    ],
+    "still_needed": "The other 17 edits each still occur once, as do edit_if_images_kept and the four image edits. The sentence before the new embolism wording still reads as a fact about every BBL, so its edit stays. The repointed link (/blog/mommy-makeover-recovery-signs) touches no edit.",
+    "may_be_skipped": "A separate BBL session has its own full rewrite of this post in progress. If that ships first, this file doesn't apply."
+  }
+}

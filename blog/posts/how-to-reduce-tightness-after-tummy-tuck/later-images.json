@@ -1,0 +1,40 @@
+{
+  "_about": "Replacement-image briefs for later (plan.html section 6). NOT rendered and NOT in this batch's SQL: the kit reads only content.md and meta.json. Render with GPT Image 2.5 on fal, 2 candidates per hero. Proofread card text word for word against content.md at that time, since the post may change. The quick guide, timeline and nutrition cards are not here: they are briefs in meta.json at new URLs, and they take the plan's garment card, timeline and recovery items slots.",
+  "status": "not rendered",
+  "plan_row": "Tightness: the muscle repair illustration, which is the canary at the same address, and the fit check remain for later, plus the hero.",
+  "method": "The muscle repair illustration is the canary. Save the current files and the GSC image data, then use blog/tools/images/overwrite_same_path.mjs <live url> <local.jpg> --backup-dir DIR. Check that the new file serves, then read at day 14 and day 28. Pass: image impressions on that query within 30% of the controls and no web loss. Fail: restore the saved file. These files sit on the older Blob store, so check that the token reaches it first. Do the hero first: fei35i is both the hero and an inline image.",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "replaces": "New URL. Replaces fei35i as the featured image.",
+      "breaks_now": "A post-op garment on a body with cleavage, a sign on the wall, and an alt that says patient.",
+      "alt": "A woman in her thirties walking slowly through a bright hallway in loose linen clothes, one hand resting on a railing.",
+      "prompt": "SCENE: Morning in a bright Miami home, a limestone hallway with an arched window, soft palm shadows on the wall. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid thirties with deep brown skin and short natural hair, walking slowly in loose sand-colored linen clothes, one hand resting on a railing. Three-quarter view, calm. KEY DETAILS: Whole person in frame with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions; not photographed from behind; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "inline-2",
+      "type": "inline",
+      "aspect": "1:1",
+      "replaces": "Same address, the canary: https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/b322fbb5-9eaa-4f0c-8997-47a4d9d4fd4b/1768927303941-2ko8xt-0.jpg",
+      "position": "What Causes Tightness After a Tummy Tuck?, after its first sentence",
+      "plan_item": "Muscle repair illustration",
+      "breaks_now": "Carries the practice name.",
+      "alt": "Stylized abdominoplasty muscle repair diagram labeling the muscle repair, skin and fat removal, swelling, and changes in sensation.",
+      "text_in_image": "Muscle repair\nSkin and fat removal\nSwelling\nChanges in sensation",
+      "prompt": "SCENE: A clean illustration on a warm stone background, soft stone and brushed gold line work. SUBJECT: A stylized, faceless front-view diagram of the abdomen from below the ribs to the hips, showing the two vertical abdominal muscles drawn together along a dashed center line, a shaded crescent of lower skin and fat being removed, soft tinted swelling zones at the sides and small marks for nerve sensation. KEY DETAILS: Thin leader lines to small labels, exactly as in text_in_image. Keep it close to the current diagram's layout, so it still matches abdominoplasty muscle repair diagram searches. CONSTRAINTS: Stylized and anatomical, not a realistic body; no bust, nudity, skin texture, scars or drains; no logos, practice name or phone number; only the labels given."
+    },
+    {
+      "key": "fit-check",
+      "type": "inline",
+      "aspect": "4:5",
+      "replaces": "New URL. Same position as the current inline use of fei35i, which leaves the body once this is live.",
+      "position": "How Do Compression Garments Help After a Tummy Tuck?, after the adjustable components paragraph",
+      "plan_item": "Fit check",
+      "alt": "Card with a flat drawing of a compression garment and a short fit check: ask before you adjust it, keep it clean, ask your surgeon about fit.",
+      "text_in_image": "Garment fit check\nAsk before you adjust it\nKeep it clean\nAsk your surgeon about fit",
+      "prompt": "SCENE: A clean card on warm stone, thin brushed gold rules. SUBJECT: A simple flat line drawing of an adjustable abdominal compression garment, laid flat, beside a short checklist. KEY DETAILS: Use exactly the words in text_in_image. CONSTRAINTS: No person or body; no figures; no phone number, practice name or logo; no words other than those given."
+    }
+  ]
+}

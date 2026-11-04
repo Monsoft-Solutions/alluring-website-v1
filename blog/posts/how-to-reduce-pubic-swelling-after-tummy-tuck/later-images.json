@@ -1,0 +1,51 @@
+{
+  "_about": "Replacement-image briefs for after the canary (plan.html section 6). NOT rendered and NOT in this batch's SQL: the kit reads only content.md and meta.json. Render with GPT Image 2.5 on fal, 2 candidates per hero. Proofread card text word for word against content.md at that time, since the post may change. The nutrition and timeline cards are not here: they are briefs in meta.json at new URLs, and the nutrition card takes the plan's what helps slot.",
+  "status": "not rendered",
+  "plan_row": "Pubic swelling: swelling area diagram, normal vs call card and garment folded on a chair remain for later, at the same address after the canary passes, plus the hero.",
+  "method": "After the tightness canary passes, save the current files, then use blog/tools/images/overwrite_same_path.mjs <live url> <local.jpg> --backup-dir DIR. These files sit on the older Blob store, so check that the token reaches it first. Do the hero first: 2dloln is both the hero and an inline image, so the new hero must be live at a new URL before 2dloln is overwritten with the garment photo.",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "replaces": "New URL. Replaces 2dloln as the featured image only.",
+      "breaks_now": "A cropped body in a post-op garment, with the practice name on a wall sign and an alt that says patient.",
+      "alt": "A woman in her forties resting on a linen sofa in a bright room, with a cup of tea beside her.",
+      "prompt": "SCENE: Mid-morning in a bright Miami living room, white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her mid forties with olive skin and shoulder-length dark hair, resting on a linen sofa with a soft pillow behind her back, in loose sand-colored loungewear, a cup of tea on the side table. Three-quarter view, calm, looking toward the window. KEY DETAILS: Whole upper body in frame with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest loungewear fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions; not photographed from behind; no body-part framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "inline-1",
+      "type": "inline",
+      "aspect": "1:1",
+      "replaces": "Same address: https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/08890b0d-0725-4b94-8f77-463a02aa2f55/1768927280419-5av4l7-0.jpg",
+      "position": "What Causes Pubic Swelling After Tummy Tuck?, after its first sentence",
+      "plan_item": "Swelling area diagram",
+      "breaks_now": "Shows the bust and carries the practice name.",
+      "alt": "Stylized diagram of a clothed lower torso with labels for lower abdomen swelling, pubic mound swelling and the tummy tuck incision.",
+      "text_in_image": "Lower abdomen swelling\nPubic mound swelling\nTummy tuck incision",
+      "prompt": "SCENE: A clean illustration on a warm stone background, soft stone and brushed gold line work. SUBJECT: A stylized, faceless front-view diagram from the waist to the upper thigh, drawn wearing simple high-waisted shorts, with a soft tinted zone across the lower abdomen and a second over the pubic mound, and a thin line for the incision just above the pubic area. KEY DETAILS: Three thin leader lines to small labels, exactly as in text_in_image. CONSTRAINTS: Stylized, not realistic; clothed; no bust, nudity, skin texture, scars or drains; no logos, practice name or phone number; only the labels given."
+    },
+    {
+      "key": "inline-2",
+      "type": "inline",
+      "aspect": "4:5",
+      "replaces": "Same address: https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/08890b0d-0725-4b94-8f77-463a02aa2f55/1768927310036-u1zmmc-0.jpg",
+      "position": "Under the H3 What's Normal vs. Concerning Swelling?",
+      "plan_item": "Normal vs call card",
+      "breaks_now": "Phone number in the footer, and the practice name.",
+      "alt": "Two-column card comparing normal swelling with concerning swelling that means a call to your surgeon.",
+      "text_in_image": "Pubic swelling after a tummy tuck\nNormal\nMild puffiness in the lower abdomen or pubic area\nSwelling that improves with elevation and movement\nFirmness that gradually softens over time\nConcerning: call your surgeon\nOne-sided or uneven swelling\nSwelling with redness, heat, or sharp pain\nRapid increase in swelling or fluid collection",
+      "prompt": "SCENE: A clean card on warm stone, thin brushed gold rules. SUBJECT: Two columns of short text with one simple line icon per row. KEY DETAILS: Use exactly the words in text_in_image, with generous spacing that reads on a phone. CONSTRAINTS: No body shapes; no phone number, practice name or logo; no words other than those given."
+    },
+    {
+      "key": "garment",
+      "type": "inline",
+      "aspect": "4:5",
+      "replaces": "Same address, after the new hero is live: https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/08890b0d-0725-4b94-8f77-463a02aa2f55/1768927350918-2dloln-0.jpg",
+      "position": "How Do Compression Garments Reduce Swelling?, directly under the H2",
+      "plan_item": "Garment folded on a chair",
+      "alt": "A beige compression garment folded on a wooden chair in a bright room.",
+      "prompt": "SCENE: A quiet bedroom corner in Miami daylight, white plaster wall, palm shadow, pale limestone floor. SUBJECT: A beige abdominal compression garment neatly folded on a simple wooden chair, with a soft towel beneath it. KEY DETAILS: Editorial still life, 50mm, natural color, gentle depth of field, fine film grain. CONSTRAINTS: No person and no body; no text, letters, numbers, logos or watermarks; no wall signs."
+    }
+  ]
+}
