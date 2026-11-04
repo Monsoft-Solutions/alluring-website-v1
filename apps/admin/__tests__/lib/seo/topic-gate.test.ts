@@ -172,4 +172,25 @@ describe('gate regressions — synonym-titled and containment matches (prod 2026
         expect(verdict.verdict).toBe('reject')
         expect(verdict.owningUrl).toBe('/dr-karlinsky')
     })
+
+    describe('gateExactOnly', () => {
+        it('still rejects the exact query a page owns', () => {
+            const result = evaluateTopicCandidate({
+                title: 'Breast lift cost in Miami',
+                primaryKeyword: 'breast lift cost miami',
+            })
+            expect(result.verdict).toBe('reject')
+            expect(result.owningUrl).toBe('/procedures/breast-lift-miami')
+        })
+
+        it('does not let an exact-only query claim a neighbouring question', () => {
+            const result = evaluateTopicCandidate({
+                title: 'Breast Lift Scar Massage: Does It Help?',
+                primaryKeyword: 'breast lift scar massage after implants',
+            })
+            expect(result.owningUrl).not.toBe(
+                '/blog/breast-lift-implants-miami'
+            )
+        })
+    })
 })

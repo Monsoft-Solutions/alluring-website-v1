@@ -1,0 +1,429 @@
+{
+  "slug": "breast-augmentation-vs-breast-lift",
+  "mode": "rewrite",
+  "base_md5": "fff08199fa310615a4980bbec0dee250",
+  "base_from": "localhost:5432/alluring_bl_rewrite 2026-11-04T03:01:58Z",
+  "reader": "deciding",
+  "cluster": "breast-lift",
+  "title": "Breast Augmentation vs Breast Lift: Which Do You Need?",
+  "meta_description": "A lift raises breasts that have dropped; implants add size. How to tell which you need, when to combine them, and how scars, recovery and cost compare.",
+  "excerpt": "A breast lift and a breast augmentation fix different things. Here is how to tell which one you need, when the two are combined, and how scars, recovery and price compare.",
+  "quick_answer": "Do I need a breast lift or a breast augmentation?\n\nIt depends on what bothers you. The American Society of Plastic Surgeons (ASPS) says a lift doesn't significantly change size, and that augmentation doesn't correct severely drooping breasts. If your breasts sag and you also want more fullness, ASPS says you may need a lift along with an augmentation.",
+  "primary_keyword": "breast augmentation vs breast lift",
+  "secondary_keywords": [
+    "breast lift vs augmentation",
+    "breast lift vs implants",
+    "breast lift or implants",
+    "do i need a lift or implants",
+    "do i need a breast lift or implants",
+    "breast implants vs breast lift",
+    "mastopexy vs augmentation",
+    "can implants lift sagging breasts",
+    "implants without a lift",
+    "breast augmentation or breast lift",
+    "lift or augmentation"
+  ],
+  "owns_queries": [
+    "breast augmentation vs breast lift",
+    "breast lift vs augmentation",
+    "breast lift vs implants",
+    "breast lift or implants",
+    "do i need a lift or implants",
+    "do i need a breast lift or implants",
+    "breast implants vs breast lift",
+    "mastopexy vs augmentation",
+    "can implants lift sagging breasts",
+    "implants without a lift"
+  ],
+  "categories": [
+    "Breast Lift"
+  ],
+  "tags": [
+    "Breast Lift",
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman with curly hair and a cream sweater talks across a consultation table, listening to someone whose hand and sleeve are all that show.",
+      "prompt": "SCENE: Mid-morning in a bright Miami consultation room, white plaster walls, a tall arched window with sheer linen and soft palm shadow, a pale oak table with a plain notebook and a pen. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 30s with light brown skin and curly shoulder-length hair, in a cream high-neck sweater, seated at the table in easy conversation, leaning in slightly with a relaxed, attentive expression. Across the table only a clinician's hand and white-coat sleeve are visible, resting near the notebook. KEY DETAILS: Framed from the waist up with generous space above her head, subject centered, head in the upper part of the frame, the lower third the quiet tabletop so a title can sit over it; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso; no swimwear, lingerie, robe, cleavage or bare midriff; no bandages, garments on the body, drains or incisions; no skin markings; never the surgeon's face or any staff member, only the hand and sleeve; not photographed from behind; not a result, no before-and-after framing; no implants or medical devices on the table; no text, letters, numbers, logos or watermarks on the notebook or anywhere else; not glamour, not a fashion ad."
+    },
+    {
+      "key": "compare",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Comparison card. Breast lift: changes position and shape; size doesn't significantly change; surgery time about 1 to 3 hours; desk work at about 1 week. Breast augmentation: changes size and upper fullness; size larger; surgery time one to several hours; back to work a few days to a week; implants are not lifetime devices. Sources: ASPS, Cleveland Clinic, The Aesthetic Society and FDA.",
+      "prompt": "SCENE: A plain typographic comparison card on a warm porcelain-white background with hairline brushed-gold rules, palette of stone grey and brushed gold, like a page in a calm modern textbook. SUBJECT: Two equal columns of short text under one title, the left column headed Breast lift and the right column headed Breast augmentation, with a one-line source footer in small text. KEY DETAILS: Refined serif for the title and column heads, clean sans-serif for the rows, generous spacing, large legible type for phones. All text must be rendered exactly as given in text_in_image, word for word, and nothing else. CONSTRAINTS: 4:5 portrait. Text and rules only: no drawn breasts, nipples, implants, torsos, bodies or silhouettes, no people, no icons of anatomy. No prices. No practice name, logo, phone number, website address or watermark. No extra words or numbers.",
+      "text_in_image": "Breast lift vs breast augmentation\n\nBreast lift\nChanges: position and shape\nSize: doesn't significantly change\nSurgery time: about 1 to 3 hours\nBack to work: desk work at about 1 week\n\nBreast augmentation\nChanges: size and upper fullness\nSize: larger\nSurgery time: one to several hours\nBack to work: a few days to a week\nImplants are not lifetime devices\n\nSources: ASPS, Cleveland Clinic, The Aesthetic Society, FDA"
+    }
+  ],
+  "sources": [
+    {
+      "url": "docs/pricing/practice-price-list.md",
+      "publisher": "Alluring Plastic Surgery",
+      "title": "Practice price sheet of 2026-09-15",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast Augmentation - Saline | 3,500",
+        "Breast Augmentation - Silicone | 4,500",
+        "Breast Lift - NO IMPLANTS | 5,000",
+        "Breast Lift - Saline | 6,000",
+        "Breast Lift - Silicone | 7,000",
+        "Breast Lift - Modified (only skin from below areola) | 4,000"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast Lift (Mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast lift surgery does not significantly change the size of your breasts or round out the upper part of your breast.",
+        "If you want your breasts to look fuller, consider breast lift and breast augmentation.",
+        "raises the breasts by removing excess skin and tightening the surrounding tissue",
+        "Sometimes the areola becomes enlarged over time, and a breast lift will reduce this as well."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/cost",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "How much does a breast lift cost?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The average cost of a breast lift (mastopexy) is $6,816, according to the latest statistics",
+        "This average cost is only part of the total price – it does not include anesthesia, operating room facilities",
+        "or other related expenses.",
+        "Most health insurance plans do not cover breast lift surgery or its complications,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Who is a good candidate for breast lift surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "When unsupported, your nipples fall below the breast crease",
+        "Your nipples and areolas point downward",
+        "You have stretched skin and enlarged areolas",
+        "You are bothered by the feeling that your breasts sag or have lost shape and volume"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift procedure steps",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Around the areola",
+        "Around the areola and vertically down from the areola to the breast crease",
+        "Around the areola, vertically down from the breast crease and horizontally along the breast crease",
+        "Incision lines are permanent, but in most cases will fade and significantly improve over time."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/results",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift results",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The results of your breast lift surgery will be long-lasting.",
+        "Over time, your breasts can continue to change due to aging and gravity.",
+        "Changes that occur in the breasts during pregnancy can minimize or reverse the improvement a breast lift provides."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/safety",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift risks and safety",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "An implant can provide improved upper breast fullness or cleavage.",
+        "Implants can be placed at the same time or as a second procedure, depending on the experience of the surgeon."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast augmentation does not correct severely drooping breasts.",
+        "restore breast volume lost after weight reduction or pregnancy",
+        "A breast lift may be required along with a breast augmentation for sagging breasts to look fuller and lifted.",
+        "Breast lifting can often be done at the same time as your augmentation or may require a separate operation.",
+        "involves using breast implants or fat transfer to increase the size of your breasts"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/cost",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "How much does breast augmentation cost?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Most health insurance plans will not cover cosmetic breast augmentation costs.",
+        "Some carriers even exclude breast diseases in patients who have breast implants"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Is breast augmentation right for me?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You are bothered by the feeling that your breasts are too small",
+        "You are dissatisfied with your breasts losing shape and volume after pregnancy, weight loss or with aging",
+        "You are unhappy with the upper part of your breast appearing 'empty'"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast augmentation procedure",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "along the areolar edge (peri-areolar incision)",
+        "the fold under the breast (inframammary fold)",
+        "in the armpit (axillary incision)",
+        "Over time the incision lines will fade."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-are-the-benefits-of-combining-breast-augmentation-and-a-breast-lift",
+      "publisher": "ASPS website, a post by Lawrence Iteld, MD",
+      "title": "What are the benefits of combining breast augmentation and a breast lift? (2023-08-10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "augmentation on its own isn't enough to address sagging breasts",
+        "A lift done on its own won't significantly alter the size of the breasts.",
+        "Combining both procedures means that patients only have to undergo one surgery and one recovery period.",
+        "won't need to have as much volume added to their implants"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/misconceptions-about-breast-augmentation-and-lift",
+      "publisher": "ASPS website, a post by Jaime Schwartz, MD",
+      "title": "Misconceptions about breast augmentation and lift (2015-08-12)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it may be safer to stage the procedures to allow for your body to recover in between operations.",
+        "the degree of ptosis (sagging) you have, it may be safer to stage the procedures"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/better-breasts-after-pregnancy-and-breastfeeding",
+      "publisher": "ASPS website, a post by Shahram Salemy, MD, FACS",
+      "title": "Better breasts after pregnancy and breastfeeding (2022-02-08)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "up to six months after lactation has stopped",
+        "gives your body time to adjust"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/whats-the-difference-between-a-breast-reduction-and-a-breast-lift",
+      "publisher": "ASPS website, a post by Lee Daniel, MD",
+      "title": "What's the difference between a breast reduction and a breast lift? (2018-10-19)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Because a breast lift repositions the location of the breasts, they can appear smaller."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Lift (Mastopexy): Surgery & Recovery (last reviewed 06/19/2022)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The procedure usually lasts an hour or two, depending on how much work is being done.",
+        "Most people who have mastopexy go home the same day.",
+        "Many women go back to desk work and gentle activities such as walking about a week afterward.",
+        "These effects get better over time and last about two weeks.",
+        "You may not be cleared for vigorous activities, such as lifting things, exercising and having sex, for up to six weeks.",
+        "The results of a breast list should last for several years.",
+        "If either breast becomes red, hot, swollen or painful.",
+        "Bleeding, drainage, redness or swelling at the incision site.",
+        "Chest pain.",
+        "Dizziness.",
+        "Fever higher than 100.5 degrees Fahrenheit.",
+        "Severe pain not helped with medicine.",
+        "Nausea or vomiting."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/cosmetic-plastic-surgery/procedures/breast-lift",
+      "publisher": "Cleveland Clinic Cosmetic & Plastic Surgery Center",
+      "title": "Breast Lift",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines are permanent but will fade over time.",
+        "maximum fading occurring in around one year",
+        "and typically takes two-and-a-half to three hours."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation (last updated 08/24/2021)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You should not do any heavy lifting for at least four weeks.",
+        "people who have labor-intensive jobs should wait at least three weeks before returning to work.",
+        "Fever.",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that's associated with pain and pressure."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Lift: Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your nipples and areolas will remain attached to underlying mounds of tissue",
+        "preserve sensation and the ability to breastfeed"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Lift: Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your chest region may feel stiff and sore for two to five days.",
+        "You must not lift, drive, do laundry, or clean during the first two weeks."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation: Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation.",
+        "You may be able to return to work within a few days to a week, depending on the nature of your job.",
+        "You should minimize excessive physical activity for at least the first few weeks after surgery."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "title": "Breast Implant Surgery (content current as of 03/08/2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast implant surgery can last from one to several hours depending on the procedure and personal circumstances."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/types-breast-implants",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "title": "Types of Breast Implants (content current as of 10/23/2019)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "women age 18 or older",
+        "women age 22 or older",
+        "Breast implants are not lifetime devices."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "title": "Things to Consider Before Getting Breast Implants (content current as of 03/08/2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On October 27, 2021, the FDA took several new actions to strengthen breast implant risk communication",
+        "Patient decision checklist, which must be reviewed with the prospective patient by the health care provider",
+        "The patient must be given the opportunity to initial and sign the patient decision checklist",
+        "it must be signed by the physician implanting the device.",
+        "The longer you have your implants, the more likely it will be for you to have them removed or replaced.",
+        "Even if you have complications, the cost of implant removal or implant replacement may not be covered by insurance."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "title": "Breast Implants: Certain Labeling Recommendations to Improve Patient Communication (2020-09-29)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Even if you have no symptoms, you should have your first ultrasound or MRI at 5-6 years after your initial implant surgery and then every 2-3 years thereafter."
+      ]
+    },
+    {
+      "url": "https://www.cdc.gov/breastfeeding-special-circumstances/hcp/illnesses-conditions/breast-surgery.html",
+      "publisher": "Centers for Disease Control and Prevention (CDC)",
+      "title": "Breast Surgery and Breastfeeding (updated 2025-12-08)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Most mothers who have had breast or nipple surgery can produce some milk, but they may not produce a full milk supply.",
+        "Breast implants below the muscle usually affect milk production less than implants above the muscle."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20224340/",
+      "publisher": "Annals of Plastic Surgery (PubMed abstract read through NCBI E-utilities)",
+      "title": "Double breast contour in primary aesthetic breast augmentation: incidence, prevention and treatment (Médard de Chardon V and colleagues, 2010;64(4):390-6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "An independent plastic surgeon analyzed the data of 200 patients who had a primary aesthetic breast augmentation with silicone gel implant and with a minimum 12-month follow-up.",
+        "The double breast contour incidence was 7%. All of them were type I (the so called waterfall deformity).",
+        "They were minor for 6.5% and major for 0.5%.",
+        "Type I major risk factor is subpectoral augmentation of ptotic breasts"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34699429/",
+      "publisher": "Annals of Plastic Surgery (PubMed abstract read through NCBI E-utilities)",
+      "title": "Perioperative Safety of Combined Augmentation-Mastopexy: An Evaluation of National Database (Ali B and colleagues, 2021;87(5):493-500)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "We found 5868 (74.2%) augmentation only, 1508 (19.1%) mastopexy only and 534 (6.6%) combined augmentation-mastopexy cases.",
+        "Rates of any complications and readmission were different among groups (0.8% vs 2.5% vs 1.5% respectively, P < 0.01 and 0.7% vs 1.5% vs 1.5% respectively, P = 0.049), whereas reoperation was not statistically different (1.2% vs 1.4% vs 1.5%, P = 0.75)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25347628/",
+      "publisher": "Plastic and Reconstructive Surgery (PubMed abstract read through NCBI E-utilities)",
+      "title": "A systematic review of single-stage augmentation-mastopexy (Khavanin N and colleagues, 2014;134(5):922-931)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Twenty-three studies met inclusion criteria. Average follow-up varied from 16 to 173 weeks, with a majority under 1 year.",
+        "The pooled total complication rate was 13.1 percent (95 percent CI, 6.7 to 21.3 percent).",
+        "The most common individual complication was recurrent ptosis, with an incidence of 5.2 percent (95 percent CI, 3.1 to 7.8 percent), followed by poor scarring (3.7 percent; 95 percent CI, 1.9 to 6.1 percent).",
+        "The reoperation rate obtained from 13 studies was 10.7 percent (95 percent CI, 6.7 to 15.4 percent)."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/article/000132.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "title": "Pulmonary embolus (reviewed 10/21/2025)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The main symptoms of a pulmonary embolism include chest pain",
+        "Leg pain, redness, or swelling",
+        "Go to the emergency room or call 911 or the local emergency number, if you have symptoms of a pulmonary embolus."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 73,
+    "clicks": 0,
+    "position": 8.2
+  },
+  "notes": "Full rewrite from the approved 3 Nov brief (posts.md section 1 and bl.md 2.3; the brief's title and primary keyword win). Removed: $6K-$12K, 2-3 hours, implants 10-20 years, results 5-10+ years, the 2023 ASPS counts, wait six months postpartum, Stevens 2014 misreport, humidity and lymphatic claims, double board-certified, accredited, ABCS link, financing partner names and 0% APR, address and phone, links to folded posts. All Search Console queries for this page in the window were anonymized (none named). All six live images replaced: none meets the image rules (glamour hero, ASPS counts, the surgeon in a consultation scene). Added: de Chardon 2010 on the double contour, which the SERP notes list as a gap. Open: which implants a price covers, whether a price includes implants, one surgery or two at Alluring, how long surgery takes at Alluring. Written around them. The de Chardon 15% figure is left out: the abstract says '15% of preoperative breast ptosis' without a denominator, so it can't be stated as a rate among women who sagged."
+}

@@ -82,6 +82,11 @@ const GSC_CHECK_FIRST = new Set(['how-long-to-recover-from-mommy-makeover'])
  * The slug is the last path segment.
  */
 const RETIRED = {
+    '/blog/breast-lift-miami-quiz': '/blog/breast-lift-candidate-checklist',
+    '/blog/breast-lift-prep-miami': '/blog/breast-lift-recovery-guide-miami',
+    '/blog/best-age-breast-lift-miami':
+        '/blog/breast-lift-miami-post-pregnancy',
+    '/blog/breast-lift-myths-busted': '/blog/breast-lift-miami-post-pregnancy',
     '/mommy-makeover-miami-guide': '/procedures/mommy-makeover-miami',
     '/prepare-mommy-makeover-miami': '/procedures/mommy-makeover-miami',
     '/mommy-makeover-myths-miami': '/procedures/mommy-makeover-miami',

@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-07",
+ "updated": "2026-11-03",
  "_about": "The blog content plan tracker. One item per piece of work; the strategy fills it. Item shape: {\"id\": \"short-kebab-id\", \"week\": \"2026-W42\", \"type\": \"new-post|rewrite-post|fold-post|page-fix|technical|compliance|local|geo|measurement|decision\", \"cluster\": \"a key of blog/tools/clusters.json\", \"url\": \"/blog/<slug> or the live path\", \"title\": \"\", \"targetQueries\": [\"GSC queries the item targets\"], \"readerStage\": \"recovering|deciding\", \"status\": \"todo|in-progress|rehearsed|live|measured|dropped\", \"owner\": \"\", \"notes\": \"\", \"liveOn\": null}. rehearsed = SQL applied on a throwaway clone and rendered; live = the user ran it on production and it was revalidated (set liveOn to the date); measured = the day-28 readout is in. Posts live in blog/posts/<slug>/; see blog/README.md. Weeks here are numbers counted from week1 (Mon 2026-10-12); the strategy artifact is the source of the plan and holds the same item ids.",
  "strategyArtifact": "https://claude.ai/artifact/6dshbbUGkb7mFFGRcMfQy8",
  "planName": "Money Pages First, Claims Cleared: 26-week SEO and blog plan for alluringplasticsurgery.com (12 Oct 2026 to 11 Apr 2027)",
@@ -1143,8 +1143,8 @@
    "dependsOn": "BL hero pick by 4 Nov; 20% answer; PR-A merged; user merges",
    "metric": "Page-level position for 'breast lift miami', against the week-1 28-day baseline (62.7): 30 or better at day 28 (14 Dec), 20 or better at day 56 (11 Jan).",
    "rationale": "For 'breast lift miami' the page ranks 62.4 over 90 days (733 impressions) and 62.7 over 28 days. The query averages 55.1 (1,013 impressions) because posts rank higher. Ads show paid demand for 'breast lift'. Under the single price rule, the 20% answer gates every BL figure (title, #pricing body, financing line), and price-in-title needs no separate counsel gate. The worktree sits 13 commits behind origin/master, so it is rebased and passed through the site-claims check and the procedure-page skill checks before merge.",
-   "status": "todo",
-   "notes": "",
+   "status": "rehearsed",
+   "notes": "Built 3 Nov on feat/breast-lift-page-module, verified locally on a production content copy; not committed or deployed. Plan changed: https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu. The page keeps Miami cost terms only; national 'breast lift cost' moved to the new post /blog/breast-lift-cost. New #types section. 20% answer still open.",
    "liveOn": null
   },
   {
@@ -1161,8 +1161,8 @@
    "dependsOn": "PR-E",
    "metric": "Registry passes at 86 live.",
    "rationale": "The 11 BL posts drew 708 impressions and 1 click per 28 days. /blog/breast-lift-implants-miami ranks in the 60s and 90s on the page's commercial intent.",
-   "status": "todo",
-   "notes": "",
+   "status": "rehearsed",
+   "notes": "Plan changed, 3 Nov (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu): 4 folds instead of 7. Quiz -> candidate checklist; prep -> recovery guide; best-age and myths -> post-pregnancy. Implants, candidate checklist and weight loss are rewritten, not folded, because Keyword Planner shows national demand for them. Live-post count stays 132, not 86. SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/.",
    "liveOn": null
   },
   {
@@ -1185,8 +1185,8 @@
    "dependsOn": "PR-E deployed; contact sheet 2 days ahead; user runs psql",
    "metric": "Day-28 (15 Dec): all 4 BL posts indexed, and 'breast lift miami' served by the page. Batch read against the holdout H.",
    "rationale": "Lift-vs-reduction ranks 7.9 for 'breast lift miami' against the page's 62.4. The recovery guide is 'Discovered - not indexed'.",
-   "status": "todo",
-   "notes": "",
+   "status": "rehearsed",
+   "notes": "Plan changed, 3 Nov (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu): 8 rewrites instead of 5, adding implants, candidate checklist and weight loss. Slugs kept, 'Miami' dropped from titles. Applied on a production copy, undo tested. SQL and run sheet: implementation-plans/2026-11-03-breast-lift-blog-rewrite/.",
    "liveOn": null
   },
   {
@@ -2691,6 +2691,120 @@
    "dependsOn": "none",
    "metric": "Review published 10 Apr with every KPI read, and the next-wave list ranked by value per lead.",
    "rationale": "Closes the plan against its week-1 baselines, raw and seasonally adjusted.",
+   "status": "todo",
+   "notes": "",
+   "liveOn": null
+  },
+  {
+   "id": "w5-new-post-types-of-breast-lift",
+   "week": 5,
+   "type": "new-post",
+   "cluster": "breast-lift",
+   "url": "/blog/types-of-breast-lift",
+   "title": "Types of Breast Lift: Crescent, Donut, Lollipop, Anchor",
+   "targetQueries": [
+    "types of breast lift",
+    "lollipop breast lift",
+    "anchor breast lift",
+    "crescent breast lift"
+   ],
+   "readerStage": "deciding",
+   "owner": "claude-code",
+   "effort": "M",
+   "dependsOn": "PR-E deployed; user runs psql",
+   "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
+   "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
+   "status": "rehearsed",
+   "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+   "liveOn": null
+  },
+  {
+   "id": "w5-new-post-breast-lift-without-implants",
+   "week": 5,
+   "type": "new-post",
+   "cluster": "breast-lift",
+   "url": "/blog/breast-lift-without-implants",
+   "title": "Breast Lift Without Implants: Who It Suits and Results",
+   "targetQueries": [
+    "breast lift without implants",
+    "mastopexy without implants",
+    "breast lift no implants"
+   ],
+   "readerStage": "deciding",
+   "owner": "claude-code",
+   "effort": "M",
+   "dependsOn": "PR-E deployed; user runs psql",
+   "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
+   "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
+   "status": "rehearsed",
+   "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+   "liveOn": null
+  },
+  {
+   "id": "w5-new-post-breast-lift-cost",
+   "week": 5,
+   "type": "new-post",
+   "cluster": "breast-lift",
+   "url": "/blog/breast-lift-cost",
+   "title": "Breast Lift Cost in 2026: What You Pay and What to Ask",
+   "targetQueries": [
+    "breast lift cost",
+    "how much does a breast lift cost",
+    "mastopexy cost",
+    "does insurance cover a breast lift"
+   ],
+   "readerStage": "deciding",
+   "owner": "claude-code",
+   "effort": "M",
+   "dependsOn": "PR-E deployed; user runs psql",
+   "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
+   "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
+   "status": "rehearsed",
+   "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+   "liveOn": null
+  },
+  {
+   "id": "w5-new-post-non-surgical-breast-lift",
+   "week": 5,
+   "type": "new-post",
+   "cluster": "breast-lift",
+   "url": "/blog/non-surgical-breast-lift",
+   "title": "Non-Surgical Breast Lift: What Works and What Doesn't",
+   "targetQueries": [
+    "non surgical breast lift",
+    "breast lift without surgery",
+    "non invasive breast lift"
+   ],
+   "readerStage": "deciding",
+   "owner": "claude-code",
+   "effort": "M",
+   "dependsOn": "PR-E deployed; user runs psql",
+   "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
+   "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
+   "status": "rehearsed",
+   "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+   "liveOn": null
+  },
+  {
+   "id": "w8-measurement-breast-lift-rewrite-batch",
+   "week": 8,
+   "type": "measurement",
+   "cluster": "breast-lift",
+   "url": "12 breast lift posts; /procedures/breast-lift-miami; /gallery/breast-lift",
+   "title": "Breast lift batch: day-28, day-56 and day-90 reads, counted from the go-live date",
+   "targetQueries": [
+    "breast lift",
+    "breast lift cost",
+    "breast lift miami",
+    "breast lift scars",
+    "breast lift recovery"
+   ],
+   "readerStage": "n/a",
+   "owner": "claude-code",
+   "effort": "S",
+   "dependsOn": "liveOn set on the w5 breast lift items",
+   "metric": "Baseline, 5 Oct-1 Nov: 12 posts had 0 web clicks. Read clicks, impressions, CTR and position by post, and form leads, against the lipo batch.",
+   "rationale": "The go-live date is not set yet, so the existing w10 and w14 read dates may move with it.",
    "status": "todo",
    "notes": "",
    "liveOn": null

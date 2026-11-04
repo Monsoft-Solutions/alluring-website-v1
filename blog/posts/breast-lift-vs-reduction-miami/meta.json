@@ -1,0 +1,404 @@
+{
+  "slug": "breast-lift-vs-reduction-miami",
+  "mode": "rewrite",
+  "base_md5": "9002c6426acc97b8b87ef9ebf39b0bae",
+  "base_from": "localhost:5432/alluring_bl_rewrite 2026-11-04T03:01:58Z",
+  "reader": "deciding",
+  "cluster": "breast-lift",
+  "title": "Breast Lift vs Breast Reduction: Which One, or Both?",
+  "meta_description": "A lift raises breasts that have dropped; a reduction makes them smaller and lighter. How to tell which you need, when to do both, and cost and scars.",
+  "excerpt": "A breast lift raises breasts that have dropped. A breast reduction makes them smaller and lighter, and raises them too. Here is how to tell which fits you, when the two go together, and how insurance, scars, recovery and price compare.",
+  "quick_answer": "Do I need a breast lift or a breast reduction?\n\nIt depends on whether you want to change your size. The American Society of Plastic Surgeons (ASPS) says a lift doesn't significantly change size, while a reduction removes skin and tissue, then reshapes and elevates the breast. A lift alone won't make breasts smaller, and women with both concerns may need a combination.",
+  "primary_keyword": "breast lift vs breast reduction",
+  "secondary_keywords": [
+    "breast lift vs reduction",
+    "breast reduction vs breast lift",
+    "breast reduction and lift",
+    "breast lift and reduction",
+    "mastopexy vs reduction",
+    "breast reduction and lift cost",
+    "does a breast reduction include a lift",
+    "is mastopexy the same as breast reduction",
+    "boob lift vs reduction",
+    "mastopexy with reduction",
+    "breast lift or reduction",
+    "difference between breast lift and breast reduction"
+  ],
+  "owns_queries": [
+    "breast lift vs breast reduction",
+    "breast lift vs reduction",
+    "breast reduction vs breast lift",
+    "breast reduction and lift",
+    "breast lift and reduction",
+    "mastopexy vs reduction",
+    "breast reduction and lift cost",
+    "does a breast reduction include a lift",
+    "is mastopexy the same as breast reduction",
+    "boob lift vs reduction",
+    "mastopexy with reduction"
+  ],
+  "categories": [
+    "Breast Lift"
+  ],
+  "tags": [
+    "Breast Lift",
+    "Breast Reduction",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman with a long black braid, in a loose rust-colored linen dress, sits on a limestone bench in a shaded courtyard and looks off to the side.",
+      "prompt": "SCENE: Late morning in a shaded Miami courtyard, pale limestone walls and a tall arched opening, soft palm shadow moving across the stone. Palette of stone, sand, warm white and brushed gold. SUBJECT: A South Asian woman in her late 20s with a long black braid over one shoulder, seated on a limestone bench in a loose, high-neck, rust-colored linen dress with long sleeves, hands resting in her lap, looking off to the side with a calm, thoughtful expression. KEY DETAILS: Framed from the waist up with generous space above her head, subject centered, head in the upper part of the frame, the lower third quiet stone so a title can sit over it; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso; no swimwear, lingerie, robe, cleavage or bare midriff; no bandages, garments on the body, drains or incisions; not photographed from behind; not a result, no before-and-after framing; no surgeon or staff; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "compare",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Comparison card. Breast lift: goal, raise and reshape; size doesn't significantly change; removes excess skin; surgery time about 1 to 3 hours; most plans don't cover it. Breast reduction: goal, make smaller and lighter, and reshape; size smaller; removes excess breast tissue and skin; surgery time about 3 to 5 hours; often covered if you meet your plan's criteria. Sources: ASPS, Cleveland Clinic and The Aesthetic Society.",
+      "prompt": "SCENE: A plain typographic comparison card on a warm porcelain-white background with hairline brushed-gold rules, palette of stone grey and brushed gold, like a page in a calm modern textbook. SUBJECT: Two equal columns of short text under one title, the left column headed Breast lift and the right column headed Breast reduction, five rows each, with a one-line source footer in small text. KEY DETAILS: Refined serif for the title and column heads, clean sans-serif for the rows, generous spacing, large legible type for phones. All text must be rendered exactly as given in text_in_image, word for word, and nothing else. CONSTRAINTS: 4:5 portrait. Text and rules only: no drawn breasts, nipples, torsos, bodies or silhouettes, no people, no icons of anatomy. No prices. No practice name, logo, phone number, website address or watermark. No extra words or numbers.",
+      "text_in_image": "Breast lift vs breast reduction\n\nBreast lift\nGoal: raise and reshape\nSize: doesn't significantly change\nRemoved: excess skin\nSurgery time: about 1 to 3 hours\nInsurance: most plans don't cover it\n\nBreast reduction\nGoal: make smaller and lighter, and reshape\nSize: smaller\nRemoved: excess breast tissue and skin\nSurgery time: about 3 to 5 hours\nInsurance: often covered if you meet your plan's criteria\n\nSources: ASPS, Cleveland Clinic, The Aesthetic Society"
+    }
+  ],
+  "sources": [
+    {
+      "url": "docs/pricing/practice-price-list.md",
+      "publisher": "Alluring Plastic Surgery",
+      "title": "Practice price sheet of 2026-09-15",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast Lift - NO IMPLANTS | 5,000",
+        "Breast Lift - Modified (only skin from below areola) | 4,000",
+        "Reduction - SM-MED | 6,000",
+        "Reduction - LG | 8,000",
+        "Reduction - Ex LG | 9,000"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast Lift (Mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast lift surgery does not significantly change the size of your breasts or round out the upper part of your breast.",
+        "If you want smaller breasts, consider combining breast lift and breast reduction.",
+        "raises the breasts by removing excess skin and tightening the surrounding tissue"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/cost",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "How much does a breast lift cost?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The average cost of a breast lift (mastopexy) is $6,816, according to the latest statistics",
+        "This average cost is only part of the total price – it does not include anesthesia, operating room facilities",
+        "or other related expenses.",
+        "Most health insurance plans do not cover breast lift surgery or its complications,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Who is a good candidate for breast lift surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "When unsupported, your nipples fall below the breast crease",
+        "Your nipples and areolas point downward",
+        "You have stretched skin and enlarged areolas"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/results",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift results",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The results of your breast lift surgery will be long-lasting.",
+        "Over time, your breasts can continue to change due to aging and gravity.",
+        "Maintain your weight",
+        "Changes that occur in the breasts during pregnancy can minimize or reverse the improvement a breast lift provides."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift procedure steps",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines are permanent, but in most cases will fade and significantly improve over time."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/safety",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift risks and safety",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Implants can be placed at the same time or as a second procedure, depending on the experience of the surgeon."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast Reduction",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast reduction surgery entails the removal of skin and tissue from the breast, followed by reshaping and elevating to create a smaller, more proportionate bust size.",
+        "Women almost always report that having smaller breasts significantly reduces back pain."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction candidates",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Experiencing back, neck and shoulder pain caused by the weight of their breasts",
+        "Suffering from shoulder indentations caused by bra straps and/or have skin irritation beneath the breast crease",
+        "Struggling with physical activity due to the size of their breasts"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction/costs",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction costs",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast reduction surgery is often covered by health insurance plans",
+        "your plastic surgeon may need to get approval from your insurance company",
+        "This process may involve submitting a letter and photos.",
+        "Once the authorization is granted, you can proceed with scheduling the surgery",
+        "any copayments or deductibles set by your insurance."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction procedure",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast reduction involves making incisions on the breast skin to remove the excess breast tissue and skin.",
+        "Incision lines are permanent, but in most cases they will fade over time.",
+        "the nipple and areola will not have sensation after the operation and it will take longer to heal."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction/recovery",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Continue to wear a support bra"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction/results",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction results",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The results of breast reduction surgery will be long-lasting.",
+        "However, over time your breasts can change due to aging, weight fluctuations, hormonal factors and gravity."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/breast-reduction/safety",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast reduction safety",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast reduction surgery may limit a woman's ability to breast feed",
+        "most women can still breast feed after having a breast reduction",
+        "While breast reduction surgery may interfere with sensation, most of the time nipple sensation improves over time"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/whats-the-difference-between-a-breast-reduction-and-a-breast-lift",
+      "publisher": "ASPS website, a post by Lee Daniel, MD",
+      "title": "What's the difference between a breast reduction and a breast lift? (2018-10-19)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Often when the breast reduction procedure is performed, women experience a much more lifted appearance.",
+        "Because a breast lift repositions the location of the breasts, they can appear smaller.",
+        "However, only excess skin is removed, not the actual breast tissue.",
+        "it is not unusual for women to encounter both excess breast tissue and sagging.",
+        "Both procedures are relatively easy to recover from and require 2 to 4 weeks of downtime.",
+        "Commonly, these women get the best results by receiving a combination of breast reduction and breast lift procedures."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/better-breasts-after-pregnancy-and-breastfeeding",
+      "publisher": "ASPS website, a post by Shahram Salemy, MD, FACS",
+      "title": "Better breasts after pregnancy and breastfeeding (2022-02-08)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "up to six months after lactation has stopped"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Lift (Mastopexy): Surgery & Recovery (last reviewed 06/19/2022)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The procedure usually lasts an hour or two, depending on how much work is being done.",
+        "Breast lift can be combined with breast augmentation or reduction.",
+        "Many women go back to desk work and gentle activities such as walking about a week afterward.",
+        "You may not be cleared for vigorous activities, such as lifting things, exercising and having sex, for up to six weeks.",
+        "Usually, women can wear a regular bra about eight weeks after surgery.",
+        "Inability to lactate (breastfeed) in the future.",
+        "The results of a breast list should last for several years.",
+        "If either breast becomes red, hot, swollen or painful.",
+        "Bleeding, drainage, redness or swelling at the incision site.",
+        "Chest pain.",
+        "Dizziness.",
+        "Fever higher than 100.5 degrees Fahrenheit.",
+        "Severe pain not helped with medicine.",
+        "Nausea or vomiting."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/cosmetic-plastic-surgery/procedures/breast-lift",
+      "publisher": "Cleveland Clinic Cosmetic & Plastic Surgery Center",
+      "title": "Breast Lift",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines are permanent but will fade over time.",
+        "maximum fading occurring in around one year",
+        "You may experience some loss of sensation in your nipples and breasts following mastopexy surgery",
+        "some patients experience numbness for up to a year",
+        "On rare occasions, loss of sensation can be permanent.",
+        "and typically takes two-and-a-half to three hours."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11025-breast-reduction",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Reduction (last updated 09/22/2021)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "your surgeon removes breast fat, tissue and skin",
+        "The surgery itself will take about three to five hours.",
+        "You’ll need to take at least one week off from work or school.",
+        "These scars are permanent, but they’ll fade with time.",
+        "Because breast reduction can be considered medically necessary, your chances of getting insurance coverage are good.",
+        "Some people require two weeks, but each situation varies.",
+        "Your surgeon will need to take photos of your breasts, measure your height and weight,",
+        "and detail your physical symptoms caused by enlarged breasts in a letter.",
+        "Finally, your insurance carrier will consider the estimated amount of breast to be removed.",
+        "Fever.",
+        "Unusual discharge from the incision site, including pus.",
+        "Release or detachment of any sutures before they’re supposed to be removed.",
+        "Enlargement on one or both breasts associated with pain and pressure."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Lift: Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have a severe degree of sagging or are getting a breast reduction with your breast lift,",
+        "your surgeon will likely recommend this approach.",
+        "This technique produces the greatest lift, but also leaves the most scars.",
+        "If you have a moderate degree of sagging and do not want breast implants, your surgeon will likely recommend this approach.",
+        "This technique produces moderate scarring.",
+        "If you have a mild degree of sagging or asymmetric areolas, your surgeon may recommend this approach.",
+        "This technique produces the least amount of scarring.",
+        "Your nipples and areolas will remain attached to underlying mounds of tissue",
+        "preserve sensation and the ability to breastfeed"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Lift: Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your chest region may feel stiff and sore for two to five days.",
+        "You must not lift, drive, do laundry, or clean during the first two weeks."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-reduction/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Reduction: Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "move the nipple-areola complex to a higher position",
+        "An “anchor” incision, the most common technique, and involves three distinct cuts.",
+        "If you have fatty breasts, need a minor-to-moderate reduction, and do not need to correct sagging,",
+        "you may be able to have a breast reduction using liposuction alone.",
+        "poor skin condition with little tissue elasticity, or a low nipple position, this technique may not be right for you."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-reduction/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Reduction: Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your breasts will feel tender, stiff and sore for a few days but will subside.",
+        "you should not exercise or engage in strenuous physical activities for at least three to four weeks."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-reduction/associated-costs",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Reduction Surgery: Associated Costs",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your health insurance may cover your breast reduction surgery if you meet their criteria",
+        "(height, weight, body surface area, body mass index),",
+        "and they consider your surgery a medical necessity.",
+        "Each insurance company has their own specific criteria and the criteria can change based on the plan you have with them."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-reduction/incisions-and-scars",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Reduction: Incisions and Scars",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you desire a significant reduction or have a severe degree of sagging, your surgeon will likely recommend this approach.",
+        "If you desire a moderate reduction and have a moderate degree of sagging, your surgeon may recommend this approach.",
+        "If you only desire a minor reduction, your surgeon may recommend this approach.",
+        "This technique produces the least amount of scarring."
+      ]
+    },
+    {
+      "url": "https://www.cdc.gov/breastfeeding-special-circumstances/hcp/illnesses-conditions/breast-surgery.html",
+      "publisher": "Centers for Disease Control and Prevention (CDC)",
+      "title": "Breast Surgery and Breastfeeding (updated 2025-12-08)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Most mothers who have had breast or nipple surgery can produce some milk, but they may not produce a full milk supply.",
+        "Incisions around the areola and surgery that completely detaches the areolae and nipples are more likely to cause reductions in milk production."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/article/000132.htm",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "title": "Pulmonary embolus (reviewed 10/21/2025)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The main symptoms of a pulmonary embolism include chest pain",
+        "Leg pain, redness, or swelling",
+        "Go to the emergency room or call 911 or the local emergency number, if you have symptoms of a pulmonary embolus."
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 745,
+    "clicks": 0,
+    "position": 14.4
+  },
+  "notes": "Full rewrite from the approved 3 Nov brief. Removed: 73% of mothers, 2-4 and 3-5 hour times, 2+ cup size claims, BMI under 30, 10-15 years, 12-18 month scars, humidity and climate claims, SPF 50+ timing, 5,000+, accredited, board-certified, financing partner names and 0% APR, phone number, ASPS 2024 counts. The GSC window's impressions are mostly head terms this post must stay off: breast reduction miami 202 at 18.9 and breast lift miami 187 at 8.3, both owned by the procedure pages; the title, H2s and links no longer chase them. Live FAQ kept and rewritten: difference (now the mastopexy FAQ and the at-a-glance table), how do I know (now the opening H2), after pregnancy, can I breastfeed (now an H2), how long results last, scars (now an H2). Open: whether Alluring works with insurers for a reduction, what its prices include, one surgery or two for a reduction with a lift, and whether a reduction with a lift costs more than the reduction line. Written around them. Categories: build_sql only adds, so Mommy Makeover stays from the live row."
+}

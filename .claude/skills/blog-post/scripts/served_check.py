@@ -35,7 +35,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[4]
 CLAIMS = {
     'board-certified': r'board[\s-]certified(?! in general surgery by the american board of surgery)',
-    '5,000': r'5,000\+?|thousands of (?:patients|procedures)',
+    '5,000': r'(?<!\$)5,000\+?|thousands of (?:patients|procedures)',
     'ABPS': r'\babps\b|american board of plastic surgery',
     'ABCS': r'american board of cosmetic surgery',
     'AAAASF/accredited': r'aaaasf|accredit',

@@ -164,12 +164,38 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'mastopexy',
             'breast lift surgery',
             'breast rejuvenation',
+            'mastopexy miami',
+            // A lift with implants (augmentation-mastopexy) is this page's;
+            // the breast augmentation page links here for it (#320).
+            'breast lift with implants miami',
+            'breast lift and augmentation miami',
+            // Price intent in Miami (D5 of the #320 brief). National cost
+            // searches ("breast lift cost", 18,100 a month, against 140 for
+            // "breast lift miami cost") belong to /blog/breast-lift-cost,
+            // which links back to #pricing: this is a Miami page ranking
+            // about 55, and it can't serve them. In the 180 days to
+            // 2026-09-30 Google sent these searches to
+            // /blog/affordable-plastic-surgery-miami (about 340 impressions
+            // at positions 15-28) and almost none here; this page now
+            // carries the four prices from the practice's 2026-09-15 sheet.
+            'breast lift cost miami',
+            'breast lift miami cost',
+            'how much is a breast lift in miami',
+            'breast lift price miami',
+            'breast lift with implants cost miami',
         ],
-        mustNotTarget: [
-            {
-                query: 'breast lift cost',
-                ownedBy: '/plastic-surgery-cost-miami',
-            },
+        // Exact matches only: containment would otherwise claim the national
+        // and non-surgical questions that the blog owns ("breast lift cost"
+        // sits inside "breast lift cost miami").
+        gateExactOnly: [
+            'breast lift surgery',
+            'breast lift cost miami',
+            'breast lift miami cost',
+            'how much is a breast lift in miami',
+            'breast lift price miami',
+            'breast lift with implants cost miami',
+            'breast lift with implants miami',
+            'breast lift and augmentation miami',
         ],
     },
     {

@@ -12,6 +12,10 @@
 
 import { bmiFacts, bmiSources } from '../lib/data/bmi/bmi.facts'
 import { bblFacts, bblSources } from '../lib/data/procedures/facts/bbl.facts'
+import {
+    breastLiftFacts,
+    breastLiftSources,
+} from '../lib/data/procedures/facts/breast-lift.facts'
 import { lipoFacts, lipoSources } from '../lib/data/procedures/facts/lipo.facts'
 import {
     tummyTuckFacts,
@@ -121,6 +125,49 @@ const lipo: ProcedureCopyConfig = {
     ],
 }
 
+const breastLift: ProcedureCopyConfig = {
+    slug: 'breast-lift-miami',
+    name: 'Breast lift',
+    rootClass: 'breast-lift-page',
+    factsFile: 'breast-lift.facts.ts',
+    facts: breastLiftFacts,
+    sources: breastLiftSources,
+    // The title carries the current year, as the liposuction and tummy tuck
+    // pages' do (`seoTitle` in breast-lift-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    identifiers: [
+        [/64b8-9\.009\d?/g, ' rule '],
+        // The gallery's alt text for a lift with implants and Lipo 360 calls
+        // it "360 liposuction": the procedure's name, not a figure.
+        [/\b360 liposuction\b/g, ' all-round liposuction '],
+        // Gallery alt text says how long after surgery a photo was taken.
+        [/\b\d+ (?:weeks?|months?|years?) post-op\b/gi, ' post-op '],
+    ],
+    rules: [
+        {
+            rule: 'technique-price',
+            // A named incision and a dollar figure in one sentence.
+            re: /(?:crescent|donut|periareolar|peri-areolar|lollipop|vertical|anchor|inverted[\s-]t)[^.]{0,80}\$\s?\d|\$\s?\d[^.]{0,80}(?:crescent|donut|periareolar|peri-areolar|lollipop|vertical|anchor|inverted[\s-]t)/,
+            why: 'which incision each price covers is an owner question (#320 brief); the price sheet names no technique',
+        },
+        {
+            rule: 'drain-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\b(?:drainless|no drains?|without drains?)\b|\bdrainless\b/,
+            why: 'drains is an owner question (#320 brief)',
+        },
+        {
+            rule: 'implant-brand',
+            re: /natrelle|\bmentor\b|sientra|motiva|gummy[\s-]?bear|ideal implant/,
+            why: 'which implants the practice uses is an owner question (#320 brief)',
+        },
+        {
+            rule: 'implant-lifespan',
+            re: /implants?[^.]{0,60}\blast(?:s|ing)?\b[^.]{0,30}\byears?\b|lifetime (?:warranty|guarantee)/,
+            why: 'the FDA says implant life cannot be predicted; never give a number of years',
+        },
+    ],
+}
+
 const tummyTuck: ProcedureCopyConfig = {
     slug: 'tummy-tuck-miami',
     name: 'Tummy tuck',
@@ -222,6 +269,7 @@ export const procedureCopyConfigs: Readonly<
 > = {
     [bbl.slug]: bbl,
     [lipo.slug]: lipo,
+    [breastLift.slug]: breastLift,
     [tummyTuck.slug]: tummyTuck,
     [bmiCalculator.slug]: bmiCalculator,
 }

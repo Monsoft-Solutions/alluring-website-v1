@@ -21,6 +21,7 @@ import { createElement, type ReactNode } from 'react'
 import type { JsonLdGraphNode } from '@workspace/seo/react'
 
 import { BblPage } from '@/components/procedures/pages/bbl/bbl-page.component'
+import { BreastLiftPage } from '@/components/procedures/pages/breast-lift/breast-lift-page.component'
 import { LipoPage } from '@/components/procedures/pages/lipo/lipo-page.component'
 import { TummyTuckPage } from '@/components/procedures/pages/tummy-tuck/tummy-tuck-page.component'
 import { ProcedureTemplatePage } from '@/components/procedures/template/procedure-template-page.component'
@@ -40,6 +41,7 @@ const procedurePageModules: Readonly<
     'brazilian-butt-lift-bbl-miami': BblPage,
     'liposuction-miami': LipoPage,
     'tummy-tuck-miami': TummyTuckPage,
+    'breast-lift-miami': BreastLiftPage,
 }
 
 /**
@@ -72,6 +74,7 @@ const procedureSurgeons: Readonly<
     'brazilian-butt-lift-bbl-miami': karlinskyPersonNode,
     'liposuction-miami': karlinskyPersonNode,
     'tummy-tuck-miami': karlinskyPersonNode,
+    'breast-lift-miami': karlinskyPersonNode,
 }
 
 /** The surgeon node for a procedure's page, when its module names one. */
