@@ -115,3 +115,15 @@ longer states).
    still shows.
 
 Uploads are public. Upload only approved picks.
+
+**Keeping an image's URL.** Overwriting a Blob path doesn't reach readers on its
+own: the site's image optimizer keeps its own copies, keyed by URL, for weeks.
+After the overwrite, run
+`vercel cache invalidate --srcimg <blob url> --yes --cwd apps/web` from a checkout
+whose `apps/web` is linked to the project, then fetch `/_next/image` to check. Use
+this only for an image whose URL earns Google Images traffic; everything else gets
+a new path.
+
+**When Higgsfield credits run out,** `generate.py --provider fal` renders the same
+GPT Image 2.5 variants through fal, billed to the `FAL_KEY` in `apps/admin/.env`.
+Sizes differ slightly from Higgsfield's 2k. Exports are the same.

@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03",
+  "updated": "2026-11-04",
   "_about": "The blog content plan tracker. One item per piece of work; the strategy fills it. Item shape: {\"id\": \"short-kebab-id\", \"week\": \"2026-W42\", \"type\": \"new-post|rewrite-post|fold-post|page-fix|technical|compliance|local|geo|measurement|decision\", \"cluster\": \"a key of blog/tools/clusters.json\", \"url\": \"/blog/<slug> or the live path\", \"title\": \"\", \"targetQueries\": [\"GSC queries the item targets\"], \"readerStage\": \"recovering|deciding\", \"status\": \"todo|in-progress|rehearsed|live|measured|dropped\", \"owner\": \"\", \"notes\": \"\", \"liveOn\": null}. rehearsed = SQL applied on a throwaway clone and rendered; live = the user ran it on production and it was revalidated (set liveOn to the date); measured = the day-28 readout is in. Posts live in blog/posts/<slug>/; see blog/README.md. Weeks here are numbers counted from week1 (Mon 2026-10-12); the strategy artifact is the source of the plan and holds the same item ids.",
   "strategyArtifact": "https://claude.ai/artifact/6dshbbUGkb7mFFGRcMfQy8",
   "planName": "Money Pages First, Claims Cleared: 26-week SEO and blog plan for alluringplasticsurgery.com (12 Oct 2026 to 11 Apr 2027)",
@@ -1224,9 +1224,9 @@
       "dependsOn": "MM pricing answer or default; MM hero pick by 25 Nov",
       "metric": "Passes the kit checks, the site-claims check and the blog SWEEP on its copy by 26 Nov. Credits logged in the scorecard.",
       "rationale": "Mommy makeover has 10,939 impressions at 28.8, and the blog takes 67.7% of them. The page sits at 71.7 for 'mommy makeover miami' (72.3 over 28 days). The module image set is about 8-12 images through the procedure-images skill, at roughly 50-70 credits (estimate, checked against the BA and BL sets).",
-      "status": "todo",
+      "status": "live",
       "notes": "",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-local-apple-business-connect-vkcosmeticsurgicalarts-com-53",
@@ -1485,9 +1485,9 @@
       "dependsOn": "MM hero pick by 25 Nov; site-claims check; user merges",
       "metric": "Page-level position for 'mommy makeover miami', against the week-1 28-day baseline (72.3): 35 or better at day 28 (4 Jan), 20 or better at day 56 (1 Feb).",
       "rationale": "The page sits at 71.7 for 'mommy makeover miami' over 90 days (72.3 over 28). #pricing owns MM cost. If the user sent the TT-MM post here, it folds in this PR with a 'Tummy tuck or mommy makeover?' FAQ.",
-      "status": "todo",
+      "status": "live",
       "notes": "",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w8-fold-post-blog-mommy-makeover-recovery-timeline-miami-how-long-to-reco-66",
@@ -1503,9 +1503,9 @@
       "dependsOn": "PR-H",
       "metric": "Registry at 81 live (82 with the explainer), 0 chains.",
       "rationale": "The folds drew 524 impressions and 0 clicks per 28 days. The questions post carries $12,000-$25,000 and ABPS.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Split into per-post items on 3 Nov 2026: w4-fold-post-*-133 to -137 (2026-11-03 plan (implementation-plans/2026-11-03-mommy-makeover-blog-rewrite, artifact N7QWmw...)). Being prepared early, in the module worktree.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w8-rewrite-post-blog-mommy-makeover-recovery-signs-how-long-after-mommy-make-67",
@@ -1525,9 +1525,9 @@
       "dependsOn": "PR-H deployed; contact sheet 2 days ahead; user runs psql",
       "metric": "Day-28 (5 Jan): 'mommy makeover checklist' at 8 or better, batch read against the holdout H. Day-56 (2 Feb), read against the protected-plus-lipo control.",
       "rationale": "'mommy makeover checklist' has 1,862 impressions at 12.9 and 0 clicks. Drive: 1,779 at 6.9. The 3 BBL-A posts once planned here (exercises, compression garment, flying) are part of the frozen holdout H until week 16.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Split into per-post items on 3 Nov 2026: w4-rewrite-post-*-128 to -131 (2026-11-03 plan (implementation-plans/2026-11-03-mommy-makeover-blog-rewrite, artifact N7QWmw...)). Being prepared early. The hub's target moved from 'mommy makeover checklist' (a bot) to 'mommy makeover recovery timeline'; read the metric here against -128.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w8-geo-panel-kpi-sheet-maps-grid-68",
@@ -2829,9 +2829,9 @@
       "dependsOn": "Refresh candidates held on all nine posts; user runs the SQL on production; MM module and registry PR",
       "metric": "Day-28: hub in the top 10 for 'mommy makeover recovery timeline'; CTR above 1% (0.15% at 8.8, 5 Oct-1 Nov). Exclude the 'mommy makeover checklist' bot from impression baselines.",
       "rationale": "Recovery time and timeline have 880 searches a month and the site ranks about 18, on the exercise post. The checklist stays one H2, never a target: 0 clicks in six months, 87% of impressions Saturday to Monday.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-rewrite-post-how-long-after-mommy-makeover-can-i-drive-129",
@@ -2852,9 +2852,9 @@
       "dependsOn": "Refresh candidates held on all nine posts; user runs the SQL on production; MM module and registry PR",
       "metric": "Day-28: under 9 on tummy tuck driving queries (about 10 now), holding the mommy makeover driving queries; CTR above 1.2% (0.33% at 6.6, 5 Oct-1 Nov).",
       "rationale": "The title never says 'tummy tuck', which is what most of its searchers type. It also fixes the '1-2 weeks' for a mommy makeover that AI answers repeat; The Aesthetic Society says 2 to 3.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-rewrite-post-mommy-makeover-compression-garments-guide-130",
@@ -2874,9 +2874,9 @@
       "dependsOn": "Refresh candidates held on all nine posts; user runs the SQL on production; MM module and registry PR",
       "metric": "Hold position within 1 of 4.8 at day-28 and day-56. Keep the image count.",
       "rationale": "Best traffic in the cluster, so the H2 topics that earn the long tail stay. Fixes '12-16 hours', '6-8 weeks' (AI answers repeat it), credentials and a misattributed ASPS line.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-rewrite-post-mommy-makeover-recovery-exercises-131",
@@ -2896,9 +2896,9 @@
       "dependsOn": "Refresh candidates held on all nine posts; user runs the SQL on production; MM module and registry PR",
       "metric": "Hold position within 1 of 5.9 at day-28 and day-56, and keep the Images clicks (18 image clicks against 14 web clicks, 5 Oct-1 Nov).",
       "rationale": "Holds 'workout plan' at 2.9. Cuts the 599,862 stat, the credential claim and unsourced week numbers for core work, and stops competing with the hub on 'recovery timeline'.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-rewrite-post-tummy-tuck-mommy-makeover-miami-132",
@@ -2918,9 +2918,9 @@
       "dependsOn": "Refresh candidates held on all nine posts; user runs the SQL on production; MM module and registry PR",
       "metric": "The procedure page holds more than half of 'mommy makeover cost miami' by day-56. Keep or fold is decided on the 5 Oct rule: fold if the page still trails it at day 56.",
       "rationale": "It holds the page's head and cost terms. It stays live as the comparison so the page can inherit those terms. Also fixes the unclosed image markdown that shows as raw text.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "This keeps the post live for now, which differs from w4-fold-post-blog-tummy-tuck-mommy-makeover-miami-blog-tummy-tuck-diastas-41. Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-fold-post-mommy-makeover-recovery-timeline-miami-133",
@@ -2936,9 +2936,9 @@
       "dependsOn": "The absorbing rewrite live first; the code PR (redirects, sitemap, registry, generator, count) deployed before 02-delete-folded.sql; user runs psql",
       "metric": "Both URL forms answer one 308 to a 200 after the deploy. Registry at 127 live on this branch, 0 chains.",
       "rationale": "471 impressions, 0 clicks at 20.1, plus 2,645 image impressions (5 Oct-1 Nov). The hub gets 5 inline images to make up for them.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-fold-post-mommy-makeover-recovery-miami-134",
@@ -2954,9 +2954,9 @@
       "dependsOn": "The absorbing rewrite live first; the code PR (redirects, sitemap, registry, generator, count) deployed before 02-delete-folded.sql; user runs psql",
       "metric": "Both URL forms answer one 308 to a 200 after the deploy. Registry at 127 live on this branch, 0 chains.",
       "rationale": "10 impressions, 0 clicks (5 Oct-1 Nov).",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-fold-post-how-long-to-recover-from-mommy-makeover-135",
@@ -2972,9 +2972,9 @@
       "dependsOn": "The absorbing rewrite live first; the code PR (redirects, sitemap, registry, generator, count) deployed before 02-delete-folded.sql; user runs psql",
       "metric": "Both URL forms answer one 308 to a 200 after the deploy. Registry at 127 live on this branch, 0 chains.",
       "rationale": "4 impressions, 0 clicks (5 Oct-1 Nov).",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-fold-post-mommy-makeover-miami-candidate-checklist-136",
@@ -2990,9 +2990,9 @@
       "dependsOn": "The absorbing rewrite live first; the code PR (redirects, sitemap, registry, generator, count) deployed before 02-delete-folded.sql; user runs psql",
       "metric": "Both URL forms answer one 308 to a 200 after the deploy. Registry at 127 live on this branch, 0 chains.",
       "rationale": "9 impressions, 0 clicks (5 Oct-1 Nov). The page takes candidacy at #candidate.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-fold-post-mommy-makeover-questions-miami-137",
@@ -3008,9 +3008,9 @@
       "dependsOn": "The absorbing rewrite live first; the code PR (redirects, sitemap, registry, generator, count) deployed before 02-delete-folded.sql; user runs psql",
       "metric": "Both URL forms answer one 308 to a 200 after the deploy. Registry at 127 live on this branch, 0 chains.",
       "rationale": "4 impressions, 0 clicks (5 Oct-1 Nov). Its quotes attributed to Dr. Karlinsky and its ABPS advice should not stay live. The page FAQ takes the questions.",
-      "status": "in-progress",
+      "status": "live",
       "notes": "Prepared in the feat/mommy-makeover-page-module worktree on 3 Nov 2026. Nothing is applied on production. Move to rehearsed once its SQL is applied on the clone and rendered.",
-      "liveOn": null
+      "liveOn": "2026-11-04"
     }
   ]
 }
