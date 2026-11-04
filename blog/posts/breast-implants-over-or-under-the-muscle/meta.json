@@ -1,7 +1,7 @@
 {
   "slug": "breast-implants-over-or-under-the-muscle",
   "id": "4b0cc7d7-2574-4170-9394-13cce5a5dd27",
-  "mode": "new",
+  "mode": "rewrite",
   "reader": "deciding",
   "cluster": "breast-augmentation",
   "title": "Over or Under the Muscle? Breast Implant Placement Compared",
@@ -405,5 +405,7 @@
     "checkedAt": "2026-11-04T03:33:54.233Z",
     "overlay": 0,
     "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
-  }
+  },
+  "base_md5": "98d5d07ea4fb48717bcdd15b36acbabb",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:46Z"
 }

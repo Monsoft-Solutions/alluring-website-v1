@@ -1,7 +1,7 @@
 {
   "slug": "breast-implant-rippling-bottoming-out",
   "id": "f64ab63d-5612-413e-8b46-f27b5f91ad7b",
-  "mode": "new",
+  "mode": "rewrite",
   "reader": "deciding",
   "cluster": "breast-augmentation",
   "title": "Breast Implant Rippling and Bottoming Out: Causes, Fixes",
@@ -433,5 +433,7 @@
     "checkedAt": "2026-11-04T03:31:20.218Z",
     "overlay": 0,
     "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
-  }
+  },
+  "base_md5": "faa563fd45fa4e06b29c409b9ad3eaad",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:45Z"
 }

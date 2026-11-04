@@ -1,7 +1,7 @@
 {
   "slug": "capsular-contracture",
   "id": "3b5915ef-b2d2-405d-955f-7cc94656a3ef",
-  "mode": "new",
+  "mode": "rewrite",
   "reader": "deciding",
   "cluster": "breast-augmentation",
   "title": "Capsular Contracture: Symptoms, Grades and Treatment",
@@ -486,5 +486,7 @@
     "checkedAt": "2026-11-04T03:21:03.222Z",
     "overlay": 0,
     "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
-  }
+  },
+  "base_md5": "28179608376ad17471959fad24d12902",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:46Z"
 }
