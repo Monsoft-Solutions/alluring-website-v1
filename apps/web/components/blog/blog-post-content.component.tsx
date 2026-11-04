@@ -328,7 +328,7 @@ export function BlogPostContent({
                 </div>
 
                 {/* Scroll indicator */}
-                <div className='absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce'>
+                <div className='absolute bottom-8 left-1/2 hidden -translate-x-1/2 animate-bounce md:block'>
                     <div className='flex flex-col items-center gap-2 text-white/50'>
                         <span className='text-xs font-medium tracking-widest uppercase'>
                             Scroll
@@ -590,12 +590,11 @@ export function BlogPostContent({
                                             </svg>
                                         </div>
                                         <h3 className='mb-2 font-serif text-xl font-medium text-stone-900'>
-                                            Ready to Transform?
+                                            Have Questions?
                                         </h3>
                                         <p className='mb-5 text-sm leading-relaxed text-stone-600'>
                                             Schedule your complimentary
-                                            consultation with our
-                                            board-certified surgeons.
+                                            consultation with Dr. Karlinsky.
                                         </p>
                                         <Link
                                             href='/contact-us'
@@ -630,7 +629,7 @@ export function BlogPostContent({
                                                     clipRule='evenodd'
                                                 />
                                             </svg>
-                                            5,000+ Happy Patients
+                                            Personal care. Honest price.
                                         </p>
                                     </div>
                                 </div>

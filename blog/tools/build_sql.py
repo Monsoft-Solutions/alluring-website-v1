@@ -46,7 +46,7 @@ meta.json "mode" decides the SQL:
            slug + status published + that md5(content) and a fingerprint of
            every other field it changes (an edit since the build, or a second
            run, fails the whole file); snapshots the row into blog_post_revision (reason
-           'claude-blog-post'); updates title, meta_title (= title),
+           'claude-blog-post'); updates title, meta_title (= title, or meta.json "meta_title" where a live one must stay),
            meta_description, excerpt, quick_answer, faqs (parsed from the FAQ
            section), content, reading_time, primary_keyword,
            secondary_keywords; upserts images and links them; sets
@@ -238,6 +238,7 @@ def post_fields_sql(p: dict) -> dict:
     t = re.sub(r'[^a-z]', '', p['slug'])[:16]
     return dict(
         title=bl.lit(p['title']),
+        meta_title=bl.lit(p.get('meta_title') or p['title']),
         meta_description=bl.lit(p['meta_description']),
         excerpt=bl.lit(p['excerpt']),
         quick_answer=bl.dollar('qa_' + t, p['quick_answer']),
@@ -314,7 +315,7 @@ BEGIN
 
     UPDATE blog_post
        SET title = {f['title']},
-           meta_title = {f['title']},
+           meta_title = {f['meta_title']},
            meta_description = {f['meta_description']},
            excerpt = {f['excerpt']},
            quick_answer = {f['quick_answer']},
@@ -323,6 +324,7 @@ BEGIN
            reading_time = {f['reading_time']},
            primary_keyword = {f['primary_keyword']},
            secondary_keywords = {f['secondary_keywords']},
+           author_id = coalesce(author_id, (SELECT id FROM author WHERE name = '{bl.AUTHOR_NAME}')),
            updated_at = now()
      WHERE id = post;
     GET DIAGNOSTICS n = ROW_COUNT;
@@ -483,7 +485,7 @@ BEGIN
     INSERT INTO blog_post (id, slug, title, meta_title, meta_description, excerpt, quick_answer, faqs, content,
         reading_time, primary_keyword, secondary_keywords, status, published_at, content_updated_at, author_id,
         priority, processing_status, idea_approval, planning_data, updated_at)
-    VALUES (post, {bl.lit(p['slug'])}, {f['title']}, {f['title']}, {f['meta_description']}, {f['excerpt']},
+    VALUES (post, {bl.lit(p['slug'])}, {f['title']}, {f['meta_title']}, {f['meta_description']}, {f['excerpt']},
         {f['quick_answer']},
         {f['faqs']},
         {f['content']},
@@ -595,7 +597,7 @@ def main() -> int:
         probs.extend(x for x in img_problems if x not in probs)
         words = bl.word_count(content)
         p = dict(
-            slug=post.slug, mode=m['mode'], title=m['title'].strip(), meta_description=m['meta_description'].strip(),
+            slug=post.slug, mode=m['mode'], title=m['title'].strip(), meta_title=(m.get('meta_title') or m['title']).strip(), meta_description=m['meta_description'].strip(),
             excerpt=m['excerpt'].strip(), quick_answer=m['quick_answer'].strip(), content=content,
             faqs=bl.faqs_for_db(content), words=words, reading_time=bl.reading_time(words),
             primary=m['primary_keyword'].strip(), secondary=[s.strip() for s in m['secondary_keywords']],

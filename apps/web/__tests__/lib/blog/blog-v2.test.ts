@@ -11,8 +11,11 @@ describe('isBlogV2', () => {
         expect(isBlogV2(SLUG, { VERCEL_ENV: 'production' })).toBe(false)
     })
 
-    it('releases the top 15 posts (epic #293, phase 3) and the breast lift and mommy makeover rewrites', () => {
-        expect(BLOG_V2_SLUGS.size).toBe(32)
+    it('releases the top 15 posts (epic #293, phase 3) and the cluster rewrites', () => {
+        // 32 through the breast lift and mommy makeover rewrites, plus 13
+        // breast augmentation rewrites and 6 new posts of #319 (the push-ups
+        // post joins with its rewrite).
+        expect(BLOG_V2_SLUGS.size).toBe(51)
         expect(BLOG_V2_SLUGS.has(SLUG)).toBe(false)
     })
 

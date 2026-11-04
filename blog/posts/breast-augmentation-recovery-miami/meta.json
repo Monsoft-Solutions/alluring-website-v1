@@ -1,0 +1,485 @@
+{
+  "slug": "breast-augmentation-recovery-miami",
+  "mode": "rewrite",
+  "base_md5": "29cd9c23f8c58173fecb95bdb600826a",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T10:55:01Z",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Breast Augmentation Recovery: Week-by-Week Timeline",
+  "meta_description": "Usual activities in 1 to 2 weeks if no complications, full recovery in about 6 to 8, implants settle over 3 to 6 months. The sourced week-by-week timeline.",
+  "excerpt": "With no complications, most usual activities return in 1 to 2 weeks. Full recovery takes about 6 to 8 weeks, and implants settle over 3 to 6 months. Here is the week-by-week timeline, what is normal, what is not, and when driving, sleep, exercise and swimming usually come back.",
+  "quick_answer": "How long is breast augmentation recovery?\n\nThe Aesthetic Society says it typically takes 1 to 2 weeks to recover, and Sientra's labeling says most usual activities return by then if you have no complications. Cleveland Clinic puts full recovery at about 6 to 8 weeks. An article on the ASPS website says implants take 3 to 6 months to settle. Your surgeon sets your dates.",
+  "primary_keyword": "breast augmentation recovery miami",
+  "secondary_keywords": [
+    "breast augmentation recovery",
+    "breast augmentation recovery time",
+    "breast augmentation recovery timeline",
+    "breast augmentation recovery week by week",
+    "breast augmentation recovery stages",
+    "breast augmentation recovery day by day",
+    "how long is recovery after breast augmentation",
+    "what to expect after breast augmentation",
+    "recovery from breast augmentation",
+    "recovery after breast augmentation",
+    "post breast augmentation tips",
+    "boob job recovery time",
+    "how long after breast augmentation can i lift my arms",
+    "breast implant recovery time"
+  ],
+  "owns_queries": [
+    "breast augmentation recovery",
+    "breast augmentation recovery time",
+    "breast augmentation recovery timeline",
+    "breast augmentation recovery week by week",
+    "breast augmentation recovery stages",
+    "breast augmentation recovery day by day",
+    "how long is recovery after breast augmentation",
+    "what to expect after breast augmentation",
+    "recovery from breast augmentation",
+    "how long after breast augmentation can i lift my arms"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a zip-up hoodie stands in a sunny hallway, marking a square on a blank paper wall calendar with a pencil.",
+      "prompt": "SCENE: Late morning in the hallway of a small, bright apartment, white plaster walls, sheer linen curtains on a tall window at the end, soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A Black woman in her early 40s with short natural hair, wearing a soft sand-colored zip-up hoodie zipped to the collarbone over a high-neck cream top, standing at ease beside a plain paper calendar pinned to the wall and marking a square with a pencil, seen in three-quarter view, calm and practical. KEY DETAILS: Framed from the waist up with generous space above her head, her face and hands in the upper two thirds of the frame, the lower third quiet wall and fabric; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. The calendar pages are blank squares with no writing visible. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments on the body beyond everyday clothes, no bandages, drains, incisions or scars; no surgeon or staff; no before and after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "finish-lines",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Reference card titled Breast Augmentation Recovery: How Long Each Part Takes. Back at a desk job, a few days to a week. Most usual daily activities, 1 to 2 weeks with no complications. Back at a physical job, at least 3 weeks. Full recovery, about 6 to 8 weeks. Final results start to show around 3 months, and the process takes 3 to 6 months. Scars faded, several months, even a couple of years.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. A single-column list of six rows, each with a short label on the left and its time on the right, separated by hairlines.",
+      "text_in_image": "Breast Augmentation Recovery: How Long Each Part Takes\nBack at a desk job: a few days to a week\nMost usual daily activities: 1 to 2 weeks, with no complications\nBack at a physical job: at least 3 weeks\nFull recovery: about 6 to 8 weeks\nFinal results: start to show around 3 months; the process takes 3 to 6 months\nScars faded: several months, even a couple of years\nSources: The Aesthetic Society, Sientra's patient labeling, Cleveland Clinic, University of Utah Health, article on the ASPS website, ASPS. Your surgeon sets your dates."
+    },
+    {
+      "key": "timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Vertical recovery timeline. Days 1 to 5, most pain in the first 48 hours, walk every few hours. Week 1, desk work, driving at about 1 week, some sources say at least 2, once your surgeon clears you. Week 2, most swelling gone, harder cardio can start. Weeks 3 to 4, side sleeping after 3 to 4 weeks, support bra day and night for 3 to 4 weeks, or 2 to 4 by one source. From week 4, heavy lifting after at least 4 weeks, swimming after at least about a month once incisions are fully closed. Week 6, strenuous and chest exercise at six weeks or later, as your surgeon decides. Weeks 6 to 8, full recovery on average. Months 3 to 6, implants finish settling.",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: Title, then eight rows in time order, stacked vertically and separated by thin brushed-gold hairlines, with the stage label in bold at the start of the row and its note running on after it across the full width. The last line is the source line. This is a lot of text: keep the body at the 1/30 minimum, keep margins tight and fill the canvas exactly. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "Breast Augmentation Recovery Timeline, Week by Week\nDays 1 to 5: Most pain in the first 48 hours. Walk every few hours.\nWeek 1: Desk work. Driving at about 1 week, some sources say at least 2, once your surgeon clears you.\nWeek 2: Most swelling gone. Harder cardio can start.\nWeeks 3 to 4: Side sleeping after 3 to 4 weeks. Support bra day and night for 3 to 4 weeks, or 2 to 4 by one source.\nFrom week 4: Heavy lifting after at least 4 weeks. Swimming after at least about a month, once incisions are fully closed.\nWeek 6: Strenuous and chest exercise at six weeks or later, as your surgeon decides.\nWeeks 6 to 8: Full recovery, on average.\nMonths 3 to 6: Implants finish settling.\nGuides only. Your surgeon sets your dates. Sources: The Aesthetic Society, ASPS, Cleveland Clinic, UW Medicine, University of Utah Health, MedlinePlus, articles on the ASPS website."
+    },
+    {
+      "key": "sleep-position",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "Simple line drawing from the side of a woman in a plain high-neck top and loose trousers, lying on her back propped on a wedge pillow, with a small gold arc at the foot of the wedge. Text reads: Sleeping in the First Days. On your back, propped up, 25 to 45 degrees. Wedge pillows or a recliner both work. Source: The Aesthetic Society.",
+      "prompt": "A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold. A simple, tasteful side-view line drawing, like a textbook figure, of a woman lying on her back on a bed propped up on a large wedge pillow, wearing a plain high-neck top and loose trousers, arms resting at her sides. A thin brushed-gold arc at her hips marks the angle of her upper body. Modest and non-sexual, no skin detail, no breasts drawn in any detail, no face detail, no logos, no phone numbers, no watermarks.",
+      "text_in_image": "Sleeping in the First Days\nOn your back, propped up\n25 to 45 degrees\nWedge pillows or a recliner both work\nSource: The Aesthetic Society"
+    },
+    {
+      "key": "flat-lay",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Recovery items laid out on pale linen: a folded button-down shirt, a zip-up hoodie, a soft wireless bra, a pack of gauze, a water bottle and a small notebook with a pencil.",
+      "prompt": "SCENE: Overhead flat lay on pale natural linen on a limestone surface, soft window daylight from the upper left with a faint palm shadow. Palette of stone, sand, warm white and brushed gold. SUBJECT: Neatly arranged recovery items with space between them: a folded white button-down shirt, a folded sand-colored zip-up hoodie, a folded soft wireless bra in plain beige, a small unbranded pack of gauze, a matte stone-colored water bottle, and a small notebook with a pencil. KEY DETAILS: Editorial still-life photography, even soft light, natural texture, no people. CONSTRAINTS: No body, no skin, no medicine bottles or pills; no brand marks; no text, letters, numbers, logos or watermarks anywhere."
+    },
+    {
+      "key": "normal-vs-call",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card with two columns, titled Normal, or Call Your Surgeon? Usually normal: most pain in the first 48 hours, swelling on both sides easing within a month, uneven, high or tight breasts at first, tingling or shooting pains for the first few months. Call your surgeon right away: severe pain your medicine doesn't help, sudden swelling on one side, fever or chills, pus, bad-smelling drainage or an open incision. The last line of that column says emergency room for chest pain, trouble breathing or coughing up blood. A band below lists the sources: The Aesthetic Society, University of Utah Health, Cleveland Clinic, MedlinePlus and UW Medicine.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. Two columns side by side with a thin rule between them, a small check-style line icon over the left column and a small alert line icon over the right column, and one full-width band at the bottom in a slightly darker stone tone.",
+      "text_in_image": "Normal, or Call Your Surgeon?\nUsually normal\nMost pain in the first 48 hours\nSwelling on both sides, easing within a month\nUneven, high or tight breasts at first\nTingling or shooting pains for the first few months\nCall your surgeon right away\nSevere pain your medicine doesn't help\nSudden swelling on one side\nFever or chills\nPus, bad-smelling drainage or an open incision\nEmergency room: chest pain, trouble breathing or coughing up blood\nSources: The Aesthetic Society, University of Utah Health, Cleveland Clinic, MedlinePlus, UW Medicine"
+    },
+    {
+      "key": "florida-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Recovering in Florida. Sun: avoid sun on incisions for the first month, then SPF 30 or higher on closed scars. Water: no pool, ocean or hot tub until incisions are fully closed and your surgeon agrees, at least about a month. Flying home: your surgeon tells you when, because no guideline we found sets a number of days and surgeons differ.",
+      "prompt": "A clean, professional reference card on a warm porcelain-white background with a thin brushed-gold rule. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rest, generous spacing, easy to read on a phone. Palette of stone grey, espresso brown and brushed gold. No people, no bodies, no logos, no phone numbers, no practice name, no watermarks, no decoration beyond hairlines and simple line icons. Three stacked sections, each with a simple line icon: a sun, a wave and a paper plane drawn as plain outlines.",
+      "text_in_image": "Recovering in Florida\nSun: Avoid sun on incisions for the first month. Then SPF 30 or higher on closed scars.\nWater: No pool, ocean or hot tub until incisions are fully closed and your surgeon agrees, at least about a month.\nFlying home: Your surgeon tells you when. No guideline we found sets a number of days, and surgeons differ.\nSources: Sientra's patient labeling, MedlinePlus, article on the ASPS website"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It typically takes one to two weeks to recover from a breast augmentation.",
+        "You may be able to return to work within a few days to a week, depending on the nature of your job.",
+        "Typically, you’ll experience the most pain within the first 48 hours after surgery.",
+        "Your pain level will typically decrease each day",
+        "Rest and sleep on your back in an inclined position (25-to 45-degree angle) for the initial postoperative days or if you have significant swelling. Use wedge pillows with an incline design or sleep in a recliner chair.",
+        "It is very important that you walk a few minutes every few hours to reduce the risk of blood clot formation in your legs.",
+        "You may experience difficulty raising your arms.",
+        "Your breasts may feel tight and sensitive to the touch and your skin may feel warm or itchy.",
+        "You will be permitted to shower between one and seven days after surgery.",
+        "If you have external sutures, your surgeon will remove them in about a week. If your surgeon used tissue glue or tape, it will fall off on its own in a week or two.",
+        "Most residual swelling will resolve within a month.",
+        "Avoid sexual activity for a minimum of two weeks."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "On average, full recovery takes about six to eight weeks.",
+        "You will need to take at least three days off from work, so plan accordingly. If you have a labor-intensive job, you will likely need to take off at least three weeks of work.",
+        "You should arrange for someone to drive you home after your surgery and also have someone stay with you the first night at least.",
+        "You should not do any heavy lifting for at least four weeks. If you are physically active in sports, it may take up to six weeks before you can return to those activities.",
+        "You should avoid intense or jarring physical activities such as running, horseback riding or heavy lifting until you’ve fully recovered.",
+        "Increasing enlargement, or firmness, of one or both of your breasts that’s associated with pain and pressure.",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches.",
+        "Plenty of loose, comfortable, button-down blouses or shirts.",
+        "Clean gauze to cover the incision sites."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-does-drop-and-fluff-mean-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Eric Mariotti",
+      "title": "What does \"drop and fluff\" mean after breast augmentation?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The entire drop and fluff process can take three to six months to complete",
+        "While there is little you can do to make your implants drop and fluff faster"
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you do not have any complications, you will probably be able to go back to most of your usual daily activities in 1 to 2 weeks after surgery.",
+        "you should avoid the following for the first month after your surgery:",
+        "Sun exposure",
+        "Jerky movements or activities that stretch the skin at your incision",
+        "This might cause more scarring than just having implants placed and may lengthen your recovery time.",
+        "It is not always best to do multiple procedures during one surgery."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will begin to notice your final results around three months after surgery. However, you may continue to have subtle changes throughout the 12 months following your surgery.",
+        "Most people are ready to drive and return to work within one week.",
+        "You can resume a daily shower two days after surgery. Do not soak in a bathtub, pool, or hot tub until your incisions heal or your surgeon says it’s okay.",
+        "You may experience some asymmetry since each breast may heal at a different rate.",
+        "wait until three to four weeks after surgery and",
+        "Do not sleep on your stomach until your surgeon says it’s okay.",
+        "You will wear a surgical bra for three to four weeks after your surgery. You should only remove the bra to shower or to wash it.",
+        "After three to four weeks of wearing the surgical bra, you can transition into a soft, supportive sports bra.",
+        "For three to four weeks after surgery, avoid strenuous activity and repetitive arm motions, and do not lift, pull, or push anything over 10 pounds.",
+        "Begin stretching and performing range-of-motion exercises for your upper body three weeks after surgery.",
+        "Start walking the night of your surgery to help reduce your swelling and risk of blood clots and constipation.",
+        "such as loose button-down shirts or zip-up hoodies",
+        "For the first week after surgery, you should rest and sleep on your back, with extra pillows to prop you up. This can help with swelling.",
+        "You may feel shooting pains, tingling, or other strange sensations in your skin for the first few months."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/results",
+      "publisher": "ASPS",
+      "title": "What results should I expect after breast augmentation surgery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines may take several months, even a couple of years, to fade."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "ASPS",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks.",
+        "You may be permitted to go home when you are stable for discharge, typically after an hour or so.",
+        "Because it is possible to bleed into the pockets around the breast implants for the first several days, take it easy until you have permission to increase your activity level.",
+        "Wear your support garment (a bra or elastic band, called a bandeau) around the clock as instructed by your plastic surgeon.",
+        "an elastic bandage or support bra will minimize swelling and support the breasts as they heal."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Typically, the first week is the most uncomfortable",
+        "especially if the implant was placed under the muscle.",
+        "Following the first 7-10 days of recovery, many women can safely and comfortably drive and head back to the office for work.",
+        "but the majority of the swelling goes down within about two weeks.",
+        "However, strenuous activities and upper body movements should still be avoided for at least six weeks."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Do not take aspirin, aspirin-containing medicines, or ibuprofen without your surgeon's approval.",
+        "Do not drive for at least 2 weeks.",
+        "Once you no longer need dressings, wear a soft, wireless, supportive bra night and day for 2 to 4 weeks.",
+        "Keep the incision areas clean, dry, and covered.",
+        "Do not do any heavy lifting, strenuous exercise, or overstretching your arms for 3 to 6 weeks.",
+        "You may need help with your everyday activities for a few days until your pain and swelling decrease.",
+        "A healthy diet and plenty of fluids promote bowel movements and prevent infection.",
+        "Smoking slows healing and increases your risk for complications and infection.",
+        "Do not drink alcohol while you are taking pain medicines.",
+        "Do not apply ice or heat to your breasts unless your surgeon tells you that it is OK.",
+        "limit your physical activities so that you do not stretch your incisions.",
+        "A fever of 100°F (38°C) or higher",
+        "Increasing pain, redness, swelling, yellow or green drainage, bleeding, or bruising at the incision site",
+        "Also contact your surgeon if you notice sudden swelling of your breast.",
+        "Protect your scars with a strong sunblock (SPF 30 or higher) whenever you are out in the sun."
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine",
+      "title": "Breast Augmentation: What to expect and how to prepare (patient handout)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You may start taking showers 48 hours after your surgery.",
+        "Most people take 1 or 2 weeks off work to recover.",
+        "Sleep on your back for the first 3 to 4 weeks, whether or not you are wearing a surgical bra. After that, you may sleep on your side or stomach.",
+        "keep it on 24 hours a day for 3 to 4 weeks.",
+        "Do not wear an underwire bra until your incisions are fully healed.",
+        "Do not take a bath, sit in a hot tub, or go swimming until your incisions are fully healed.",
+        "For the first 2 to 3 days, you may use ice packs over your whole breast area",
+        "A fever higher than 100.5°F (38°C)",
+        "Severe pain that is not helped by your pain medicine",
+        "Bad-smelling drainage"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/exercise-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Catherine Huang-Begovic",
+      "title": "Exercise after breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Patients should start light walking immediately after surgery",
+        "After two weeks, patients can start more intense cardio such as walking on a treadmill or walking uphill.",
+        "At a month most patients can resume most exercise except heavy lifting.",
+        "At six weeks, patients are generally completely healed and can resume all exercises.",
+        "After breast augmentation, especially with implants under the muscle, I recommend patients try to avoid strenuous chest exercise such as push ups."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, article by Dr. Cindy Wu",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is normal for implants to still sit higher on your chest wall after the first month.",
+        "If you are planning to swim, make sure to plan to have your surgery at least a month in advance of your vacation, as most surgeons will want you to wait that long before immersing in a pool or ocean.",
+        "After your surgery, be sure to get clearance from your surgeon to swim."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34928243/",
+      "publisher": "Annals of Plastic Surgery (Min and colleagues)",
+      "title": "Seasonal and Temperature-associated Effect on Infection in Implant-based Breast Reconstruction",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Of the 460 cases enrolled, 42 cases developed an infection.",
+        "the risk of infection was 2.639 times higher in the hot season than in the nonhot season"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39407998/",
+      "publisher": "Journal of Clinical Medicine (Mahrhofer and colleagues)",
+      "title": "Seasonal Impact on Wound Healing and Surgical Site Infections after Reduction Mammoplasty",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A total of 808 patients (1616 breasts) met the inclusion criteria.",
+        "No statistically significant increase in the risk of SSIs (p = 0.928) or WHDs (p = 0.078) was observed during the warmer months of the year."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29348783/",
+      "publisher": "Eplasty (Sood and colleagues)",
+      "title": "Breast Massage, Implant Displacement, and Prevention of Capsular Contracture After Breast Augmentation With Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The available data do not support breast massage to prevent capsular contracture; more studies with standardized techniques are needed to better assess the efficacy of breast massage in preventing capsular contracture."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast implants are not lifetime devices. The longer you have your implants, the more likely it will be for you to have them removed or replaced.",
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/media/131885/download",
+      "publisher": "FDA",
+      "title": "Breast Implants - Certain Labeling Recommendations to Improve Patient Communication",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For asymptomatic patients, the first ultrasound or magnetic resonance imaging (MRI) should be performed at 5-6 years postoperatively, then every 2-3 years thereafter."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Collection of blood near the surgical site. May cause swelling, bruising and pain. Hematomas usually occur soon after surgery, but can occur any time there is injury to the breast.",
+        "Collection of fluid around the implant. May cause swelling, pain and bruising."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis (DVT)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms of this include chest pain, shortness of breath, cough with blood, lightheadedness and fainting.",
+        "It’s important to call your provider right away or go to the emergency room if you have deep vein thrombosis",
+        "Stand up and walk at least every half hour if you’re on a long flight."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/deepveinthrombosis.html",
+      "publisher": "MedlinePlus",
+      "title": "Deep Vein Thrombosis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Warmth and tenderness over the vein",
+        "Pain or swelling in the part of the body",
+        "Sitting still for a long time can make you more likely to get a DVT."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/how-to-maintain-minimal-scarring-after-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Daniel Maman",
+      "title": "How to maintain minimal scarring after breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "In most cases, scars appear as thin, pink or red lines along the breast crease (inframammary incision) or around the areola (periareolar incision)."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Lift (Mastopexy)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Usually, women can wear a regular bra about eight weeks after surgery."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/four-tips-for-a-healthy-recovery-after-a-breast-augmentation",
+      "publisher": "ASPS website, article by Dr. Paul Vitenas",
+      "title": "Four tips for a healthy recovery after a breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "For six weeks, you should not do any heavy lifting, and this includes picking up children under 20 pounds."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation",
+      "publisher": "ASPS",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast lifting can often be done at the same time as your augmentation or may require a separate operation."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 890,
+    "clicks": 1,
+    "position": 21.19,
+    "top_queries": [
+      {
+        "query": "recovery from transumbilical breast augmentation miami",
+        "impressions": 89,
+        "clicks": 0,
+        "position": 8.6
+      },
+      {
+        "query": "breast augmentation recovery",
+        "impressions": 65,
+        "clicks": 0,
+        "position": 13
+      },
+      {
+        "query": "breast implant revision miami",
+        "impressions": 37,
+        "clicks": 0,
+        "position": 41.4
+      },
+      {
+        "query": "breast revision south miami",
+        "impressions": 28,
+        "clicks": 0,
+        "position": 73.8
+      },
+      {
+        "query": "preparing for your breast augmentation revision in miami",
+        "impressions": 21,
+        "clicks": 0,
+        "position": 33.7
+      },
+      {
+        "query": "recovery from breast augmentation",
+        "impressions": 18,
+        "clicks": 0,
+        "position": 17.6
+      },
+      {
+        "query": "breast revision miami",
+        "impressions": 17,
+        "clicks": 0,
+        "position": 30.8
+      },
+      {
+        "query": "preservation breast augmentation miami",
+        "impressions": 11,
+        "clicks": 0,
+        "position": 84.8
+      },
+      {
+        "query": "breast augmentation surgeon miami",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 29.8
+      },
+      {
+        "query": "what to expect after breast augmentation",
+        "impressions": 8,
+        "clicks": 0,
+        "position": 14.4
+      }
+    ]
+  },
+  "notes": "Rewrite of the live row, read with the admin MCP get_post on 2026-11-03 (live contentUpdatedAt 2026-09-15, faqs 5). The local clone row is older (2026-01-19), so the base_md5 recorded here is the clone's and the morning rebase is needed against production. Written from live, not the clone. Absorbs what holds up from breast-augmentation-recovery-tips-miami (tips list, red flags, swelling, running, settling); its fold keywords stay out until the fold PR, for the main session to move here then: primaryKeyword \"breast augmentation recovery tips miami\", ownsQueries \"top breast augmentation recovery tips in miami\". Removed: double board-certified, AAAASF, phone number, financing partners and 0% APR, \"Miami humidity\" swelling claims, unsourced 4-6 week recovery, compression and 10-20 year implant lines, 3-4 week swim line, SPF 50. Soaking is now at least about a month (Dr. Wu); the 4 to 6 week figure is out of this post. Live FAQs kept in reworked form: swelling, combining procedures. Dropped: exercise and drop-and-fluff (answered in the body with corrected marks), humidity (replaced by the honest line in the Florida section). Fact-check fixes applied 2026-11-03 (factcheck/batch3.md). Links to N3 and N4 were added on the coordinator's instruction, so this post must go live with or after those posts, or those two links wait. Practice questions left vague on purpose: no protocol stated as Alluring's, nights in Miami per the brief wording."
+}

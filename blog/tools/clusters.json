@@ -95,9 +95,30 @@
     "breast-augmentation": {
         "label": "Breast augmentation",
         "page": "/procedures/breast-augmentation-miami",
-        "anchors": null,
-        "facts": [],
-        "old_figures": []
+        "anchors": [
+            "results",
+            "what-is-breast-augmentation",
+            "candidate",
+            "implants",
+            "size",
+            "placement",
+            "procedure",
+            "recovery",
+            "safety",
+            "pricing",
+            "breast-augmentation-prices",
+            "surgeon",
+            "faq"
+        ],
+        "facts": ["breast-augmentation.facts.ts"],
+        "old_figures": [
+            "\\$5,?000\\s*(?:[–-]|to)\\s*\\$12,?000",
+            "\\$6K",
+            "\\$12K",
+            "98%",
+            "Ninety-eight percent",
+            "fast fade"
+        ]
     },
     "breast-lift": {
         "label": "Breast lift",

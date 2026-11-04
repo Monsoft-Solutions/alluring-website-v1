@@ -31,19 +31,20 @@ describe('registry integrity', () => {
         // procedure page), and the three recovery posts folded into
         // /how-long-to-recover-from-bbl (miami-bbl-recovery-guide,
         // bbl-recovery-time-miami, bbl-recovery-mistakes-miami), and the
-        // eight liposuction posts folded in the 2026-09-22 blog review, and
-        // the four breast lift posts folded on 2026-11-03 (breast-lift-miami-quiz,
+        // eight liposuction posts folded in the 2026-09-22 blog review, the
+        // four breast lift posts folded on 2026-11-03 (breast-lift-miami-quiz,
         // breast-lift-prep-miami, best-age-breast-lift-miami,
-        // breast-lift-myths-busted), plus the four written that day
+        // breast-lift-myths-busted) plus the four written that day
         // (types-of-breast-lift, breast-lift-without-implants, breast-lift-cost,
-        // non-surgical-breast-lift), and
-        // the five mommy makeover posts folded on 2026-11-03 (three
-        // into /blog/mommy-makeover-recovery-signs:
+        // non-surgical-breast-lift), the five mommy makeover posts folded on
+        // 2026-11-03 (three into /blog/mommy-makeover-recovery-signs:
         // mommy-makeover-recovery-timeline-miami, mommy-makeover-recovery-miami,
         // how-long-to-recover-from-mommy-makeover; two into the procedure page:
         // mommy-makeover-miami-candidate-checklist,
-        // mommy-makeover-questions-miami).
-        expect(liveBlog.length).toBe(127)
+        // mommy-makeover-questions-miami), the nine breast augmentation posts
+        // folded in the 2026-11-03 rewrite, and the never-published 5-weeks
+        // entry.
+        expect(liveBlog.length).toBe(117)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 

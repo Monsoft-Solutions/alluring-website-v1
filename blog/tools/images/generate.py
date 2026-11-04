@@ -138,7 +138,7 @@ def main() -> int:
             if img.get('reuse_url') is not None:
                 print(f'  {slug}/{img["key"]}: reuse_url, not rendered')
                 continue
-            for v in (['flare', 'sunburst'] if img.get('type') == 'featured' else ['flare']):
+            for v in (img.get('variants') or (['flare', 'sunburst'] if img.get('type') == 'featured' else ['flare'])):
                 out = work / slug / f"{img['key']}-{v}"
                 if out.with_suffix('.png').exists() and f"{slug}:{img['key']}" not in redo:
                     continue

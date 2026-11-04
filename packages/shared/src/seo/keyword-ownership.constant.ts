@@ -135,23 +135,24 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'breast implants miami',
             'natural looking boob job',
             'natural breast augmentation',
-            'silicone implants',
-            'saline implants',
-            'gummy bear implants',
-        ],
-        mustNotTarget: [
-            {
-                query: 'breast augmentation cost miami',
-                ownedBy: '/breast-augmentation-cost-miami',
-            },
-            {
-                query: 'boob job cost',
-                ownedBy: '/breast-augmentation-cost-miami',
-            },
-            {
-                query: 'breast augmentation cost',
-                ownedBy: '/breast-augmentation-cost-miami',
-            },
+            'breast augmentation safety miami',
+            'breast augmentation safety miami risks prevention',
+            'breast augmentation vs reduction miami',
+            'breast augmentation vs breast reduction miami',
+            // Price intent (D5 of the wave-two brief). Like BBL, liposuction
+            // and the tummy tuck, breast augmentation has no cost page: the
+            // planned /breast-augmentation-cost-miami is retired to this
+            // page, which carries the saline and silicone prices from the
+            // practice's 2026-09-15 price sheet. 90 days to 2026-09-27: the
+            // cost cluster was 1,098 impressions site-wide, 51% on
+            // /blog/affordable-plastic-surgery-miami and 17% here.
+            'breast augmentation cost miami',
+            'boob job cost',
+            'how much is a boob job',
+            'breast augmentation cost',
+            'breast implant prices',
+            'silicone implants cost',
+            'how much is a boob job in miami',
         ],
     },
     {
@@ -372,21 +373,11 @@ const COST_PAGE_ENTRIES: OwnedPage[] = [
         url: '/breast-augmentation-cost-miami',
         kind: 'cost',
         intent: 'price',
-        status: 'planned',
+        status: 'retired',
         primaryKeyword: 'breast augmentation cost miami',
-        ownsQueries: [
-            'boob job cost',
-            'how much is a boob job',
-            'breast augmentation cost',
-            'breast implant prices',
-            'silicone implants cost',
-        ],
-        mustNotTarget: [
-            {
-                query: 'breast augmentation miami',
-                ownedBy: '/procedures/breast-augmentation-miami',
-            },
-        ],
+        ownsQueries: [],
+        redirectsTo: '/procedures/breast-augmentation-miami',
+        notes: "Never built: no route and no post (it returned 404). Retired in the breast augmentation page rebuild (#319, D5): the procedure page owns the cost cluster, as the BBL, liposuction and tummy tuck pages do. The URL redirects to the page's #pricing.",
     },
     {
         url: '/mommy-makeover-cost-miami',

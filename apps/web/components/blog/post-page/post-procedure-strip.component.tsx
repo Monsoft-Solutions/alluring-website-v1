@@ -7,7 +7,23 @@ type PostProcedureStripProps = {
     procedure: PostProcedure
     /** Google rating and review count; the rating chip hides without one. */
     rating: { value: number; count: number } | null
+    /** The post's slug; see `POSTS_WITHOUT_RECOVERY_CHIP`. */
+    slug: string
 }
+
+/**
+ * Posts about a problem or a later operation. Under an answer that mentions
+ * another surgery, "Back to work in a few days to a week" reads as that
+ * surgery's recovery, which no source says.
+ */
+const POSTS_WITHOUT_RECOVERY_CHIP: ReadonlySet<string> = new Set<string>([
+    'breast-augmentation-vs-breast-lift',
+    'breast-implant-illness-symptoms',
+    'capsular-contracture',
+    'breast-implant-rippling-bottoming-out',
+    'how-long-do-breast-implants-last',
+    'mammograms-breastfeeding-with-breast-implants',
+])
 
 /**
  * The procedure behind the question, right under the answer: its settled
@@ -19,6 +35,7 @@ type PostProcedureStripProps = {
 export function PostProcedureStrip({
     procedure,
     rating,
+    slug,
 }: PostProcedureStripProps) {
     const { price } = procedure
 
@@ -33,14 +50,15 @@ export function PostProcedureStrip({
                         {STRIP_COPY.price(price)}
                     </li>
                 )}
-                {procedure.recovery && (
-                    <li className='bp-chip'>
-                        <span className='sr-only'>
-                            {STRIP_COPY.recoveryLabel}
-                        </span>
-                        {procedure.recovery}
-                    </li>
-                )}
+                {procedure.recovery &&
+                    !POSTS_WITHOUT_RECOVERY_CHIP.has(slug) && (
+                        <li className='bp-chip'>
+                            <span className='sr-only'>
+                                {STRIP_COPY.recoveryLabel}
+                            </span>
+                            {procedure.recovery}
+                        </li>
+                    )}
                 {rating && rating.count > 0 && (
                     <li className='bp-chip'>
                         <span aria-hidden='true' className='text-gold-600'>

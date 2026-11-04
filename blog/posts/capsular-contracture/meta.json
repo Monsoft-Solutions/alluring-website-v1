@@ -1,0 +1,490 @@
+{
+  "slug": "capsular-contracture",
+  "id": "3b5915ef-b2d2-405d-955f-7cc94656a3ef",
+  "mode": "new",
+  "reader": "deciding",
+  "cluster": "breast-augmentation",
+  "title": "Capsular Contracture: Symptoms, Grades and Treatment",
+  "meta_description": "Scar tissue tightens around an implant. Baker grades I to IV, 10-year rates from 12.1% to 20.8% by maker, normal firmness vs when to call, and treatment.",
+  "excerpt": "Capsular contracture is scar tissue tightening around a breast implant. Here are the four Baker grades, how to tell normal firmness from a reason to call, 10-year rates with their exact sources, what the evidence says about massage and surgery, and what is still unknown.",
+  "quick_answer": "What is capsular contracture?\n\nCapsular contracture is when scar tissue around a breast implant tightens and hardens. The FDA grades it I to IV; III and IV are considered severe and may need surgery. Within 10 years of a first augmentation, severe contracture was 12.1% in Mentor's study and 13% in Sientra's. The FDA says the cause is not known.",
+  "primary_keyword": "capsular contracture",
+  "secondary_keywords": [
+    "capsular contracture symptoms",
+    "signs of capsular contracture",
+    "early signs of capsular contracture",
+    "what is capsular contracture",
+    "what causes capsular contracture",
+    "how to prevent capsular contracture",
+    "capsular contracture treatment",
+    "non surgical capsular contracture treatment",
+    "capsular contracture stages",
+    "does capsular contracture hurt",
+    "when does capsular contracture occur",
+    "does massage help capsular contracture",
+    "capsular contracture breast implant",
+    "how to treat capsular contracture at home",
+    "breast implant hardening",
+    "what is a capsulectomy"
+  ],
+  "owns_queries": [
+    "capsular contracture",
+    "capsular contracture symptoms",
+    "signs of capsular contracture",
+    "what is capsular contracture",
+    "what causes capsular contracture",
+    "how to prevent capsular contracture",
+    "capsular contracture treatment",
+    "capsular contracture stages",
+    "does capsular contracture hurt",
+    "when does capsular contracture occur",
+    "does massage help capsular contracture",
+    "capsular contracture breast implant"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Results & Maintenance"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Post-Op Care"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her early 40s with a chin-length black bob and a high-neck navy sweater stands by an arched window in soft daylight, talking on her phone with a calm expression.",
+      "prompt": "SCENE: Mid-morning in a bright, quiet home with white plaster walls, an arched window with sheer linen curtains and soft palm shadows on a pale limestone floor. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 40s of East Asian descent with a chin-length black bob, wearing a high-neck navy merino sweater and loose trousers, standing by the window with a phone held to her ear, mid-conversation, with a calm and attentive expression. Whole person at ease, three-quarter view. KEY DETAILS: Framed from the waist up with generous space above her head, subject in the upper two thirds; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no garments, bandages, drains or incisions on the body; not photographed from behind; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad. Nothing legible on the phone.",
+      "variants": [
+        "flare"
+      ]
+    },
+    {
+      "key": "baker-grades",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Reference card listing the four Baker grades of capsular contracture. Grade I: breast is normally soft and looks natural. Grade II: a little firm but looks normal. Grade III: firm and looks abnormal. Grade IV: hard, painful and looks abnormal. A note says grades III and IV are considered severe and may require reoperation.",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: Title, then four text rows separated by thin brushed-gold hairlines, one row per grade, with the grade label in bold and its description after it. Then the note about grades III and IV, then the source line. Text only: no discs, rings or ovals. With this little text, make the type larger than the minimum so the rows fill the canvas. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "The Baker Grades of Capsular Contracture\n\nGrade I: Breast is normally soft and looks natural\nGrade II: Breast is a little firm but looks normal\nGrade III: Breast is firm and looks abnormal\nGrade IV: Breast is hard, painful, and looks abnormal\n\nGrades III and IV are considered severe and may require reoperation.\n\nSource: FDA"
+    },
+    {
+      "key": "normal-vs-call",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card comparing normal healing with reasons to call a surgeon, one list above the other. Usually normal: chest stiff and sore for two to five days, soreness and swelling for a few weeks, implants still sitting high after the first month, some unevenness. Call your surgeon: a breast turning firm again, firmness with pain or a change in shape, sudden swelling of a breast, fever, redness or heat, new swelling or a lump at any time.",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: Title, then two lists stacked one above the other, never side by side. Each list opens with its heading in bold dark ink, both headings the same weight, and has one row per line under it, with thin brushed-gold hairlines between rows. The source line is last. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "Normal Firmness or Call Your Surgeon?\n\nUsually normal while you heal\nChest stiff and sore for two to five days\nSoreness and swelling for a few weeks\nImplants still sitting high after the first month\nSome unevenness\n\nCall your surgeon\nA breast turning firm again\nFirmness with pain, or a change in shape\nSudden swelling of a breast\nFever, redness or heat\nNew swelling or a lump at any time\n\nSources: The Aesthetic Society, ASPS, University of Utah Health, Sientra, MedlinePlus, FDA"
+    },
+    {
+      "key": "ten-year-rates",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Reference card titled Capsular Contracture Within 10 Years of Breast Augmentation, with four rows: Mentor MemoryGel silicone 12.1%, Baker III or IV; Sientra silicone 13%, Baker III or IV; Natrelle round silicone 18.9%, grade not stated; Natrelle saline 20.8%, Baker III or IV. A note says each is a maker's own study or survey, with different implants and methods, so this is not a ranking. Sources: Caplin 2021, Sientra labeling, Spear and Murphy 2014, Allergan labeling.",
+      "prompt": "SCENE: A flat typographic reference card that fills a 4:5 portrait canvas edge to edge, on a plain warm porcelain-white background. A thin brushed-gold rule at the top margin. No card outline, no shadow, no paper lying on a surface, no border.\nTYPE SIZE: This is read on a phone 390 px wide, so the words must be large and fill the canvas. Body text font size at least 1/30 of the canvas height (at least 67 px on a 2000 px tall canvas), larger if there is room. Title in a refined upright serif, clearly larger than the body, about 1/18 of the canvas height. Bold row labels in the same size as the body. The source line in the same clean sans-serif at no less than 1/45 of the canvas height (at least 45 px on a 2000 px tall canvas).\nCOLOUR: Every word in dark espresso-stone ink, near black, high contrast, including headings and the source line. No pale, grey-beige or gold text anywhere. Brushed gold only for the rule and the hairlines. No rose or pink.\nLAYOUT: Title, then four rows separated by thin brushed-gold hairlines, one row per implant, with the implant name in bold, then the figure and what was counted. No bars and no chart: nothing that ranks the rows. Then the note, then the source line. With this little text, make the type larger than the minimum so the rows fill the canvas. Clean sans-serif for everything except the title. Left aligned, margins about 6% of the width. The content spreads over the whole canvas, from the top margin to the bottom margin, with row spacing opened up so that no area of the canvas is empty: no empty lower third, nothing bunched at the top.\nCONSTRAINTS: No icons, no bullets, no discs, no checkmarks, no pictures, no diagrams, no people, no bodies, no anatomy, no faces, no practice name, no logo, no phone number, no website address, no watermark, no decoration beyond the hairlines. No italics anywhere. Nothing cut off at any edge. Spell every word exactly as supplied, with its punctuation; no extra words or numbers.",
+      "text_in_image": "Capsular Contracture Within 10 Years of Breast Augmentation\n\nMentor MemoryGel silicone: 12.1%, Baker III or IV\nSientra silicone: 13%, Baker III or IV\nNatrelle round silicone: 18.9%, grade not stated\nNatrelle saline: 20.8%, Baker III or IV\n\nEach is a maker's own study or survey, with different implants and methods. Not a ranking.\n\nSources: Caplin 2021; Sientra labeling; Spear and Murphy 2014; Allergan labeling"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "FDA",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Capsular contracture is the hardening of the breast around the implant. It can occur in the tissue surrounding one or both implants. This hardening causes the tissue to tighten, which can be painful.",
+        "Capsular contracture may be more common following infection, hematoma and seroma. However, the cause of capsular contracture is not known.",
+        "Grade I: Breast is normally soft and looks natural",
+        "Grade II: Breast is a little firm but looks normal",
+        "Grade III: Breast is firm and looks abnormal",
+        "Grade IV: Breast is hard, painful, and looks abnormal",
+        "Grades III and IV capsular contracture are considered severe and may require reoperation.",
+        "Capsular contracture could occur again after surgery to correct it.",
+        "The FDA has not cleared or approved any devices to treat or reduce the incidence of capsular contracture.",
+        "Some possible causes of rupture of breast implants include:",
+        "Capsular contracture",
+        "Closed capsulotomy - a technique used to relieve capsular contracture involving manually squeezing the breast to break the hard capsule",
+        "are not recommended for FDA-approved saline-filled breast implants because they are known to cause rupture and deflation",
+        "Some insurance companies do not cover implant removal or implant replacement, even if there are complications and even if the first implant surgery was covered.",
+        "Collection of blood near the surgical site. May cause swelling, bruising and pain. Hematomas usually occur soon after surgery, but can occur any time there is injury to the breast.",
+        "Collection of fluid around the implant. May cause swelling, pain and bruising."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants",
+      "publisher": "FDA",
+      "title": "Things to Consider Before Getting Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you notice any abnormal changes in your breasts or implants, you will need to see your surgeon or health care provider promptly.",
+        "Breast implants are not lifetime devices."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/breast-implant-surgery",
+      "publisher": "FDA",
+      "title": "Breast Implant Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "What is your rate of complications in general (capsule contracture, infection, etc.)?",
+        "What is your reoperation rate?"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/consumers/consumer-updates/what-know-about-breast-implants",
+      "publisher": "FDA",
+      "title": "What to Know About Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "a patient device card with information specific to a patient’s implant, such as the serial or lot number and the style and size."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/medical-device-reports-breast-implant-associated-anaplastic-large-cell-lymphoma",
+      "publisher": "FDA",
+      "title": "Medical Device Reports of Breast Implant-Associated Anaplastic Large Cell Lymphoma",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Capsular contracture 200 14",
+        "Table 2: Summary of U.S. and Worldwide BIA-ALCL Cases Reported as MDRs as of June 30, 2024 (1380 Cases)"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "ASPS",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/heres-what-you-need-to-know-about-capsular-contracture",
+      "publisher": "ASPS website, article by Daisy Brumby",
+      "title": "Here's what you need to know about capsular contracture",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "A normal capsule is thin, it's pliable, it's essentially translucent",
+        "Statistically, some degree of capsular contracture will affect about one in six of these women.",
+        "The vast majority of women who have implants do not develop capsular contracture."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-is-capsular-contracture-and-how-can-it-be-treated",
+      "publisher": "ASPS website, blog by Kevin Tehrani, MD",
+      "title": "What is capsular contracture and how can it be treated?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Research shows that about one in six breast augmentation patients experience some degree of capsular contracture",
+        "However, this method has not been proven effective by any major studies.",
+        "You should never disturb the tissue of your breasts while they are healing from surgery without first getting permission from your surgeon."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/considering-breast-augmentation-for-beach-season-heres-when-you-should-plan-your-surgery",
+      "publisher": "ASPS website, blog by Cindy Wu, MD",
+      "title": "Considering breast augmentation for beach season? Here's when you should plan your surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "it is normal for implants to still sit higher on your chest wall after the first month."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your chest area may feel stiff and sore for two to five days."
+      ]
+    },
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You may experience some asymmetry since each breast may heal at a different rate."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Also contact your surgeon if you notice sudden swelling of your breast.",
+        "Your surgeon may show you special exercises and breast-massaging techniques. Do these at home if your surgeon has recommended them."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/23366-breast-implant-illness",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Implant Illness",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Many surgeons will offer to remove the scar tissue around your breast implants at the same time. They call this a capsulectomy.",
+        "When the breast implant and capsule are removed as a unit, it’s called an en bloc capsulotomy."
+      ]
+    },
+    {
+      "url": "https://sientra.com/wp-content/uploads/2025/11/MDC-0010-R6-Sientra-Patient-Educational-Brochure-Augmentation-1.pdf",
+      "publisher": "Sientra FDA-approved patient labeling",
+      "title": "Breast Augmentation with Sientra Silicone Gel Breast Implants, patient educational brochure (MDC-0010 R6)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "a 13% risk of experiencing Baker Grade III or IV capsular contracture for primary augmentation patients through 10 years after receiving implants.",
+        "Capsular Contracture (Baker Grade III/IV) 5.9% 9.7% 12.9%",
+        "The chances of having contracture typically increase the longer you have your implants.",
+        "It also seems that women who have additional surgery to replace their implants (revision surgery) are more likely to have capsular contracture than women having their first augmentation or reconstruction.",
+        "you could lose some breast tissue during such a surgery.",
+        "Signs of capsular contracture, which may include breast pain, hardness, or abnormal shape of breast",
+        "If your incision sites or breasts are red, swollen, hot, painful, or are weeping (draining white or yellow fluid) or if you have a fever, chills, aches, nausea, or vomiting, you may have an infection.",
+        "A surgery to create an incision or opening in the capsule (scar tissue).",
+        "Excessive force to the chest (for example, during closed capsulotomy, which is contraindicated)"
+      ]
+    },
+    {
+      "url": "https://allergan-web-cdn-prod.azureedge.net/actavis/actavis/media/allergan-pdf-documents/labeling/natrelleus/salineimplants/m711rev10_web.pdf",
+      "publisher": "Allergan FDA-approved patient labeling",
+      "title": "Making an Informed Decision: Breast Surgery with NATRELLE Saline-Filled Breast Implants (M711 rev 10)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Symptoms of capsular contracture range from mild firmness and mild discomfort to severe pain, distorted shape of the implant, and palpability (ability to feel the implant).",
+        "Capsular Contracture Baker Grade III/IV 20.8%",
+        "The Post Approval Survey Study (PASS)",
+        "closed capsulotomy, the practice of forcible squeezing or pressing on the fibrous capsule around the implant to break the scar capsule, is not recommended as this may result in breakage of the implant.",
+        "Surgical removal of the scar tissue capsule around the implant."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33620918/",
+      "publisher": "Plastic and Reconstructive Surgery (Caplin and colleagues; Mentor-sponsored)",
+      "title": "MemoryGel Breast Implants: Final Safety and Efficacy Results after 10 Years of Follow-Up",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Kaplan-Meier estimated 10-year cumulative incidence rates for key complications at the subject level for Baker grade III/IV capsular contracture were as follows: primary augmentation, 12.1 percent"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24867717/",
+      "publisher": "Plastic and Reconstructive Surgery (Spear and Murphy; Allergan-funded)",
+      "title": "Natrelle round silicone breast implants: Core Study results at 10 years",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The Kaplan-Meier capsular contracture rate was 18.9 percent for augmentation",
+        "Among augmentation subjects, capsular contracture was significantly lower (p = 0.023) for submuscular (15.7 percent) versus subglandular (26.3 percent) placement."
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4579163/",
+      "publisher": "Archives of Plastic Surgery (Headon and colleagues)",
+      "title": "Capsular Contracture after Breast Augmentation: An Update for Clinical Practice",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "has an overall incidence of 10.6%.",
+        "a subjective classification system",
+        "I and II are not clinically significant",
+        "Risk factors that were identified included the use of smooth (vs. textured) implants, a subglandular (vs. submuscular) placement, use of a silicone (vs. saline) filled implant and previous radiotherapy to the breast.",
+        "treatment is only indicated in grades III and IV capsular contracture.",
+        "it tends to recur",
+        "surgical treatment is associated with a significant risk of contracture recurrence approaching 25% in the first year",
+        "Medical treatment of symptomatic cases seems to be ineffective and surgical therapy is associated with a significant rate of recurrence.",
+        "Medical treatment using the off-label leukotriene receptor antagonist Zafirlukast",
+        "prophylactic strategies such as antibiotic irrigation have failed to show any difference in capsular contracture rates"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/39989707/",
+      "publisher": "Aesthetic Surgery Journal Open Forum (Haas and colleagues)",
+      "title": "Capsular Contracture After Breast Augmentation: A Systematic Review and Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "often results in pain, firmness, and implant distortion.",
+        "The inclusion criteria were met in 24 studies.",
+        "Smooth implants were associated with significantly higher capsular contracture rates compared with textured implants (OR = 2.80, 95% CI, 1.92-4.08).",
+        "Subpectoral implant placement demonstrated significantly reduced capsular contracture rates compared with prepectoral placement",
+        "No significant difference in capsular contracture rates was found between silicone and saline",
+        "the absence of large, randomized controlled trials included in this study"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41541241/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open (Clark and colleagues)",
+      "title": "Understanding Capsular Contracture: Mechanisms, Management, and Patient Outcomes in Implant-based Breast Augmentation and Reconstruction",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Chronic peri-implant inflammation, bacterial biofilm, and postoperative radiation were consistently implicated in CC pathogenesis",
+        "Preventive measures, including antimicrobial pocket irrigation, implant and mesh selection, and atraumatic \"no-touch\" techniques, were associated with reduced CC in several reports.",
+        "For established CC, capsulotomy is commonly used for mild to moderate disease, whereas complete or partial capsulectomy remains the standard for severe or recurrent cases, often combined with implant exchange and adjunctive measures to limit recurrence.",
+        "Robust prospective studies are needed"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28916908/",
+      "publisher": "Aesthetic Plastic Surgery (Li and colleagues)",
+      "title": "Capsular Contracture Rate After Breast Augmentation with Periareolar Versus Other Two (Inframammary and Transaxillary) Incisions: A Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "showed a significantly higher rate of capsular contracture in periareolar incisions compared to inframammary incisions (OR, 1.91; 95% CI, 1.06-3.43, p = 0.03).",
+        "Subgroup results showed no significant difference of capsular contracture between periareolar incisions and transaxillary incisions (OR, 0.94; 95% CI, 0.52-1.64, p = 0.79)"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29348783/",
+      "publisher": "Eplasty (Sood and colleagues)",
+      "title": "Breast Massage, Implant Displacement, and Prevention of Capsular Contracture After Breast Augmentation With Implants: A Review of the Literature",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The literature search yielded 4 relevant studies, with a total of 587 patients.",
+        "Breast massage was introduced between 2 days and 2 weeks postoperatively, performed twice daily, and lasted from 2 to 5 minutes for each breast.",
+        "The average capsular contracture rate was similar, 31% (range, 0-35) in the massage group versus 40% (range, 30-90) in the nonmassage group.",
+        "The available data do not support breast massage to prevent capsular contracture; more studies with standardized techniques are needed to better assess the efficacy of breast massage in preventing capsular contracture."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26910663/",
+      "publisher": "Plastic and Reconstructive Surgery (Wan and Rohrich)",
+      "title": "Revisiting the Management of Capsular Contracture in Breast Augmentation: A Systematic Review",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "There is limited clinical evidence behind the surgical management of capsular contracture.",
+        "Site change and implant exchange are associated with reduced contracture recurrence rates and likely play a beneficial role in treating capsular contracture. The data on capsulectomy are less conclusive.",
+        "No controlled trials met final inclusion criteria."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34618886/",
+      "publisher": "Aesthetic Surgery Journal (Pasca and colleagues)",
+      "title": "Treatment and Prevention of Periprosthetic Capsular Contracture in Breast Surgery With Prosthesis Using Leukotriene Receptor Antagonists: A Meta-Analysis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Only treatment for ongoing CC showed statistically significant improvements.",
+        "Further subgroup analysis based on treatment timing showed that prophylaxis was ineffective"
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/questions-and-answers-about-breast-implant-associated-anaplastic-large-cell-lymphoma-bia-alcl",
+      "publisher": "FDA",
+      "title": "Questions and Answers about Breast Implant-Associated Anaplastic Large Cell Lymphoma (BIA-ALCL)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "These symptoms may occur well after the surgical incision has healed, often years after implant placement."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/29595715/",
+      "publisher": "Plastic and Reconstructive Surgery (Calobrace and colleagues)",
+      "title": "Risk Factor Analysis for Capsular Contracture: A 10-Year Sientra Study Using Round, Smooth, and Textured Implants for Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The data used for this analysis include 5,122 implants in 2,565 primary augmentation patients implanted by 34 surgeons based on long-term results from Sientra's clinical study.",
+        "Results from correlation analysis found 2 of the 8 factors to be more strongly associated with early onset capsular contracture events, compared with those occurring after 2 and 5 years of implantation (implant surface and steroid pocket irrigation).",
+        "device features (smooth surface, smaller size), surgical factors (periareolar incision, subglandular placement, antibiotic irrigation), the development of hematoma/seroma, and the use of a surgical bra."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "search_queries",
+    "window": "2025-07-09..2026-11-01",
+    "impressions": 60,
+    "clicks": 1,
+    "position": 3.7,
+    "position_note": "position is the head query capsular contracture (20 impressions), found on off-topic posts; no page of ours is about this. The 3 Nov plan puts the head query at 12,100 searches a month from Keyword Planner and about position 42 across 209 impressions in other windows.",
+    "top_queries": [
+      {
+        "query": "capsular contracture",
+        "impressions": 20,
+        "clicks": 1,
+        "position": 3.7
+      },
+      {
+        "query": "capsular contracture breast implant",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 2.8
+      },
+      {
+        "query": "how to prevent capsular contracture",
+        "impressions": 7,
+        "clicks": 0,
+        "position": 2.7
+      },
+      {
+        "query": "signs of capsular contracture",
+        "impressions": 5,
+        "clicks": 0,
+        "position": 2.8
+      },
+      {
+        "query": "what causes capsular contracture",
+        "impressions": 5,
+        "clicks": 0,
+        "position": 2.8
+      },
+      {
+        "query": "what is capsular contracture",
+        "impressions": 3,
+        "clicks": 0,
+        "position": 2.7
+      },
+      {
+        "query": "when does capsular contracture occur",
+        "impressions": 3,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "does capsular contracture hurt",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 3
+      },
+      {
+        "query": "capsular contracture symptoms",
+        "impressions": 2,
+        "clicks": 0,
+        "position": 2.5
+      },
+      {
+        "query": "capsular contracture treatment",
+        "impressions": 1,
+        "clicks": 0,
+        "position": 3
+      }
+    ]
+  },
+  "notes": "New post N4, published_at omitted. No claim about what Alluring does, in line with the prompt, so the plan's short Florida and fly-in section is one general line about surgery away from home. No price stated: the cost line links the procedure page #pricing. Miami queries (capsular contracture miami, 181 impressions at 47.8; treatment miami, 105 at 55.6) are left out on purpose: no Miami in the title, and the practice's revision policy is unconfirmed. Uses 'one in six' only to explain it, per the bank's writer note; 51.7% stays out as an illustrative maximum; Tehrani's lifetime-risk figures and '75% within two years' stay out; Aspen ultrasound stays out; 'massage for life' appears only as a claim the evidence doesn't support. Natrelle saline 20.8% is PASS survey data and is labeled that way. consistency.py '?' lines are figures with their own sources in sources[] (5.9, 9.7, 12.9 Sientra; 20.8 Allergan; 10.6 Headon; 25 Headon; 31 and 40 Sood). Links to other new posts (/blog/breast-implants-over-or-under-the-muscle, /blog/saline-vs-silicone-breast-implants, /blog/how-long-do-breast-implants-last) mean those go live in the same run or before. cta stays default because the 'breast' CTA copy says 'our board-certified surgeons'. Fact check batch 4 applied 2026-11-03: sudden-swelling attribution split between MedlinePlus and the FDA, unsourced call-your-surgeon lines labeled practical advice, irrigation evidence shown as mixed (Clark, Headon, Calobrace), onset line now 'we did not find a reliable figure', Li's figure stated against the breast fold and not the armpit. Calobrace 2018 also lists the surgical bra as a risk factor; left out on purpose as an unexplained association that could lead readers to stop wearing one against every recovery source.",
+  "gate": {
+    "verdict": "new",
+    "reason": "Cluster is unclaimed — safe to write",
+    "owningUrl": null,
+    "owningSlug": null,
+    "matchedQuery": null,
+    "similarityScore": null,
+    "claimedQueries": [
+      "capsular contracture",
+      "capsular contracture symptoms",
+      "signs of capsular contracture",
+      "early signs of capsular contracture",
+      "what is capsular contracture",
+      "what causes capsular contracture",
+      "how to prevent capsular contracture",
+      "capsular contracture treatment",
+      "non surgical capsular contracture treatment",
+      "capsular contracture stages",
+      "does capsular contracture hurt",
+      "when does capsular contracture occur",
+      "does massage help capsular contracture",
+      "capsular contracture breast implant",
+      "how to treat capsular contracture at home",
+      "breast implant hardening",
+      "what is a capsulectomy"
+    ],
+    "warnings": [],
+    "checkedAt": "2026-11-04T03:21:03.222Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
+  }
+}

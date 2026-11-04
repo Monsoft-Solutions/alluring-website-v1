@@ -162,7 +162,7 @@ def main() -> int:
             pass
         elif dslug in published:
             problems.append(f'{slug}: {dpath} is not the live URL of that post; use {published[dslug]["path"]}')
-        elif dpath not in money:
+        elif dpath not in money and not (dpath.startswith('/gallery/') and dpath.count('/') == 2):
             problems.append(f'{slug}: destination {dest} is not a live post or page')
         if dpath in redirects:
             problems.append(f'{slug}: destination {dpath} is itself a redirect source (-> {redirects[dpath]})')

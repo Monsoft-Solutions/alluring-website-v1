@@ -25,6 +25,10 @@ import {
     tummyTuckFacts,
     tummyTuckSources,
 } from '../lib/data/procedures/facts/tummy-tuck.facts'
+import {
+    breastAugmentationFacts,
+    breastAugmentationSources,
+} from '../lib/data/procedures/facts/breast-augmentation.facts'
 import type {
     ProcedureFact,
     ProcedureSource,
@@ -320,6 +324,50 @@ const bmiCalculator: ProcedureCopyConfig = {
     ],
 }
 
+const breastAugmentation: ProcedureCopyConfig = {
+    slug: 'breast-augmentation-miami',
+    name: 'Breast augmentation',
+    rootClass: 'breast-augmentation-page',
+    factsFile: 'breast-augmentation.facts.ts',
+    facts: breastAugmentationFacts,
+    sources: breastAugmentationSources,
+    // The title carries the current year, as the liposuction and tummy tuck
+    // pages' do (`seoTitle` in breast-augmentation-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    rules: [
+        {
+            rule: 'implant-brand-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky|she)\b[^.]{0,60}\b(?:mentor|natrelle|allergan|sientra|motiva|ideal implant|memorygel)\b/,
+            why: 'which implants Dr. Karlinsky uses waits on the owner (brief #16); the makers are named only as their own studies',
+        },
+        {
+            rule: 'implant-surface-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky|she)\b[^.]{0,60}\b(?:only |always )?(?:uses?|offers?|places?)\b[^.]{0,40}\b(?:smooth|textured|gummy)\b/,
+            why: 'smooth or textured, and shaped implants, wait on the owner (brief #16)',
+        },
+        {
+            rule: 'placement-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky|she)\b[^.]{0,40}\b(?:usually|always|prefers?|typically)\b[^.]{0,40}\b(?:under|over|dual[\s-]plane|muscle|incision|fold|armpit|areola)\b/,
+            why: 'her usual placement and incision wait on the owner (brief #17)',
+        },
+        {
+            rule: 'sizing-device',
+            re: /\b3-?d (?:imaging|simulation|scan)|vectra|crisalix|\bsizers?\b/,
+            why: 'how sizes are tried on at Alluring waits on the owner (brief #18)',
+        },
+        {
+            rule: 'warranty-claim',
+            re: /warrant/,
+            why: 'any implant warranty waits on the owner (brief #21)',
+        },
+        {
+            rule: 'cup-size-conversion',
+            re: /\b(?:[b-d]|dd)[ -]cups?\b|\ban a[ -]cups?\b|\bcup sizes? (?:up|bigger|larger|increase)/,
+            why: 'no source gives a cc-to-cup conversion; the size guide owns sizes',
+        },
+    ],
+}
+
 export const procedureCopyConfigs: Readonly<
     Record<string, ProcedureCopyConfig>
 > = {
@@ -329,4 +377,5 @@ export const procedureCopyConfigs: Readonly<
     [mommyMakeover.slug]: mommyMakeover,
     [tummyTuck.slug]: tummyTuck,
     [bmiCalculator.slug]: bmiCalculator,
+    [breastAugmentation.slug]: breastAugmentation,
 }

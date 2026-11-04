@@ -732,6 +732,99 @@ const nextConfig = {
                     '/blog/swelling-and-asymmetry-after-breast-augmentation-faq',
                 permanent: true,
             },
+            // Breast augmentation posts folded in the 2026-11-03 rewrite (#319): both URL forms.
+            {
+                source: '/blog/breast-augmentation-recovery-tips-miami',
+                destination: '/blog/breast-augmentation-recovery-miami',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-recovery-tips-miami',
+                destination: '/blog/breast-augmentation-recovery-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-recovery-exercises',
+                destination:
+                    '/blog/when-can-you-work-out-after-breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-recovery-exercises',
+                destination:
+                    '/blog/when-can-you-work-out-after-breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-miami-candidate',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-miami-candidate',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-miami-post-pregnancy',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-miami-post-pregnancy',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/best-age-breast-augmentation-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/best-age-breast-augmentation-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-weight-loss-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-weight-loss-miami',
+                destination: '/blog/breast-augmentation-candidate-quiz',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-before-after-miami',
+                destination: '/gallery/breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-before-after-miami',
+                destination: '/gallery/breast-augmentation',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-safety-miami',
+                destination: '/procedures/breast-augmentation-miami#safety',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-safety-miami',
+                destination: '/procedures/breast-augmentation-miami#safety',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-augmentation-vs-reduction-miami',
+                destination: '/procedures/breast-augmentation-miami#candidate',
+                permanent: true,
+            },
+            {
+                source: '/breast-augmentation-vs-reduction-miami',
+                destination: '/procedures/breast-augmentation-miami#candidate',
+                permanent: true,
+            },
             {
                 source: '/blog/when-can-you-workout-after-breast-augmentation',
                 destination:
@@ -820,6 +913,15 @@ const nextConfig = {
             {
                 source: '/procedures/brazilian-butt-lift-cosmetic-surgery-in-miami',
                 destination: '/procedures/brazilian-butt-lift-bbl-miami',
+                permanent: true,
+            },
+
+            // The cost page the keyword registry planned and never built
+            // (D5): the procedure page's #pricing section owns the cost
+            // searches, as on the BBL, liposuction and tummy tuck pages.
+            {
+                source: '/breast-augmentation-cost-miami',
+                destination: '/procedures/breast-augmentation-miami#pricing',
                 permanent: true,
             },
 

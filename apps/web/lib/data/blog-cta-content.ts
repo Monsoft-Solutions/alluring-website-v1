@@ -46,9 +46,9 @@ import type { BlogCTAContent } from '@/lib/types/blog/blog-cta.type'
 export const blogCTAContents = [
     {
         id: 'default',
-        heading: 'Considering Your Transformation?',
+        heading: 'Have Questions About Surgery?',
         description:
-            'Our board-certified surgeons at Alluring Plastic Surgery combine artistry with precision to help you achieve your aesthetic goals. Schedule your free consultation today.',
+            'Talk through your goals with Dr. Karlinsky at Alluring Plastic Surgery. Schedule your free consultation today.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -97,7 +97,7 @@ export const blogCTAContents = [
         id: 'breast',
         heading: 'Enhance Your Confidence',
         description:
-            'From augmentation to lift and reduction, our board-certified surgeons deliver natural-looking results that complement your body.',
+            'Augmentation, lift or reduction: Dr. Karlinsky will tell you which fits your body and your goals, and why.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -115,7 +115,7 @@ export const blogCTAContents = [
         id: 'body',
         heading: 'Sculpt Your Dream Body',
         description:
-            "Whether it's liposuction, tummy tuck, or mommy makeover — our Miami surgeons combine precision techniques with artistic vision.",
+            'Liposuction, tummy tuck or mommy makeover: Dr. Karlinsky will tell you which fits your body and your goals, and why.',
         colorScheme: 'gold',
         phoneNumber: siteConfig.contact.phoneDisplay,
         primaryButton: {
@@ -171,7 +171,7 @@ export const footerCTAConfig = {
     description:
         "Leave your name and phone number. We'll call you within 24 hours to discuss your goals.",
     submitButtonText: 'Request Callback',
-    trustBadge: '5,000+ Happy Patients • Board-Certified Surgeons',
+    trustBadge: 'Personal care. Honest price.',
     phoneNumber: siteConfig.contact.phoneDisplay,
 }
 

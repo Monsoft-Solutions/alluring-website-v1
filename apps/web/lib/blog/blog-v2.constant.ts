@@ -68,6 +68,33 @@ export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'mommy-makeover-recovery-exercises',
     'mommy-makeover-recovery-signs',
     'tummy-tuck-mommy-makeover-miami',
+    // Breast augmentation rewrites (#319): rewritten posts ship on v2. Search
+    // Console can't separate the rewrite from the template on these, so read
+    // them as one change.
+    'breast-augmentation-candidate-quiz',
+    'breast-augmentation-pain-management',
+    'breast-augmentation-recovery-miami',
+    'breast-augmentation-scars-miami-timeline',
+    'breast-implant-illness-symptoms',
+    'breast-implants-drop-fluff-timeline',
+    'how-long-after-breast-augmentation-can-i-drive',
+    'how-long-after-breast-augmentation-can-i-swim',
+    'how-often-to-massage-breast-after-augmentation',
+    'swelling-and-asymmetry-after-breast-augmentation-faq',
+    // when-can-i-do-push-ups-after-breast-augmentation joins with its rewrite:
+    // its diagram is the canary for the same-URL image swap (read from 18 Nov),
+    // and a template move on the same day would blur that reading.
+    'when-can-i-sleep-on-my-side-after-breast-augmentation',
+    'when-can-i-sleep-without-a-bra-after-breast-augmentation',
+    'when-can-you-work-out-after-breast-augmentation',
+    // New breast augmentation posts for readers still deciding (#319). They
+    // have no history to compare, so they start on v2, with its consult thread.
+    'breast-implants-over-or-under-the-muscle',
+    'saline-vs-silicone-breast-implants',
+    'how-long-do-breast-implants-last',
+    'capsular-contracture',
+    'breast-implant-rippling-bottoming-out',
+    'mammograms-breastfeeding-with-breast-implants',
 ])
 
 /** The two variables the switch reads; the routes pass `env`. */

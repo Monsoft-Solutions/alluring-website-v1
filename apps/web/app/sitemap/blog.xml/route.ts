@@ -35,6 +35,16 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'breast-lift-prep-miami',
     'best-age-breast-lift-miami',
     'breast-lift-myths-busted',
+    // Breast augmentation posts folded in the 2026-11-03 rewrite (#319)
+    'breast-augmentation-recovery-tips-miami',
+    'breast-augmentation-recovery-exercises',
+    'breast-augmentation-miami-candidate',
+    'breast-augmentation-miami-post-pregnancy',
+    'best-age-breast-augmentation-miami',
+    'breast-augmentation-weight-loss-miami',
+    'breast-augmentation-before-after-miami',
+    'breast-augmentation-safety-miami',
+    'breast-augmentation-vs-reduction-miami',
     // Duplicate blog content consolidation redirects
     'mommy-makeover-recovery-timeline',
     'mommy-makeover-recovery-guide',

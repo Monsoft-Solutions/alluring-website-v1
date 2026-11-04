@@ -1,0 +1,286 @@
+{
+  "slug": "how-long-after-breast-augmentation-can-i-drive",
+  "mode": "rewrite",
+  "cluster": "breast-augmentation",
+  "cta": "default",
+  "base_md5": "62602437a947af5deeb2c854045a12a3",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T10:55:07Z",
+  "reader": "recovering",
+  "title": "How Long After Breast Augmentation Can I Drive? 1–2 Weeks",
+  "meta_description": "Sources range from within 1 week to at least 2 weeks. Never on opioids or surgery day. Is day 3 too soon? What each source says, and the checks to make.",
+  "excerpt": "Sources range from within 1 week to at least 2 weeks after breast augmentation, and you should never drive on opioid pain medicine or on surgery day. Here is what each source says, what to do about day 3, and the checks to make before your first drive.",
+  "quick_answer": "How long after breast augmentation can I drive?\n\nSources range from within 1 week to at least 2 weeks. University of Utah Health says most people are ready within one week, an article on the ASPS website says many women can after about a week, and MedlinePlus, which also covers lifts and reductions, says at least 2 weeks. Never on surgery day or on opioid pain medicine.",
+  "primary_keyword": "how long after breast augmentation can i drive",
+  "secondary_keywords": [
+    "when can i drive after breast augmentation",
+    "how soon after breast augmentation can i drive",
+    "can i drive 3 days after breast augmentation",
+    "when can you drive after breast augmentation",
+    "driving after breast augmentation",
+    "how long after breast surgery can you drive",
+    "how soon can you drive after breast augmentation",
+    "when can i drive after breast implants",
+    "how long after breast implants can i drive",
+    "can you drive after breast augmentation",
+    "how many days after breast augmentation can i drive",
+    "when can i drive after breast lift and augmentation",
+    "can i drive 7 days after breast augmentation",
+    "how long after a boob job can you drive"
+  ],
+  "owns_queries": [
+    "how long after breast augmentation can i drive",
+    "when can i drive after breast augmentation",
+    "how soon after breast augmentation can i drive",
+    "can i drive 3 days after breast augmentation",
+    "when can you drive after breast augmentation",
+    "driving after breast augmentation",
+    "how long after breast surgery can you drive",
+    "how soon can you drive after breast augmentation",
+    "when can i drive after breast implants",
+    "how long after breast implants can i drive",
+    "can you drive after breast augmentation",
+    "how many days after breast augmentation can i drive"
+  ],
+  "categories": [
+    "Breast Augmentation",
+    "Recovery",
+    "Post-Op Care"
+  ],
+  "tags": [
+    "Breast Augmentation",
+    "Breast Lift",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline"
+  ],
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in a high-neck sand sweater sits in the driver's seat of a parked car with her seat belt on and both hands on the steering wheel, looking ahead calmly in soft morning light, with the dashboard in view.",
+      "prompt": "SCENE: A car parked on a quiet tree-lined residential street in Miami in soft morning light, palm shadows on the pavement outside the windows, a pale neutral interior. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A woman in her mid 40s with deep brown skin and short natural hair, sitting in the driver's seat of a left-hand-drive car in a thick high-neck sand-colored knit sweater, seat belt on, both hands resting on the steering wheel at the sides of the rim, a calm, relaxed expression, looking ahead through the windshield.\nKEY DETAILS: Seen from the front passenger seat, looking across the cabin at her, from the waist up, with generous space above her head and the subject in the upper two thirds. The steering wheel and the dashboard are clearly visible in the frame. The car is parked and switched off, so the instrument cluster and screens are dark. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. Nothing in the foreground: no mirror, no door panel, no out-of-focus white or pale shape.\nCONSTRAINTS: Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no bandages, drains or incisions; not photographed from behind; no text, letters, numbers, logos, badges or watermarks, and a plain steering wheel hub with no emblem; not glamour, not a fashion ad.",
+      "variants": [
+        "flare",
+        "sunburst"
+      ]
+    },
+    {
+      "key": "drive-timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional reference chart on a warm porcelain-white background with a thin brushed-gold rule, palette of stone grey and brushed gold. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. A vertical timeline with five stops joined by a thin gold line, each stop a short label in bold with one line of explanation beside it. No people, no bodies, no faces, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines and the small icons described.",
+      "text_in_image": "When Can I Drive After Breast Augmentation?\nSurgery day: No. Someone else drives you home.\nDay 3: No source we read supports it. Only if your surgeon agrees.\nWithin 1 week: Most people are ready, University of Utah Health says.\nAbout 1 week (7–10 days): Many women can drive, an article on the ASPS website says.\nAt least 2 weeks: What MedlinePlus says, on a page that also covers lifts and reductions.\nNever on opioid pain medicine. Your surgeon decides.\nSources: University of Utah Health; article on the ASPS website; MedlinePlus; UW Medicine.",
+      "alt": "Chart titled When Can I Drive After Breast Augmentation? Surgery day: no, someone else drives you home. Day 3: no source we read supports it, only if your surgeon agrees. Within 1 week: most people are ready, University of Utah Health says. About 1 week, 7–10 days: many women can drive, an article on the ASPS website says. At least 2 weeks: what MedlinePlus says, on a page that also covers lifts and reductions. A footer says never on opioid pain medicine, and your surgeon decides."
+    },
+    {
+      "key": "ready-to-drive",
+      "type": "inline",
+      "aspect": "4:5",
+      "prompt": "A clean, professional reference chart on a warm porcelain-white background with a thin brushed-gold rule, palette of stone grey and brushed gold. Flat editorial typography, a refined serif for the title and a clean sans-serif for the rows. A checklist card: six rows, each with a small empty tick box in brushed gold at the left, separated by hairlines. No people, no bodies, no faces, no logos, no practice name, no phone numbers, no watermarks, no decoration beyond hairlines and the small icons described.",
+      "text_in_image": "Ready to Drive?\nOff prescription pain medicine for at least 24 hours\nFull range of motion in your arms\nCan turn the wheel without pain\nCan look over each shoulder\nCan brake hard without pain\nYour surgeon has agreed\nMedicine, arm movement and surgeon approval: University of Utah Health; MedlinePlus.\nOther checks: practical advice. Try them in a parked car first.",
+      "alt": "Checklist card titled Ready to Drive? It lists six checks: off prescription pain medicine for at least 24 hours, full range of motion in your arms, able to turn the wheel without pain, able to look over each shoulder, able to brake hard without pain, and your surgeon has agreed. A footer credits the medicine, arm movement and surgeon checks to University of Utah Health and MedlinePlus, and calls the other checks practical advice."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://healthcare.utah.edu/plastic-surgery/breast/recovery",
+      "publisher": "University of Utah Health",
+      "title": "Recovering from Breast Reduction & Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "In general, you should not drive until you’ve been off of prescription pain medication for at least 24 hours and can safely operate a vehicle in traffic.",
+        "Most people are ready to drive and return to work within one week.",
+        "Before you drive or return to work, it’s best to get your doctor’s approval at a follow-up visit.",
+        "a limited range of motion in your shoulders, which may require someone to help you with certain tasks like putting on clothes,"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/back-to-active-returning-to-exercise-after-breast-augmentation-recovery",
+      "publisher": "ASPS website, article by Ariel Frankeny",
+      "title": "Back to active: Returning to exercise after breast augmentation recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Following the first 7-10 days of recovery, many women can safely and comfortably drive and head back to the office for work.",
+        "In addition to incisional pain, most women feel pressure on their chest, especially if the implant was placed under the muscle."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/four-tips-for-a-healthy-recovery-after-a-breast-augmentation",
+      "publisher": "ASPS website, article by Paul Vitenas Jr., MD",
+      "title": "Four tips for a healthy recovery after a breast augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Plus, no driving until you are finished with all narcotic pain medications.",
+        "many women are back to work and routine activities in three to five days."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/what-to-expect-after-your-breast-augmentation-surgery",
+      "publisher": "ASPS website, article by Gabby Shacknai",
+      "title": "What to expect after your breast augmentation surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "And if you have a desk job, you should be able to go back to work within three to five days",
+        "so any time you move your arm, you may feel some soreness in your chest"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-augmentation/recovery",
+      "publisher": "American Society of Plastic Surgeons",
+      "title": "What should I expect during my breast augmentation recovery?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Acute pain typically subsides after one to five days, but you may experience soreness and swelling for a few weeks.",
+        "Resume exercise and normal activity according to your plastic surgeon's directions."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/ency/patientinstructions/000273.htm",
+      "publisher": "MedlinePlus",
+      "title": "Cosmetic breast surgery - discharge",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Do not drive for at least 2 weeks.",
+        "Do not drive if you are taking narcotic pain medicines.",
+        "You should have full range of motion in your arms before you start driving again.",
+        "Ease into driving slowly, since turning the wheel and shifting gears may be difficult.",
+        "Also contact your surgeon if you notice sudden swelling of your breast."
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/deepveinthrombosis.html",
+      "publisher": "MedlinePlus",
+      "title": "Deep Vein Thrombosis",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Sitting still for a long time can make you more likely to get a DVT.",
+        "Warmth and tenderness over the vein",
+        "Pain or swelling in the part of the body"
+      ]
+    },
+    {
+      "url": "https://healthonline.washington.edu/document/health_online/pdf/Breast-Augmentation.pdf",
+      "publisher": "UW Medicine, University of Washington Medical Center",
+      "title": "Breast Augmentation: What to expect and how to prepare",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You will not be able to drive yourself.",
+        "For 24 hours after your surgery do not:",
+        "Drive or travel alone",
+        "Severe pain that is not helped by your pain medicine",
+        "A fever higher than 100.5°F (38°C)"
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/11024-breast-augmentation",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Augmentation",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You should arrange for someone to drive you home after your surgery and also have someone stay with you the first night at least.",
+        "You will need to take at least three days off from work, so plan accordingly. If you have a labor-intensive job, you will likely need to take off at least three weeks of work.",
+        "Abnormal discharge, such as pus, from your incision site.",
+        "Rupture of your stitches."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/16911-deep-vein-thrombosis-dvt",
+      "publisher": "Cleveland Clinic",
+      "title": "Deep Vein Thrombosis (DVT)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Swelling of your leg or arm on one side (sometimes, this happens suddenly)",
+        "Warmth in the area of your leg or arm that’s swollen or painful",
+        "Pain or tenderness in your leg or arm (may only happen when standing or walking)"
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-augmentation/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Augmentation - Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Your chest area may feel stiff and sore for two to five days.",
+        "It is very important that you walk a few minutes every few hours to reduce the risk of blood clot formation in your legs.",
+        "You may be able to return to work within a few days to a week, depending on the nature of your job.",
+        "Your breasts may feel tight and sensitive to the touch"
+      ]
+    }
+  ],
+  "notes": "Full rewrite, 3 Nov 2026 plan. Written from the live row read through the admin MCP on 2026-11-03; base_md5 is the local clone, whose content_updated_at matches live (revisionCount 0), so the production rebase is a morning step for the main session. Title: the execution brief gives two versions; this uses \"1–2 Weeks\" from its recovery marks, which the brief says wins. Removed: \"we recommend\" lines, \"5–7 days\", phone and #contactus CTAs, \"our board-certified surgeons\". The live row has no featured image and no images in the content (the images the crawl saw are related-post cards), so hero and 2 inline images are all new. The live FAQ column was empty; the FAQ section is new. The seat-belt, wheel, mirror and brake checks are plain reasoning and the post and the image footer say so. Fact check 3 Nov applied: the lede, meta, excerpt and quick answer lead with the range, and \"most people\" stays attributed to Utah. The link to /blog/breast-implants-over-or-under-the-muscle needs that post live in the same run, or point it at #placement until then. Open refresh candidate on the live row was pending on 2026-11-03.",
+  "gsc": {
+    "basis": "queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 11888,
+    "clicks": 43,
+    "position": 7.44,
+    "image": {
+      "impressions": 40,
+      "clicks": 0,
+      "position": 40.42
+    },
+    "top_queries": [
+      {
+        "query": "how long after breast augmentation can i drive",
+        "impressions": 359,
+        "clicks": 0,
+        "position": 9.16
+      },
+      {
+        "query": "when can i drive after breast augmentation",
+        "impressions": 265,
+        "clicks": 1,
+        "position": 8.43
+      },
+      {
+        "query": "how soon after breast augmentation can i drive",
+        "impressions": 221,
+        "clicks": 0,
+        "position": 9
+      },
+      {
+        "query": "can i drive 3 days after breast augmentation",
+        "impressions": 213,
+        "clicks": 0,
+        "position": 10.02
+      },
+      {
+        "query": "when can you drive after breast augmentation",
+        "impressions": 161,
+        "clicks": 1,
+        "position": 8.13
+      },
+      {
+        "query": "driving after breast augmentation",
+        "impressions": 109,
+        "clicks": 1,
+        "position": 6.42
+      },
+      {
+        "query": "how long after breast surgery can you drive",
+        "impressions": 101,
+        "clicks": 0,
+        "position": 6.79
+      },
+      {
+        "query": "how soon can you drive after breast augmentation",
+        "impressions": 77,
+        "clicks": 0,
+        "position": 8.65
+      },
+      {
+        "query": "when can i drive after breast implants",
+        "impressions": 71,
+        "clicks": 0,
+        "position": 8.48
+      },
+      {
+        "query": "how long after a breast augmentation can i drive",
+        "impressions": 64,
+        "clicks": 0,
+        "position": 8.66
+      }
+    ]
+  }
+}
