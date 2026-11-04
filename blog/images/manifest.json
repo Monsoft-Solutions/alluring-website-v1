@@ -1770,6 +1770,36 @@
   "prompt": "SCENE: A clean editorial card on a warm off-white (stone-50) background with a thin muted-gold rule at the top. SUBJECT: Four stacked checkpoints joined by a thin gold line under a serif headline, each with a short bold label and one line of text. KEY DETAILS: Flat editorial layout, serif headline in dark stone (stone-900), clean sans-serif rows with generous spacing, muted gold (gold-500) only for thin rules and small markers, large legible type for phones, small source footer. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra words or numbers.\n\nTEXT IN THE IMAGE. Render exactly these words, line by line, spelled exactly as written, and no other words, numbers or labels:\nWhen a tummy tuck fits after a GLP-1\n\nWeight: close to your goal for 6 to 12 months\nDose: not while it is still rising, a phase that typically lasts 4 to 8 weeks\nStomach: nausea, vomiting, pain or constipation cleared first\nThe drug: agree a plan with your surgeon, anesthesia team and prescriber\n\nSources: Paul Vitenas, MD, on the ASPS website; American Society of Anesthesiologists\n\nTIGHTENED: The checkpoint markers are plain small solid gold dots with nothing inside them. Do not number the checkpoints. No digits 1, 2, 3 or 4 as markers; the only digits on the card are the ones in the supplied text."
  },
  {
+  "slug": "pregnancy-after-tummy-tuck",
+  "key": "hero",
+  "type": "featured",
+  "post_id": "06aecac9-f2e3-443e-8321-322407af4555",
+  "path": "blog-images/06aecac9-f2e3-443e-8321-322407af4555/pregnancy-after-tummy-tuck-hero-01a1a791.jpg",
+  "url": "https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/blog-images/06aecac9-f2e3-443e-8321-322407af4555/pregnancy-after-tummy-tuck-hero-01a1a791.jpg",
+  "width": 1920,
+  "height": 1280,
+  "size": 460955,
+  "quality": 80,
+  "variant": "flare",
+  "job_id": "01a1a791-0484-7991-ae22-14c08ce7656c",
+  "prompt": "SCENE: Early morning in a bright apartment, white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows on a pale limestone floor, a low window bench with a linen cushion. Palette of stone, sand, warm white and brushed gold, with one soft rust accent. SUBJECT: A woman in her early 30s with deep brown skin and long braids tied back loosely, wearing a soft rust-colored knit sweater and loose sand-colored trousers, sitting sideways on the window bench holding a ceramic mug in both hands near her chest, looking out of the window. Three-quarter view, thoughtful and calm. KEY DETAILS: Her face and hands in the upper two thirds, with generous space above her head; the lower third a quiet stretch of bench and floor for a title. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. No children in frame. Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no scars, incisions, garments, bandages or drains; not photographed from behind; no body-part framing and no hand resting on the belly; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad. She is not visibly pregnant."
+ },
+ {
+  "slug": "pregnancy-after-tummy-tuck",
+  "key": "review",
+  "type": "inline",
+  "post_id": "06aecac9-f2e3-443e-8321-322407af4555",
+  "path": "blog-images/06aecac9-f2e3-443e-8321-322407af4555/pregnancy-after-tummy-tuck-review-01a1a88f.jpg",
+  "url": "https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/blog-images/06aecac9-f2e3-443e-8321-322407af4555/pregnancy-after-tummy-tuck-review-01a1a88f.jpg",
+  "width": 1280,
+  "height": 1600,
+  "size": 389066,
+  "quality": 80,
+  "variant": "flare",
+  "job_id": "01a1a88f-3efd-7931-bc07-6e37c0f014dd",
+  "prompt": "SCENE: A clean editorial card on a warm stone background with a thin brushed-gold rule at the top. SUBJECT: A short stacked list of labeled rows with thin gold dividers, a highlighted limits note of two sentences beneath them and a one-line source footer. KEY DETAILS: Flat vector layout, generous spacing, serif headline in dark stone, sans-serif rows large enough to read on a phone, figures aligned to the right in dark stone, except the long Problems row, which wraps across the full width with its text left-aligned. Text exactly as given in text_in_image. CONSTRAINTS: 4:5 portrait. A clean editorial card, not a photograph. No real skin, no nudity, no incisions on a body, no before-and-after framing, no people. No practice name, logo, phone number or website. Spell every word exactly as supplied in text_in_image, with no extra words or numbers. No babies, no pregnant bodies, no icons of bodies.\n\nTEXT IN THE IMAGE. Render exactly these words, line by line, spelled exactly as written, and no other words, numbers or labels:\nWhat a 2023 review found\n\n17 studies, 237 patients who became pregnant after a tummy tuck or other body contouring\n\nAverage time from surgery to pregnancy: 3.75 years\nCesarean delivery: 43.63%\nPreterm delivery: 9.85%\nLow birthweight: 7.22%\nDeaths of mothers or newborns: none\nProblems recorded across 136 patients: 21 fetal or newborn, 104 maternal, 96 abdominal wall or appearance\n\nLimits: no comparison group in the abstract, average follow-up 8.5 months, too few patients to rule out rare risks. A 2024 analysis linked a past tummy tuck to higher odds of preterm delivery.\n\nSources: Karunaratne and colleagues, 2023; Cheng and colleagues, 2024"
+ },
+ {
   "slug": "saline-vs-silicone-breast-implants",
   "key": "decision-card",
   "type": "inline",
