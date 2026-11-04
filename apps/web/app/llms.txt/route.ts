@@ -10,6 +10,10 @@ import { NextResponse } from 'next/server'
 
 import { procedures } from '@/lib/data/procedures.data'
 import { siteConfig, getFullAddress } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
@@ -71,9 +75,9 @@ async function generateLlmsTxt(): Promise<string> {
 
     const content = `# ${siteConfig.business.name}
 
-> ${siteConfig.business.description}
+> Plastic surgery in Miami, Florida. ${siteConfig.business.tagline}
 
-${siteConfig.business.name} is a premier plastic surgery clinic in Miami, Florida specializing in breast augmentation, Brazilian butt lift (BBL), liposuction, tummy tuck, mommy makeover, and facial procedures.${siteConfig.trustStats ? ` Our double board-certified surgeons have performed ${siteConfig.trustStats.patients} procedures with a ${siteConfig.trustStats.rating}-star rating.` : ''}
+${siteConfig.business.name} is a plastic surgery clinic in Miami, Florida offering breast augmentation, Brazilian butt lift (BBL), liposuction, tummy tuck, mommy makeover, and facial procedures. One surgeon performs every surgery: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${siteConfig.trustStats ? ` The practice's published patient rating is ${siteConfig.trustStats.rating} out of 5.` : ''}
 
 ## About Us
 
@@ -97,20 +101,13 @@ ${siteConfig.business.name} is a premier plastic surgery clinic in Miami, Florid
 **Location**: ${getFullAddress()}
 **Phone**: ${siteConfig.contact.phoneDisplay ?? siteConfig.contact.phone}
 **Email**: ${siteConfig.contact.email}
-${
-    siteConfig.trustStats
-        ? `
-**Credentials**:${
-              siteConfig.trustStats.accreditation
-                  ? `
-- ${siteConfig.trustStats.accreditation}`
-                  : ''
-          }
-- ${siteConfig.trustStats.patients} Procedures Performed
-- ${siteConfig.trustStats.years} Years of Experience
-- ${siteConfig.trustStats.rating}-Star Patient Rating`
-        : ''
-}
+
+**Surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${
+        siteConfig.trustStats
+            ? `
+**Published Patient Rating**: ${siteConfig.trustStats.rating} out of 5`
+            : ''
+    }
 
 ## Procedures
 
@@ -144,10 +141,10 @@ ${categories.combined.map((p) => `- [${p.title}](/procedures/${p.slug}): ${p.sho
 }
 ## Patient Resources
 
-- [Free Consultation](/free-consultation): Schedule a complimentary consultation with our surgeons
-- [Financing Options](/plastic-surgery-financing-miami): Affordable payment plans through Cherry, CareCredit, and United Credit
+- [Free Consultation](/free-consultation): Schedule a consultation with our surgeon
+- [Financing Options](/plastic-surgery-financing-miami): Payment plans through Cherry, CareCredit, and United Credit
 - [Before & After Gallery](/gallery): Real patient results and transformation photos
-- [Blog](/blog): Expert plastic surgery guides, recovery tips, and educational content
+- [Blog](/blog): Plastic surgery guides, recovery tips, and educational content
 - [FAQs](/faqs): Frequently asked questions about plastic surgery
 
 ${
@@ -159,21 +156,15 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
         : ''
 }
 ## Why Choose ${siteConfig.business.name}
-${
-    siteConfig.trustStats
-        ? `
-1. **${siteConfig.trustStats.accreditation ?? 'Board-Certified Surgeons'}**: Our surgeons hold certifications from both the American Board of Plastic Surgery and the American Board of Surgery
-2. **${siteConfig.trustStats.patients} Procedures Performed**: Extensive experience in body contouring and cosmetic surgery
-3. **${siteConfig.trustStats.rating}-Star Rating**: Consistently high patient satisfaction across review platforms
-4. **Flexible Financing**: Multiple payment options including 0% APR plans through Cherry, CareCredit, and United Credit
-5. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base
-6. **State-of-the-Art Facility**: AAASF-accredited surgical center in Miami`
-        : `
-1. **Board-Certified Surgeons**: Our surgeons hold certifications from leading medical boards
-2. **Flexible Financing**: Multiple payment options including 0% APR plans
-3. **Bilingual Staff**: English and Spanish speaking team
-4. **State-of-the-Art Facility**: AAASF-accredited surgical center in Miami`
-}
+
+1. **One Surgeon**: ${KARLINSKY_NAME} performs every surgery. ${KARLINSKY_CREDENTIALS}
+2. **Flexible Financing**: Multiple payment options including 0% APR plans through Cherry, CareCredit, and United Credit
+3. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base${
+        siteConfig.trustStats
+            ? `
+4. **Published Rating**: ${siteConfig.trustStats.rating} out of 5 from patient reviews`
+            : ''
+    }
 
 ## Contact Information
 
@@ -216,7 +207,7 @@ export async function GET() {
 
         // Return a basic fallback
         return new NextResponse(
-            `# ${siteConfig.business.name}\n\n> ${siteConfig.business.description}\n\nVisit our website for more information.`,
+            `# ${siteConfig.business.name}\n\n> Plastic surgery in Miami, Florida. ${siteConfig.business.tagline}\n\nVisit our website for more information.`,
             {
                 status: 500,
                 headers: {

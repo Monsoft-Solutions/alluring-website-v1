@@ -9,6 +9,10 @@
 import { NextResponse } from 'next/server'
 
 import { procedures } from '@/lib/data/procedures.data'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { siteConfig, getFullAddress } from '@/lib/data/site-config'
 import { getPublishedPostCardsPage } from '@/lib/queries/blog/post-list.query'
 import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
@@ -50,9 +54,9 @@ async function generateLlmsFullTxt(): Promise<string> {
 
     const content = `# ${siteConfig.business.name} - Comprehensive Information Guide
 
-> ${siteConfig.business.description}
+> Plastic surgery in Miami, Florida. ${siteConfig.business.tagline}
 
-This is the comprehensive information file for ${siteConfig.business.name}, a premier plastic surgery clinic in Miami, Florida. This document provides detailed information about our procedures, surgeons, and services for AI assistants and language models.
+This is the comprehensive information file for ${siteConfig.business.name}, a plastic surgery clinic in Miami, Florida. This document provides detailed information about our procedures, our surgeon, and our services for AI assistants and language models.
 
 ---
 
@@ -88,21 +92,14 @@ This is the comprehensive information file for ${siteConfig.business.name}, a pr
 **Timezone**: ${siteConfig.contact.timezone}`
             : ''
     }
-${
-    siteConfig.trustStats
-        ? `
-### Trust & Credentials${
-              siteConfig.trustStats.accreditation
-                  ? `
-- **Accreditation**: ${siteConfig.trustStats.accreditation}`
-                  : ''
-          }
-- **Procedures Performed**: ${siteConfig.trustStats.patients}
-- **Years in Practice**: ${siteConfig.trustStats.years}
-- **Patient Rating**: ${siteConfig.trustStats.rating}/5 stars
-- **Board Certification**: ${siteConfig.trustStats.certified}`
-        : ''
-}
+
+### Surgeon and Rating
+- **Surgeon**: ${KARLINSKY_NAME}. One surgeon performs every surgery. ${KARLINSKY_CREDENTIALS}${
+        siteConfig.trustStats
+            ? `
+- **Published Patient Rating**: ${siteConfig.trustStats.rating} out of 5`
+            : ''
+    }
 ${
     siteConfig.contact.businessHours &&
     siteConfig.contact.businessHours.length > 0
@@ -169,7 +166,7 @@ A: ${faq.answer}
 
 ### Consultation
 - **Free Consultation**: /free-consultation
-- No-obligation consultations available with our board-certified surgeons
+- No-obligation consultations available with our surgeon
 - Virtual consultations available for out-of-town patients
 
 ### Financing Options
@@ -187,7 +184,7 @@ A: ${faq.answer}
 
 ### Educational Blog
 - **URL**: /blog
-- Expert plastic surgery guides
+- Plastic surgery guides
 - Recovery tips and advice
 - Procedure comparisons
 - Patient stories
@@ -204,24 +201,20 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
 
 ## Why Choose ${siteConfig.business.name}
 
-1. **Double Board-Certified Surgeons**: Our surgeons hold certifications from both the American Board of Plastic Surgery and the American Board of Surgery, demonstrating the highest level of training and expertise.
+1. **One Surgeon**: ${KARLINSKY_NAME} performs every surgery. ${KARLINSKY_CREDENTIALS}
+
+2. **Flexible Financing**: Our financing options, subject to credit approval, spread the cost of surgery over time.
+
+3. **Bilingual Services**: Our English and Spanish speaking staff ensures clear communication with our diverse patient base.
+
+4. **Miami Location**: Located in Miami, we serve patients from South Florida and across the United States.
 ${
     siteConfig.trustStats
         ? `
-2. **Extensive Experience**: With ${siteConfig.trustStats.patients} procedures performed, our surgical team has the experience necessary to deliver exceptional results.
-
-3. **Patient-Centered Care**: Our ${siteConfig.trustStats.rating}-star rating reflects our commitment to patient satisfaction and care throughout the entire surgical journey.
+5. **Published Rating**: ${siteConfig.trustStats.rating} out of 5 from patient reviews.
 `
         : ''
 }
-4. **Affordable Luxury**: We believe everyone deserves access to quality cosmetic surgery. Our flexible financing options make procedures accessible.
-
-5. **Bilingual Services**: Our English and Spanish speaking staff ensures clear communication with our diverse patient base.
-
-6. **Accredited Facility**: Our AAASF-accredited surgical center meets the highest standards for safety and quality.
-
-7. **Miami Location**: Located in the heart of Miami, we serve patients from South Florida and across the United States.
-
 ---
 
 ## Service Area
