@@ -1,7 +1,9 @@
 {
   "slug": "breast-lift-cost",
   "id": "952a413d-ac1c-4805-85ed-3049347a1849",
-  "mode": "new",
+  "mode": "rewrite",
+  "base_md5": "620fb65a529b5459ee4a0a62a63f1b3e",
+  "base_from": "production 2026-11-04",
   "reader": "deciding",
   "cluster": "breast-lift",
   "title": "Breast Lift Cost in 2026: What You Pay and What to Ask",

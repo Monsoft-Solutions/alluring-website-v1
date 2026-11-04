@@ -1,7 +1,9 @@
 {
   "slug": "non-surgical-breast-lift",
   "id": "cbd250bd-9cbc-419b-acf2-43ca42e67468",
-  "mode": "new",
+  "mode": "rewrite",
+  "base_md5": "09575bd733728b83b25cfa6defdeac50",
+  "base_from": "production 2026-11-04",
   "reader": "deciding",
   "cluster": "breast-lift",
   "title": "Non-Surgical Breast Lift: What Works and What Doesn't",
