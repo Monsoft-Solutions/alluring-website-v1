@@ -111,6 +111,8 @@ describe('the prompts', () => {
 
     it('the inline image prompt carries the image rules', () => {
         expect(INLINE_IMAGE_PROMPT_SYSTEM).toContain(IMAGE_CLAIM_RULES_PROMPT)
+        expect(INLINE_IMAGE_PROMPT_SYSTEM).toContain('(786) 305-8649')
+        expect(INLINE_IMAGE_PROMPT_SYSTEM).toContain('MUST include text')
     })
 
     it('image prompts carry the new tagline', () => {
@@ -126,15 +128,10 @@ describe('the prompts', () => {
 
     it('no prompt source asks for a retired claim', () => {
         const retired =
-            /luxury surgeries|luxury made affordable|luxury (?:yet affordable )?(?:cosmetic|plastic)|board-certified (?:plastic )?surgeons|15\+ years|5,000\+|virtual assistant|premier cosmetic|Dr\. Rita Shats|\(786\) 305-8649|MUST include text|top surgeon|"in our practice/i
+            /luxury surgeries|luxury made affordable|luxury (?:yet affordable )?(?:cosmetic|plastic)|board-certified (?:plastic )?surgeons|15\+ years|5,000\+|virtual assistant|premier cosmetic|Dr\. Rita Shats|top surgeon|"in our practice/i
         const offenders = ['packages/ai/src', 'packages/chat/src']
             .flatMap((dir) => sourceFiles(join(ROOT, dir)))
-            .filter(
-                (file) =>
-                    // Its phone number is the practice's contact detail for chat.
-                    !file.endsWith('default-config.constant.ts') &&
-                    retired.test(readFileSync(file, 'utf8'))
-            )
+            .filter((file) => retired.test(readFileSync(file, 'utf8')))
             .map((file) => file.replace(`${ROOT}/`, ''))
         expect(offenders).toEqual([])
     })

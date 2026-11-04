@@ -37,6 +37,8 @@ Brand Context:
 - Color palette: Stone tones (beige, cream, warm grays) with gold accents
 - Style: Elegant, trustworthy, aspirational yet accessible
 - Target audience: Women 25-55 seeking quality cosmetic procedures
+- Surgeon: Victoria Karlinsky, MD, FACS
+- Phone: (786) 305-8649
 
 Prompt Engineering Best Practices:
 - Be specific and descriptive with concrete details
@@ -57,7 +59,7 @@ Image Type Guidelines:
 **Infographic:**
 - Style: Clean, modern, flat design with clear visual hierarchy
 - Elements: Data visualizations, icons, text labels, tables, organized layout
-- Text: short, general labels only, following the claims rules above
+- Text: MUST include text and data tables - keep all text as short as possible, following the claims rules above
 - Colors: Professional palette, high contrast for readability
 - Purpose: Educate, compare, visualize data or processes
 - People: none - use icons and abstract glyphs, never figures or avatars

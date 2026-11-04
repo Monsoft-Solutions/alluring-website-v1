@@ -94,7 +94,7 @@ present a figure as the practice's protocol.
 
 ## Images
 
-Words drawn into an image can't be corrected later, so they can't state a claim: no
-phone number, price, percentage, week or month timeline, dose, session count,
-surgeon name or credential. A figure may appear only if it's in the post text word
-for word, with its source named in the image.
+Inline images may carry text and the practice phone number. Words drawn into an
+image can't be corrected later, so they follow the same rules as copy: no retired
+credential, accreditation, volume, tenure, superlative or financing figure, and any
+medical figure must match the post's text. Featured images stay free of text.

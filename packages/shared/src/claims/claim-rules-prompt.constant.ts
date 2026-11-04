@@ -45,13 +45,12 @@ ${PRICE_RULES_PROMPT}
 - Travel coordination: flights, hotels, recovery houses, transport, airport pickup, "packages". No international patients, medical tourism, Latin America or the Caribbean. The practice confirms dates in writing and says how many nights to stay in Miami before flying home.
 - Invented experience, such as "in our practice we typically see...", invented patients, invented reviews, or urgency such as "limited time".`
 
-/** For prompts that create images, since words drawn into a picture can't be edited later. */
-export const IMAGE_CLAIM_RULES_PROMPT = `## Claims rules for images (these override anything else in this prompt)
+/** For prompts that create inline images: they may carry words, so the words follow the rules. */
+export const IMAGE_CLAIM_RULES_PROMPT = `## Claims rules for words in images (these override anything else in this prompt)
 
-Text drawn into an image can't be corrected later, so it must never state a claim.
-- Never draw a phone number, price, percentage, week or month timeline, dose, session count, statistic, surgeon name, credential, logo, or any "safe" or "not yet" limit. Don't draw "luxury", "premium" or "best".
-- Keep any labels short and general, such as the names of anatomy or of stages with no dates.
-- A figure may appear only if it's in the supplied post text, word for word, with its source named in the image.
+Inline images may carry text and the practice phone number, (786) 305-8649. Words drawn into an image can't be corrected later, so they must follow these rules:
+- Never draw a credential other than "${KARLINSKY_NAME}", another surgeon's name, facility accreditation, a volume or tenure claim, a superlative, "luxury", "affordable", a guarantee, a financing rate or payment, or a price that isn't on the price sheet.
+- A medical figure, such as a percentage, timeline, dose or session count, may appear only if it matches the post's text.
 - Alt text describes what the image shows, plainly, with no marketing words.`
 
 /**
