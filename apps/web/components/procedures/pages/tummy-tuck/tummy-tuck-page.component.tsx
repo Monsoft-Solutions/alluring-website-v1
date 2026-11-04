@@ -164,10 +164,10 @@ export async function TummyTuckPage({ procedure }: ProcedurePageModuleProps) {
                 lede={
                     <>
                         A tummy tuck, or abdominoplasty, removes loose skin and
-                        fat from the abdomen and, when they have separated,
-                        repairs the muscles underneath. We publish a price for
-                        each type, and one surgeon performs every tummy tuck:{' '}
-                        {KARLINSKY_NAME}.
+                        fat from the abdomen and, in most cases, ASPS says,
+                        repairs weakened or separated muscles. We publish a
+                        price for each type, and one surgeon performs every
+                        tummy tuck: {KARLINSKY_NAME}.
                     </>
                 }
                 rating={rating}

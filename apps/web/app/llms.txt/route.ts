@@ -158,7 +158,7 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
 ## Why Choose ${siteConfig.business.name}
 
 1. **One Surgeon**: ${KARLINSKY_NAME} performs every surgery. ${KARLINSKY_CREDENTIALS}
-2. **Flexible Financing**: Multiple payment options including 0% APR plans through Cherry, CareCredit, and United Credit
+2. **Flexible Financing**: Financing is offered through Cherry, CareCredit, and United Credit, subject to credit approval
 3. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base${
         siteConfig.trustStats
             ? `

@@ -172,9 +172,7 @@ A: ${faq.answer}
 ### Financing Options
 - **URL**: /plastic-surgery-financing-miami
 - **Partners**: Cherry, CareCredit, United Credit
-- 0% APR financing plans available
-- Flexible payment schedules
-- Instant approval process
+- Financing is subject to credit approval
 
 ### Before & After Gallery
 - **URL**: /gallery
@@ -187,7 +185,6 @@ A: ${faq.answer}
 - Plastic surgery guides
 - Recovery tips and advice
 - Procedure comparisons
-- Patient stories
 
 ${
     recentPosts.length > 0

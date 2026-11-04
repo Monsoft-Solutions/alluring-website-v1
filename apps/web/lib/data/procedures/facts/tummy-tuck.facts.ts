@@ -8,9 +8,10 @@
  * year or age figure that is not declared below, or states a declared figure
  * in a sentence about something else.
  *
- * Every source was re-read on 2026-11-03: the ASPS, Cleveland Clinic and
- * Aesthetic Society pages from their own text, the Florida rule from its
- * official .doc on flrules.org, the studies from their PubMed abstracts. Surgeon-written
+ * Every source was re-read on 2026-11-03, and an independent fact-check re-read
+ * them on 2026-11-04: the ASPS, Cleveland Clinic and Aesthetic Society pages
+ * from their own text, the Florida rule from its official .doc on
+ * flrules.org, the studies from their PubMed abstracts. Surgeon-written
  * posts on the ASPS website are attributed to their author, because ASPS
  * says they are the author's views, not the society's. Each fact carries the
  * attribution the copy must use and, in `caveat`, what the source does not
@@ -40,6 +41,7 @@ export type TummyTuckSourceId =
     | 'asps-tummy-tuck-candidates'
     | 'asps-tummy-tuck-results'
     | 'asps-tummy-tuck-preparation'
+    | 'asps-tummy-tuck-recovery'
     | 'asps-wu-2019'
     | 'asps-salemy-2019'
     | 'asps-vitenas-2018'
@@ -54,6 +56,7 @@ export type TummyTuckSourceId =
     | 'mittal-2020'
     | 'xia-2019'
     | 'karunaratne-2023'
+    | 'cheng-2024'
     | 'alluring-practice'
 
 export type TummyTuckSource = ProcedureSource<TummyTuckSourceId>
@@ -87,7 +90,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
     {
         id: 'asps-tummy-tuck-candidates',
         publisher: 'American Society of Plastic Surgeons (ASPS)',
-        title: 'Are you a good candidate for a tummy tuck?',
+        title: 'Who is a good candidate for tummy tuck surgery?',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/candidates',
         attribution:
             'Read on 2026-11-03: "You are physically healthy and at a stable weight", "You have realistic expectations", "You are a nonsmoker", "You are bothered by the appearance of your abdomen". No BMI figure.',
@@ -95,10 +98,10 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
     {
         id: 'asps-tummy-tuck-results',
         publisher: 'American Society of Plastic Surgeons (ASPS)',
-        title: 'What results can I expect from a tummy tuck?',
+        title: 'What results should I expect after a tummy tuck?',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/results',
         attribution:
-            'Read on 2026-11-03: "Within a week or two, you should be standing tall"; "In women who have undergone cesarean section, the existing scars may be incorporated into the new scar"; "The tummy tuck scar may take several months to a year to fade as much as it will."',
+            'Read on 2026-11-03: "Within a week or two, you should be standing tall"; "In women who have undergone cesarean section, the existing scars may be incorporated into the new scar"; "The tummy tuck scar may take several months to a year to fade as much as it will." Re-read on 2026-11-04: "Although good results are expected from your procedure, there is no guarantee. In some situations, it may not be possible to achieve optimal results with a single surgical procedure and another surgery may be necessary."',
     },
     {
         id: 'asps-tummy-tuck-preparation',
@@ -107,6 +110,14 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/preparation',
         attribution:
             'Read on 2026-11-03: "A tummy tuck may be performed in an accredited office-based surgical facility, licensed ambulatory surgical center or a hospital." Someone should drive you home and "stay with you for at least the first night following surgery." Quote the setting sentence only as ASPS\'s general statement, never about Alluring.',
+    },
+    {
+        id: 'asps-tummy-tuck-recovery',
+        publisher: 'American Society of Plastic Surgeons (ASPS)',
+        title: 'What should I expect during my tummy tuck recovery?',
+        url: 'https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/recovery',
+        attribution:
+            'Read on 2026-11-04: "Small, thin tubes may be temporarily placed under the skin to drain any excess blood or fluid that may collect." "you may be wrapped in an elastic bandage or a compression garment".',
     },
     {
         id: 'asps-wu-2019',
@@ -126,7 +137,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2019-07-19',
         url: 'https://www.plasticsurgery.org/news/blog/what-you-need-to-know-about-your-tummy-tuck-recovery',
         attribution:
-            'Read on 2026-11-03. A surgeon\'s post. "If you have young children, you will want to enlist help … as squatting or picking up children (or heavy objects for that matter) for the first few weeks is strongly advised against." "driving, cooking or shopping is often manageable after a week or two." "most patients begin feeling more normal around the eight-week mark." No weight limit for lifting.',
+            'Read on 2026-11-03. A surgeon\'s post. "If you have young children, you will want to enlist help … as squatting or picking up children (or heavy objects for that matter) for the first few weeks is strongly advised against." "driving, cooking or shopping is often manageable after a week or two." "most patients begin feeling more normal around the eight-week mark." "Most people opt to take up to a month off work for recovery. If you have a physically demanding job, it\'s especially important to take plenty of time off" "Some people experience numbness or a pulling sensation for weeks or months after a tummy tuck, but this is typically normal and often fades with time." No weight limit for lifting.',
     },
     {
         id: 'asps-vitenas-2018',
@@ -136,7 +147,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2018-02-23',
         url: 'https://www.plasticsurgery.org/news/blog/five-things-to-consider-before-getting-a-tummy-tuck',
         attribution:
-            'Read on 2026-11-03. A surgeon\'s post. "It is important that you be close to your desired weight for six to twelve months before undergoing a tummy tuck." Drains: "In most cases, the drains are painlessly removed in seven to ten days, however, they may need to stay in place for two weeks or longer." Its "10-15 pounds" is not used: the copy sweep has no unit for pounds.',
+            'Read on 2026-11-03. A surgeon\'s post. "It is important that you be close to your desired weight for six to twelve months before undergoing a tummy tuck." Drains: "In most cases, the drains are painlessly removed in seven to ten days, however, they may need to stay in place for two weeks or longer." "residual swelling can linger for six months or longer"; "it can take a full year before the stomach has finished healing and the complete results of surgery can be seen"; "While the scar will fade a bit over time, it will remain visible for years to come." Its "10-15 pounds" is not used: the copy sweep has no unit for pounds.',
     },
     {
         id: 'asps-weiler-2023',
@@ -156,12 +167,12 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2024-07-19',
         url: 'https://www.plasticsurgery.org/news/blog/understanding-the-different-types-of-tummy-tucks',
         attribution:
-            'Read on 2026-11-03. A surgeon\'s post, and the only source found that gives time off by type. Standard: "Most patients can return to nonstrenuous work after a couple of weeks, but it takes around three months to fully recover." Mini: "Most people can return to work one to two weeks after surgery." Extended: "about four to six weeks of downtime before returning to work."',
+            'Read on 2026-11-03. A surgeon\'s post, and the only source found that gives time off by type. Standard: "Most patients can return to nonstrenuous work after a couple of weeks, but it takes around three months to fully recover." Mini: "Most people can return to work one to two weeks after surgery." Extended: "about four to six weeks of downtime before returning to work and about 12 weeks more to return to strenuous activities."',
     },
     {
         id: 'cleveland-clinic-tummy-tuck',
         publisher: 'Cleveland Clinic',
-        title: 'Tummy Tuck (Abdominoplasty)',
+        title: 'Abdominoplasty (Tummy Tuck)',
         date: '2024-01-30',
         url: 'https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck',
         attribution:
@@ -174,7 +185,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2022-08-16',
         url: 'https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar',
         attribution:
-            'Last updated 08/16/2022, read on 2026-11-03: a full tummy tuck scar "usually spans your abdomen, from hip bone to hip bone, just above your pubic area. You may also have a scar around your belly button"; a mini tummy tuck scar is "about the length of a C-section scar (between 3 inches and 6 inches)"; fleur-de-lis: "A second vertical scar runs from your lower breastbone to your pubic bone"; avoid heavy lifting and strenuous exercise "usually four to eight weeks after the procedure"; sunscreen with SPF 30 "For 12 to 18 months". For fleur-de-lis the page now says "a large amount of excess skin due to major weight loss or multiple pregnancies", with no pounds figure.',
+            'Last updated 08/16/2022, read on 2026-11-03: a full tummy tuck scar "usually spans your abdomen, from hip bone to hip bone, just above your pubic area. You may also have a scar around your belly button"; a mini tummy tuck scar is "about the length of a C-section scar (between 3 inches and 6 inches)"; fleur-de-lis: "A second vertical scar runs from your lower breastbone to your pubic bone"; avoid heavy lifting and strenuous exercise "usually four to eight weeks after the procedure"; sunscreen with SPF 30 "For 12 to 18 months". For fleur-de-lis the page now says "a large amount of excess skin due to major weight loss or multiple pregnancies", with no pounds figure. "Small or fine tummy tuck scars may fade completely after about a year. However, most people will still have a visible scar."',
     },
     {
         id: 'cleveland-clinic-diastasis',
@@ -183,7 +194,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2025-04-21',
         url: 'https://my.clevelandclinic.org/health/diseases/22346-diastasis-recti',
         attribution:
-            'Last updated 04/21/2025, read on 2026-11-03: "It\'s a common condition that affects 6 in 10 women after childbirth."; "An abdominal gap wider than 2 centimeters is considered diastasis recti."',
+            'Last updated 04/21/2025, read on 2026-11-03: "It\'s a common condition that affects 6 in 10 women after childbirth."; "An abdominal gap wider than 2 centimeters is considered diastasis recti."; "Yes, it\'s possible to fix diastasis recti without surgery. Healthcare providers will recommend physical therapy or at-home exercises to help heal diastasis before surgery."',
     },
     {
         id: 'asps-post-pregnancy-2026',
@@ -193,7 +204,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2026-06-18',
         url: 'https://www.plasticsurgery.org/news/articles/post-pregnancy-plastic-surgery-what-can-you-do-now-and-what-needs-to-wait',
         attribution:
-            'Read on 2026-11-03. A freelance writer\'s article quoting surgeons, so a figure is the quoted surgeon\'s, not ASPS\'s. Kristy Hamilton, MD: "This typically means waiting a minimum of six months postpartum, and longer if breastfeeding." "Patients will often ask if they can get a tummy tuck at the same time as a C-section. Not only is that not a good idea medically and aesthetically, but it also doesn\'t make sense."',
+            'Read on 2026-11-03. A freelance writer\'s article quoting surgeons, so a figure is the quoted surgeon\'s, not ASPS\'s. Kristy Hamilton, MD: "This typically means waiting a minimum of six months postpartum, and longer if breastfeeding." "I recommend a minimum of six months for most procedures, and ideally nine to 12 months or as soon as patients have returned to their baseline BMI". Karen Horton, MD: "I recommend waiting up to a full year before considering any plastic surgery procedure". Hamilton: "Patients will often ask if they can get a tummy tuck at the same time as a C-section. Not only is that not a good idea medically and aesthetically, but it also doesn\'t make sense."',
     },
     {
         id: 'aesthetic-society-aftercare',
@@ -201,7 +212,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         title: 'Tummy Tuck - Aftercare & Recovery',
         url: 'https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery',
         attribution:
-            'Read on 2026-11-03; the page gives no date, so neither does the copy. "Your surgeon will typically remove your drains three to fourteen days after your surgery, depending on how much fluid is coming out." "Discomfort typically drops down to a "nagging" level by five to seven days." "you still shouldn\'t do any heavy lifting (such as picking up your children or baskets of laundry) for four to six weeks." "Plan to take about two weeks off from work, depending on the physical demands of your job." Its "short-term recovery locations" line is not used: the practice does not coordinate recovery stays.',
+            'Read on 2026-11-03; the page gives no date, so neither does the copy. "Your surgeon will typically remove your drains three to fourteen days after your surgery, depending on how much fluid is coming out." "Discomfort typically drops down to a "nagging" level by five to seven days." "you still shouldn\'t do any heavy lifting (such as picking up your children or baskets of laundry) for four to six weeks." "Plan to take about two weeks off from work, depending on the physical demands of your job." "If you have small children, you must put someone else totally in charge of their care for at least two weeks." "Arrange for someone to help you get around the house and help with your medication for at least the first three days after surgery." "You should be up and walking the day after surgery". Its "short-term recovery locations" line is not used: the practice does not coordinate recovery stays.',
     },
     {
         id: 'winocour-2015',
@@ -211,7 +222,7 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2015',
         url: 'https://pubmed.ncbi.nlm.nih.gov/26505716/',
         attribution:
-            'Plast Reconstr Surg 2015;136(5):597e–606e, abstract read in PubMed (26505716) on 2026-11-03. CosmetAssure database, 2008–2013, 25,478 patients: major complications "4.0 percent overall"; "abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent; breast procedure, 4.3 percent"; of the complications, "31.5 percent were hematomas, 27.2 percent were infections and 20.2 percent were suspected or confirmed venous thromboembolism"; risk factors included "age 55 years or older", "body mass index greater than or equal to 30" and "multiple procedures". Major complications only; the abstract does not define the window.',
+            'Plast Reconstr Surg 2015;136(5):597e–606e, abstract read in PubMed (26505716) on 2026-11-03. CosmetAssure database, 2008–2013, 25,478 patients: "The number of complications recorded was 1,012 (4.0 percent overall rate versus 1.4 percent in other aesthetic surgery procedures)"; "abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent; breast procedure, 4.3 percent; liposuction and breast procedure, 4.6 percent; body-contouring procedure, 6.8 percent; liposuction and body-contouring procedure, 10.4 percent"; of those 1,012, "31.5 percent were hematomas, 27.2 percent were infections and 20.2 percent were suspected or confirmed venous thromboembolism"; risk factors included "age 55 years or older", "body mass index greater than or equal to 30" and "multiple procedures". "Abdominoplasty is associated with a higher complication rate compared with other aesthetic procedures." Major complications only; the abstract does not define the window.',
     },
     {
         id: 'mittal-2020',
@@ -226,12 +237,12 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
     {
         id: 'xia-2019',
         publisher: 'Aesthetic Plastic Surgery',
-        title: 'Comparison of Complications Between Lipoabdominoplasty and Traditional Abdominoplasty: A Systematic Review and Meta-Analysis',
+        title: 'Safety of Lipoabdominoplasty Versus Abdominoplasty: A Systematic Review and Meta-analysis',
         authors: 'Xia Y and colleagues',
         date: '2019',
         url: 'https://pubmed.ncbi.nlm.nih.gov/30511162/',
         attribution:
-            'Aesthetic Plast Surg 2019;43(1):167–174, abstract read in PubMed (30511162) on 2026-11-03: "17 trials enrolling 14,061 adult patients … 577 (4.1%) developed seroma". Pooled across mixed study designs.',
+            'Aesthetic Plast Surg 2019;43(1):167–174, abstract read in PubMed (30511162) on 2026-11-03: "17 trials enrolling 14,061 adult patients … 577 (4.1%) developed seroma". Pooled across both lipoabdominoplasty and traditional abdominoplasty. The abstract found fewer complications with liposuction added (RR 0.85), so don\'t use it to say liposuction is safe or unsafe.',
     },
     {
         id: 'karunaratne-2023',
@@ -241,7 +252,17 @@ export const tummyTuckSources: readonly TummyTuckSource[] = [
         date: '2023',
         url: 'https://pubmed.ncbi.nlm.nih.gov/37266593/',
         attribution:
-            'Aesthetic Plast Surg 2023;47(4):1472–1479, abstract read in PubMed (37266593) on 2026-11-03: "17 studies encompassing 237 patients"; "There were no neonatal or maternal mortalities in any study"; "Pregnancy should not be contraindicated after abdominoplasty." It speaks to safety for mother and baby, not to whether the result lasts.',
+            'Aesthetic Plast Surg 2023;47(4):1472–1479, abstract read in PubMed (37266593) on 2026-11-03: "17 studies encompassing 237 patients"; "There were no neonatal or maternal mortalities in any study"; "Pregnancy should not be contraindicated after abdominoplasty." Re-read on 2026-11-04: "Preterm delivery (<37 weeks) was reported in 9.85%, and low birthweight (<2500 g) was reported in 7.22%." "Diagnoses or complications were documented in 14 studies (136 patients). These were grouped as foetal/neonatal (n = 21), maternal (n = 104) or abdominal wall/aesthetic (n = 96); and are detailed within." "Mean follow-up was 8.5 months." It records abdominal wall and aesthetic complications, but the abstract does not say how often the result lasted.',
+    },
+    {
+        id: 'cheng-2024',
+        publisher: 'American Journal of Obstetrics and Gynecology MFM',
+        title: 'Perinatal outcomes following abdominoplasty: a retrospective study and review of current literature',
+        authors: 'Cheng C and colleagues',
+        date: '2024',
+        url: 'https://pubmed.ncbi.nlm.nih.gov/38447678/',
+        attribution:
+            'Am J Obstet Gynecol MFM 2024;6(4):101331, abstract read in PubMed (38447678) on 2026-11-04. Records from 68 US healthcare organizations: "abdominoplasty was associated with an increased risk of preterm delivery (odds ratio, 2.15; 95% confidence interval, 1.48-3.13; P=.0002)"; "Our data suggest that abdominoplasty may be associated with a relative increase in the rates of preterm delivery and cesarean delivery and that other perinatal outcomes are not increased." An association, with no actual rates in the abstract. The odds ratio is not used.',
     },
     {
         id: 'alluring-practice',
@@ -404,21 +425,29 @@ export const tummyTuckFacts = [
         figures: [
             { value: 2, unit: 'week' },
             { value: 1, unit: 'week' },
+            { value: 1, unit: 'month' },
         ],
         statement:
-            'Most people return to work in about 2 weeks (Cindy Wu, MD, on the ASPS website), and Cleveland Clinic says to plan at least 1 week off.',
-        sourceIds: ['asps-wu-2019', 'cleveland-clinic-tummy-tuck'],
+            'Most people return to non-strenuous work in about 2 weeks (Cindy Wu, MD, and Samir Rao, MD, on the ASPS website), though Shahram Salemy, MD, there says most people opt to take up to 1 month off work, longer for a physical job. Cleveland Clinic says to plan at least 1 week off.',
+        sourceIds: [
+            'asps-wu-2019',
+            'asps-rao-2024',
+            'asps-salemy-2019',
+            'cleveland-clinic-tummy-tuck',
+        ],
+        caveat: 'Wu says "return to work", and Rao limits it to non-strenuous work. Never "desk job": no source says it.',
     },
     {
         id: 'work-by-type',
         topic: 'recovery',
-        concepts: ['work', 'job', 'desk'],
+        concepts: ['work', 'job', 'desk', 'strenuous'],
         figures: [
             { min: 1, max: 2, unit: 'week' },
             { min: 4, max: 6, unit: 'week' },
+            { value: 12, unit: 'week' },
         ],
         statement:
-            'After a mini tummy tuck most people return to work in 1 to 2 weeks, after a full tummy tuck to non-strenuous work in a couple of weeks, and after an extended tummy tuck in 4 to 6 weeks (Samir Rao, MD, on the ASPS website).',
+            'After a mini tummy tuck most people return to work in 1 to 2 weeks, after a full tummy tuck to non-strenuous work in a couple of weeks, and after an extended tummy tuck in 4 to 6 weeks, with about 12 weeks more before strenuous activity (Samir Rao, MD, on the ASPS website).',
         sourceIds: ['asps-rao-2024'],
         caveat: "One surgeon's view, and the only source found that splits time off by type.",
     },
@@ -454,9 +483,12 @@ export const tummyTuckFacts = [
         id: 'heavy-lifting-society-4-6-weeks',
         topic: 'recovery',
         concepts: ['lift', 'laundry', 'children'],
-        figures: [{ min: 4, max: 6, unit: 'week' }],
+        figures: [
+            { min: 4, max: 6, unit: 'week' },
+            { value: 2, unit: 'week' },
+        ],
         statement:
-            'The Aesthetic Society says no heavy lifting, such as picking up your children or baskets of laundry, for 4 to 6 weeks.',
+            'The Aesthetic Society says no heavy lifting, such as picking up your children or baskets of laundry, for 4 to 6 weeks, and to put someone else totally in charge of small children for at least 2 weeks.',
         sourceIds: ['aesthetic-society-aftercare'],
     },
     {
@@ -465,17 +497,34 @@ export const tummyTuckFacts = [
         concepts: ['walk'],
         figures: [],
         statement:
-            'You walk on the day of surgery, which keeps the risk of blood clots in the legs low (Cindy Wu, MD, on the ASPS website).',
+            'You can walk on the day of surgery, which helps keep the risk of blood clots in the legs to a minimum (Cindy Wu, MD, on the ASPS website).',
         sourceIds: ['asps-wu-2019'],
+        caveat: 'The Aesthetic Society says "the day after surgery", so the surgeon tells you when to start. Walking helps; it does not settle the clot risk.',
     },
     {
         id: 'stay-first-night',
         topic: 'recovery',
-        concepts: ['stay', 'night'],
-        figures: [{ value: 1, unit: 'night' }],
+        concepts: ['stay', 'night', 'help'],
+        figures: [
+            { value: 1, unit: 'night' },
+            { value: 3, unit: 'day' },
+        ],
         statement:
-            'Someone should drive you home and stay with you for at least the first night after surgery, ASPS advises.',
-        sourceIds: ['asps-tummy-tuck-preparation'],
+            'Someone should drive you home and stay with you for at least the first night after surgery, ASPS advises, and The Aesthetic Society says to arrange help at home for at least the first 3 days.',
+        sourceIds: [
+            'asps-tummy-tuck-preparation',
+            'aesthetic-society-aftercare',
+        ],
+    },
+    {
+        id: 'drains-may-be-placed',
+        topic: 'recovery',
+        concepts: ['drain', 'tube'],
+        figures: [],
+        statement:
+            'ASPS says small tubes may be placed under the skin to drain excess fluid.',
+        sourceIds: ['asps-tummy-tuck-recovery'],
+        caveat: 'Whether Alluring uses drains is an owner question. Never say which.',
     },
     {
         id: 'driving-1-2-weeks',
@@ -523,6 +572,7 @@ export const tummyTuckFacts = [
         statement:
             'A compression garment is worn for 4 to 6 weeks after surgery (Cindy Wu, MD, on the ASPS website).',
         sourceIds: ['asps-wu-2019'],
+        caveat: "One surgeon's general figure, never Alluring's schedule. ASPS says only that you may be wrapped in an elastic bandage or a compression garment.",
     },
     {
         id: 'exercise-4-6-weeks',
@@ -539,17 +589,20 @@ export const tummyTuckFacts = [
         concepts: ['normal', 'feel'],
         figures: [{ value: 8, unit: 'week' }],
         statement:
-            'Most people begin to feel more like themselves around 8 weeks (Shahram Salemy, MD, on the ASPS website).',
+            'Most people begin to feel more normal around 8 weeks (Shahram Salemy, MD, on the ASPS website).',
         sourceIds: ['asps-salemy-2019'],
     },
     {
         id: 'swelling-3-months',
         topic: 'recovery',
         concepts: ['swell'],
-        figures: [{ value: 3, unit: 'month' }],
+        figures: [
+            { value: 3, unit: 'month' },
+            { value: 6, unit: 'month' },
+        ],
         statement:
-            'Swelling keeps going down until about 3 months after surgery (Cindy Wu, MD, on the ASPS website).',
-        sourceIds: ['asps-wu-2019'],
+            'Swelling keeps going down until about 3 months after surgery (Cindy Wu, MD, on the ASPS website), and residual swelling can linger for 6 months or longer (Paul Vitenas, MD, on the ASPS website).',
+        sourceIds: ['asps-wu-2019', 'asps-vitenas-2018'],
     },
 
     // ── Results and the scar ─────────────────────────────────────────────
@@ -564,6 +617,7 @@ export const tummyTuckFacts = [
         statement:
             'Cleveland Clinic says it can take up to 3 months to see the final result, and the scar keeps improving for up to 1 year.',
         sourceIds: ['cleveland-clinic-tummy-tuck'],
+        caveat: 'Up to, never "at about". Paul Vitenas, MD, says the complete result can take a full year, so month 3 is not the finish line.',
     },
     {
         id: 'scar-fades-12-18-months',
@@ -574,8 +628,12 @@ export const tummyTuckFacts = [
             { value: 1, unit: 'year' },
         ],
         statement:
-            'The scar becomes thinner and lighter at around 12 to 18 months (Cindy Wu, MD, on the ASPS website); ASPS says it can take several months to a year to fade as much as it will.',
-        sourceIds: ['asps-wu-2019', 'asps-tummy-tuck-results'],
+            'The scar becomes thinner and lighter at around 12 to 18 months (Cindy Wu, MD, on the ASPS website); ASPS says it can take several months to a year to fade as much as it will, and Cleveland Clinic says most people will still have a visible scar.',
+        sourceIds: [
+            'asps-wu-2019',
+            'asps-tummy-tuck-results',
+            'cleveland-clinic-tummy-tuck-scar',
+        ],
     },
     {
         id: 'sunscreen-12-18-months',
@@ -592,7 +650,7 @@ export const tummyTuckFacts = [
         concepts: ['scar', 'incision', 'underwear', 'hip'],
         figures: [],
         statement:
-            'A full tummy tuck scar usually runs from hip bone to hip bone, just above the pubic area, often with a scar around the belly button (Cleveland Clinic); it is placed as low as possible so underwear or swimsuit bottoms cover it (Jonathan Weiler, MD, on the ASPS website).',
+            'A full tummy tuck scar usually runs from hip bone to hip bone, just above the pubic area, and you may also have a scar around the belly button (Cleveland Clinic). Jonathan Weiler, MD, on the ASPS website, says a skilled surgeon places it as low as possible so underwear or swimsuit bottoms conceal it.',
         sourceIds: ['cleveland-clinic-tummy-tuck-scar', 'asps-weiler-2023'],
     },
     {
@@ -610,7 +668,7 @@ export const tummyTuckFacts = [
         concepts: ['stretch mark'],
         figures: [],
         statement:
-            'A tummy tuck cannot correct stretch marks, ASPS says, though those on the skin that is removed go with it.',
+            'A tummy tuck cannot correct stretch marks, ASPS says, although those on the skin that is removed may be removed or somewhat improved.',
         sourceIds: ['asps-tummy-tuck'],
     },
 
@@ -662,9 +720,12 @@ export const tummyTuckFacts = [
         id: 'postpartum-wait-6-months',
         topic: 'procedure',
         concepts: ['delivery', 'postpartum', 'baby', 'c-section', 'breastfe'],
-        figures: [{ value: 6, unit: 'month' }],
+        figures: [
+            { value: 6, unit: 'month' },
+            { min: 9, max: 12, unit: 'month' },
+        ],
         statement:
-            'Kristy Hamilton, MD, quoted by ASPS, describes waiting at least 6 months after delivery, longer if breastfeeding.',
+            'Kristy Hamilton, MD, quoted in an article on the ASPS website, describes waiting at least 6 months after delivery, ideally 9 to 12 months, and longer if breastfeeding. Karen Horton, MD, in the same article, recommends waiting up to a full year.',
         sourceIds: ['asps-post-pregnancy-2026'],
         caveat: "One surgeon's view in an article on the ASPS website. Never say ASPS sets it, and no source read sets a separate wait for a C-section.",
     },
@@ -674,7 +735,7 @@ export const tummyTuckFacts = [
         concepts: ['c-section', 'cesarean'],
         figures: [],
         statement:
-            'Kristy Hamilton, MD, quoted by ASPS, advises against having a tummy tuck during a C-section.',
+            'Kristy Hamilton, MD, quoted in an article on the ASPS website, advises against having a tummy tuck during a C-section.',
         sourceIds: ['asps-post-pregnancy-2026'],
     },
     {
@@ -696,9 +757,20 @@ export const tummyTuckFacts = [
             { value: 237, unit: 'patient' },
         ],
         statement:
-            'A 2023 review of 17 studies and 237 patients who became pregnant after a tummy tuck found no deaths of mothers or babies and concluded that pregnancy should not be ruled out (Karunaratne and colleagues, Aesthetic Plastic Surgery, 2023).',
+            'A 2023 review of 17 studies and 237 patients who became pregnant after a tummy tuck found no deaths of mothers or newborns and concluded that pregnancy should not be ruled out (Karunaratne and colleagues, Aesthetic Plastic Surgery, 2023).',
         sourceIds: ['karunaratne-2023'],
-        caveat: 'Safety for mother and baby only. It does not say the result survives a pregnancy; ASPS still advises waiting.',
+        caveat: '"No deaths" is not "no complications": the review also records fetal, maternal and abdominal wall or aesthetic complications. The abstract says "neonatal", so write "newborns", never "babies"; it does not say whether miscarriage or stillbirth were counted. It has no comparison group, so state it beside `preterm-after`. ASPS still advises waiting.',
+    },
+    {
+        id: 'preterm-after',
+        topic: 'safety',
+        concepts: ['preterm', 'pregnan'],
+        years: [2024],
+        figures: [],
+        statement:
+            'A 2024 analysis of US health records linked a past tummy tuck to higher odds of preterm delivery (Cheng and colleagues, American Journal of Obstetrics and Gynecology MFM, 2024).',
+        sourceIds: ['cheng-2024'],
+        caveat: 'An association, with no actual rates in the abstract, so no figure. Write "linked", never "causes". The words "2024 study" read as a count to the copy sweep, so the copy says "analysis".',
     },
 
     // ── Safety ───────────────────────────────────────────────────────────
@@ -711,11 +783,15 @@ export const tummyTuckFacts = [
             { value: 25478, unit: 'patient' },
             { value: 3.1, unit: 'percent' },
             { value: 3.8, unit: 'percent' },
+            { value: 4, unit: 'percent' },
+            { value: 1.4, unit: 'percent' },
+            { value: 4.3, unit: 'percent' },
+            { value: 10.4, unit: 'percent' },
         ],
         statement:
-            'In an insurance database of 25,478 patients, major complications followed 3.1% of tummy tucks done alone and 3.8% of those combined with liposuction (Winocour and colleagues, Plastic and Reconstructive Surgery, 2015).',
+            'In an insurance database of 25,478 patients, major complications followed 4% of tummy tucks, against 1.4% of other cosmetic procedures: 3.1% of tummy tucks done alone, 3.8% of those combined with liposuction, 4.3% with a breast procedure and 10.4% with liposuction and another body-contouring procedure (Winocour and colleagues, Plastic and Reconstructive Surgery, 2015).',
         sourceIds: ['winocour-2015'],
-        caveat: 'Major complications only, from 2008–2013 data. Never "3.1% of patients have complications".',
+        caveat: 'Major complications only, from 2008–2013 data. Never "3.1% of patients have complications", and never the lowest rates without the higher overall rate. The abstract gives no figure for a BBL by name.',
     },
     {
         id: 'complication-types',
@@ -728,9 +804,9 @@ export const tummyTuckFacts = [
             { value: 20.2, unit: 'percent' },
         ],
         statement:
-            'Of those major complications, 31.5% were hematomas (bleeding under the skin), 27.2% infections and 20.2% suspected or confirmed blood clots (Winocour and colleagues, 2015).',
+            'Of all the major complications in the study, combined surgeries included, 31.5% were hematomas (bleeding under the skin), 27.2% infections and 20.2% suspected or confirmed blood clots (Winocour and colleagues, 2015).',
         sourceIds: ['winocour-2015'],
-        caveat: 'Shares of the complications, not of patients.',
+        caveat: 'Shares of all 1,012 complications recorded, combined surgeries included, not of patients and not of tummy tucks done alone.',
     },
     {
         id: 'risk-factors',
@@ -742,9 +818,9 @@ export const tummyTuckFacts = [
             { value: 30, unit: 'bmi' },
         ],
         statement:
-            'The same study found higher risk at age 55 or older, with a BMI of 30 or more, and when several procedures were combined.',
+            'The same study linked a higher risk to age 55 or older, a BMI of 30 or more, and several procedures combined.',
         sourceIds: ['winocour-2015'],
-        caveat: "Risk factors, not cutoffs. The practice's own BMI rule is an owner question.",
+        caveat: "Risk factors from a database, not causes and not cutoffs. The practice's own BMI rule is an owner question.",
     },
     {
         id: 'clots-highest-among-cosmetic',
@@ -768,7 +844,7 @@ export const tummyTuckFacts = [
         statement:
             'A 2019 review of studies covering 14,061 patients found fluid collecting under the skin, a seroma, in 4.1% (Xia and colleagues, Aesthetic Plastic Surgery, 2019).',
         sourceIds: ['xia-2019'],
-        caveat: 'Pooled across mixed study designs.',
+        caveat: "Pooled across both lipoabdominoplasty and traditional abdominoplasty. The abstract found fewer complications with liposuction added (RR 0.85), so don't use it to say liposuction is safe or unsafe.",
     },
 
     // ── Law ──────────────────────────────────────────────────────────────
@@ -817,6 +893,7 @@ export const tummyTuckFacts = [
         statement:
             'Supernatant fat is the fat alone, measured once the fluid removed with it has separated out.',
         sourceIds: ['florida-rule-64b8-9-009'],
+        caveat: 'A plain-language gloss. The rule uses the term and does not define it, so never write "Florida defines".',
     },
 ] as const satisfies readonly TummyTuckFact[]
 

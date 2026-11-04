@@ -24,7 +24,7 @@ import { tummyTuckFigure } from '@/lib/data/procedures/facts/tummy-tuck.facts'
 const milestones: ModuleMilestone[] = [
     {
         when: 'Day of surgery',
-        body: 'You usually go home the same day, and you walk that day, which keeps the risk of blood clots in the legs low (Cindy Wu, MD, on the ASPS website). Someone stays with you for at least the first night, as ASPS advises.',
+        body: 'You usually go home the same day. You can walk that day, which helps keep the risk of blood clots in the legs to a minimum (Cindy Wu, MD, on the ASPS website); your surgeon tells you when to start. Someone stays with you for at least the first night, as ASPS advises, and The Aesthetic Society says to arrange help at home for at least the first 3 days.',
     },
     {
         when: 'First 7–10 days',
@@ -32,11 +32,11 @@ const milestones: ModuleMilestone[] = [
     },
     {
         when: 'Weeks 1–2',
-        body: 'Drains, if you have them, come out once the fluid slows (Cindy Wu, MD). Driving, cooking and shopping are often manageable by now (Shahram Salemy, MD).',
+        body: 'Drains, if you have them, come out once the fluid slows (Cindy Wu, MD). Driving, cooking and shopping are often manageable by now (Shahram Salemy, MD). Your surgeon clears you to drive.',
     },
     {
         when: 'About 2 weeks',
-        body: `Most people return to a desk job (Cindy Wu, MD), and Cleveland Clinic says to plan at least ${tummyTuckFigure('work-about-2-weeks', 1)} off work. After an extended tummy tuck, most return to work at ${tummyTuckFigure('work-by-type', 1)} (Samir Rao, MD).`,
+        body: `Most people return to non-strenuous work (Cindy Wu, MD; Samir Rao, MD), though Shahram Salemy, MD, says most people opt to take up to a month off work. Cleveland Clinic says to plan at least ${tummyTuckFigure('work-about-2-weeks', 1)} off work. After an extended tummy tuck, most return to work at ${tummyTuckFigure('work-by-type', 1)} (Samir Rao, MD).`,
     },
     {
         when: 'First few weeks',
@@ -52,11 +52,11 @@ const milestones: ModuleMilestone[] = [
     },
     {
         when: 'Around 8 weeks',
-        body: 'Most people begin to feel more like themselves (Shahram Salemy, MD).',
+        body: 'Most people begin to feel more normal (Shahram Salemy, MD).',
     },
     {
         when: 'About 3 months',
-        body: 'The swelling has gone down and the final result shows (Cindy Wu, MD; Cleveland Clinic). A full recovery takes around this long (Samir Rao, MD).',
+        body: `Swelling keeps going down until about now (Cindy Wu, MD), and Cleveland Clinic says the final result can take up to this long. A full recovery takes around this long (Samir Rao, MD). Residual swelling can linger for ${tummyTuckFigure('swelling-3-months', 1)} or longer, and the complete result can take a full year (Paul Vitenas, MD).`,
     },
     {
         when: '12–18 months',
@@ -108,7 +108,7 @@ export function TummyTuckRecovery() {
             id='recovery'
             question='What is tummy tuck recovery like?'
             className={moduleSectionPad}
-            answer={`Most people walk bent at the waist for ${tummyTuckFigure('bent-7-10-days')}, go back to a desk job in about ${tummyTuckFigure('work-about-2-weeks')} and wear a compression garment for ${tummyTuckFigure('garment-4-6-weeks')}. Heavy lifting usually waits ${tummyTuckFigure('heavy-lifting-4-8-weeks')}, and the final result shows at about ${tummyTuckFigure('results-3-months')}, according to ASPS, Cleveland Clinic and surgeons writing on the ASPS website.`}
+            answer={`Most people walk bent at the waist for ${tummyTuckFigure('bent-7-10-days')}, go back to non-strenuous work in about ${tummyTuckFigure('work-about-2-weeks')} and wear a compression garment for ${tummyTuckFigure('garment-4-6-weeks')}. Heavy lifting usually waits ${tummyTuckFigure('heavy-lifting-4-8-weeks')}, and the final result can take up to ${tummyTuckFigure('results-3-months')} to show, according to ASPS, Cleveland Clinic and surgeons writing on the ASPS website.`}
         >
             <ModuleTimeline
                 label='Tummy tuck recovery timeline'
@@ -117,19 +117,21 @@ export function TummyTuckRecovery() {
 
             <h3 className={cn(moduleH3, 'mt-6')}>Where will my scar be?</h3>
             <p className={cn(moduleBody, 'mt-3')}>
-                Low on the abdomen, placed so underwear or swimsuit bottoms
-                cover it (Jonathan Weiler, MD, on the ASPS website). A full
-                tummy tuck scar usually runs from hip bone to hip bone, just
-                above the pubic area, often with a scar around the belly button;
-                a mini tummy tuck scar is about the length of a C-section scar,{' '}
+                Low on the abdomen. Jonathan Weiler, MD, on the ASPS website,
+                says a skilled surgeon places it as low as possible so underwear
+                or swimsuit bottoms conceal it. A full tummy tuck scar usually
+                runs from hip bone to hip bone, just above the pubic area, and
+                you may also have a scar around the belly button; a mini tummy
+                tuck scar is about the length of a C-section scar,{' '}
                 {tummyTuckFigure('mini-scar-3-6-inches')} (Cleveland Clinic). If
                 you have had a C-section, ASPS says the old scar may become part
                 of the new one.
             </p>
             <p className={cn(moduleBody, 'mt-4')}>
                 ASPS says the scar can take several months to a year to fade as
-                much as it will. In the Miami sun, keep it covered or use
-                sunscreen with SPF 30 for{' '}
+                much as it will, and Cleveland Clinic says most people will
+                still have a visible scar. In the Miami sun, keep it covered or
+                use sunscreen with SPF 30 for{' '}
                 {tummyTuckFigure('sunscreen-12-18-months')}, as Cleveland Clinic
                 advises.
             </p>
@@ -147,14 +149,19 @@ export function TummyTuckRecovery() {
             </h3>
             <p className={cn(moduleBody, 'mt-3')}>
                 You can, but ASPS advises postponing a tummy tuck if you may
-                want to be pregnant again, because weight changes can undo much
-                of the result. For safety, a 2023 review of{' '}
+                want to be pregnant again, because significant changes in weight
+                can greatly diminish the result. The evidence on mothers and
+                babies is limited. A 2023 review of{' '}
                 {tummyTuckFigure('pregnancy-after')} and{' '}
                 {tummyTuckFigure('pregnancy-after', 1)} who became pregnant
-                after a tummy tuck found no deaths of mothers or babies and
+                after a tummy tuck found no deaths of mothers or newborns and
                 concluded that pregnancy should not be ruled out (Karunaratne
-                and colleagues, Aesthetic Plastic Surgery, 2023). It didn&apos;t
-                measure whether the result lasted.
+                and colleagues, Aesthetic Plastic Surgery, 2023). Some of the
+                studies also recorded problems with the abdominal wall or the
+                cosmetic result. A 2024 analysis of US health records linked a
+                past tummy tuck to higher odds of preterm delivery (Cheng and
+                colleagues, American Journal of Obstetrics and Gynecology MFM,
+                2024). Ask your surgeon and your OB what this means for you.
             </p>
 
             <h3 className={cn(moduleH3, 'mt-8')}>

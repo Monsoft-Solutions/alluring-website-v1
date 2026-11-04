@@ -28,7 +28,7 @@ export function TummyTuckProcedureSteps({
             id='procedure'
             question='What happens on the day of a tummy tuck?'
             className={moduleSectionPad}
-            answer={`A tummy tuck is done under general anesthesia, and Cleveland Clinic says it can take ${tummyTuckFigure('surgery-1-5-hours')}, depending on the type. Your surgeon marks the incision while you stand, repairs the muscles when needed, removes the loose skin, closes the incision and fits your compression garment. You usually go home the same day.`}
+            answer={`A tummy tuck is done under general anesthesia, and Cleveland Clinic says it can take ${tummyTuckFigure('surgery-1-5-hours')}, depending on the result you want. Your surgeon marks the incision while you stand, repairs the muscles if your surgery includes it, removes the loose skin, closes the incision and dresses it. You usually go home the same day.`}
         >
             <p className={cn(moduleBody, 'mt-4.5')}>
                 Before surgery day, your surgeon examines you, reviews your
@@ -43,8 +43,10 @@ export function TummyTuckProcedureSteps({
             />
             <p className={cn(moduleBody, 'mt-8')}>
                 Someone needs to drive you home and, ASPS advises, stay with you
-                for at least the first night. You walk on the day of surgery,
-                which keeps the risk of blood clots in the legs low.
+                for at least the first night. Cindy Wu, MD, on the ASPS website,
+                says you can walk on the day of surgery, which helps keep the
+                risk of blood clots in the legs to a minimum. Your surgeon tells
+                you when to start.
             </p>
         </AnswerBlock>
     )

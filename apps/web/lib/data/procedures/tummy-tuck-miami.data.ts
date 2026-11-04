@@ -20,7 +20,7 @@ export const tummyTuckMiami: Procedure = {
     // landing page. Prices from the practice's price sheet of 2026-09-15
     // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
     // "$3,500" and "5,000+ procedures" this used to carry (#309).
-    description: `A tummy tuck (abdominoplasty) removes loose skin and fat from the abdomen and can repair separated abdominal muscles. At Alluring in Miami, one surgeon performs every tummy tuck: ${KARLINSKY_NAME}. A mini tummy tuck is ${tummyTuckFigure('price-mini')} and a full tummy tuck ${tummyTuckFigure('price-full')}.`,
+    description: `A tummy tuck (abdominoplasty) removes loose skin and fat from the abdomen and can repair separated abdominal muscles. At Alluring in Miami, one surgeon performs every tummy tuck: ${KARLINSKY_NAME}. A mini tummy tuck is ${tummyTuckFigure('price-mini')} and a full tummy tuck ${tummyTuckFigure('price-full')}. Your surgeon confirms your price after an exam.`,
 
     // Hand-written metadata (D4 of the wave-two brief). The generated title
     // ended "| Board-Certified Surgeons", a certification claim naming no
@@ -37,7 +37,7 @@ export const tummyTuckMiami: Procedure = {
     metaDescription: `Tummy tuck (abdominoplasty) prices by type: mini ${tummyTuckFigure('price-mini')}, full ${tummyTuckFigure('price-full')}, extended ${tummyTuckFigure('price-extended')}, fleur-de-lis ${tummyTuckFigure('price-fleur-de-lis')}. One surgeon: ${KARLINSKY_NAME}.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `Tummy tuck in Miami, from a mini at ${tummyTuckFigure('price-mini')} to a full tummy tuck at ${tummyTuckFigure('price-full')}. Every tummy tuck at Alluring is performed by ${KARLINSKY_NAME}.`,
+    shortDescription: `Tummy tuck in Miami, from a mini at ${tummyTuckFigure('price-mini')} to a full tummy tuck at ${tummyTuckFigure('price-full')}. Every tummy tuck at Alluring is performed by ${KARLINSKY_NAME}. Your surgeon confirms your price after an exam.`,
     heroSubtitle:
         'Loose skin removed and your abdomen tightened, by one surgeon',
     category: 'body',
@@ -96,7 +96,7 @@ export const tummyTuckMiami: Procedure = {
             {
                 label: 'Which tummy tuck you need',
                 description:
-                    'Where your loose skin sits, and whether your muscles need repair, decides between a mini, a full and an extended tummy tuck. Your surgeon tells you which at your exam.',
+                    'Where your loose skin sits decides between a mini, a full and an extended tummy tuck. Your surgeon tells you at your exam which you need, whether your muscles need repair and what your price covers.',
             },
             {
                 label: 'Liposuction added',
@@ -129,19 +129,19 @@ export const tummyTuckMiami: Procedure = {
     quickStats: {
         // Cleveland Clinic's range (`tummy-tuck.facts.ts` surgery-1-5-hours).
         // How long each type takes at Alluring is an owner question.
-        duration: '1 to 5 Hours, Depending on Type',
+        duration: '1 to 5 Hours, Depending on the Result You Want',
         anesthesia: 'General Anesthesia',
         // `tummy-tuck.facts.ts` work-about-2-weeks. Also the graph's
         // `followup`, the paid landing page's stats and `/llms-full.txt`.
-        recovery: 'About 2 Weeks to a Desk Job',
+        recovery: 'About 2 Weeks to Non-Strenuous Work',
         // `tummy-tuck.facts.ts` results-3-months.
-        results: 'Final Result at About 3 Months',
-        inpatientOutpatient: 'Outpatient',
+        results: 'Final Result Can Take 3 Months or More',
+        inpatientOutpatient: 'Usually Outpatient',
     },
     benefits: [
         {
             title: 'Five types, five prices',
-            description: `From a mini tummy tuck at ${tummyTuckFigure('price-mini')} to a fleur-de-lis at ${tummyTuckFigure('price-fleur-de-lis')}, every type is on the practice's price list, so you can compare before you book.`,
+            description: `From a mini tummy tuck at ${tummyTuckFigure('price-mini')} to a fleur-de-lis at ${tummyTuckFigure('price-fleur-de-lis')}, every type is on the practice's price list, so you can compare before you book. Your surgeon confirms your price after an exam.`,
         },
         {
             title: 'One surgeon you can check',
@@ -154,7 +154,7 @@ export const tummyTuckMiami: Procedure = {
         },
         {
             title: 'A recovery you can plan',
-            description: `Most people are back at a desk job in about ${tummyTuckFigure('work-about-2-weeks')} and feel more like themselves around ${tummyTuckFigure('feel-normal-8-weeks')}, so you can line up help before surgery day.`,
+            description: `Most people are back at non-strenuous work in about ${tummyTuckFigure('work-about-2-weeks')} and begin to feel more normal around ${tummyTuckFigure('feel-normal-8-weeks')}, so you can line up help before surgery day.`,
         },
     ],
     // The graph's `howPerformed`, and the paid landing page.
@@ -175,7 +175,7 @@ export const tummyTuckMiami: Procedure = {
             step: 3,
             title: 'Muscle repair, when needed',
             description:
-                "In a full or extended tummy tuck, separated abdominal muscles are stitched back together. The mini and extended mini on our price list don't include this step.",
+                "ASPS says a tummy tuck restores weakened or separated muscles in most cases, so if your surgeon finds yours need it, they are stitched back together. The mini and extended mini on our price list don't include this step. For any other type, ask your surgeon whether your price covers it.",
         },
         {
             step: 4,
@@ -185,9 +185,9 @@ export const tummyTuckMiami: Procedure = {
         },
         {
             step: 5,
-            title: 'Closing, garment and home',
+            title: 'Closing and going home',
             description:
-                'The incisions are closed, small drains may be placed to carry off fluid, and a compression garment goes on. Someone drives you home and stays with you for at least the first night.',
+                'The incisions are closed, small drains may be placed to carry off fluid, and a compression garment or elastic bandage may go on. Someone drives you home and stays with you for at least the first night.',
         },
     ],
     // One definition site-wide: the page's "What is a tummy tuck?" answer.
@@ -203,26 +203,26 @@ export const tummyTuckMiami: Procedure = {
     faqs: [
         {
             question: 'How much does a tummy tuck cost in Miami?',
-            answer: `At Alluring, a mini tummy tuck is ${tummyTuckFigure('price-mini')}, an extended mini ${tummyTuckFigure('price-extended-mini')}, a full tummy tuck ${tummyTuckFigure('price-full')}, an extended tummy tuck ${tummyTuckFigure('price-extended')} and a fleur-de-lis ${tummyTuckFigure('price-fleur-de-lis')}. Liposuction of the abdomen and flanks, added to a tummy tuck, is ${tummyTuckFigure('price-lipo-add-on')}. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Price ranges are estimates and may change. Financing is available, subject to credit approval.`,
+            answer: `At Alluring, a mini tummy tuck is ${tummyTuckFigure('price-mini')}, an extended mini ${tummyTuckFigure('price-extended-mini')}, a full tummy tuck ${tummyTuckFigure('price-full')}, an extended tummy tuck ${tummyTuckFigure('price-extended')} and a fleur-de-lis ${tummyTuckFigure('price-fleur-de-lis')}. Liposuction of the abdomen and flanks, added to a tummy tuck, is ${tummyTuckFigure('price-lipo-add-on')}. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Prices are estimates and may change. Financing is available, subject to credit approval.`,
         },
         {
             question:
                 "What's the difference between a mini and a full tummy tuck?",
-            answer: `A mini tummy tuck treats loose skin below the belly button through a shorter incision, about the length of a C-section scar (${tummyTuckFigure('mini-scar-3-6-inches')}, Cleveland Clinic), and generally leaves the belly button alone. At Alluring it doesn't include muscle repair. A full tummy tuck treats the whole abdomen, usually with a scar from hip bone to hip bone and one around the belly button, and in most cases repairs separated muscles, ASPS says.`,
+            answer: `A mini tummy tuck treats loose skin below the belly button through a shorter incision, about the length of a C-section scar (${tummyTuckFigure('mini-scar-3-6-inches')}, Cleveland Clinic), and generally leaves the belly button alone. At Alluring it doesn't include muscle repair. A full tummy tuck treats the whole abdomen, usually with a scar from hip bone to hip bone, and you may also have one around the belly button. ASPS says a tummy tuck restores weakened or separated muscles in most cases, and your surgeon tells you at your exam whether yours would.`,
         },
         {
             question:
                 'Does a tummy tuck fix diastasis recti (separated muscles)?',
-            answer: `A full or extended tummy tuck usually can: ASPS says a tummy tuck restores weakened or separated muscles in most cases. Cleveland Clinic says diastasis recti affects ${tummyTuckFigure('diastasis-6-in-10')} women after childbirth and counts a gap wider than ${tummyTuckFigure('diastasis-gap-2-cm')}. The mini and extended mini at Alluring don't include muscle repair, so your surgeon examines you and tells you which type you need.`,
+            answer: `A tummy tuck with muscle repair usually can: ASPS says a tummy tuck restores weakened or separated muscles in most cases. It isn't the only route: Cleveland Clinic says it's possible to fix diastasis recti without surgery, and that providers recommend physical therapy or at-home exercises first. Cleveland Clinic also says it affects ${tummyTuckFigure('diastasis-6-in-10')} women after childbirth, and counts a gap wider than ${tummyTuckFigure('diastasis-gap-2-cm')} as diastasis recti. The mini and extended mini at Alluring don't include muscle repair, so your surgeon examines you and tells you which type you need and whether it would repair your muscles.`,
         },
         {
             question:
                 'How long is tummy tuck recovery, and when can I go back to work?',
-            answer: `Most people return to a desk job in about ${tummyTuckFigure('work-about-2-weeks')} (Cindy Wu, MD, on the ASPS website), and Cleveland Clinic says to plan at least ${tummyTuckFigure('work-about-2-weeks', 1)} off work. By type, most go back to work ${tummyTuckFigure('work-by-type')} after a mini and ${tummyTuckFigure('work-by-type', 1)} after an extended tummy tuck (Samir Rao, MD). You walk bent at the waist for the first ${tummyTuckFigure('bent-7-10-days')}, and a full recovery takes around ${tummyTuckFigure('recover-3-months')}.`,
+            answer: `Most people return to non-strenuous work in about ${tummyTuckFigure('work-about-2-weeks')} (Cindy Wu, MD, and Samir Rao, MD, on the ASPS website), though Shahram Salemy, MD, there says most people opt to take up to a month off work, longer for a physical job. Cleveland Clinic says to plan at least ${tummyTuckFigure('work-about-2-weeks', 1)} off work. By type, most go back to work ${tummyTuckFigure('work-by-type')} after a mini and ${tummyTuckFigure('work-by-type', 1)} after an extended tummy tuck (Samir Rao, MD). You walk bent at the waist for the first ${tummyTuckFigure('bent-7-10-days')}, and a full recovery takes around ${tummyTuckFigure('recover-3-months')}.`,
         },
         {
             question: 'When can I lift my children after a tummy tuck?',
-            answer: `Not for the first few weeks: picking up children, or anything heavy, is strongly advised against, so line up help with childcare before surgery (Shahram Salemy, MD, on the ASPS website). Running and lifting wait ${tummyTuckFigure('lifting-6-weeks')} (Cindy Wu, MD), and Cleveland Clinic puts heavy lifting at usually ${tummyTuckFigure('heavy-lifting-4-8-weeks')}, once your surgeon clears you.`,
+            answer: `Not for the first few weeks: picking up children, or anything heavy, is strongly advised against, so line up help with childcare before surgery (Shahram Salemy, MD, on the ASPS website). Running and lifting wait ${tummyTuckFigure('lifting-6-weeks')} (Cindy Wu, MD), and Cleveland Clinic puts heavy lifting at usually ${tummyTuckFigure('heavy-lifting-4-8-weeks')}, once your surgeon clears you. The Aesthetic Society says no heavy lifting, such as picking up your children, for ${tummyTuckFigure('heavy-lifting-society-4-6-weeks')}, and to put someone else totally in charge of small children for at least 2 weeks.`,
         },
         {
             question: 'Will I have drains after a tummy tuck?',
@@ -230,32 +230,32 @@ export const tummyTuckMiami: Procedure = {
         },
         {
             question: 'Where will the tummy tuck scar be, and will it fade?',
-            answer: `Low on the abdomen, placed so underwear or swimsuit bottoms cover it (Jonathan Weiler, MD, on the ASPS website). A full tummy tuck scar usually runs from hip bone to hip bone, just above the pubic area, often with a scar around the belly button; a mini's is about the length of a C-section scar (Cleveland Clinic). After a C-section, ASPS says, the old scar may become part of the new one. The scar turns thinner and lighter at around ${tummyTuckFigure('scar-fades-12-18-months')}.`,
+            answer: `Low on the abdomen. Jonathan Weiler, MD, on the ASPS website, says a skilled surgeon places it as low as possible so underwear or swimsuit bottoms conceal it. A full tummy tuck scar usually runs from hip bone to hip bone, just above the pubic area, and you may also have a scar around the belly button; a mini's is about the length of a C-section scar (Cleveland Clinic). After a C-section, ASPS says, the old scar may become part of the new one. The scar turns thinner and lighter at around ${tummyTuckFigure('scar-fades-12-18-months')}, but it doesn't go away: Cleveland Clinic says most people will still have a visible scar.`,
         },
         {
             question: 'Can I combine a tummy tuck with liposuction or a BBL?',
-            answer: `Liposuction of the abdomen and flanks can be added to shape the waist. In a doctor's office, Florida allows at most ${tummyTuckFigure('florida-lipo-with-tummy-tuck-1000cc')} of fat to be removed by liposuction in the same operation as a tummy tuck, and a BBL takes its fat from liposuction, so your surgeon tells you whether to do both in one surgery or plan two. Combining adds some risk: in one large study, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone and ${tummyTuckFigure('major-complications', 2)} of those with liposuction.`,
+            answer: `Liposuction of the abdomen and flanks can be added to shape the waist. In a doctor's office, Florida allows at most ${tummyTuckFigure('florida-lipo-with-tummy-tuck-1000cc')} of fat to be removed by liposuction in the same operation as a tummy tuck, and a BBL takes its fat from liposuction, so your surgeon tells you whether to do both in one surgery or plan two. Combining can add risk: in one large study, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone, ${tummyTuckFigure('major-complications', 2)} of those with liposuction and ${tummyTuckFigure('major-complications', 6)} of those with liposuction and another body-contouring procedure (Winocour, 2015). The study's abstract gives no figure for a BBL by name.`,
         },
         {
             question: 'Should I get a tummy tuck or a mommy makeover?',
-            answer: "A tummy tuck treats the abdomen. A mommy makeover pairs it with breast surgery, in one surgery or two. If your breasts don't bother you, a tummy tuck may be all you need. When procedures are combined in one surgery, a discount comes off the total.",
+            answer: `A tummy tuck treats the abdomen. A mommy makeover pairs it with breast surgery, in one surgery or two. If your breasts don't bother you, a tummy tuck may be all you need. Combining can add risk: in one large study, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone and ${tummyTuckFigure('major-complications', 5)} of those combined with a breast procedure (Winocour, 2015). When procedures are combined in one surgery, a discount comes off the total.`,
         },
         {
             question: 'Can I get pregnant after a tummy tuck?',
-            answer: `Yes, but ASPS advises postponing a tummy tuck if you may want to be pregnant again, because weight changes can undo much of the result. For safety, a 2023 review of ${tummyTuckFigure('pregnancy-after')} and ${tummyTuckFigure('pregnancy-after', 1)} who became pregnant after a tummy tuck found no deaths of mothers or babies and concluded that pregnancy should not be ruled out (Karunaratne and colleagues).`,
+            answer: `Yes, but ASPS advises postponing a tummy tuck if you may want to be pregnant again, because significant changes in weight can greatly diminish the result. The evidence on mothers and babies is limited. A 2023 review of ${tummyTuckFigure('pregnancy-after')} and ${tummyTuckFigure('pregnancy-after', 1)} who became pregnant after a tummy tuck found no deaths of mothers or newborns and concluded that pregnancy should not be ruled out (Karunaratne and colleagues). Some of the studies also recorded complications, including problems with the abdominal wall or the cosmetic result. A 2024 analysis of US health records linked a past tummy tuck to higher odds of preterm delivery (Cheng and colleagues). Ask your surgeon and your OB what this means for you.`,
         },
         {
             question:
                 'How soon after having a baby or a C-section can I have a tummy tuck?',
-            answer: `Kristy Hamilton, MD, quoted by ASPS, describes waiting at least ${tummyTuckFigure('postpartum-wait-6-months')} after delivery, longer if you are breastfeeding. ASPS says an old C-section scar may become part of the new one. Your surgeon sets your timing at your consultation.`,
+            answer: `Kristy Hamilton, MD, quoted in an article on the ASPS website, describes waiting at least ${tummyTuckFigure('postpartum-wait-6-months')} after delivery, ideally ${tummyTuckFigure('postpartum-wait-6-months', 1)}, and longer if you are breastfeeding. Karen Horton, MD, in the same article, recommends waiting up to a full year. ASPS says an old C-section scar may become part of the new one. Your surgeon sets your timing at your consultation.`,
         },
         {
             question: 'Does insurance cover a tummy tuck?',
-            answer: "Usually not. ASPS says most health insurance plans don't cover a tummy tuck or its complications, because it is cosmetic surgery. Check with your insurer before you plan around coverage.",
+            answer: "Usually not. ASPS says most health insurance plans don't cover a tummy tuck or its complications. Check with your insurer before you plan around coverage.",
         },
         {
             question: 'Will a tummy tuck remove stretch marks?',
-            answer: 'Only the ones on the skin it removes. ASPS says a tummy tuck cannot correct stretch marks, although those on the excess skin that is cut away go with it, and others may look somewhat better.',
+            answer: 'Only the ones on the skin it removes. ASPS says a tummy tuck cannot correct stretch marks, although those on the excess skin that is cut away may be removed or somewhat improved.',
         },
         {
             question:
@@ -264,7 +264,7 @@ export const tummyTuckMiami: Procedure = {
         },
         {
             question: 'Is there a best age for a tummy tuck?',
-            answer: `No age makes you a candidate. Timing and health do. ASPS advises waiting until you're done having children, and Paul Vitenas, MD, on the ASPS website, advises being close to your goal weight for ${tummyTuckFigure('stable-weight-6-12-months')} first. In a study of ${tummyTuckFigure('major-complications')}, ${tummyTuckFigure('risk-factors')} or older, a BMI of 30 or more and combined procedures raised the risk of major complications (Winocour, 2015).`,
+            answer: `No age makes you a candidate. Timing and health do. ASPS advises waiting until you're done having children, and Paul Vitenas, MD, on the ASPS website, advises being close to your goal weight for ${tummyTuckFigure('stable-weight-6-12-months')} first. In a study of ${tummyTuckFigure('major-complications')}, ${tummyTuckFigure('risk-factors')} or older, a BMI of 30 or more and combined procedures were linked to a higher risk of major complications (Winocour, 2015).`,
         },
         {
             question:

@@ -77,22 +77,18 @@ export const authors: AuthorExtended[] = [
         name: 'Alluring Plastic Surgery Editorial Team',
         jobTitle: 'Editorial Team',
         shortBio:
-            'Patient information written by our editorial team from the published medical sources named in each article.',
+            'Patient information about cosmetic procedures, from our editorial team.',
         fullBio:
-            "The Alluring Plastic Surgery Editorial Team writes patient information about cosmetic procedures from published medical sources, which each article names. It is general information, and your surgeon's instructions come first.",
+            "The Alluring Plastic Surgery Editorial Team writes patient information about cosmetic procedures. It is general information, and your surgeon's instructions come first.",
         credentials: [],
         affiliations: [
             {
                 organization: 'Alluring Plastic Surgery',
                 role: 'Editorial Team',
-                url: 'https://alluringmiami.com',
+                url: 'https://www.alluringplasticsurgery.com',
             },
         ],
-        specialties: [
-            'Plastic Surgery Education',
-            'Patient Information',
-            'Medical Content',
-        ],
+        specialties: ['Plastic Surgery Education', 'Patient Information'],
         isPrimaryAuthor: true,
         schemaType: 'Person',
     },

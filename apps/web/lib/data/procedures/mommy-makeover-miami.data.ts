@@ -16,7 +16,7 @@ export const mommyMakeoverMiami: Procedure = {
     // quoted three of them (#309).
     description: `A mommy makeover combines a tummy tuck with breast surgery, often with liposuction, in one planned surgery. At Alluring in Miami, one surgeon performs every mommy makeover: ${KARLINSKY_NAME}. Each part has its own price: a tummy tuck from $3,000, breast augmentation from $3,500 and a breast lift from $5,000.`,
     shortDescription:
-        'A comprehensive combination of personalized procedures to restore your pre-pregnancy body, with flexible financing options to fit your budget.',
+        'A comprehensive combination of personalized procedures to restore your pre-pregnancy body, with financing options.',
     heroSubtitle:
         'Your breasts and abdomen after pregnancy, planned together by one surgeon',
     // Hand-written meta description: the generated one claimed "Miami's top

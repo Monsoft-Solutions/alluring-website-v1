@@ -57,7 +57,7 @@ export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
             id='pricing'
             question='How much is a tummy tuck in Miami?'
             className={moduleSectionPad}
-            answer={`At Alluring, a mini tummy tuck is ${tummyTuckFigure('price-mini')}, a full tummy tuck ${tummyTuckFigure('price-full')} and an extended tummy tuck ${tummyTuckFigure('price-extended')}; the table below lists all five types. Which one you need depends on where your loose skin sits and whether your muscles need repair, and your surgeon confirms your price after an exam.`}
+            answer={`At Alluring, a mini tummy tuck is ${tummyTuckFigure('price-mini')}, a full tummy tuck ${tummyTuckFigure('price-full')} and an extended tummy tuck ${tummyTuckFigure('price-extended')}; the table below lists all five types. Which one you need depends on where your loose skin sits, and your surgeon confirms your type, any muscle repair and your price after an exam.`}
         >
             <ModulePriceTable
                 options={pricing.options ?? []}
@@ -95,8 +95,8 @@ export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
                         label: 'Muscle repair',
                         cells: [
                             'Not included on our price list',
-                            'Usually, when the muscles have separated',
-                            'Usually, when the muscles have separated',
+                            'Ask your surgeon whether your price covers it',
+                            'Ask your surgeon whether your price covers it',
                         ],
                     },
                     {
@@ -108,8 +108,8 @@ export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
                                 belly button is generally left alone.
                             </TummyTuckIncision>,
                             <TummyTuckIncision key='full' type='full'>
-                                Low, from hip bone to hip bone, usually with one
-                                around the belly button.
+                                Low, from hip bone to hip bone. You may also
+                                have one around the belly button.
                             </TummyTuckIncision>,
                             <TummyTuckIncision key='extended' type='extended'>
                                 Longer, around to the flanks, with one around
@@ -131,10 +131,12 @@ export function TummyTuckCost({ pricing }: { pricing: ProcedurePricing }) {
                         Incisions from Cleveland Clinic and Samir Rao, MD;
                         muscle repair from ASPS, which says a tummy tuck
                         restores separated muscles in most cases; time off work
-                        from Samir Rao, MD, on the ASPS website. The extended
-                        mini and the fleur-de-lis are in the price table above.
-                        Your surgeon tells you which tummy tuck fits you at your
-                        exam.
+                        from Samir Rao, MD, on the ASPS website. He describes
+                        about {tummyTuckFigure('work-by-type', 2)} more before
+                        strenuous activity after an extended tummy tuck. The
+                        extended mini and the fleur-de-lis are in the price
+                        table above. Your surgeon tells you which tummy tuck
+                        fits you at your exam.
                     </>
                 }
             />

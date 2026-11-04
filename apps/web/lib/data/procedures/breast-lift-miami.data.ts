@@ -185,7 +185,7 @@ For those seeking additional volume restoration, **breast implants** or **breast
         },
         {
             question: 'How much is a breast lift?',
-            answer: 'The cost of a breast lift varies depending on factors like the complexity of the surgery and whether you choose to combine it with other procedures. We offer financing options to make it more affordable. Contact us for a personalized estimate.',
+            answer: 'The cost of a breast lift varies depending on factors like the complexity of the surgery and whether you choose to combine it with other procedures. We offer financing options. Contact us for a personalized estimate.',
         },
         {
             question: 'Does insurance cover my breast lift?',
