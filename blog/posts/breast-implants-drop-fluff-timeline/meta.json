@@ -3,8 +3,8 @@
   "mode": "rewrite",
   "cluster": "breast-augmentation",
   "cta": "default",
-  "base_md5": "e78d6e414e0a5195d0c8bf773b5c3b70",
-  "base_from": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module 2026-11-04T11:00:06Z",
+  "base_md5": "61182dacbd65be4d43830ffbef95effe",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T16:52:04Z",
   "reader": "recovering",
   "title": "Breast Implant Drop and Fluff: Timeline, Week by Week",
   "meta_description": "Drop and fluff can take 3 to 6 months. You begin to notice final results around 3 months, with subtle changes to 12. What changes, and when to call.",
@@ -76,7 +76,7 @@
         "prompt": "Same square layout as the live diagram, redrawn for a same-address overwrite. A calm medical-education diagram on a warm porcelain-white background, palette of stone grey and brushed gold, with a thin brushed-gold rule under the title. Two side-by-side panels, each a tasteful side-view outline of a woman's torso wearing a plain high-neck top, drawn as a thin line like a textbook figure, with a soft dashed outline showing where the implant sits inside and a few small gold arrows: in panel 1 the arrows point down as the implant moves lower; in panel 2 the arrows spread gently as the lower breast fills out. Below the panels, a horizontal gold timeline with six points, each labeled with one line of the text. Modest and non-sexual: no skin detail, no nipples, no faces, no logos, no practice name, no phone numbers, no watermarks.",
         "text_in_image": "Breast Implants: Drop + Fluff Timeline\nThe whole process can take 3–6 months.\n1) Drop: The implant moves to a lower, more natural-looking position.\n2) Fluff: The implant fills out the lower breast. The shape gets softer and rounder.\nWeek 1: High and tight\nWeeks 2–3: Starting to settle\nWeeks 4–6: Softer, may still sit high\nMonths 2–3: Final results begin to show around month 3\nMonths 3–6: The process can finish\nUp to 12 months: Subtle changes only\nTiming varies. Sources: articles on the ASPS website; University of Utah Health."
       },
-      "alt": "Diagram of breast implant drop and fluff: the implant moves down, then the tissue relaxes and the shape softens and rounds out. A timeline runs from week 1, high and firm, through months 2–3 and 3–6 months to final shape at 6+ months."
+      "alt": "Breast implants drop and fluff timeline, with two side-view outlines of a torso in a plain high-neck top and a dashed implant shape. The whole process can take 3–6 months. 1) Drop: the implant moves to a lower, more natural-looking position. 2) Fluff: the implant fills out the lower breast, and the shape gets softer and rounder. Week 1: high and tight. Weeks 2–3: starting to settle. Weeks 4–6: softer, may still sit high. Months 2–3: final results begin to show around month 3. Months 3–6: the process can finish. Up to 12 months: subtle changes only. Timing varies. Sources: articles on the ASPS website; University of Utah Health."
     },
     {
       "key": "sequence-diagram",
@@ -88,7 +88,7 @@
         "prompt": "Same square layout as the live diagram, redrawn for a same-address overwrite. Three side-view line drawings of a woman in a row on a warm porcelain-white background, each wearing a plain high-neck top, drawn as a thin even line like a textbook figure, with a soft dashed outline showing where the implant sits inside: high in drawing 1, lower in drawing 2, lower and rounder in drawing 3. Small hairline leader lines run to the three pole and pocket labels on each drawing. A palette of stone grey and brushed gold, a refined serif for the title and a clean sans-serif for the labels. Modest and non-sexual: no skin detail, no nipples, no faces, no logos, no practice name, no phone numbers, no watermarks.",
         "text_in_image": "Breast Implants Drop and Fluff Sequence\n1 Early Post-Op\n2 Drop\n3 Fluff\nUpper pole\nImplant pocket\nLower pole\nIllustration only. Timing varies."
       },
-      "alt": "Three side-view line drawings of breast implant settling, labeled early post-op, drop and fluff, with the implant sitting lower and rounder from the first to the third."
+      "alt": "Breast implants drop and fluff sequence, with three side-view outlines of a torso in a plain high-neck top and a dashed implant shape, one per row. 1 Early Post-Op: the implant sits high. 2 Drop: it sits lower. 3 Fluff: it sits lower and rounder. Each drawing has lines to the upper pole, the implant pocket and the lower pole. Illustration only, and timing varies. Source: Dr. Eric Mariotti, article on the ASPS website."
     },
     {
       "key": "week-by-week",
