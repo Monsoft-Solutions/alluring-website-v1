@@ -65,9 +65,32 @@
     "mommy-makeover": {
         "label": "Mommy makeover",
         "page": "/procedures/mommy-makeover-miami",
-        "anchors": null,
-        "facts": ["tummy-tuck.facts.ts", "lipo.facts.ts"],
-        "old_figures": []
+        "anchors": ["pricing", "candidate", "recovery", "faq"],
+        "facts": [
+            "tummy-tuck.facts.ts",
+            "lipo.facts.ts",
+            "mommy-makeover.facts.ts"
+        ],
+        "old_figures": [
+            "\\b10\\s*(?:[–-]|to)\\s*15\\s*(?:pounds|lbs?)\\b",
+            "\\b(?:5|10)\\s*(?:pounds|lbs?)\\b",
+            "\\b8\\s*(?:[–-]|to)\\s*12\\s*weeks\\b",
+            "(?:garment|compression)[^.\\n]{0,60}\\b6\\s*(?:[–-]|to)\\s*8\\s*weeks\\b",
+            "\\b6\\s*(?:[–-]|to)\\s*8\\s*weeks\\b[^.\\n]{0,60}(?:garment|compression)",
+            "\\b12\\s*(?:[–-]|to)\\s*16\\s*(?:hours|hrs?)\\b",
+            "\\b100\\.4\\b",
+            "\\b101\\s*(?:°|degrees)",
+            "\\b75\\s*(?:°|degrees)",
+            "\\b73\\s*%",
+            "\\bspf\\s*50\\b",
+            "\\b3\\s*(?:[–-]|to)\\s*5\\s*(?:hours|hrs?)\\b",
+            "\\b4\\s*(?:[–-]|to)\\s*6\\s*(?:hours|hrs?)\\b",
+            "\\$\\s?12,?000\\s*(?:[–-]|to)\\s*\\$?\\s?25,?000",
+            "599,?862",
+            "\\b1\\s*(?:[–-]|to)\\s*4\\s*%",
+            "(?:heal\\w*)[^.\\n]{0,60}\\b12\\s*(?:[–-]|to)\\s*18\\s*months\\b",
+            "\\b12\\s*(?:[–-]|to)\\s*18\\s*months\\b[^.\\n]{0,60}(?:heal\\w*)"
+        ]
     },
     "breast-augmentation": {
         "label": "Breast augmentation",

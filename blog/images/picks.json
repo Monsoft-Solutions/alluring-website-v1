@@ -48,5 +48,39 @@
   },
   "non-surgical-breast-lift": {
     "hero": "flare"
+  },
+  "mommy-makeover-recovery-signs": {
+    "hero": "sunburst",
+    "timeline-card": "flare",
+    "normal-vs-call-card": "flare",
+    "mother-resting": "flare",
+    "checklist-card": "flare",
+    "recovery-flat-lay": "flare"
+  },
+  "how-long-after-mommy-makeover-can-i-drive": {
+    "hero": "flare",
+    "timing": "flare",
+    "five-checks": "flare",
+    "passenger": "flare"
+  },
+  "mommy-makeover-compression-garments-guide": {
+    "hero": "sunburst",
+    "wear-schedule": "flare",
+    "garment-on-chair": "flare",
+    "fit-check": "flare",
+    "what-to-wear": "flare"
+  },
+  "mommy-makeover-recovery-exercises": {
+    "hero": "sunburst",
+    "week-by-week": "flare",
+    "walking": "flare",
+    "doing-too-much": "flare",
+    "chest-arm-limits": "flare"
+  },
+  "tummy-tuck-mommy-makeover-miami": {
+    "hero": "flare",
+    "what-each-treats": "flare",
+    "side-by-side": "flare",
+    "consultation": "flare"
   }
 }

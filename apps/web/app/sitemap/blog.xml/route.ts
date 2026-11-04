@@ -75,6 +75,12 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'liposuction-miami-moms-tips',
     'how-to-maintain-liposuction-results',
     'liposuction-vs-breast-augmentation-miami',
+    // Mommy makeover blog consolidation (2026-10-05 review, 2026-11-03 plan)
+    'mommy-makeover-recovery-timeline-miami',
+    'mommy-makeover-recovery-miami',
+    'how-long-to-recover-from-mommy-makeover',
+    'mommy-makeover-miami-candidate-checklist',
+    'mommy-makeover-questions-miami',
     // Anti-cannibalization redirects (blog → procedure pages)
     'what-is-the-mommy-makeover-procedure',
     'liposuction-cost-miami',

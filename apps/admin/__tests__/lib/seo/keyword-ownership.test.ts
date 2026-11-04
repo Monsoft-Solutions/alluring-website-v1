@@ -21,7 +21,7 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (132 posts as of seed)', () => {
+    it('contains every published post exactly once (127 live posts)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
@@ -36,8 +36,14 @@ describe('registry integrity', () => {
         // breast-lift-prep-miami, best-age-breast-lift-miami,
         // breast-lift-myths-busted), plus the four written that day
         // (types-of-breast-lift, breast-lift-without-implants, breast-lift-cost,
-        // non-surgical-breast-lift).
-        expect(liveBlog.length).toBe(132)
+        // non-surgical-breast-lift), and
+        // the five mommy makeover posts folded on 2026-11-03 (three
+        // into /blog/mommy-makeover-recovery-signs:
+        // mommy-makeover-recovery-timeline-miami, mommy-makeover-recovery-miami,
+        // how-long-to-recover-from-mommy-makeover; two into the procedure page:
+        // mommy-makeover-miami-candidate-checklist,
+        // mommy-makeover-questions-miami).
+        expect(liveBlog.length).toBe(127)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -223,6 +229,81 @@ describe('resolveQueryOwner', () => {
             expect(entry?.status, slug).toBe('retired')
             expect(entry?.redirectsTo, slug).toBe(redirectsTo)
         }
+    })
+
+    it('folds the five mommy makeover posts and points their aliases straight at the hub', () => {
+        const hub = '/blog/mommy-makeover-recovery-signs'
+        const page = '/procedures/mommy-makeover-miami'
+        const folded: Array<[string, string]> = [
+            ['mommy-makeover-recovery-timeline-miami', hub],
+            ['mommy-makeover-recovery-miami', hub],
+            ['how-long-to-recover-from-mommy-makeover', hub],
+            ['mommy-makeover-miami-candidate-checklist', page],
+            ['mommy-makeover-questions-miami', page],
+            // Older aliases go straight to the hub, not through a second 308
+            ['mommy-makeover-recovery-timeline', hub],
+            ['mommy-makeover-recovery-guide', hub],
+            ['mommy-makeover-recovery-time-miami', hub],
+            ['mommy-makeover-recovery-pain-management', hub],
+            ['mommy-makeover-recovery-pain-guide', hub],
+        ]
+        for (const [slug, redirectsTo] of folded) {
+            const entry = BLOG_POST_ENTRIES.find((e) => e.slug === slug)
+            expect(entry?.status, slug).toBe('retired')
+            expect(entry?.redirectsTo, slug).toBe(redirectsTo)
+            expect(entry?.ownsQueries, slug).toEqual([])
+        }
+    })
+
+    it('gives each mommy makeover cluster one owner', () => {
+        const hub = '/blog/mommy-makeover-recovery-signs'
+        const page = '/procedures/mommy-makeover-miami'
+        const owners: Array<[string, string]> = [
+            ['mommy makeover miami', page],
+            ['mommy makeover cost', page],
+            ['mommy makeover cost miami', page],
+            ['how much is a mommy makeover in miami', page],
+            ['mini mommy makeover cost', page],
+            ['mommy makeover en miami', page],
+            ['mommy makeover near me', page],
+            ['am i a candidate for mommy makeover', page],
+            ['mommy makeover questions to ask', page],
+            ['mommy makeover consultation', '/mommy-makeover-consultation'],
+            [
+                'tummy tuck or mommy makeover',
+                '/blog/tummy-tuck-mommy-makeover-miami',
+            ],
+            ['mommy makeover recovery timeline', hub],
+            ['mommy makeover recovery week by week', hub],
+            ['mommy makeover checklist', hub],
+            [
+                'when can i drive after a tummy tuck',
+                '/how-long-after-mommy-makeover-can-i-drive',
+            ],
+            [
+                'mommy makeover compression garments',
+                '/blog/mommy-makeover-compression-garments-guide',
+            ],
+            [
+                'exercise after mommy makeover',
+                '/blog/mommy-makeover-recovery-exercises',
+            ],
+        ]
+        for (const [query, url] of owners) {
+            expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
+                url
+            )
+        }
+    })
+
+    it('retires the mommy makeover cost page and keeps "affordable" off every owner', () => {
+        const cost = getKeywordRegistry().find(
+            (e) => e.url === '/mommy-makeover-cost-miami'
+        )
+        expect(cost?.status).toBe('retired')
+        expect(cost?.redirectsTo).toBe('/procedures/mommy-makeover-miami')
+        expect(cost?.ownsQueries).toEqual([])
+        expect(resolveQueryOwner('affordable mommy makeover')).toBeNull()
     })
 
     it('gives each liposuction recovery question one owner', () => {

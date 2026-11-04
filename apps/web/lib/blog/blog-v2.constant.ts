@@ -27,6 +27,11 @@
  * three weeks: each post's Search Console position and click-through rate
  * against its own four weeks before, and the blog lead rate against 0.11%.
  * If positions hold, phase 4 routes every post to v2 and removes this list.
+ *
+ * The last five are the mommy makeover posts rewritten in Nov 2026: they go to
+ * v2 with their rewrites, by the owner's decision, so they aren't published
+ * beside the old sidebar's claims. Read them against their rewrite baseline,
+ * not as part of the 15-post template comparison.
  */
 export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'breast-implant-size-guide',
@@ -57,6 +62,12 @@ export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'breast-augmentation-vs-breast-lift',
     'breast-lift-miami-post-pregnancy',
     'breast-lift-recovery-guide-miami',
+    // The 2026-11-03 mommy makeover rewrite, see the note above.
+    'how-long-after-mommy-makeover-can-i-drive',
+    'mommy-makeover-compression-garments-guide',
+    'mommy-makeover-recovery-exercises',
+    'mommy-makeover-recovery-signs',
+    'tummy-tuck-mommy-makeover-miami',
 ])
 
 /** The two variables the switch reads; the routes pass `env`. */

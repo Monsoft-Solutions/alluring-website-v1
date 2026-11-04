@@ -235,30 +235,31 @@ const nextConfig = {
 
             // Duplicate blog content consolidation redirects
             // Destinations use /blog/ prefix since canonical posts are published >= Jan 2026
-            // Mommy Makeover Recovery (6 posts, same topic -> 1 canonical)
+            // Mommy Makeover Recovery (same topic -> the hub since the
+            // 2026-10-05 review; repointed so no alias takes a second hop)
             {
                 source: '/mommy-makeover-recovery-timeline',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-guide',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-time-miami',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-pain-management',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-pain-guide',
-                destination: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
                 permanent: true,
             },
             // Liposuction Cost (duplicate keyword). The post it pointed at,
@@ -1109,6 +1110,66 @@ const nextConfig = {
             },
             {
                 source: '/liposuction-vs-breast-augmentation-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            // Mommy makeover blog consolidation (2026-10-05 review, 2026-11-03
+            // plan): nine posts to four. Both URL forms, because a deleted post
+            // no longer reaches the root route's own 308.
+            {
+                source: '/blog/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-timeline-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-recovery-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-recovery-miami',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/blog/how-long-to-recover-from-mommy-makeover',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/how-long-to-recover-from-mommy-makeover',
+                destination: '/blog/mommy-makeover-recovery-signs',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-miami-candidate-checklist',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-miami-candidate-checklist',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/mommy-makeover-questions-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            {
+                source: '/mommy-makeover-questions-miami',
+                destination: '/procedures/mommy-makeover-miami',
+                permanent: true,
+            },
+            // Planned and never built (it 404s). The procedure page owns the
+            // mommy makeover cost cluster.
+            {
+                source: '/mommy-makeover-cost-miami',
                 destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
