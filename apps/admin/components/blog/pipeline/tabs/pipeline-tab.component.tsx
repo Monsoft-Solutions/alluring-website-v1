@@ -216,6 +216,47 @@ export function PipelineTab({
                                                 </div>
                                             )}
 
+                                        {/* Shown on the phase that wrote the
+                                            current body. */}
+                                        {key ===
+                                            (state.reviewPhase
+                                                ? 'review'
+                                                : 'generation') &&
+                                            (state.claimHits?.length ?? 0) >
+                                                0 && (
+                                                <div className='mt-2 rounded-md border border-red-200 bg-red-50 px-3 py-2'>
+                                                    <p className='text-xs font-medium text-red-800'>
+                                                        Check before publishing:{' '}
+                                                        {
+                                                            state.claimHits!
+                                                                .length
+                                                        }{' '}
+                                                        possible claim
+                                                        {state.claimHits!
+                                                            .length === 1
+                                                            ? ''
+                                                            : 's'}{' '}
+                                                        the practice can&apos;t
+                                                        make
+                                                    </p>
+                                                    <ul className='mt-1 space-y-0.5'>
+                                                        {state.claimHits!.map(
+                                                            (hit, index) => (
+                                                                <li
+                                                                    key={`${hit.group}-${index}`}
+                                                                    className='text-xs text-red-700'
+                                                                >
+                                                                    {hit.group}:{' '}
+                                                                    {
+                                                                        hit.excerpt
+                                                                    }
+                                                                </li>
+                                                            )
+                                                        )}
+                                                    </ul>
+                                                </div>
+                                            )}
+
                                         {key === 'review' &&
                                             (state.reviewPhase?.reviews
                                                 ?.length ?? 0) > 0 && (

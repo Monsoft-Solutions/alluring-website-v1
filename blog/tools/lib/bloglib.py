@@ -486,6 +486,8 @@ def apply_images(post: Post, manifest: list[dict], placeholder_ok: bool,
 
 
 # ── The claims sweep ────────────────────────────────────────────────────────
+# AI output gets the same sweep from packages/shared/src/claims/forbidden-claims.constant.ts:
+# change a rule in both places.
 
 # Names that contain a banned word but are not a claim about the practice.
 NEUTRAL = [

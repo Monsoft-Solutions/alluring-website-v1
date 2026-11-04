@@ -17,18 +17,13 @@
  * @module
  */
 
-/** Her name as advertising must give it: with MD, per Rule 64B8-11.001(7). */
-export const KARLINSKY_NAME = 'Victoria Karlinsky, MD, FACS'
-
-/** The short form, after her full name has appeared once. */
-export const KARLINSKY_SHORT_NAME = 'Dr. Karlinsky'
-
-/**
- * The credentials sentence for answers and FAQs. Names only the credentials
- * that need no Florida statement.
- */
-export const KARLINSKY_CREDENTIALS =
-    'She is board certified in general surgery by the American Board of Surgery and is a Fellow of the American College of Surgeons.'
+// Her name and credentials sentence live in the shared claims module, so the
+// AI prompts state exactly what the site states.
+export {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+    KARLINSKY_SHORT_NAME,
+} from '@workspace/shared/claims'
 
 /**
  * The date on her American Board of Surgery record: board certified in

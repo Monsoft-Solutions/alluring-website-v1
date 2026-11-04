@@ -113,6 +113,18 @@ export type AgentReview = {
 }
 
 /**
+ * Forbidden wording found in a post body, reported and never rewritten.
+ *
+ * Mirrors `ClaimHit` in `packages/shared/src/claims`, kept structurally like
+ * `MdxSanitizationAction` below.
+ */
+export type PipelineClaimHit = {
+    group: string
+    match: string
+    excerpt: string
+}
+
+/**
  * A hazard the MDX validator had to strip from generated content.
  *
  * Mirrors `MdxSanitizationAction` in
@@ -207,6 +219,11 @@ export type PipelineState = {
          */
         sanitizationActions?: MdxSanitizationAction[]
     }
+    /**
+     * Forbidden wording in the latest AI body (generation, then revision). The
+     * post still moves on: a person decides whether each hit is a real claim.
+     */
+    claimHits?: PipelineClaimHit[]
     /** Review phase results */
     reviewPhase?: {
         startedAt: string

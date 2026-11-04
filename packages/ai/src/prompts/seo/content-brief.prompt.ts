@@ -7,7 +7,11 @@
  * @module @workspace/ai/prompts/seo/content-brief
  */
 
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
+
 export const CONTENT_BRIEF_SYSTEM_PROMPT = `You are an expert SEO content strategist specializing in medical and cosmetic surgery content.
+
+${CLAIM_RULES_PROMPT}
 
 Your task is to create detailed, actionable content briefs that will help writers create high-ranking content.
 

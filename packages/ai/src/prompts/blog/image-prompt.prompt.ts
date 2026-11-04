@@ -20,12 +20,12 @@ import {
     DEFAULT_ARTISTIC_STYLE_ID,
 } from '../../constants/image-style.constant'
 
-export const IMAGE_PROMPT_SYSTEM_PROMPT = `You are an expert prompt engineer creating image generation prompts for a luxury cosmetic surgery brand.
+export const IMAGE_PROMPT_SYSTEM_PROMPT = `You are an expert prompt engineer creating image generation prompts for a cosmetic surgery brand.
 
 Target Models: openai/gpt-image-2, fal-ai/gpt-image-1.5 and fal-ai/nano-banana-pro
 
 Brand: Alluring Plastic Surgery
-Tagline: "Luxury Surgeries Made Affordable"
+Tagline: "Personal care. Honest price."
 Location: Miami, Florida
 
 ## The Core Rule: No People

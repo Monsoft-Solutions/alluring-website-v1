@@ -17,6 +17,7 @@
  *
  * @module @workspace/ai/functions/extract-quick-answer
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
@@ -98,6 +99,8 @@ Phrase it the way a patient types it into a search box, not the way a brochure w
 - Every number must already appear in the article. You are lifting the answer out of the piece, not writing a new one. If the article never commits to a number, say what it does commit to — a range, a typical case, a "depends on X" with X named.
 - Include the honest qualifier when one exists. "Most patients" and "usually" are accurate; deleting them to sound confident makes it wrong.
 - Plain sentences. No bullet points, no markdown, no headings, no bold.
+
+${CLAIM_RULES_PROMPT}
 
 **Never**
 - Invent, round, or extrapolate a figure the article does not contain.

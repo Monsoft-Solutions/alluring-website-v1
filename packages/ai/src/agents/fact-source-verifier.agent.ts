@@ -7,6 +7,7 @@
  *
  * @module @workspace/ai/agents/fact-source-verifier
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { generateText, Output, isStepCount } from 'ai'
 import { z } from 'zod'
 
@@ -102,7 +103,11 @@ Prefer Tier 1 sources when available. Only use consumer health sites if no bette
  * Unified system prompt for fact verification
  * Combines claim identification, research, and verification into a single flow
  */
-const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a luxury plastic surgery clinic's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
+const UNIFIED_FACT_VERIFICATION_PROMPT = `You are a medical fact-checker for a cosmetic surgery practice's blog content. Your task is to identify claims that need citations, verify them using Perplexity search, and generate a verification report.
+
+${CLAIM_RULES_PROMPT}
+
+A claim about the practice or its surgeon that isn't in these rules can't be sourced: flag it for removal.
 
 ## Your Process
 

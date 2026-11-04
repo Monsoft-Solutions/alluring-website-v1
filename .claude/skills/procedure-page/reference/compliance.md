@@ -3,7 +3,8 @@
 A procedure page is medical advertising in Florida and a YMYL page for Google
 and AI engines. Every rule here is enforced somewhere (the copy sweep, the
 Florida Board of Medicine, the FTC, or the reader's trust). When in doubt,
-say less and cite more.
+say less and cite more. The rules for the whole practice, with their reasons,
+are in `docs/claims/canon.md`.
 
 ## The surgeon's credentials
 

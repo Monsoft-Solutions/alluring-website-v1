@@ -24,7 +24,7 @@ export type TextOperation =
     | 'seo-optimize'
     | 'benefit-focused'
     | 'empathetic'
-    | 'luxury-tone'
+    | 'brand-tone'
     | 'add-cta'
 
 /**
@@ -120,8 +120,8 @@ export const OPERATIONS: OperationConfig[] = [
         group: 'industry',
     },
     {
-        operation: 'luxury-tone',
-        label: 'Luxury Tone',
+        operation: 'brand-tone',
+        label: 'Brand Tone',
         description: 'Align with brand positioning',
         icon: 'Crown',
         group: 'industry',

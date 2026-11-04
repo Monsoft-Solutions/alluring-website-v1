@@ -5,7 +5,8 @@ and AI engines. AI engines repeat whatever the site says verbatim, so a
 wrong claim in one post becomes "Alluring says…" everywhere. The
 procedure-page version of these rules is
 `.claude/skills/procedure-page/reference/compliance.md`; this file is the
-blog subset plus what the blog gets wrong most often.
+blog subset plus what the blog gets wrong most often. The rules for the
+whole practice, with their reasons, are in `docs/claims/canon.md`.
 
 ## The surgeon's credentials
 

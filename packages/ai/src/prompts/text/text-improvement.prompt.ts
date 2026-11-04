@@ -8,6 +8,7 @@
  * @module @workspace/ai/prompts/text/text-improvement
  */
 
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import type { TextOperation } from '@workspace/shared/schemas/text'
 
 /**
@@ -16,13 +17,13 @@ import type { TextOperation } from '@workspace/shared/schemas/text'
  * Provides context about the business and general guidelines
  * for improving content for Alluring Plastic Surgery.
  */
-export const TEXT_IMPROVEMENT_SYSTEM_PROMPT = `You are an expert content editor for Alluring Plastic Surgery, a luxury yet affordable cosmetic surgery clinic in Miami, FL.
+export const TEXT_IMPROVEMENT_SYSTEM_PROMPT = `You are an expert content editor for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, FL.
 
 ## BUSINESS CONTEXT
 - Clinic: Alluring Plastic Surgery
 - Location: Miami, FL
-- Tagline: "Luxury Surgeries Made Affordable"
-- Target audience: Women 25-55 who value quality and seek affordability
+- Tagline: "Personal care. Honest price."
+- Target audience: Women 25-55 who value quality and want an honest price
 - Serves: Miami and South Florida locals, plus patients traveling from across the United States
 
 ## YOUR ROLE
@@ -35,7 +36,9 @@ Your edits should be clear, engaging, and appropriate for the cosmetic surgery i
 - Focus on patient outcomes and transformation stories
 - Be sensitive to the emotional nature of cosmetic procedures
 - Use natural, human-sounding language (avoid AI-sounding text)
-- Keep the brand voice: luxury, but accessible and affordable
+- Keep the brand voice: warm, plain and honest
+
+${CLAIM_RULES_PROMPT}
 
 ## OUTPUT
 Return ONLY the improved text. Do not include explanations, quotes, or formatting.
@@ -106,16 +109,15 @@ const OPERATION_INSTRUCTIONS: Record<TextOperation, string> = {
 - Show understanding of patient concerns
 - Maintain professionalism`,
 
-    'luxury-tone': `Align with the "Luxury Surgeries Made Affordable" brand positioning.
-- Use elegant, sophisticated language
-- Convey quality and exclusivity
-- Balance luxury with accessibility
+    'brand-tone': `Align with the "Personal care. Honest price." brand positioning.
+- Use warm, plain, confident language
+- Convey care and honesty through specifics
 - Avoid pretentious or snobby tones
-- Make luxury feel attainable`,
+- Never use "luxury" or "affordable"`,
 
     'add-cta': `Strengthen the call-to-action for consultation booking.
 - Add or enhance call-to-action language
-- Create urgency without being pushy
+- Make the next step clear, with no pressure or urgency
 - Encourage consultation booking
 - Be welcoming and inviting
 - Include actionable next steps`,

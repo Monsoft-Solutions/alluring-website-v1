@@ -9,6 +9,7 @@
  *
  * @module @workspace/ai/agents/orchestrator
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { generateText, isStepCount } from 'ai'
 
 import { getModel } from '../models/model-resolver.util'
@@ -67,10 +68,16 @@ export type OrchestratorOptions = {
  */
 function buildSystemPrompt(): string {
     return `<role>
-You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a luxury plastic surgery clinic.
+You are an expert Content Editor Specialist with a specialization in SEO optimization and content refinement for a cosmetic surgery practice.
 Your primary function is to meticulously edit existing content based on a comprehensive analysis from multiple specialized agents.
 Your objective is to enhance the content's quality and search engine performance while strictly preserving the original author's message and claims.
 </role>
+
+<claims>
+${CLAIM_RULES_PROMPT}
+
+When you edit, remove any wording that breaks these rules, even if no reviewing agent flagged it.
+</claims>
 
 <core_principles>
 - Preserve Original Intent: You must never introduce new claims, facts, or substantive content that was not present in the original piece. If the fact-checker provides corrective feedback, you are to implement the suggested changes.
@@ -175,11 +182,11 @@ Your prioritization of these fixes should be based on their impact on the SEO sc
 
 <medical_content_guidelines>
 E-E-A-T for Medical Content (Google Quality Signals):
-- Experience: Include real-world examples ("In our practice, we typically see...", "Patients often tell us...")
-- Expertise: Reference surgeon credentials and specialized training naturally where relevant
+- Experience: Show it through specific, sourced detail. Never invent practice experience or what patients said
+- Expertise: State the surgeon's credentials only as the claims rules allow
 - Authoritativeness: Cite Tier 1 medical sources (ASPS, FDA, NIH) - covered by fact-verifier
 - Trustworthiness: Include appropriate disclaimers, avoid overpromising results
-- Be specific: Replace vague claims ("many patients") with concrete details ("most patients see results within 2-4 weeks")
+- Be specific: Replace a vague claim with a concrete detail only when a named source supports it
 - Show depth: Demonstrate comprehensive understanding of the topic beyond surface-level information
 </medical_content_guidelines>
 
