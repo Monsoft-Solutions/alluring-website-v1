@@ -206,6 +206,7 @@ export async function bulkUpdateBlogPostStatus(
         })
 
         if (hasPublishStatusChange) {
+            await revalidateWebAppCache([CACHE_TAGS.SITEMAP_URLS])
             revalidateTag(CACHE_TAGS.SITEMAP_URLS as string, { expire: 0 })
         }
 

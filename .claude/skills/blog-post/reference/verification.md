@@ -157,7 +157,7 @@ and delete them after.
 ## 5. After the production run
 
 - Revalidate, then repeat section 3 against production.
-- `/sitemap/blog.xml` lists a new post within 3 hours, with its `lastmod`.
+- `/sitemap/blog.xml` lists a new post right after the revalidate, with its `lastmod`.
   A rewrite's `lastmod` moves to the run time.
 - Run `inspect_url` on the URL, then the manual "Request indexing".
 - For a fold: both forms of every folded URL answer 308 to the destination,
