@@ -19,7 +19,7 @@ import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
  * The file's one-line summary. Not `siteConfig.business.description`, whose
- * "World-class" and "Where luxury meets affordability" answer engines repeat.
+ * superlatives answer engines repeat.
  */
 const SUMMARY = `${siteConfig.business.tagline} Cosmetic surgery in Miami, Florida, with personalized care and financing available.`
 
