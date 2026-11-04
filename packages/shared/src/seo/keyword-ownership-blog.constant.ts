@@ -1941,7 +1941,7 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
                 ownedBy: '/procedures/mommy-makeover-miami',
             },
         ],
-        notes: 'Re-scoped to the comparison in #309 (D3 of the wave-two brief). It held 90% of "tummy tuck cost miami" and outranked /procedures/mommy-makeover-miami on "mommy makeover miami"; the procedure pages own both. On 2026-11-03 it became a pure comparison: no Miami, cost or price terms in its title or meta, and those queries sit on the page. If the mommy makeover page still trails it at day 56, fold it in with a 301. primary_keyword is empty in the database, so a regeneration drops this entry; restore it from git diff.',
+        notes: 'Re-scoped to the comparison in #309 (D3 of the wave-two brief). It held 90% of "tummy tuck cost miami" and outranked /procedures/mommy-makeover-miami on "mommy makeover miami"; the procedure pages own both. On 2026-11-03 it became a pure comparison: no Miami, cost or price terms in its title or meta, and those queries sit on the page. At day 56 (2026-12-30), if the mommy makeover page still trails it, or /procedures/tummy-tuck-miami still trails it on "tummy tuck cost miami", fold it with a 301 into the page it still outranks. primary_keyword is empty in the database, so a regeneration drops this entry; restore it from git diff.',
     },
     {
         url: '/blog/breast-augmentation-safety-miami',
