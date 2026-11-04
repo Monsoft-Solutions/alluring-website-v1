@@ -13,18 +13,18 @@
  * - Recovery planning with children at home
  * - Combined procedures for comprehensive transformation
  *
- * SEO-optimized for:
- * - "mommy makeover miami"
- * - "post pregnancy plastic surgery"
- * - "tummy tuck after baby"
- * - "breast lift after breastfeeding"
+ * Owns booking intent ("mommy makeover consultation"). "mommy makeover miami"
+ * and the cost terms belong to /procedures/mommy-makeover-miami, in the keyword
+ * registry.
+ *
+ * It renders `ConsultationConcerns` rather than the shared `FearBusters` and
+ * `WeeklyPayments`, which quote weekly payments, 0% APR and board and volume
+ * claims that AI engines were repeating as this page's.
  */
 import { FAQSchema, WebPageSchema } from '@workspace/seo/react'
 
 import { ContainerLayout } from '@/components/container-layout.component'
 import { MommyMakeoverHero } from '@/components/landing/mommy-makeover-hero.component'
-import { FearBusters } from '@/components/shared/fear-busters.component'
-import { WeeklyPayments } from '@/components/shared/weekly-payments.component'
 import { GalleryCarousel } from '@/components/shared/gallery-carousel.component'
 import { GoogleReviews } from '@/components/shared/google-reviews.component'
 import { CategorizedFAQ } from '@/components/shared/faq-categorized.component'
@@ -41,21 +41,24 @@ import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
 import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
 
+import { ConsultationConcerns } from './components/consultation-concerns.component'
+
+const PAGE_TITLE = 'Free Mommy Makeover Consultation in Miami'
+const PAGE_DESCRIPTION = `Mommy makeover consultation in Miami with ${KARLINSKY_NAME}. Plan your tummy tuck, breast surgery and liposuction, priced part by part.`
+
 /**
  * Mommy Makeover Landing Page Metadata
  *
- * SEO-optimized for mommy makeover and post-pregnancy plastic surgery searches.
+ * Named for booking intent, so it doesn't compete with the procedure page.
  */
 export const metadata = toNextMetadata(seoConfig, {
     canonical: '/mommy-makeover-consultation',
-    title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
-    description:
-        'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction, by one surgeon. Financing available. Free consultation.',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
 
     openGraph: {
-        title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
-        description:
-            'Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction, by one surgeon. Financing available.',
+        title: PAGE_TITLE,
+        description: PAGE_DESCRIPTION,
         url: `${seoConfig.siteUrl}/mommy-makeover-consultation`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -64,16 +67,15 @@ export const metadata = toNextMetadata(seoConfig, {
                 url: `${seoConfig.siteUrl}/og-image.jpg`,
                 width: 1200,
                 height: 630,
-                alt: `Mommy Makeover Miami - ${siteConfig.business.name}`,
+                alt: `${PAGE_TITLE} - ${siteConfig.business.name}`,
             },
         ],
     },
 
     twitter: {
         card: 'summary_large_image',
-        title: 'Mommy Makeover Miami | Post-Pregnancy Transformation',
-        description:
-            'Reclaim your pre-baby body with a customized mommy makeover in Miami, by one surgeon. Financing available.',
+        title: PAGE_TITLE,
+        description: PAGE_DESCRIPTION,
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 })
@@ -93,9 +95,9 @@ export default async function MommyMakeoverConsultationPage() {
         <>
             {/* SEO Schema */}
             <WebPageSchema
-                name={`Mommy Makeover Miami - ${siteConfig.business.name}`}
+                name={`${PAGE_TITLE} - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/mommy-makeover-consultation`}
-                description={`Reclaim your pre-baby body with a customized mommy makeover in Miami. Tummy tuck, breast lift, liposuction combined in one procedure, performed by ${KARLINSKY_NAME}.`}
+                description={PAGE_DESCRIPTION}
             />
 
             <FAQSchema items={faqSchemaItems} />
@@ -105,23 +107,20 @@ export default async function MommyMakeoverConsultationPage() {
                 {/* Section 1: Hero with Emotional Messaging */}
                 <MommyMakeoverHero id='hero' />
 
-                {/* Section 2: Fear Busters - Address objections */}
-                <FearBusters id='fear-busters' formAnchor='#hero-form' />
+                {/* Section 2: Answer the objections, financing included */}
+                <ConsultationConcerns id='concerns' formAnchor='#hero-form' />
 
-                {/* Section 3: Weekly Payments - Make it affordable */}
-                <WeeklyPayments id='financing' formAnchor='#hero-form' />
-
-                {/* Section 4: Before/After Gallery */}
+                {/* Section 3: Before/After Gallery */}
                 <GalleryCarousel id='gallery' images={galleryImages} />
 
-                {/* Section 5: Google Reviews */}
+                {/* Section 4: Google Reviews. All patients, not only mothers. */}
                 <GoogleReviews
-                    title='What Moms Are Saying'
-                    subtitle='Real reviews from mothers who reclaimed their confidence'
+                    title='What Patients Are Saying'
+                    subtitle='Real reviews from our Google Business Profile'
                     limit={6}
                 />
 
-                {/* Section 6: FAQ - Address timing, recovery, results */}
+                {/* Section 5: FAQ - Address timing, recovery, results */}
                 <CategorizedFAQ
                     id='faq'
                     categories={mommyMakeoverFaqCategories}
@@ -145,13 +144,15 @@ export default async function MommyMakeoverConsultationPage() {
                     }}
                 />
 
-                {/* Section 7: Mid-Page Lead Capture */}
+                {/* Section 6: Mid-Page Lead Capture */}
                 <MiniLeadCapture id='mini-capture' />
 
-                {/* Section 8: Final CTA */}
+                {/* Section 7: Final CTA. Not the luxury variant: its stats card
+                    always prints "5,000+ Happy Patients", "15+ Years Experience"
+                    and "100% Board-Certified", and no prop turns it off. */}
                 <CTASection
                     id='final-cta'
-                    variant='luxury'
+                    variant='primary'
                     heading='Your Transformation Starts Today'
                     description="You've given so much to your family. Now it's time to invest in yourself. Dr. Karlinsky will create a customized mommy makeover plan that fits your goals, your timeline, and your budget."
                     primaryButton={{
@@ -162,7 +163,6 @@ export default async function MommyMakeoverConsultationPage() {
                         text: 'Call to Discuss My Options',
                         href: `tel:${siteConfig.contact.phone.replace(/\D/g, '')}`,
                     }}
-                    eyebrow="It's Your Turn Now"
                     size='lg'
                     backgroundImage='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/mommy-makeover-cta-bg.png'
                 />

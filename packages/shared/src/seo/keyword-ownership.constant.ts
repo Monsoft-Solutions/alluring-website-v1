@@ -17,8 +17,8 @@ import type { OwnedPage } from './keyword-ownership.type'
 /**
  * Procedure pages — procedure intent. Their cost sections stay (they earn
  * the cost FAQ snippet), but price-intent clusters belong to cost pages.
- * The exceptions are BBL and liposuction, whose procedure pages own their
- * price clusters.
+ * The exceptions are BBL, liposuction, tummy tuck and mommy makeover, whose
+ * procedure pages own their price clusters.
  */
 const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
     {
@@ -265,16 +265,42 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             // /blog/liposuction-vs-breast-augmentation-miami folded here in
             // the 2026-09-22 liposuction blog review: combination intent.
             'liposuction and breast augmentation',
+            // Head and local terms.
+            'miami mommy makeover',
+            'mommy makeover in miami',
+            'mommy makeover south florida',
+            'mommy makeover south miami',
+            'mommy makeover coral gables',
+            // Price intent, as on the BBL, liposuction and tummy tuck pages;
+            // the planned cost page is retired (2026-10-05 mommy makeover
+            // blog review). /blog/tummy-tuck-mommy-makeover-miami held these
+            // searches and is now a pure comparison.
+            'mommy makeover cost miami',
+            'mommy makeover cost',
+            'cost of mommy makeover miami',
+            'how much is a mommy makeover',
+            'how much is a mommy makeover in miami',
+            'mommy makeover price',
+            'mommy makeover miami price',
+            'mini mommy makeover cost',
+            // Spanish speakers in the US: a short real answer on the page.
+            'mommy makeover en miami',
+            'precio mommy makeover miami',
+            'cuanto cuesta un mommy makeover',
+            // Surgeon, safety and near me. Owning a query here keeps ideation
+            // from writing a post on it. It is not copy: "best" and "safest"
+            // stay off the page.
+            'best mommy makeover surgeon miami',
+            'safe mommy makeover miami',
+            'mommy makeover near me',
+            // Candidacy and consultation questions, absorbed from the two
+            // posts folded here. Booking intent stays with
+            // /mommy-makeover-consultation.
+            'mommy makeover candidate',
+            'am i a candidate for mommy makeover',
+            'mommy makeover questions to ask',
         ],
         mustNotTarget: [
-            {
-                query: 'mommy makeover cost',
-                ownedBy: '/mommy-makeover-cost-miami',
-            },
-            {
-                query: 'how much is a mommy makeover',
-                ownedBy: '/mommy-makeover-cost-miami',
-            },
             {
                 query: 'mommy makeover consultation',
                 ownedBy: '/mommy-makeover-consultation',
@@ -366,25 +392,11 @@ const COST_PAGE_ENTRIES: OwnedPage[] = [
         url: '/mommy-makeover-cost-miami',
         kind: 'cost',
         intent: 'price',
-        status: 'planned',
+        status: 'retired',
         primaryKeyword: 'mommy makeover cost',
-        ownsQueries: [
-            'how much is a mommy makeover',
-            'mommy makeover price',
-            'mini mommy makeover cost',
-            'mommy makeover cost miami',
-            'affordable mommy makeover',
-        ],
-        mustNotTarget: [
-            {
-                query: 'mommy makeover miami',
-                ownedBy: '/procedures/mommy-makeover-miami',
-            },
-            {
-                query: 'mommy makeover consultation',
-                ownedBy: '/mommy-makeover-consultation',
-            },
-        ],
+        ownsQueries: [],
+        redirectsTo: '/procedures/mommy-makeover-miami',
+        notes: 'Never built (404). Retired in the 2026-10-05 mommy makeover blog review: the procedure page owns the cost cluster. "affordable mommy makeover" stays off every owner, because new copy never says "affordable".',
     },
 ]
 
@@ -422,7 +434,10 @@ const LANDING_ENTRIES: OwnedPage[] = [
         intent: 'consultation',
         status: 'live',
         primaryKeyword: 'mommy makeover consultation',
-        ownsQueries: ['mommy makeover consultation miami'],
+        ownsQueries: [
+            'mommy makeover consultation miami',
+            'free mommy makeover consultation',
+        ],
     },
     {
         url: '/fly-in-consultation',

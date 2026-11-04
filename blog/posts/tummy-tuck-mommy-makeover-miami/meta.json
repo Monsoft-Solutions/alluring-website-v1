@@ -1,0 +1,334 @@
+{
+  "slug": "tummy-tuck-mommy-makeover-miami",
+  "mode": "rewrite",
+  "base_md5": "279f982b17431166645abd060ccc6b8f",
+  "base_from": "localhost:5432/alluring_wt_feat_mommy_makeover_page_module 2026-11-04T03:16:22Z",
+  "reader": "deciding",
+  "cluster": "mommy-makeover",
+  "title": "Tummy Tuck or Mommy Makeover: Which One Do You Need?",
+  "meta_description": "A tummy tuck treats the abdomen; a mommy makeover adds the breasts and can add liposuction. Compare who each one suits, how recovery differs and the risks.",
+  "excerpt": "A tummy tuck treats the abdomen. A mommy makeover adds the breasts and can add liposuction. Compare what each one treats, who each one suits and how recovery and risk change when surgeries are combined, then use the decision table to see which one fits.",
+  "quick_answer": "Should I get a tummy tuck or a mommy makeover?\n\nA tummy tuck treats the abdomen alone. A mommy makeover adds a breast procedure and can add liposuction, so more of your body heals at once. In one large database, major complications followed 3.1% of tummy tucks alone and 4.6% of those with liposuction and a breast procedure (Winocour and colleagues, 2015).",
+  "primary_keyword": "tummy tuck or mommy makeover",
+  "secondary_keywords": [
+    "tummy tuck vs mommy makeover",
+    "mommy makeover vs tummy tuck",
+    "difference between mommy makeover and tummy tuck",
+    "mommy makeover vs. tummy tuck: which is right for me?",
+    "mommy makeover tummy tuck",
+    "tummy tuck mommy makeover",
+    "mommy tuck",
+    "mommy tummy tuck",
+    "mommy makeover vs. individual breast and tummy procedures done separately"
+  ],
+  "owns_queries": [
+    "tummy tuck vs mommy makeover",
+    "mommy makeover vs tummy tuck"
+  ],
+  "categories": [
+    "Mommy Makeover",
+    "Tummy Tuck"
+  ],
+  "tags": [
+    "Mommy Makeover",
+    "Tummy Tuck",
+    "Abdominoplasty",
+    "Liposuction",
+    "Breast Lift",
+    "Breast Augmentation",
+    "Recovery",
+    "Recovery Timeline",
+    "Compression Garments",
+    "Post-Op Care",
+    "Swelling"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A ceramic mug, a blank open notebook and a pen on a sunlit limestone kitchen table, with a child's wooden toy on the windowsill.",
+      "prompt": "SCENE: Mid-morning in a bright home kitchen, white plaster walls, a tall arched window with sheer linen curtains, soft palm shadows across a pale limestone table. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A still life on the table: a ceramic mug, an open blank notebook and a pen. A child's wooden toy sits softly out of focus on the windowsill.\nKEY DETAILS: The mug, notebook and window in the upper two thirds of the frame, the empty table surface in the lower third for a title overlay; editorial documentary photography, 50mm, natural color, gentle depth of field, fine film grain.\nCONSTRAINTS: 3:2 landscape. No people, no hands, no body; no garments, bandages, drains or incisions; no beach; no text, letters, numbers, logos or watermarks, and nothing written in the notebook; not a product ad."
+    },
+    {
+      "key": "what-each-treats",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Two simple clothed figures side by side, under the title What each one treats. The figure labeled tummy tuck has a gold marker on the abdomen: loose skin, extra fat, separated muscles. The figure labeled mommy makeover has gold markers on the chest and abdomen: a tummy tuck, a breast lift, augmentation or reduction, and liposuction can all be part of it. According to the American Society of Plastic Surgeons (ASPS) and The Aesthetic Society.",
+      "prompt": "SCENE: A clean editorial diagram on a warm off-white (stone-50) background with a thin muted-gold rule at the top.\nSUBJECT: Two identical stylised standing female figures, front view and full body, in simple flat line illustration, each wearing a loose, boxy short-sleeved T-shirt that falls straight to below the hips and wide straight-leg trousers. The T-shirt and trousers are a solid flat mid stone grey, clearly darker than the warm skin tone, so they read at once as clothing even at thumbnail size. The clothes hang straight and loose with no body contour: no bust shape, no waist curve, no hip curve, and no seam, fly, fold or line at the crotch. Left figure, labeled Tummy tuck: one small gold ring marker on the middle of the abdomen. Right figure, labeled Mommy makeover: one small gold ring marker at the center of the chest, on the breastbone, and one small gold ring marker on the middle of the abdomen. Nothing else marks the body: no glows, no soft highlights, no shaded zones, and never two marks side by side on the chest. The label and its line of text sit under each figure, with the title across the top and the small attribution line at the bottom.\nKEY DETAILS: Flat vector illustration with subtle depth, serif headline in dark stone (stone-900), sans-serif labels, muted gold (gold-500) only for the ring markers and the rule, large legible type for phones. Text exactly as given in text_in_image, with no other words.\nCONSTRAINTS: 4:5 portrait. Fully clothed figures, no skin detail, no anatomy, no muscles, no incision lines, no scars, no before and after framing, not sexualized. No practice name, no logo, no phone number, no website address, no money amounts, no numbers. Spell every word exactly as supplied.",
+      "text_in_image": "What each one treats\n\nTummy tuck\nThe abdomen. Loose skin, extra fat, separated muscles.\n\nMommy makeover\nThe breasts and abdomen. A tummy tuck, a breast lift, augmentation or reduction, and liposuction can all be part of it.\n\nAccording to the American Society of Plastic Surgeons (ASPS) and The Aesthetic Society"
+    },
+    {
+      "key": "side-by-side",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "A card titled Tummy tuck and mommy makeover, side by side. What it treats: the abdomen for a tummy tuck; the breasts and abdomen for a mommy makeover. Time off work: about 2 weeks for each. Driving: 1 to 2 weeks for a tummy tuck; 2 to 3 weeks for a mommy makeover. Major complications: 3.1% for a tummy tuck; 4.6% with liposuction and a breast procedure. Sources for the figures: Cindy Wu, MD, and Shahram Salemy, MD, on the ASPS website; The Aesthetic Society; Winocour and colleagues, 2015.",
+      "prompt": "SCENE: A clean comparison card on warm stone (stone-100) with a thin muted-gold rule at the top.\nSUBJECT: A simple three-column table with a title above it and a small sources line below it. The vertical bars in the text separate the columns and are not drawn as characters. Five rows with hairline dividers; the first row is the column header.\nKEY DETAILS: Flat typographic card, serif title in dark stone (stone-900), sans-serif table text, muted gold (gold-500) only for the rule and the column header underline, large legible type for phones. Text exactly as given in text_in_image, with no other words.\nCONSTRAINTS: 4:5 portrait. No people, no bodies, no icons of bodies. No practice name, no logo, no phone number, no website address, no money amounts or dollar signs. Spell every word and figure exactly as supplied; no extra numbers.",
+      "text_in_image": "Tummy tuck and mommy makeover, side by side\n\nCompare | Tummy tuck | Mommy makeover\nWhat it treats | The abdomen | The breasts and abdomen\nTime off work | About 2 weeks | About 2 weeks\nDriving | 1 to 2 weeks | 2 to 3 weeks\nMajor complications | 3.1% | 4.6% with liposuction and a breast procedure\n\nSources for the figures: Cindy Wu, MD, and Shahram Salemy, MD, on the ASPS website; The Aesthetic Society; Winocour and colleagues, 2015"
+    },
+    {
+      "key": "consultation",
+      "type": "inline",
+      "aspect": "3:2",
+      "alt": "A woman in a soft blue blouse listens across a light oak desk while a clinician's hands, the only part of the clinician in view, rest on a blank sheet of paper.",
+      "prompt": "SCENE: A calm consultation room in morning daylight, white plaster walls, an arched window with linen curtains, a light oak desk. Palette of stone, sand, warm white and brushed gold.\nSUBJECT: A woman in her early 50s with fair, lightly freckled skin and straight chin-length ash-blonde hair with some grey in it, wearing a soft blue long-sleeved blouse, seated at the desk, leaning in slightly and listening. Across the desk only a clinician's hands and one white sleeve are visible, both resting on a blank sheet of paper, with a closed folder and a pen beside it.\nKEY DETAILS: Three-quarter view of the woman from the waist up; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain.\nCONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no clinician's face or body beyond the hands and sleeve; no garments, bandages, drains or incisions; no before and after framing; nothing written on the paper or the folder; no screens, forms, numbers, money amounts or estimates; no text, letters, logos or watermarks; not glamour, not a fashion ad."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/mommy-makeover",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Mommy Makeover",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The goal of a mommy makeover is to restore the shape and appearance of a woman's body after childbearing.",
+        "A mommy makeover is typically performed as a single-stage procedure."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/mommy-makeover/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Who is a good candidate for a mommy makeover?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You are in good medical health",
+        "You are at your ideal body weight",
+        "You are finished with childbearing"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/mommy-makeovers-what-women-should-know-about-postpartum-surgical-procedures",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Mommy makeovers: what women should know about postpartum surgical procedures",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "However, as with many things in plastic surgery, there is no one steadfast rule.",
+        "I tell patients to give it at least six months, and if you are still changing, you're still losing weight and toning up, you want to push it as far as you can.",
+        "I like them not to be breastfeeding for a minimum of six weeks, preferably three months before we consider surgery",
+        "For me, the sweet spot is one year",
+        "These are not weight loss surgeries."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Tummy Tuck",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Tummy tuck surgery, also known as abdominoplasty, removes excess fat and skin",
+        "in most cases, restores weakened or separated muscles",
+        "For this reason, individuals who are planning substantial weight loss or women who may be considering future pregnancies would be advised to postpone a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/candidates",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Are you a good candidate for a tummy tuck?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You are physically healthy and at a stable weight",
+        "You are a nonsmoker",
+        "You are bothered by the appearance of your abdomen"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/results",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "What results can I expect from a tummy tuck?",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "In women who have undergone cesarean section, the existing scars may be incorporated into the new scar."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD",
+      "title": "Answers to common tummy tuck questions",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Patients typically return to work in approximately two weeks."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-you-need-to-know-about-your-tummy-tuck-recovery",
+      "publisher": "ASPS website, a post by Shahram Salemy, MD",
+      "title": "What you need to know about your tummy tuck recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have young children, you will want to enlist help to assist with childcare, as squatting or picking up children (or heavy objects for that matter) for the first few weeks is strongly advised against.",
+        "However, driving, cooking or shopping is often manageable after a week or two.",
+        "most patients begin feeling more normal around the eight-week mark.",
+        "Most people opt to take up to a month off work for recovery."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/five-things-to-consider-before-getting-a-tummy-tuck",
+      "publisher": "ASPS website, a post by Paul Vitenas, MD",
+      "title": "Five things to consider before getting a tummy tuck",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It is important that you be close to your desired weight for six to twelve months before undergoing a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-to-expect-during-your-mommy-makeover-recovery",
+      "publisher": "ASPS website, a post by Frank Campanile, MD",
+      "title": "What to expect during your mommy makeover recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Usually, around the three-month mark, you can return to your normal activities, although it can take six months to a year before you see your final mommy makeover results."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/mommy-makeover",
+      "publisher": "The Aesthetic Society",
+      "title": "Mommy Makeover",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The combination of procedures typically focuses on your breasts and abdomen and might include a tummy tuck, a breast procedure such as a lift, augmentation or reduction, and liposuction of the leg, arms, hips, or waist.",
+        "Pregnancy or weight gain following these surgeries may compromise your results.",
+        "You will likely have scars following these procedures hidden in your bikini line or under your bra.",
+        "If you get breast implants, you will need to replace them over time.",
+        "The recovery time is at least two weeks but could be longer depending on your specific combination of procedures."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/mommy-makeover/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Mommy makeover: aftercare and recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The tummy tuck component of a “mommy makeover” is the most uncomfortable.",
+        "Plan to take about two weeks off from work, depending on the physical demands of your job.",
+        "You may be comfortable enough to drive a car in two or three weeks or when all of your sutures and drains are removed, and you are no longer taking pain medication.",
+        "You won't feel like yourself for at least seven to ten days, and you still shouldn't do any heavy lifting (such as picking up your children or baskets of laundry) for four to six weeks.",
+        "If you have small children, you must put someone else totally in charge of their care for at least two weeks."
+      ]
+    },
+    {
+      "url": "https://health.clevelandclinic.org/mommy-makeovers",
+      "publisher": "Cleveland Clinic",
+      "title": "Mommy Makeovers: How They Work and What To Expect",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "You’ll need to quit smoking for at least six weeks prior to surgery."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "It could take up to up to three months to see the final result."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck Scar",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The scar for a standard tummy tuck usually spans your abdomen, from hip bone to hip bone, just above your pubic area.",
+        "You may also have a scar around your belly button.",
+        "Avoid heavy lifting, strenuous exercise, sexual activity and stretching until your provider says it’s safe to do these activities (usually four to eight weeks after the procedure)."
+      ]
+    },
+    {
+      "url": "https://www.fda.gov/medical-devices/breast-implants/risks-and-complications-breast-implants",
+      "publisher": "US Food and Drug Administration (FDA)",
+      "title": "Risks and Complications of Breast Implants",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast implants are not considered lifetime devices.",
+        "Some complications will require more surgery."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+      "publisher": "Plastic and Reconstructive Surgery",
+      "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (Winocour and colleagues, 2015)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The authors identified 25,478 abdominoplasties from 183,914 procedures in the database.",
+        "Of these, 31.5 percent were hematomas, 27.2 percent were infections and 20.2 percent were suspected or confirmed venous thromboembolism.",
+        "On multivariate analysis, significant risk factors (p < 0.05) included male sex (relative risk, 1.8), age 55 years or older (1.4), body mass index greater than or equal to 30 (1.3), multiple procedures (1.5), and procedure performance in a hospital or surgical center versus office-based surgical suite (1.6).",
+        "Combined procedures increased the risk of complication (abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent; breast procedure, 4.3 percent; liposuction and breast procedure, 4.6 percent; body-contouring procedure, 6.8 percent; liposuction and body-contouring procedure, 10.4 percent)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28207041/",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "Venous Thromboembolism in the Cosmetic Patient: Analysis of 129,007 Patients (Winocour and colleagues, 2017)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Primary outcome was occurrence of a clinically significant VTE within 30 days of surgery.",
+        "Combined procedures had a significantly higher overall rate of VTE compared to solitary procedures (0.20% vs 0.04%, P < .01).",
+        "The incidence of VTE after cosmetic procedures is relatively low."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42089979/",
+      "publisher": "Aesthetic Plastic Surgery",
+      "title": "Risk of Concomitant Abdominoplasty and Breast Surgery versus Isolated Procedures: A Systematic Review and Meta-analysis (Skorochod and Wolf, 2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Eight studies encompassing 138,020 patients were included.",
+        "Certainty of evidence ranged from moderate to very low.",
+        "Concomitant abdominoplasty and breast surgery carries a complication profile comparable to abdominoplasty alone but elevated relative to breast surgery alone.",
+        "These findings suggest that combined procedures are generally safe in carefully selected patients."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24696297/",
+      "publisher": "Aesthetic Surgery Journal",
+      "title": "The impact of operative time on complications after plastic surgery: a multivariate regression analysis of 1753 cases (Hardy and colleagues, 2014)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Each hour increase in surgery duration was associated with a 21% rise in odds of morbidity (P < .0001)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37266593/",
+      "publisher": "Aesthetic Plastic Surgery",
+      "title": "The Safety and Effects of Pregnancy after Abdominoplasty: A Systematic Review of the Literature (Karunaratne and colleagues, 2023)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "17 studies encompassing 237 patients met inclusion.",
+        "There were no neonatal or maternal mortalities in any study.",
+        "Pregnancy should not be contraindicated after abdominoplasty."
+      ]
+    },
+    {
+      "url": "https://www.flrules.org/gateway/ruleNo.asp?id=64B8-9.009",
+      "publisher": "Florida Board of Medicine",
+      "title": "Rule 64B8-9.009, Standard of Care for Office Surgery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "When combined with abdominoplasty, liposuction may not exceed 1000cc of supernatant fat",
+        "the maximum planned duration of all surgical procedures combined must not exceed 8 hours"
+      ]
+    }
+  ],
+  "gsc": {
+    "window": "2026-10-04..2026-11-01",
+    "impressions": 2033,
+    "clicks": 4,
+    "position": 16.4
+  },
+  "notes": "Rewritten 2026-11-03 as a pure comparison so /procedures/mommy-makeover-miami can inherit the head and cost terms this post holds (90 days to 2026-11-01: 'mommy makeover cost miami' 435 impressions at position 9, 5 clicks). No Miami, cost or price terms in title, meta, headings or excerpt; no price figures; the one cost phrase is the required first-screen anchor to the page's #pricing. Deleted the Prices and Financing section, including its unclosed image. Old 1-2 week driving and 4-6 week recovery figures replaced with sourced ones. Folded-post links replaced per the 2026-10-05 plan section 7. All 5 live images dropped: hero alt ('intimate beauty ... on a Miami beach') and inline alts were old prompts; new briefs, not rendered yet. Base read from the WT clone, not production directly. PubMed abstracts were read through NCBI E-utilities (efetch), since the PubMed page itself answered WebFetch with a cookie wall. The Florida rule's quotes come from its official .doc on flrules.org. Live FAQs reworked: main differences, recovery, risks and candidate questions now live in H2 sections and tables; 'Can a tummy tuck be part of a mommy makeover?' kept. New copy says 'consultation', not 'free consultation' (site-claims-canon-354). Skorochod and Wolf 2026: abstract only, stated as 'a review of 8 studies' because its group sizes add up to 128,020, not its stated 138,020. Open: the mini tummy tuck 'no muscle repair' line rests on the price sheet; the 'mommy tuck' FAQ has no source, so it now says we found no society that defines it; fact check 2026-11-03 moved 'in writing' to the dates, which is what compliance.md says, not the nights; added Salemy's 'up to a month' beside Wu's 2 weeks; whether a plan fits one surgery at Alluring, drains and garment schedule are owner questions and stay unstated. SEO check 2026-11-03: the hero brief now shows no person, because the blog template prints no caption on a hero, so a model there would have no label. The consultation image is now a Figure, so it carries the model caption.",
+  "gate": {
+    "verdict": "refresh",
+    "reason": "Cluster already owned by /blog/tummy-tuck-mommy-makeover-miami — refresh that post instead of creating a competing URL",
+    "owningUrl": "/blog/tummy-tuck-mommy-makeover-miami",
+    "owningSlug": "tummy-tuck-mommy-makeover-miami",
+    "matchedQuery": "tummy tuck or mommy makeover",
+    "similarityScore": null,
+    "claimedQueries": [],
+    "warnings": [],
+    "checkedAt": "2026-11-04T03:18:00.249Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_feat_mommy_makeover_page_module"
+  }
+}

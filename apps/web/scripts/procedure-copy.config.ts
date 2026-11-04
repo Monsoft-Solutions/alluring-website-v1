@@ -18,6 +18,10 @@ import {
 } from '../lib/data/procedures/facts/breast-lift.facts'
 import { lipoFacts, lipoSources } from '../lib/data/procedures/facts/lipo.facts'
 import {
+    mommyMakeoverFacts,
+    mommyMakeoverSources,
+} from '../lib/data/procedures/facts/mommy-makeover.facts'
+import {
     tummyTuckFacts,
     tummyTuckSources,
 } from '../lib/data/procedures/facts/tummy-tuck.facts'
@@ -204,6 +208,58 @@ const tummyTuck: ProcedureCopyConfig = {
     ],
 }
 
+const mommyMakeover: ProcedureCopyConfig = {
+    slug: 'mommy-makeover-miami',
+    name: 'Mommy makeover',
+    rootClass: 'mommy-makeover-page',
+    factsFile: 'mommy-makeover.facts.ts',
+    facts: mommyMakeoverFacts,
+    sources: mommyMakeoverSources,
+    // The title carries the current year, as the tummy tuck page's does
+    // (`seoTitle` in mommy-makeover-miami.data.ts).
+    extraYears: [new Date().getFullYear()],
+    identifiers: [
+        [/64b8-9\.009\d?/g, ' rule '],
+        // Cleveland Clinic's sunscreen advice names the protection factor.
+        [/\bspf\s*30\b/g, ' spf '],
+        // MedlinePlus's "call 911", not a figure.
+        [/\b911\b/g, ' emergency number '],
+        // The answer under "where in Miami is Alluring?", from `siteConfig`.
+        [/\b8435 sw 24th st\b/g, ' street '],
+    ],
+    // The breast lift's price. The site-wide rule against a "5,000+ procedures"
+    // volume claim also matches it.
+    neutralNames: [/\$5,000/g],
+    // The module's anchors, and the old ids live posts still link.
+    requiredAnchors: [
+        'pricing',
+        'candidate',
+        'recovery',
+        'faq',
+        'en-espanol',
+        'how-much-does-a-mommy-makeover-cost',
+        'am-i-a-good-candidate',
+        'recovery-getting-back-to-your-family',
+    ],
+    rules: [
+        {
+            rule: 'drain-claim',
+            re: /\b(?:we|our|alluring|dr\.? karlinsky)\b[^.]{0,60}\b(?:drainless|no drains?|without drains?)\b|\bdrainless\b/,
+            why: 'drains or a drainless technique is an owner question (2026-11-03 brief, section 9)',
+        },
+        {
+            rule: 'named-technique',
+            re: /hourglass|progressive[\s-]tension|quilting|\bhlta\b|j[\s-]?plasma|renuvion|\bvaser\b/,
+            why: 'technique names wait on the owner',
+        },
+        {
+            rule: 'no-total',
+            re: /\bmomm?y makeovers?\s+(?:starts?|starting|costs?|runs?|is|from|desde|cuesta)\b[^.;:]{0,24}\$\d|\b(?:whole|full|your|entire) plan\b[^.;:]{0,24}\$\d|\btotal (?:of|is|comes to|around|about|from|starts)\b[^.;:]{0,24}\$\d|\$\d[\d,]*\s+(?:in total|total|for (?:the|a) (?:whole plan|full plan|mommy makeover))/,
+            why: 'the price sheet has no mommy makeover line, so no total, "from" price or worked example until the owner answers how a plan is priced (`no-total`)',
+        },
+    ],
+}
+
 /**
  * Not a procedure page, but held to the same standard (#346): every BMI,
  * %, count and time figure on /bmi-calculator comes from `bmi.facts.ts`.
@@ -270,6 +326,7 @@ export const procedureCopyConfigs: Readonly<
     [bbl.slug]: bbl,
     [lipo.slug]: lipo,
     [breastLift.slug]: breastLift,
+    [mommyMakeover.slug]: mommyMakeover,
     [tummyTuck.slug]: tummyTuck,
     [bmiCalculator.slug]: bmiCalculator,
 }

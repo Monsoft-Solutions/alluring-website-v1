@@ -23,6 +23,7 @@ import type { JsonLdGraphNode } from '@workspace/seo/react'
 import { BblPage } from '@/components/procedures/pages/bbl/bbl-page.component'
 import { BreastLiftPage } from '@/components/procedures/pages/breast-lift/breast-lift-page.component'
 import { LipoPage } from '@/components/procedures/pages/lipo/lipo-page.component'
+import { MommyMakeoverPage } from '@/components/procedures/pages/mommy-makeover/mommy-makeover-page.component'
 import { TummyTuckPage } from '@/components/procedures/pages/tummy-tuck/tummy-tuck-page.component'
 import { ProcedureTemplatePage } from '@/components/procedures/template/procedure-template-page.component'
 import { karlinskyPersonNode } from '@/lib/seo/surgeon-graph.util'
@@ -40,6 +41,7 @@ const procedurePageModules: Readonly<
 > = {
     'brazilian-butt-lift-bbl-miami': BblPage,
     'liposuction-miami': LipoPage,
+    'mommy-makeover-miami': MommyMakeoverPage,
     'tummy-tuck-miami': TummyTuckPage,
     'breast-lift-miami': BreastLiftPage,
 }
@@ -73,6 +75,7 @@ const procedureSurgeons: Readonly<
 > = {
     'brazilian-butt-lift-bbl-miami': karlinskyPersonNode,
     'liposuction-miami': karlinskyPersonNode,
+    'mommy-makeover-miami': karlinskyPersonNode,
     'tummy-tuck-miami': karlinskyPersonNode,
     'breast-lift-miami': karlinskyPersonNode,
 }
