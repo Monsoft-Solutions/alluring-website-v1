@@ -113,7 +113,7 @@ export function getMDXComponents(): MDXComponents {
         table: (props: ComponentPropsWithoutRef<'table'>) => (
             <div className='my-8 overflow-x-auto rounded-xl border border-stone-200'>
                 <table
-                    className='w-full min-w-[30rem] border-collapse text-left text-sm'
+                    className='w-full min-w-[30rem] border-collapse text-left text-sm [&:not(:has(th:nth-child(4)))]:min-w-0'
                     {...props}
                 />
             </div>

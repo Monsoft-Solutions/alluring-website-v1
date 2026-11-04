@@ -31,7 +31,12 @@ describe('registry integrity', () => {
         // procedure page), and the three recovery posts folded into
         // /how-long-to-recover-from-bbl (miami-bbl-recovery-guide,
         // bbl-recovery-time-miami, bbl-recovery-mistakes-miami), and the
-        // eight liposuction posts folded in the 2026-09-22 blog review.
+        // eight liposuction posts folded in the 2026-09-22 blog review, and
+        // the four breast lift posts folded on 2026-11-03 (breast-lift-miami-quiz,
+        // breast-lift-prep-miami, best-age-breast-lift-miami,
+        // breast-lift-myths-busted), plus the four written that day
+        // (types-of-breast-lift, breast-lift-without-implants, breast-lift-cost,
+        // non-surgical-breast-lift).
         expect(liveBlog.length).toBe(132)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })

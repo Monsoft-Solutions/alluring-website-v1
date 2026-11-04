@@ -77,13 +77,10 @@ export const authors: AuthorExtended[] = [
         name: 'Alluring Plastic Surgery Editorial Team',
         jobTitle: 'Medical Content Team',
         shortBio:
-            'Expert medical content written by board-certified plastic surgeons and reviewed by our editorial team.',
+            'Patient education from Alluring Plastic Surgery in Miami, written from named medical sources.',
         fullBio:
-            'The Alluring Plastic Surgery Editorial Team consists of board-certified plastic surgeons, medical writers, and healthcare professionals dedicated to providing accurate, trustworthy information about cosmetic procedures. All content is reviewed by our surgeons for medical accuracy.',
-        credentials: [
-            { title: 'Medical Content Review Board' },
-            { title: 'HIPAA Compliance Certified' },
-        ],
+            "The Alluring Plastic Surgery Editorial Team writes patient education about cosmetic procedures. Figures in our articles come from named sources, such as the American Society of Plastic Surgeons, The Aesthetic Society, Cleveland Clinic, the FDA and peer-reviewed journals, and each article links to them. Our articles are general information, not medical advice: your own surgeon's instructions always come first.",
+        credentials: [],
         affiliations: [
             {
                 organization: 'Alluring Plastic Surgery',

@@ -621,6 +621,47 @@ const nextConfig = {
                 destination: '/procedures/breast-reduction-miami',
                 permanent: true,
             },
+            // Breast lift posts folded in the 2026-11-03 rewrite.
+            {
+                source: '/breast-lift-miami-quiz',
+                destination: '/blog/breast-lift-candidate-checklist',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-lift-miami-quiz',
+                destination: '/blog/breast-lift-candidate-checklist',
+                permanent: true,
+            },
+            {
+                source: '/breast-lift-prep-miami',
+                destination: '/blog/breast-lift-recovery-guide-miami',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-lift-prep-miami',
+                destination: '/blog/breast-lift-recovery-guide-miami',
+                permanent: true,
+            },
+            {
+                source: '/best-age-breast-lift-miami',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
+            {
+                source: '/blog/best-age-breast-lift-miami',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
+            {
+                source: '/breast-lift-myths-busted',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
+            {
+                source: '/blog/breast-lift-myths-busted',
+                destination: '/blog/breast-lift-miami-post-pregnancy',
+                permanent: true,
+            },
             {
                 source: '/best-breast-lift-surgeons-miami',
                 destination: '/procedures/breast-lift-miami',

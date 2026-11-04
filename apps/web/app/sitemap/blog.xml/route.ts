@@ -30,6 +30,11 @@ import { generateSitemapXml } from '@workspace/seo/utils'
  * canonical blog posts or procedure pages, so they must not appear in the sitemap.
  */
 const SITEMAP_EXCLUDED_SLUGS = new Set([
+    // Breast lift posts folded in the 2026-11-03 rewrite
+    'breast-lift-miami-quiz',
+    'breast-lift-prep-miami',
+    'best-age-breast-lift-miami',
+    'breast-lift-myths-busted',
     // Duplicate blog content consolidation redirects
     'mommy-makeover-recovery-timeline',
     'mommy-makeover-recovery-guide',

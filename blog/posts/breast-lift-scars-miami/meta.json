@@ -1,0 +1,477 @@
+{
+  "slug": "breast-lift-scars-miami",
+  "mode": "rewrite",
+  "base_md5": "c6d89773eff9c7de980512f9a8822efd",
+  "base_from": "localhost:5432/alluring_bl_rewrite 2026-11-04T03:02:14Z",
+  "reader": "deciding",
+  "cluster": "breast-lift",
+  "title": "Breast Lift Scars: Where They Are and How They Fade",
+  "meta_description": "Where breast lift scars sit for each type of lift, how they change over the first year, and what the evidence says about sunscreen, silicone and creams.",
+  "excerpt": "Every breast lift leaves a scar. Where it sits depends on how much lift you need, and most of the fading happens in the first year. Here is what to expect month by month, what helps, and what doesn't have good evidence behind it.",
+  "quick_answer": "Do breast lift scars go away?\n\nNo, but they fade. Cleveland Clinic says breast lift scars are permanent but fade a lot, most of it in about 1 year. The Aesthetic Society says incisions stay red or pink for many months. Where they sit depends on the lift: around the areola, down to the breast crease, and sometimes along the crease.",
+  "primary_keyword": "breast lift scars",
+  "secondary_keywords": [
+    "breast lift scar",
+    "mastopexy scars",
+    "boob lift scars",
+    "breast lift scars healed",
+    "scars after breast lift",
+    "do breast lifts leave scars",
+    "breast lift scars 3 weeks",
+    "healed one year breast lift scars",
+    "breast lift scars after 1 year",
+    "anchor scar breast lift",
+    "lollipop breast lift scar",
+    "breast lift scar treatment",
+    "breast lift scarring",
+    "mastopexy scar revision",
+    "breast lift and augmentation scars"
+  ],
+  "owns_queries": [
+    "breast lift scar",
+    "mastopexy scars",
+    "breast lift scars healed",
+    "boob lift scars",
+    "scars after breast lift",
+    "do breast lifts leave scars",
+    "breast lift scars 3 weeks",
+    "healed one year breast lift scars",
+    "breast lift scars after 1 year",
+    "anchor scar breast lift",
+    "lollipop breast lift scar",
+    "breast lift scar treatment",
+    "breast lift scarring",
+    "mastopexy scar revision",
+    "breast lift and augmentation scars"
+  ],
+  "categories": [
+    "Breast Lift"
+  ],
+  "tags": [
+    "Breast Lift",
+    "Post-Op Care",
+    "Recovery",
+    "Recovery Timeline"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "3:2",
+      "alt": "A woman in her early fifties with short gray natural hair and a sand-colored linen shirt sits at ease on a shaded limestone patio with a cup of coffee beside her.",
+      "prompt": "SCENE: Late morning on a shaded limestone patio in Miami, pale limestone pavers, a low stone wall and warm white plaster behind her, soft palm shadows moving across the wall. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her early 50s with deep brown skin and short gray natural hair, wearing a loose long-sleeved sand-colored linen shirt buttoned high, seated at ease in a simple chair, a cup of coffee on a small stone table beside her, looking off to the side with a calm, private half smile. KEY DETAILS: Framed from the waist up, subject centered, her head in the upper part of the frame with generous space above it, the lower third quiet so a title can sit over it; editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. CONSTRAINTS: 3:2 landscape. Modest clothing fully covering the torso; no swimwear, lingerie, robes, cleavage or bare midriff; no scars, bandages, drains, incisions or skin markings; not photographed from behind; never a result or before-and-after framing; no text, letters, numbers, logos or watermarks; not glamour, not a fashion ad."
+    },
+    {
+      "key": "timeline",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Timeline of how breast lift scars change. First 2 weeks: redness, swelling and bruising. First 2 months: red or pink lines that may look raised or firm. Up to month 3: itching around the incisions eases. Months 3 to 12: pink for many months, then paler and flatter. About 1 year: most of the fading is done. Scars are permanent, and timing may differ. Sources: Cleveland Clinic, The Aesthetic Society and the ASPS website.",
+      "prompt": "SCENE: A clean editorial typographic card on a warm porcelain-white background with a thin brushed-gold rule at the top. SUBJECT: A vertical timeline: one thin brushed-gold line running down the left with five small gold dots, each dot beside a time label in a refined serif and a short description in a clean sans-serif, a one-line note below and a small source footer. KEY DETAILS: Palette of warm porcelain, stone grey and brushed gold; large legible type for phones; generous spacing; flat, no shadows. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body, no torso, no breasts, no nipples, no skin, no anatomy and no drawn scars; no practice name, logo, phone number or website address; no watermarks. Spell every word exactly as supplied; no extra numbers.",
+      "text_in_image": "How breast lift scars change\n\nFirst 2 weeks\nRedness, swelling and bruising\n\nFirst 2 months\nRed or pink lines that may look raised or firm\n\nUp to month 3\nItching around the incisions eases\n\nMonths 3 to 12\nPink for many months, then paler and flatter\n\nAbout 1 year\nMost of the fading is done\n\nScars are permanent. Your timing may differ.\n\nSources: Cleveland Clinic, The Aesthetic Society, ASPS website"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/procedure",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift procedure steps",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incision lines are permanent, but in most cases will fade and significantly improve over time.",
+        "Many women desire the smallest scar possible. However, your plastic surgeon will recommend the incisions which best suit your anatomy.",
+        "Listen to your surgeon and do not diminish your result by demanding an incision that will not be appropriate for you."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/recovery",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Breast lift recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "dressings or bandages will be applied to the incisions after the procedure is completed.",
+        "You'll need to wear an elastic bandage or support bra to minimize swelling and support your breasts as they heal.",
+        "Will I have dressings/bandages after surgery? When will they be removed?"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/reconstructive-procedures/scar-revision",
+      "publisher": "American Society of Plastic Surgeons (ASPS)",
+      "title": "Scar revision",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Although scar revision can provide a more pleasing cosmetic result or improve a scar that has healed poorly, a scar cannot be completely erased."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/an-exploration-of-scar-revision-surgery-applications",
+      "publisher": "ASPS website, an article by Ariel Frankeny quoting Karen Horton, MD, and Emily Sespaniak, NP",
+      "title": "An exploration of scar revision surgery applications (November 27, 2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "We usually wait up to a full year after surgery – or longer if there is delayed wound healing – to assess the final scar results before considering a surgical revision, and typically 12 to 18 months – for full scar maturity – before a nonsurgical scar treatment such as laser or microneedling.",
+        "It's best to wait until a scar is mature before seeking scar treatment with an energy-based device like IPL or BBL or laser treatment in order to avoid post-inflammatory hyperpigmentation (darkening) of the scar that may be irreversible"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/fun-in-the-sun-protecting-your-plastic-surgery-scars",
+      "publisher": "ASPS website, an article by Alia Willson quoting Josef Hadeed, MD, FACS, and Anureet Bajaj, MD",
+      "title": "Fun in the sun: Protecting your plastic surgery scars (May 29, 2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "This can turn a thin, pink line into a dark brown or purple mark that may become permanent.",
+        "New scars, which can be pink or red, are particularly sensitive to UV rays, but even mature scars can darken when exposed to the sun for prolonged periods.",
+        "A standard white cotton T-shirt only has an ultraviolet protection factor (UPF) of about 5.",
+        "If they are wearing a swimsuit over a tummy tuck scar, they should still apply sunscreen underneath the suit, as UV rays can penetrate many thin, wet fabrics."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/articles/planning-your-plastic-surgery-timeline-for-summer",
+      "publisher": "ASPS website, an article by Ariel Frankeny quoting Josef Hadeed, MD, FACS, and Karen Horton, MD",
+      "title": "Planning your plastic surgery timeline for summer (April 14, 2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Direct sun exposure to incisions should be avoided for the first year,",
+        "Fully 'healed' often implies the scars are fully mature and there is zero residual swelling, which can take up to a full year."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/how-to-maintain-minimal-scarring-after-breast-augmentation",
+      "publisher": "ASPS website, a post by Daniel Maman, MD",
+      "title": "How to maintain minimal scarring after breast augmentation (January 20, 2026)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "At first, they may look raised, firm or darker in color. Over time, with proper postoperative care, they usually soften, flatten and fade into a lighter shade.",
+        "Heavy lifting, vigorous exercise or sudden arm movements can stretch the incisions and widen scars.",
+        "Thick, raised scars (hypertrophic scars or keloids)",
+        "Scars that stay red, dark or itchy for months",
+        "Wounds that reopen or show signs of infection"
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/how-nicotine-sabotages-plastic-surgery",
+      "publisher": "ASPS website, a post by Heather Furnas, MD",
+      "title": "How nicotine sabotages plastic surgery (December 12, 2016)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Delayed wound healing",
+        "Thick, wide scars",
+        "which may be to quit three to six weeks before surgery through three to six weeks after (though forever is best).",
+        "Nicotine gum, patches, snuff, chewing tobacco, cigarettes, pipes, cigars, and even trendy e-cigarettes have one thing in common: Nicotine."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/23298-breast-lift",
+      "publisher": "Cleveland Clinic",
+      "title": "Breast Lift (Mastopexy): Surgery & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Almost all mastopexy scars are hidden in the:",
+        "Yet you may see some scars on the surface of your breast. They’re permanent but fade a lot over time.",
+        "Incisions may take several months to heal fully.",
+        "After a breast lift, you’ll have some discomfort, swelling and bruising. Your skin may feel tight. These effects get better over time and last about two weeks.",
+        "If either breast becomes red, hot, swollen or painful.",
+        "Bleeding, drainage, redness or swelling at the incision site.",
+        "Fever higher than 100.5 degrees Fahrenheit.",
+        "Severe pain not helped with medicine.",
+        "Nausea or vomiting."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/cosmetic-plastic-surgery/procedures/breast-lift",
+      "publisher": "Cleveland Clinic Cosmetic & Plastic Surgery Center",
+      "title": "Breast Lift",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Breast lift surgery incisions do leave scars, but they will fade with time (with maximum fading occurring in around one year).",
+        "All types of breast lifts require an incision to remove excess skin so that the remaining skin can be repositioned."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/21466-hypertrophic-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Hypertrophic Scar: What Is It, Causes, Treatment",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Develops 1 to 2 months after injury",
+        "may wait a few months or even up to year before treating your scar. This allows the scar enough time to fully heal and possibly reduce in size and flatten on its own.",
+        "Corticosteroid injections: This is a main treatment for hypertrophic scars."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/diseases/keloid-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Keloid Scar: What It Is, Symptoms, Treatment & Removal",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The scar grows larger than the initial wound. Keloids don’t fade over time.",
+        "Have a biological relative who gets these scars.",
+        "Have a dark skin tone.",
+        "Are of African, Asian or Hispanic descent."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24670-scar-revision",
+      "publisher": "Cleveland Clinic",
+      "title": "Scar Revision: What It Is, Who Is a Candidate and Treatment Options",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "There’s also a chance that the scar will return, or that the surgery will cause a new scar to form."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/detailed-procedure-information",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Lift: Detailed Procedure Information",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "If you have a severe degree of sagging or are getting a breast reduction with your breast lift, your surgeon will likely recommend this approach. This technique produces the greatest lift, but also leaves the most scars.",
+        "If you have a moderate degree of sagging and do not want breast implants, your surgeon will likely recommend this approach. This technique produces moderate scarring.",
+        "If you have a mild degree of sagging or asymmetric areolas, your surgeon may recommend this approach.",
+        "This technique produces the least amount of scarring.",
+        "This technique is less common.",
+        "If you have minor sagging or are getting a breast lift in conjunction with breast augmentation, your surgeon may recommend this approach.",
+        "However, these options all require incisions of some sort, no matter how small or well-hidden."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/breast/breast-lift/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Breast Lift: Aftercare & Recovery",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Incisions will initially be red or pink. They will remain this way for many months following surgery.",
+        "You will have some redness and swelling after the surgery.",
+        "These side effects should subside over the first few weeks, with some residual effects lasting up to three months following the surgery.",
+        "You must not lift, drive, do laundry, or clean during the first two weeks.",
+        "itching around incision sites"
+      ]
+    },
+    {
+      "url": "https://www.aad.org/public/everyday-care/injured-skin/burns/wound-care-minimize-scars",
+      "publisher": "American Academy of Dermatology",
+      "title": "Minimize a scar: Proper wound care tips from dermatologists",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Apply sunscreen to the wound after it has healed. Sun protection may help reduce red or brown discoloration and help the scar fade faster. Always use a broad-spectrum sunscreen with an SPF of 30 or higher and reapply frequently."
+      ]
+    },
+    {
+      "url": "https://www.aad.org/public/diseases/a-z/keloids-symptoms",
+      "publisher": "American Academy of Dermatology",
+      "title": "Keloid scars: Signs and symptoms",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "After you injure skin, it’s likely to take 3 to 12 months or longer to see the first signs of a keloid.",
+        "Most develop in one of these areas:",
+        "Chest"
+      ]
+    },
+    {
+      "url": "https://www.aad.org/public/diseases/a-z/keloids-treatment",
+      "publisher": "American Academy of Dermatology",
+      "title": "Keloid scars: Diagnosis and treatment",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "No treatment can consistently get rid of a keloid.",
+        "When using silicone gel sheets, never apply one to a scab or open wound"
+      ]
+    },
+    {
+      "url": "https://medlineplus.gov/scars.html",
+      "publisher": "MedlinePlus (National Library of Medicine)",
+      "title": "Scars",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Scars usually fade over time but never go away completely."
+      ]
+    },
+    {
+      "url": "https://www.ncbi.nlm.nih.gov/sites/books/NBK610682/",
+      "publisher": "StatPearls (NCBI Bookshelf)",
+      "title": "Mastopexy (Breast Lift) (Toomey AE, Cape JD, last updated December 11, 2024)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Advantages : The scar is short and hidden in the areolar border; typically, nipple sensation is unchanged.",
+        "If an augmentation is performed with a vertical mastopexy, the dissection is done through this vertical incision.",
+        "Another disadvantage of this technique is a more apparent vertical scar in addition to the periareolar scar.",
+        "The horizontal portion of the incision/scar is usually well hidden in the inframammary fold"
+      ]
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4236363/",
+      "publisher": "Plastic and Reconstructive Surgery Global Open (full text read through Europe PMC, PMC4236363)",
+      "title": "Mastopexy and Reduction Mammoplasty Pedicles and Skin Resection Patterns (Wong C, Vucovich M, Rohrich R, 2014;2(8):e202)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The major disadvantage of the Wise pattern is the high scar burden, so may be a point of consideration in patients who have a tendency for keloid or hypertrophic scarring.",
+        "Although patients rate the vertical skin pattern higher in the scars and aesthetics scales, it may require more surgical revisions compared with the inverted T pattern."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8905040/",
+      "publisher": "Annals of Plastic Surgery (abstract read through PubMed E-utilities)",
+      "title": "Effectiveness of silicone sheets in the prevention of hypertrophic breast scars (Cruz-Korchin NI, 1996;37(4):345-8)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "The patients were instructed to use the silicone sheet for 12 hours each day for 2 months.",
+        "Evaluation of the scars at 2 months revealed that 60% of the nontreated scars were hypertrophic and only 25% of the treated scars were hypertrophic."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9810992/",
+      "publisher": "Plastic and Reconstructive Surgery (abstract read through PubMed E-utilities)",
+      "title": "The use of silicone occlusive sheeting (Sil-K) and silicone occlusive gel (Epiderm) in the prevention of hypertrophic scar formation (Niessen FB and colleagues, 1998;102(6):1962-72)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Three months following the operation, 64.3 percent of the patients developed a hypertrophic scar, which was reduced to 56.6 percent after 6 months and down to 35.3 percent after 1 year.",
+        "Neither Sil-K, used in 68 patients, nor Epiderm, used in 61 patients, could prevent the formation of hypertrophic scars.",
+        "If both groups were taken together, the scars treated with silicone materials even developed significantly more hypertrophy compared with the Micropore-applicated scars."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24030657/",
+      "publisher": "Cochrane Database of Systematic Reviews (abstract read through PubMed E-utilities)",
+      "title": "Silicone gel sheeting for preventing and treating hypertrophic and keloid scars (O'Brien L, Jones DJ, 2013)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "We included 20 trials involving 873 people",
+        "There is weak evidence of a benefit of silicone gel sheeting as a prevention for abnormal scarring in high-risk individuals but the poor quality of research means a great deal of uncertainty prevails."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24888226/",
+      "publisher": "Journal of Plastic, Reconstructive & Aesthetic Surgery (abstract read through PubMed E-utilities)",
+      "title": "Updated scar management practical guidelines: non-invasive and invasive measures (Monstrey S and colleagues, 2014;67(8):1017-25)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Silicone sheeting or gel is universally considered as the first-line prophylactic and treatment option for hypertrophic scars and keloids.",
+        "developed by an international group of 24 experts from a wide range of specialities"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22093081/",
+      "publisher": "Dermatologic Surgery (abstract read through PubMed E-utilities)",
+      "title": "The role of massage in scar management: a literature review (Shin TM, Bordeaux JS, 2012;38(3):414-23)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Ten publications including 144 patients who received scar massage were examined in this review.",
+        "Treatment protocols ranged from 10 minutes twice daily to 30 minutes twice weekly.",
+        "The evidence for the use of scar massage is weak",
+        "although its efficacy appears to be greater in postsurgical scars than traumatic or postburn scars."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/10417589/",
+      "publisher": "Dermatologic Surgery (abstract read through PubMed E-utilities)",
+      "title": "The effects of topical vitamin E on the cosmetic appearance of scars (Baumann LS, Spencer J, 1999;25(4):311-5)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Fifteen patients who had undergone skin cancer removal surgery were enrolled in the study.",
+        "This study shows that there is no benefit to the cosmetic outcome of scars by applying vitamin E after skin surgery",
+        "Of the patients studied, 33% developed a contact dermatitis to the vitamin E."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16442038/",
+      "publisher": "Dermatologic Surgery (abstract read through PubMed E-utilities)",
+      "title": "Onion extract gel versus petrolatum emollient on new surgical scars: prospective double-blinded study (Chung VQ and colleagues, 2006;32(2):193-7)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Twenty-four patients with new surgical wounds of at least 4 cm in length were enrolled in the study.",
+        "the onion extract gel did not improve scar cosmesis or symptomatology when compared with a petrolatum-based ointment."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30527707/",
+      "publisher": "Journal of Plastic, Reconstructive & Aesthetic Surgery (abstract read through PubMed E-utilities)",
+      "title": "Systematic review of outcomes and complications in nonimplant-based mastopexy surgery (di Summa PG and colleagues, 2019;72(2):243-272)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "Thirty-four studies, published from 1980 through 2016, were included and represented 1888 treated patients.",
+        "The overall complication rate was 10.4%.",
+        "The most represented complications were scar-related (3%, including hypertrophic or unesthetic appearance) and nipple-areola-related problems (2.9%; including distortion, asymmetry, and reduction in sensation)."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2185619/",
+      "publisher": "Aesthetic Plastic Surgery (abstract read through PubMed E-utilities)",
+      "title": "A new periareolar mammaplasty: the \"round block\" technique (Benelli L, 1990;14(2):93-100)",
+      "read_on": "2026-11-03",
+      "quotes": [
+        "In cases of hypotrophy, the use of the round block technique permits easy access for insertion of the prosthesis as it simultaneously corrects ptosis.",
+        "The scar in the submammary fold is visible, particularly when one is lying down."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "page_trend totals and queries_for_page",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 469,
+    "clicks": 0,
+    "position": 35.5,
+    "top_queries": [
+      {
+        "query": "breast lift miami",
+        "impressions": 80,
+        "clicks": 0,
+        "position": 16.2
+      },
+      {
+        "query": "breast lift scars",
+        "impressions": 20,
+        "clicks": 0,
+        "position": 67.5
+      },
+      {
+        "query": "mastopexy scars",
+        "impressions": 13,
+        "clicks": 0,
+        "position": 78.6
+      },
+      {
+        "query": "boob lift scarring",
+        "impressions": 12,
+        "clicks": 0,
+        "position": 78.8
+      },
+      {
+        "query": "breast lift scar",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 76.8
+      },
+      {
+        "query": "breast lift scars 3 weeks",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 17.7
+      },
+      {
+        "query": "breast lift miami fl",
+        "impressions": 10,
+        "clicks": 0,
+        "position": 8.8
+      },
+      {
+        "query": "breast mastopexy scars",
+        "impressions": 8,
+        "clicks": 0,
+        "position": 75.3
+      },
+      {
+        "query": "scar breast lift",
+        "impressions": 8,
+        "clicks": 0,
+        "position": 90.5
+      },
+      {
+        "query": "boob lift scars",
+        "impressions": 6,
+        "clicks": 0,
+        "position": 80.7
+      }
+    ]
+  },
+  "notes": "Full rewrite of the live January post from the approved 3 Nov brief (posts.md section 3 + bl.md 2.5). Removed: '80% fear', '94%' (Swanson 2013, mixed sample), the $6K-$12K line was not in this post's live text; removed 12-24 months, 'redness peaks at 6-8 weeks', massage counts, silicone 12+ hours as advice, the 1.3% misquote, the humidity and nutrition sections (unsourced), the Miami climate section, financing lender names, ABCS link, AAAASF, phone, the quiz link. Live FAQs kept in new form: how long to fade, least noticeable scar, do they fade completely, when to start treatment, the beach. Fact-check pass 3 Nov: the bar on '12 to 18 months' was lifted where a named source says it, so Horton's figure is stated as hers (the coordinator's fix); the facts file's 'about 1 year' stays Cleveland Clinic's. di Summa's 'minor complications' caveat is dropped because the abstract read doesn't say it. Maman's 5-10 lb lifting limit is left out (the cluster states no weight limit). No Alluring revision policy, scar protocol or photos are stated (owner questions). Consented dated scar photos at 1, 3 and 12 months would still be the SERP gap, if the practice has them. The Aesthetic Society's own heading for its least common option uses a word the lint bans; the post quotes only 'require incisions of some sort'."
+}

@@ -44,6 +44,19 @@ export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'how-to-regain-sensation-after-breast-reduction',
     'how-to-get-rid-of-fibrosis-after-lipo',
     'how-to-sleep-after-bbl',
+    // The 2026-11-03 breast lift rewrite: 12 posts with no traffic to protect.
+    'types-of-breast-lift',
+    'breast-lift-without-implants',
+    'breast-lift-cost',
+    'non-surgical-breast-lift',
+    'breast-lift-scars-miami',
+    'breast-lift-implants-miami',
+    'breast-lift-candidate-checklist',
+    'breast-lift-recovery-weight-loss-miami',
+    'breast-lift-vs-reduction-miami',
+    'breast-augmentation-vs-breast-lift',
+    'breast-lift-miami-post-pregnancy',
+    'breast-lift-recovery-guide-miami',
 ])
 
 /** The two variables the switch reads; the routes pass `env`. */
