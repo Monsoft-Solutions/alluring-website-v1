@@ -2756,7 +2756,7 @@
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
       "status": "live",
-      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "notes": "Indexing requested by hand in Search Console on 4 Nov 2026. Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
       "liveOn": "2026-11-04"
     },
     {
@@ -2778,7 +2778,7 @@
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
       "status": "live",
-      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "notes": "Indexing requested by hand in Search Console on 4 Nov 2026. Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
       "liveOn": "2026-11-04"
     },
     {
@@ -2801,7 +2801,7 @@
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
       "status": "live",
-      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "notes": "Indexing requested by hand in Search Console on 4 Nov 2026. Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
       "liveOn": "2026-11-04"
     },
     {
@@ -2823,7 +2823,7 @@
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
       "status": "live",
-      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "notes": "Indexing requested by hand in Search Console on 4 Nov 2026. Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
       "liveOn": "2026-11-04"
     },
     {
