@@ -44,6 +44,11 @@ export function ModuleJumpNav({ links }: { links: ModuleJumpLink[] }) {
 export type ModuleFactRailProps = {
     /** Names the rail's landmark. Each rail on a page needs its own. */
     label: string
+    /**
+     * The words over the price. "Starting at $3,000" on a page sold in parts
+     * would read as the price of the whole plan, so that page names the part.
+     */
+    priceLabel?: string
     /** The starting price as the page prints it, e.g. "$5,500". */
     startingAt: string
     /** The line under the price, e.g. "Most patients $5,500–$10,000, …". */
@@ -76,6 +81,7 @@ export type ModuleFactRailProps = {
  */
 export function ModuleFactRail({
     label,
+    priceLabel = 'Starting at',
     startingAt,
     priceNote,
     surgeonName,
@@ -93,7 +99,7 @@ export function ModuleFactRail({
             className={`border-t-gold-400 ${sticky ? 'sticky top-40 ' : ''}flex flex-col gap-5.5 border border-t-[3px] border-stone-200 bg-white px-7 pt-7 pb-6`}
         >
             <div className='flex flex-col gap-2'>
-                <p className={moduleLabel}>Starting at</p>
+                <p className={moduleLabel}>{priceLabel}</p>
                 <p className='font-serif text-[2.75rem] leading-none text-stone-900 tabular-nums'>
                     {startingAt}
                 </p>

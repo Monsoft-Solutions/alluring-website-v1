@@ -9,11 +9,9 @@
  * Optimized for high-intent searches around mommy makeover procedures.
  */
 import {
-    Award,
     ShieldCheck,
     Clock,
     CreditCard,
-    Quote,
     Heart,
     Baby,
     Sparkles,
@@ -49,7 +47,7 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                         <div className='shadow-gold-500/20 relative h-full w-full overflow-hidden rounded-2xl shadow-2xl sm:rounded-none sm:shadow-none'>
                             <Image
                                 src='https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/landing/mommy-makeover-hero.jpg'
-                                alt='Confident mother embracing her transformation after mommy makeover'
+                                alt='Smiling woman in a cream blouse, seated by a sunlit window. Model shown, not a patient.'
                                 fill
                                 className='object-cover object-top lg:object-contain lg:object-center'
                                 priority
@@ -67,6 +65,10 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                                     </span>
                                 </div>
                             </div>
+
+                            <p className='absolute right-3 bottom-1.5 text-[11px] text-white/80'>
+                                Model shown. Not a patient.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -140,39 +142,18 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                                 enableAnalytics
                                 redirectOnSuccess='/thank-you'
                                 showPreferredContactTime={false}
+                                footerNote='Your information is private and secure.'
                             />
                         </div>
 
                         {/* Trust Cluster */}
                         <div className='mt-8 space-y-6'>
-                            {/* Testimonial Quote */}
-                            <div className='flex items-start gap-3 rounded-lg border border-white/5 bg-white/5 p-4'>
-                                <Quote className='text-gold-400 mt-1 h-5 w-5 shrink-0' />
-                                <div>
-                                    <p className='text-sm leading-relaxed text-stone-300 italic'>
-                                        &ldquo;For years, I avoided the beach
-                                        and hid my body in loose clothes. After
-                                        my mommy makeover at Alluring, I finally
-                                        feel like myself again.&rdquo;
-                                    </p>
-                                    <p className='text-gold-400 mt-2 text-xs font-medium'>
-                                        — Jennifer M., Mother of 3
-                                    </p>
-                                </div>
-                            </div>
-
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
                                         {KARLINSKY_NAME}
-                                    </span>
-                                </div>
-                                <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                    <Award className='text-gold-400 h-5 w-5' />
-                                    <span className='text-sm font-medium'>
-                                        15+ Years Experience
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
@@ -186,7 +167,7 @@ export function MommyMakeoverHero({ id = 'hero' }: MommyMakeoverHeroProps) {
                             {/* Risk Reversal Message */}
                             <p className='text-center text-sm text-stone-500 lg:text-left'>
                                 ✓ Free consultation • ✓ Customized procedure
-                                plan • ✓ Flexible financing
+                                plan • ✓ Financing available
                             </p>
                         </div>
                     </div>

@@ -33,6 +33,7 @@ export function ModuleCandidate({
     elsewhereHeading = 'Another option may suit you better if',
     elsewhere,
     guides = [],
+    children,
 }: {
     /** The section's anchor. */
     id?: string
@@ -47,7 +48,30 @@ export function ModuleCandidate({
     elsewhere: ModuleCandidateAlternative[]
     /** The posts that go deeper, e.g. a tummy tuck vs liposuction guide. */
     guides?: ModuleGuide[]
+    /**
+     * More of the same answer, between the two columns and the guides: a
+     * page's own H3s, e.g. how soon after birth a mommy makeover can be done.
+     */
+    children?: ReactNode
 }) {
+    const guideLinks = guides.length > 0 && (
+        <ul className='mt-8 flex flex-col gap-1 border-t border-stone-200 pt-6'>
+            {guides.map((guide) => (
+                <li key={guide.href}>
+                    <Link
+                        href={guide.href}
+                        className={cn(
+                            moduleLink,
+                            'inline-flex min-h-11 items-center text-base font-bold'
+                        )}
+                    >
+                        {guide.label}
+                    </Link>
+                </li>
+            ))}
+        </ul>
+    )
+
     return (
         <AnswerBlock
             id={id}
@@ -103,22 +127,13 @@ export function ModuleCandidate({
                     </dl>
                 </div>
             </div>
-            {guides.length > 0 && (
-                <ul className='mt-8 flex flex-col gap-1 border-t border-stone-200 pt-6'>
-                    {guides.map((guide) => (
-                        <li key={guide.href}>
-                            <Link
-                                href={guide.href}
-                                className={cn(
-                                    moduleLink,
-                                    'inline-flex min-h-11 items-center text-base font-bold'
-                                )}
-                            >
-                                {guide.label}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
+            {children ? (
+                <>
+                    {children}
+                    {guideLinks}
+                </>
+            ) : (
+                guideLinks
             )}
         </AnswerBlock>
     )

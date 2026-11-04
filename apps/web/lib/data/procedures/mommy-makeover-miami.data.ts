@@ -1,8 +1,9 @@
 import type { Procedure } from '@/lib/types/procedure.type'
-import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import { mommyMakeoverFigure } from '@/lib/data/procedures/facts/mommy-makeover.facts'
+import { getFinancingPartnersString } from '@/lib/data/site-config'
 import {
-    KARLINSKY_CREDENTIALS,
     KARLINSKY_NAME,
+    KARLINSKY_SHORT_NAME,
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const mommyMakeoverMiami: Procedure = {
@@ -14,80 +15,131 @@ export const mommyMakeoverMiami: Procedure = {
     // practice confirms how one is priced. The site had four different
     // "starting" prices ($5,000, $7,000, $9,500, $12,000), and AI engines
     // quoted three of them (#309).
-    description: `A mommy makeover combines a tummy tuck with breast surgery, often with liposuction, in one planned surgery. At Alluring in Miami, one surgeon performs every mommy makeover: ${KARLINSKY_NAME}. Each part has its own price: a tummy tuck from $3,000, breast augmentation from $3,500 and a breast lift from $5,000.`,
-    shortDescription:
-        'A comprehensive combination of personalized procedures to restore your pre-pregnancy body, with flexible financing options to fit your budget.',
+    description: `A mommy makeover combines a tummy tuck with breast surgery, often with liposuction, usually in one surgery. At Alluring in Miami, one surgeon performs every mommy makeover: ${KARLINSKY_NAME}. Each part has its own price: a mini tummy tuck from ${mommyMakeoverFigure('price-mini-tummy-tuck')}, a full tummy tuck from ${mommyMakeoverFigure('price-full-tummy-tuck')}, breast augmentation from ${mommyMakeoverFigure('price-augmentation-saline')} and a breast lift from ${mommyMakeoverFigure('price-lift')}.`,
+    // `/llms.txt`, `/llms-full.txt`, the /procedures index and the procedure
+    // cards read this, so it says what the page says.
+    shortDescription: `A tummy tuck with breast surgery, often with liposuction, usually in one surgery and priced part by part. Every mommy makeover at Alluring is performed by ${KARLINSKY_NAME}.`,
     heroSubtitle:
         'Your breasts and abdomen after pregnancy, planned together by one surgeon',
-    // Hand-written meta description: the generated one claimed "Miami's top
-    // surgeons. 5,000+ procedures" (#309). The title stays generated until
-    // the page rebuild changes it.
-    metaDescription: `Mommy makeover in Miami, priced part by part from the practice price list and performed by one surgeon, ${KARLINSKY_NAME}. Free consultation.`,
+
+    // Hand-written metadata. The generated title ended "| Board-Certified
+    // Surgeons", a certification claim naming no board, which Florida Rule
+    // 64B8-11.001(2)(j) does not allow, so the title changes with the redesign
+    // (the 2026-11-03 brief waives the usual rule for it). The head term and
+    // the year stay first, as on the other rebuilt pages. No surgeon's name,
+    // so a staffing change doesn't touch it. No total: the sheet has none.
+    seoTitle: `Mommy Makeover Miami ${new Date().getFullYear()} | Priced Part by Part + Financing`,
+    // The three prices the cost cluster compares, and the one surgeon. Under
+    // the 160 `clampMetaDescription` limit. The 5 Oct text's "$500 off two
+    // procedures" stays out of the snippet while counsel's Florida 456.062
+    // statement is pending; the page states the rule as it does today.
+    metaDescription: `Mommy makeover in Miami: mini tummy tuck from ${mommyMakeoverFigure('price-mini-tummy-tuck')}, breast augmentation from ${mommyMakeoverFigure('price-augmentation-saline')}, breast lift from ${mommyMakeoverFigure('price-lift')}. Performed by ${KARLINSKY_NAME}.`,
 
     category: 'combined',
     bodyLocation: 'Abdomen and breast',
-    image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/hero.webp',
-    dateModified: '2026-09-28T00:00:00.000Z',
+    image: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/2026-11/hero-wide-woman-linen-dress-terrace-alluring-plastic-surgery-miami.jpg',
+    dateModified: '2026-11-03T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
-    // No paid-LP price: the price sheet has no mommy makeover line, and the
-    // old "$9,500" wasn't the practice's figure. Set it once the practice
-    // confirms a starting price. No weekly figure either: financing is
-    // offered but never quoted as a number.
+    // No paid-LP price (`priceFrom`): the price sheet has no mommy makeover
+    // line, and the old "$9,500" wasn't the practice's figure. Set it once the
+    // practice confirms a starting price. No weekly figure either: financing
+    // is offered but never quoted as a number.
 
-    // Inline content images for enhanced engagement
-    contentImages: [
-        {
-            id: 'hero',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/hero.webp',
-            alt: 'Confident woman after mommy makeover transformation at Alluring Plastic Surgery Miami',
-            section: 'hero',
-            variant: 'full-width',
-        },
-        {
-            id: 'breast-enhancement',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/breast-enhancement.webp',
-            alt: 'Elegant woman showcasing confidence after breast enhancement procedure',
-            caption:
-                'Restore volume and lift with personalized breast enhancement',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'tummy-tuck',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/tummy-tuck.webp',
-            alt: 'Fit woman with toned midsection after tummy tuck surgery',
-            caption: 'Achieve a flat, toned midsection with abdominoplasty',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'liposuction-contouring',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/liposuction-contouring.webp',
-            alt: 'Sculpted silhouette achieved through liposuction body contouring',
-            caption:
-                'Sculpt stubborn areas with precision liposuction contouring',
-            section: 'content',
-            variant: 'full-width',
-        },
-        {
-            id: 'consultation',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/consultation.webp',
-            alt: 'Patient consultation with plastic surgeon at Alluring Plastic Surgery Miami',
-            caption:
-                'Your transformation begins with a personalized consultation',
-            section: 'process',
-            variant: 'full-width',
-        },
-        {
-            id: 'recovery-lifestyle',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/mommy-makeover/recovery-lifestyle.webp',
-            alt: 'Happy woman enjoying poolside lifestyle after mommy makeover recovery',
-            caption: 'Embrace your new confidence and live life to the fullest',
-            section: 'recovery',
-            variant: 'full-width',
-        },
-    ],
+    // The parts, from the practice's price sheet of 2026-09-15
+    // (`docs/pricing/practice-price-list.md`): each a row on the page and an
+    // `Offer` of its own in the graph, named for the part, so nothing reads as
+    // the price of a whole plan. `startingAt` is the lowest part sold on its
+    // own and is never rendered as a mommy makeover price: the module's rail
+    // labels it as a tummy tuck's. What the price includes waits on the owner,
+    // so `includes` stays empty and the page asks readers to get any quote
+    // itemized. Every price here matches `mommy-makeover.facts.ts`.
+    pricing: {
+        startingAt: 3000,
+        includes: [],
+        options: [
+            {
+                label: 'Mini tummy tuck',
+                startingAt: 3000,
+                note: 'Loose skin below the belly button. No muscle repair.',
+            },
+            {
+                label: 'Extended mini tummy tuck',
+                startingAt: 4000,
+                note: 'A hip-to-hip incision. No muscle repair.',
+            },
+            {
+                label: 'Full tummy tuck',
+                startingAt: 4500,
+                note: "Loose skin that doesn't extend to the hips.",
+            },
+            {
+                label: 'Extended tummy tuck',
+                startingAt: 5500,
+                note: 'A hip-to-hip incision.',
+            },
+            {
+                label: 'Breast augmentation, saline implants',
+                startingAt: 3500,
+            },
+            {
+                label: 'Breast augmentation, silicone implants',
+                startingAt: 4500,
+            },
+            {
+                label: 'Breast lift without implants',
+                startingAt: 5000,
+            },
+            {
+                label: 'Breast lift with saline implants',
+                startingAt: 6000,
+            },
+            {
+                label: 'Breast lift with silicone implants',
+                startingAt: 7000,
+            },
+            {
+                label: 'Breast reduction',
+                startingAt: 6000,
+                upTo: 9000,
+                note: 'By size: small to medium, large or extra large.',
+            },
+            {
+                label: 'Lipo 360',
+                startingAt: 4000,
+            },
+            {
+                label: 'Liposuction of the abdomen and flanks, added to another procedure',
+                startingAt: 1500,
+            },
+        ],
+        factors: [
+            {
+                label: 'The parts in your plan',
+                description:
+                    'Each part has its own price, so the plan you and your surgeon settle on sets your total.',
+            },
+            {
+                label: 'Which tummy tuck you need',
+                description:
+                    'A mini, extended mini, full or extended tummy tuck, depending on where your loose skin sits and whether your muscles need repair.',
+            },
+            {
+                label: 'Your breast procedure',
+                description:
+                    'An augmentation, a lift, a lift with implants or a reduction, and saline or silicone if your plan has implants.',
+            },
+            {
+                label: 'Liposuction',
+                description:
+                    'Lipo 360 or an added area. Florida limits liposuction with a tummy tuck in an office, which can shape what fits in one surgery.',
+            },
+            {
+                label: 'How many procedures you combine',
+                description: `Combining two procedures takes ${mommyMakeoverFigure('price-combination-discount')} off the total, and three take ${mommyMakeoverFigure('price-combination-discount', 1)} off.`,
+            },
+        ],
+    },
 
     keywords: [
         'mommy makeover miami',
@@ -98,311 +150,144 @@ export const mommyMakeoverMiami: Procedure = {
         'mini mommy makeover cost',
         'post pregnancy surgery',
         'breast augmentation tummy tuck',
-        'mommy makeover recovery',
-        'mommy makeover recovery time',
-        'mommy makeover before and after',
         'mommy makeover financing miami',
         'tummy tuck breast lift combo miami',
     ],
     quickStats: {
-        duration: '3 to 5 Hours',
+        // How long a plan takes at Alluring is an owner question, and no
+        // source gives a length for a mommy makeover (the old "3 to 5 Hours"
+        // had none).
+        duration: 'Set at Your Consultation',
         anesthesia: 'General Anesthesia',
-        recovery: '2-3 Weeks to Light Activity',
-        results: 'Long-lasting (with stable weight)',
-        inpatientOutpatient: 'Outpatient',
+        // `mommy-makeover.facts.ts` work-2-weeks. Also the graph's `followup`,
+        // the paid landing page's stats and `/llms-full.txt`.
+        recovery: 'About 2 Weeks Off Work',
+        results: '6 Months to a Year for the Final Result',
+        // No `inpatientOutpatient`: an overnight stay is an owner question.
     },
+    // `/llms-full.txt` and the paid landing page read these. The paid page
+    // shows no price, so none of them talks about one.
     benefits: [
         {
-            title: 'Restored Confidence',
-            description:
-                "Pregnancy changes your body in ways that diet and exercise can't reverse. This post-pregnancy transformation helps you reclaim your figure, allowing you to feel like yourself again—not just as a mother, but as a woman.",
+            title: 'One plan, one surgeon',
+            description: `Your breasts and abdomen are planned together, by the surgeon who performs every mommy makeover at Alluring: ${KARLINSKY_NAME}.`,
         },
         {
-            title: 'Personalized for You',
+            title: 'Only the parts you need',
             description:
-                "Every woman's body responds differently to pregnancy. Your combined surgical plan is fully customized to address your specific concerns—whether that's deflated breasts, loose abdominal skin, or stubborn fat pockets.",
+                'A plan is built from a tummy tuck, a breast procedure and, when it helps, liposuction. Your surgeon may tell you that you need fewer parts than you expected.',
         },
         {
-            title: 'Comprehensive Transformation',
-            description:
-                'This mom makeover addresses multiple areas in a single surgery, eliminating the need for separate procedures and recovery periods. One operation, one healing phase, complete results.',
+            title: 'Usually one surgery, one recovery',
+            description: `ASPS says a mommy makeover is typically performed as a single-stage procedure, so the parts heal together. ${KARLINSKY_SHORT_NAME} tells you at your consultation whether your plan fits in one surgery.`,
         },
         {
-            title: 'Single Recovery Period',
-            description:
-                'Instead of recovering from multiple separate surgeries, you experience one consolidated recovery. Most mothers return to light activities in 2-3 weeks and get back to their families faster.',
+            title: 'A recovery you can plan around',
+            description: `The Aesthetic Society says to plan about ${mommyMakeoverFigure('work-2-weeks')} off work and someone else caring for small children for at least ${mommyMakeoverFigure('children-2-weeks')}. Your surgery, pre-op and follow-up dates are confirmed in writing.`,
         },
     ],
+    // The page's steps and the graph's `howPerformed`.
     process: [
         {
             step: 1,
-            title: 'Consultation & Customization',
-            description:
-                'Your surgeon evaluates your concerns, discusses your goals, and creates a personalized surgical plan combining procedures like breast enhancement, tummy tuck, and liposuction.',
+            title: 'Your consultation and plan',
+            description: `You and ${KARLINSKY_SHORT_NAME} go through what has changed and what you want to change. She examines you, settles with you which parts your plan includes, and tells you how long your surgery will take.`,
         },
         {
             step: 2,
-            title: 'Anesthesia & Breast Procedures',
-            description:
-                'General anesthesia is administered. Breast procedures (augmentation, lift, or both) are typically performed first to restore volume and firmness.',
+            title: 'Getting ready',
+            description: `You stop smoking for the time your surgeon sets and line up an adult to take you home and stay with you, and someone else to care for small children for at least ${mommyMakeoverFigure('children-2-weeks')}. Your surgery, pre-op and follow-up dates are confirmed in writing.`,
         },
         {
             step: 3,
-            title: 'Abdominoplasty',
+            title: 'Surgery: your breast procedure',
             description:
-                'A tummy tuck removes excess skin, repairs separated abdominal muscles (diastasis recti), and tightens the remaining tissue for a flatter, firmer midsection.',
+                'You receive general anesthesia. Depending on your plan, your surgeon performs a breast augmentation, a lift, a lift with implants or a reduction. Your surgeon sets the order of the parts.',
         },
         {
             step: 4,
-            title: 'Liposuction & Contouring',
+            title: 'Surgery: your tummy tuck and any liposuction',
             description:
-                'Stubborn fat deposits in the abdomen, hips, thighs, or flanks are sculpted through liposuction to create smoother, more balanced proportions.',
+                'ASPS says a tummy tuck removes excess fat and skin and, in most cases, restores weakened or separated muscles. Liposuction, when your plan includes it, treats the areas you and your surgeon chose.',
         },
         {
             step: 5,
-            title: 'Recovery & Results',
-            description:
-                'Most patients return to light activities within 2-3 weeks, with full recovery taking 4-6 weeks. Final results emerge over 3-6 months as swelling subsides.',
+            title: 'Recovery',
+            description: `You don't go home alone. Plan on about ${mommyMakeoverFigure('work-2-weeks')} off work. Driving, lifting your children and exercise come back over the weeks after that, as your surgeon clears them, and your final result can take ${mommyMakeoverFigure('results-6-12-months', 1)} to a year.`,
         },
     ],
+    // One definition site-wide: this, the "What is…?" FAQ and the page's
+    // answer use the same wording.
     quickAnswer: {
         question: 'What is a mommy makeover?',
-        answer: 'A mommy makeover is a customized combination of procedures—typically breast enhancement, tummy tuck, and liposuction—designed to restore your pre-pregnancy body.',
-        details:
-            'By combining multiple surgeries in one operation, you experience a single recovery period instead of multiple healing phases. The procedure typically takes 3-5 hours and results last for years with stable weight.',
+        answer: "A mommy makeover combines procedures that restore the shape of a woman's body after childbearing, usually a tummy tuck with breast surgery and often liposuction. ASPS says it is typically performed as a single-stage procedure.",
+        details: `At Alluring in Miami, one surgeon performs every mommy makeover: ${KARLINSKY_NAME}. Each part has its own price, and she confirms yours at your consultation.`,
     },
-    content: `## Transform Your Post-Baby Body in Miami
-
-You gave everything to bring your children into this world. Your body carried them, nurtured them, and transformed in ways you never anticipated. Now, years later, you still see those changes every time you look in the mirror—the loose skin, the separated muscles, the breasts that aren't quite where they used to be. It's not vanity to want your body back. It's honoring yourself after honoring everyone else.
-
-A **mommy makeover** combines multiple procedures into one surgery, addressing the physical changes that diet and exercise simply can't fix. At **Alluring Plastic Surgery** in Miami, every mommy makeover is planned and performed by one surgeon, ${KARLINSKY_NAME}, and financing is available with approved credit.
-
-## What Does a Mommy Makeover Consist Of?
-
-A mom makeover isn't a single procedure—it's a personalized combination of surgeries performed together to address post-pregnancy changes. Here's what's typically included:
-
-### Breast Enhancement
-[Breast augmentation](/procedures/breast-augmentation-miami), lift, or both to restore volume and position. Many mothers experience deflated or sagging breasts after breastfeeding, and these procedures restore a more youthful appearance.
-
-<ProcedureImage id="breast-enhancement" />
-
-### Tummy Tuck (Abdominoplasty)
-A [tummy tuck](/procedures/tummy-tuck-miami) removes excess skin and repairs separated abdominal muscles (diastasis recti). This addresses the loose, stretched skin and protruding belly that sit-ups and planks simply can't fix.
-
-<ProcedureImage id="tummy-tuck" />
-
-### Liposuction
-[Liposuction](/procedures/liposuction-miami) sculpts stubborn fat deposits in the abdomen, hips, thighs, or flanks that resist even the most dedicated fitness routines.
-
-<ProcedureImage id="liposuction-contouring" />
-
-Some patients also add an arm lift or a thigh lift. By combining surgeries into one operation, you experience a single recovery period—meaning less time away from your family.
-
-## Common Mommy Makeover Combinations
-
-Every plan is built around what you want to change. Common combinations:
-
-- **Breast surgery and a mini tummy tuck**: breast augmentation or a lift, with a tummy tuck for the lower abdomen. For mothers with moderate changes.
-- **Breast surgery, a full tummy tuck and liposuction**: addresses the concerns most mothers share.
-- **Breast surgery, an extended tummy tuck and liposuction of several areas**: the extended tummy tuck uses a hip-to-hip incision.
-
-During your consultation, Dr. Karlinsky recommends the combination that best addresses your concerns.
-
-## How Much Does a Mommy Makeover Cost?
-
-A mommy makeover is priced from the procedures in your plan, and Dr. Karlinsky confirms your exact price at your free consultation. These are the practice's list prices for each part:
-
-| Part of the plan | Price |
-|------------------|-------|
-| Mini tummy tuck | $3,000 |
-| Full tummy tuck | $4,500 |
-| Extended tummy tuck | $5,500 |
-| Breast augmentation, saline implants | $3,500 |
-| Breast augmentation, silicone implants | $4,500 |
-| Breast lift without implants | $5,000 |
-| Breast lift with saline implants | $6,000 |
-| Breast lift with silicone implants | $7,000 |
-| Lipo 360 | $4,000 |
-| Liposuction of the abdomen and flanks, added to another procedure | $1,500 |
-
-Combining procedures lowers the total: two procedures take $500 off, and three take $1,000 off. See the [tummy tuck](/procedures/tummy-tuck-miami) and [breast augmentation](/procedures/breast-augmentation-miami) pages for what each part involves.
-
-### Does Insurance Cover a Mommy Makeover?
-
-No. Because this is an elective cosmetic procedure, **insurance does not cover mommy makeovers**. However, if you have documented diastasis recti causing functional problems, a portion of the tummy tuck *may* qualify for coverage. Ask your insurer before your consultation.
-
-### Mommy Makeover Financing
-
-Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.
-
-## Mini Mommy Makeover: A Lighter Option
-
-Not every mother needs comprehensive surgery. A **mini mommy makeover** offers targeted improvement at a lower cost:
-
-### What's Included
-- Mini tummy tuck (addresses lower abdomen only)
-- Breast lift or small augmentation
-- Optional: limited liposuction
-
-### Mini Mommy Makeover Cost
-A mini tummy tuck is $3,000 on the practice's price list, against $4,500 for a full tummy tuck, so a mini mommy makeover costs less than a full one.
-
-### Who's a Good Candidate
-- Mothers with changes primarily below the belly button
-- Those with good skin elasticity
-- Women who want improvement without extended recovery
-
-During your consultation, we'll assess whether a mini or full procedure better serves your goals.
-
-## Am I a Good Candidate?
-
-The best candidates for this post-pregnancy transformation typically meet these criteria:
-
-### You're at a Stable Weight
-Significant weight fluctuations after surgery can compromise your results. Aim to be within 10-15 pounds of your goal weight.
-
-### You've Completed Your Family
-Future pregnancies can reverse improvements, particularly to the abdominal area.
-
-### You're in Good Overall Health
-Conditions like uncontrolled diabetes or blood clotting disorders may increase surgical risks.
-
-### You Have Realistic Expectations
-This procedure creates dramatic improvements, but won't erase every stretch mark or give you someone else's body. The goal is the best version of *your* figure.
-
-### You're Done Breastfeeding
-We recommend waiting at least six months after nursing ends to allow breast tissue to stabilize.
-
-## The Procedure Experience
-
-### Before Surgery
-
-Your journey begins with a consultation where we discuss your concerns and goals. We'll evaluate your anatomy, review medical history, and explain which combination of procedures will achieve your desired outcome.
-
-**Pre-operative preparation includes:**
-
-- Stopping blood-thinning medications and supplements
-- Arranging transportation home and overnight help
-- Preparing your recovery space with essentials within reach
-- **Planning childcare for at least two weeks**
-
-<ProcedureImage id="consultation" />
-
-### Surgery Day
-
-The combined procedure is performed under general anesthesia and typically takes 3-5 hours. Your surgeon follows a strategic sequence:
-
-1. **Breast procedures first**: Augmentation, lift, or both
-2. **Abdominoplasty next**: Incision along bikini line, muscle repair, skin removal
-3. **Liposuction last**: Sculpting flanks, hips, or thighs for balanced proportions
-
-### After Surgery
-
-You'll wake wearing compression garments, possibly with drainage tubes. Most patients go home the same day with detailed care instructions.
-
-## Recovery: Getting Back to Your Family
-
-We know recovery with children at home is your biggest concern. Here's what to realistically expect:
-
-### Week 1-2: Rest Mode
-- **Help required**: You cannot lift children, do laundry, or cook
-- **Childcare essential**: Arrange for partner, family, or hired help
-- **Pro tip**: Some moms send kids to grandparents for week one
-- Light walking encouraged; pain managed with medication
-
-### Week 2-3: Light Activity
-- Back to desk work and driving
-- **School pickup possible** (no lifting kids into car seats)
-- Drains typically removed
-- Swelling begins to subside
-
-### Week 4-6: Gradual Return
-- Resume most normal activities
-- Light exercise approved
-- Lifting restrictions ease (10-15 lbs)
-- **Most moms feel "normal" by week 6**
-
-### Month 3-6: Final Results
-- Swelling fully resolves
-- Scars fade and flatten
-- All activities including exercise approved
-- **Your transformation is complete**
-
-<ProcedureImage id="recovery-lifestyle" />
-
-## Why Miami Mothers Choose Alluring
-
-### One Surgeon
-Every mommy makeover at Alluring is performed by ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
-
-### Personalized Approach
-No cookie-cutter plans. Every surgical combination is designed for your unique anatomy and goals.
-
-### Comprehensive Care
-Your relationship with us doesn't end at surgery. Follow-up appointments, scar care guidance, and ongoing support are included.
-
-### Proven Results
-Years of experience delivering natural-looking transformations that help mothers feel like themselves again.
-
-## Your Transformation Starts Here
-
-You've spent years putting your family first. The midnight feedings, the endless laundry, the school runs, the meal prep—you've given everything. Now it's time to invest in yourself.
-
-A **mommy makeover** isn't about perfection or vanity. It's about looking in the mirror and seeing a reflection that matches how vibrant you feel inside. It's about wearing a swimsuit without constantly adjusting. It's about feeling confident in your own skin for the first time since your children were born.
-
-**Call [${siteConfig.contact.phoneDisplay}](${getPhoneLink()}) today** to schedule your free consultation. We'll discuss your goals, explain your options, and provide a detailed cost estimate—with no pressure and no obligation.
-
-Your journey back to confidence starts with one phone call.`,
+    // 14 questions. The paid landing page drops any whose question or answer
+    // has a pricing term, on purpose: the three that talk about price say so in
+    // their question, and the others stay free of those terms (`PRICING_TERMS`
+    // in app/landing/procedure/[slug]/page.tsx). The module renders answers as
+    // plain text, so links to the posts live in the page's own sections.
     faqs: [
         {
             question: 'What is a mommy makeover?',
-            answer: 'A mommy makeover is a customized combination of procedures—typically breast enhancement, tummy tuck, and liposuction—designed to restore your pre-pregnancy body in a single surgery with one recovery period.',
+            answer: `A mommy makeover combines procedures that restore the shape of a woman's body after childbearing, usually a tummy tuck with breast surgery and often liposuction. ASPS says it is typically performed as a single-stage procedure. At Alluring in Miami, one surgeon performs every mommy makeover: ${KARLINSKY_NAME}.`,
         },
         {
             question: 'How much does a mommy makeover cost in Miami?',
-            answer: 'At Alluring Plastic Surgery, a mommy makeover is priced from the procedures in your plan. On the practice price list a tummy tuck starts at $3,000 (mini) or $4,500 (full), breast augmentation at $3,500 (saline) or $4,500 (silicone), and a breast lift at $5,000. Combining two procedures takes $500 off the total, and three take $1,000 off. Dr. Karlinsky confirms your exact price at your free consultation.',
+            answer: `At Alluring, a mommy makeover is priced from the parts in your plan. A tummy tuck starts at ${mommyMakeoverFigure('price-mini-tummy-tuck')} (mini) or ${mommyMakeoverFigure('price-full-tummy-tuck')} (full), breast augmentation at ${mommyMakeoverFigure('price-augmentation-saline')} (saline) or ${mommyMakeoverFigure('price-augmentation-silicone')} (silicone), a breast lift at ${mommyMakeoverFigure('price-lift')} without implants, and Lipo 360 at ${mommyMakeoverFigure('price-lipo-360')}. Combining two procedures takes ${mommyMakeoverFigure('price-combination-discount')} off the total, and three take ${mommyMakeoverFigure('price-combination-discount', 1)} off. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Prices are estimates and may change. Financing is available, subject to credit approval.`,
         },
         {
             question: 'Does insurance cover a mommy makeover?',
-            answer: 'No, mommy makeovers are elective cosmetic procedures and not covered by insurance. Financing is available through Cherry, CareCredit and United Credit, subject to credit approval.',
+            answer: `Usually not. ASPS says most health insurance plans do not cover tummy tuck or breast lift surgery or their complications, and will not cover cosmetic breast augmentation. Ask your insurer about your own plan. Financing is available through ${getFinancingPartnersString()}, subject to credit approval.`,
         },
         {
-            question: 'What is a mini mommy makeover?',
-            answer: 'A mini mommy makeover includes a mini tummy tuck (lower abdomen only) combined with breast surgery. A mini tummy tuck is $3,000 on the practice price list, against $4,500 for a full one. It has a shorter recovery time and suits mothers with moderate post-pregnancy changes.',
+            question: 'What is a mini mommy makeover, and what does it cost?',
+            answer: `The name has no fixed definition, so ask any clinic which parts it includes. If it means a mini tummy tuck with breast surgery, note that on our price list a mini tummy tuck doesn't include muscle repair: it starts at ${mommyMakeoverFigure('price-mini-tummy-tuck')}, against ${mommyMakeoverFigure('price-full-tummy-tuck')} for a full tummy tuck. Whether a mini fits depends on where your loose skin sits and whether your muscles have separated, which ${KARLINSKY_SHORT_NAME} tells you at your exam.`,
         },
         {
-            question: 'What procedures are included in a mommy makeover?',
-            answer: 'A typical mom makeover includes breast augmentation or lift (or both), tummy tuck, and liposuction. The exact combination is customized to your needs and may also include an arm lift or a thigh lift.',
-        },
-        {
-            question: 'What is the recovery time for a mommy makeover?',
-            answer: 'Most patients return to light activities within 2-3 weeks and can do school pickup by week 2-3. Full recovery, including return to exercise, typically takes 4-6 weeks. Plan for childcare help during the first two weeks.',
-        },
-        {
-            question: 'When can I see mommy makeover before and after results?',
-            answer: "You'll see dramatic improvement immediately, but final results emerge over 3-6 months as swelling resolves. Most mothers feel confident in swimwear by month 3.",
-        },
-        {
-            question: 'Is a mommy makeover safe?',
-            answer: `Like all surgeries, a mommy makeover carries risks, and combining procedures makes the surgery longer. At Alluring Plastic Surgery, ${KARLINSKY_NAME} performs every mommy makeover and reviews your health, your plan and how long your surgery will take with you at your consultation.`,
+            question: 'Am I a good candidate for a mommy makeover?',
+            answer: `ASPS describes candidates as women in good medical health, at their ideal body weight, finished with childbearing and with realistic expectations. Not smoking, a stable weight and enough time since your last baby and since breastfeeding matter too. ${KARLINSKY_SHORT_NAME} tells you at your consultation, including when it isn't the right choice.`,
         },
         {
             question:
-                'How soon can I have a mommy makeover after giving birth?',
-            answer: 'We recommend waiting at least 6 months after giving birth and finishing breastfeeding. This allows your body to stabilize and your breast tissue to settle into its final shape.',
+                'How soon after having a baby can I have a mommy makeover?',
+            answer: `Kristy Hamilton, MD, quoted by ASPS, tells patients to wait at least ${mommyMakeoverFigure('timing-delivery')} after delivery, longer if their body is still changing, and to have stopped breastfeeding for at least ${mommyMakeoverFigure('timing-breastfeeding')}, preferably ${mommyMakeoverFigure('timing-breastfeeding', 1)}. Nneamaka Nwubah, MD, also quoted by ASPS, calls ${mommyMakeoverFigure('timing-delivery', 1)} the sweet spot. There is no one rule, so ${KARLINSKY_SHORT_NAME} looks at where you are at your consultation.`,
         },
         {
             question:
                 'Can I have a mommy makeover if I plan to have more children?',
-            answer: 'While medically safe, we recommend completing your family first. Future pregnancies can affect results, particularly the tummy tuck portion.',
+            answer: 'You can, but the usual advice is to wait until you are done. ASPS advises women who may want future pregnancies to postpone a tummy tuck, and The Aesthetic Society says pregnancy or weight gain afterward may compromise your results. A 2023 review of studies on pregnancy after a tummy tuck found no deaths of mothers or babies (Karunaratne and colleagues, Aesthetic Plastic Surgery, 2023).',
+        },
+        {
+            question: 'Is a mommy makeover safe?',
+            answer: `Every surgery carries risk, and combining procedures adds some. In an insurance database of ${mommyMakeoverFigure('major-complications')}, major complications followed ${mommyMakeoverFigure('major-complications', 1)} of tummy tucks done alone, ${mommyMakeoverFigure('major-complications', 3)} of those with a breast procedure and ${mommyMakeoverFigure('major-complications', 4)} of those with liposuction and a breast procedure (Winocour and colleagues, 2015). A 2026 review of ${mommyMakeoverFigure('combined-meta-2026')} found the risk of a tummy tuck with breast surgery comparable to a tummy tuck alone and higher than breast surgery alone (Skorochod and Wolf). Blood clots followed ${mommyMakeoverFigure('vte-combined', 2)} of combined cosmetic procedures and ${mommyMakeoverFigure('vte-combined', 3)} of single ones, and the study calls the overall rate relatively low (Winocour and colleagues, 2017). ${KARLINSKY_SHORT_NAME} reviews your plan's length and your health with you.`,
+        },
+        {
+            question: 'What is the recovery time for a mommy makeover?',
+            answer: `Plan on about ${mommyMakeoverFigure('work-2-weeks')} off work and someone else caring for small children for at least ${mommyMakeoverFigure('children-2-weeks')} (The Aesthetic Society). You may be comfortable driving in ${mommyMakeoverFigure('driving-2-3-weeks')}, lifting your children waits ${mommyMakeoverFigure('lifting-children-4-6-weeks')} and strenuous activity about ${mommyMakeoverFigure('strenuous-6-weeks')}. Your surgeon's instructions come first.`,
+        },
+        {
+            question: 'Can I drive after a mommy makeover?',
+            answer: `The Aesthetic Society says you may be comfortable enough to drive in ${mommyMakeoverFigure('driving-2-3-weeks')}, or when your sutures and drains are out and you are no longer taking pain medication. Your surgeon clears you to drive.`,
         },
         {
             question: 'Does a mommy makeover leave scars?',
-            answer: 'Yes, but scars are strategically placed in the bikini line and breast crease—hidden by underwear and swimwear. Scars fade significantly over 6-12 months, and we provide scar care guidance.',
+            answer: `Yes. The Aesthetic Society says you will likely have scars hidden in your bikini line or under your bra, and that fading and flattening take ${mommyMakeoverFigure('scars-6m-2y')} to ${mommyMakeoverFigure('scars-6m-2y', 1)}. A tummy tuck scar becomes thinner and lighter in color at around ${mommyMakeoverFigure('scar-12-18-months')} (Cindy Wu, MD, on the ASPS website).`,
         },
         {
-            question: 'How long do the results of a mommy makeover last?',
-            answer: 'With stable weight and no future pregnancies, results are long-lasting. Muscle repair and skin removal are permanent. Breast implants are not lifetime devices and may need to be replaced.',
+            question:
+                'When will I see my mommy makeover results, and how long do they last?',
+            answer: `After a tummy tuck, swelling keeps going down until about ${mommyMakeoverFigure('swelling-3-months')} (Cindy Wu, MD), and your final mommy makeover result can take ${mommyMakeoverFigure('results-6-12-months', 1)} to a year (Frank Campanile, MD, both on the ASPS website). Results can last with a stable weight, but The Aesthetic Society says pregnancy or weight gain may compromise them, and the FDA says breast implants are not considered lifetime devices.`,
+        },
+        {
+            question: 'What should I ask at a mommy makeover consultation?',
+            answer: 'Ask who performs your surgery and what board certifies them, which procedures your plan includes and why, how long your surgery will take and when a plan is split into two surgeries, what is done to prevent blood clots, where the surgery takes place, exactly what your quote includes, and how many nights to stay in Miami before flying home.',
+        },
+        {
+            question:
+                'I live in another state. Can I have my mommy makeover at Alluring?',
+            answer: `Yes. You can start with a virtual consultation. ${KARLINSKY_SHORT_NAME} sets your plan, your surgery, pre-op and follow-up dates are confirmed in writing, and she tells you how many nights to stay in Miami before you are cleared to fly home. You arrange your own travel and stay: the practice doesn't coordinate them.`,
         },
     ],
 }
