@@ -43,8 +43,12 @@ describe('registry integrity', () => {
         // mommy-makeover-miami-candidate-checklist,
         // mommy-makeover-questions-miami), the nine breast augmentation posts
         // folded in the 2026-11-03 rewrite, and the never-published 5-weeks
-        // entry.
-        expect(liveBlog.length).toBe(117)
+        // entry, plus the six written that day
+        // (breast-implants-over-or-under-the-muscle,
+        // saline-vs-silicone-breast-implants, how-long-do-breast-implants-last,
+        // capsular-contracture, breast-implant-rippling-bottoming-out,
+        // mammograms-breastfeeding-with-breast-implants).
+        expect(liveBlog.length).toBe(123)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 

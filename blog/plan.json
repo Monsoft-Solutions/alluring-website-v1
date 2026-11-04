@@ -848,9 +848,32 @@
       "dependsOn": "BA hero pick by 21 Oct (fallback: ship BA in week 4 alongside PR-D as a one-off two-PR week; alternative: BA week 5 and BL week 6); 20% answer; PR-A1 merged; user merges",
       "metric": "Page-level position for 'breast augmentation miami', against the week-1 28-day baseline (68.2): 35 or better at day 28 (30 Nov) and 25 or better at day 56 (28 Dec). First organic page lead by day 56.",
       "rationale": "For 'breast augmentation miami' the page ranks 63.1 over 90 days (646 impressions) and 68.2 over 28 days. The query averages 56.9 across URLs because the before-after post ranks 19. The page gets 45 organic landings per 90 days. BA leads close at 14.7%, about $551 a lead. The 20% answer gates every BA figure (title, #pricing body, financing line); if the sheet prices are after the discount, they fall under 456.062. The module's #implants section owns 'saline vs silicone' and the other implant-type queries already in the page's registry ownsQueries. Form-stable ('gummy bear') implants are named only if the practice confirms it offers them. The worktree sits 13 commits behind origin/master with 10 uncommitted changes. It is rebased onto post-PR-A master and the form fix is dropped from it, since that shipped as the 12 Oct hotfix. Before merge it must pass the site-claims check and the procedure-page skill checks; it ships before the week-4 CI lint, so that check is the gate.",
-      "status": "todo",
-      "notes": "",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: PR #363 (merge 7c3ba146), deployed that day. Title shipped: 'Breast Augmentation Miami 2026 | Saline From $3,500'. Build folder (local, gitignored): implementation-plans/2026-11-03-ba-blog-rewrite/.",
+      "liveOn": "2026-11-04"
+    },
+    {
+      "id": "w1-new-post-breast-augmentation-decision-cluster-2026-11-04",
+      "week": 3,
+      "type": "new-post",
+      "cluster": "breast-augmentation",
+      "url": "/blog/breast-implants-over-or-under-the-muscle, /blog/saline-vs-silicone-breast-implants, /blog/how-long-do-breast-implants-last, /blog/capsular-contracture, /blog/breast-implant-rippling-bottoming-out, /blog/mammograms-breastfeeding-with-breast-implants",
+      "title": "6 new breast augmentation posts for readers still deciding, and 5 more rewrites",
+      "targetQueries": [
+        "capsular contracture",
+        "saline vs silicone breast implants",
+        "how long do breast implants last",
+        "over or under the muscle"
+      ],
+      "readerStage": "deciding",
+      "owner": "claude-code",
+      "effort": "L",
+      "dependsOn": "",
+      "metric": "Clicks, CTR and impressions against the 4 Nov baselines at day 28, 56 and 90.",
+      "rationale": "Keyword Planner shows demand before surgery with no page: capsular contracture 12,100, saline vs silicone 5,400, how long implants last 3,600, over or under the muscle 2,900.",
+      "status": "live",
+      "liveOn": "2026-11-04",
+      "notes": "Live 4 Nov 2026 on v2, with 5 more rewrites: recovery hub, scars, implant illness, swim, massage. Push-ups diagram swapped at the same URL as the image canary; read on or after 18 Nov, then the other 6 images and Run B (size guide, 5 weeks, swelling, stitches, push-ups, drop and fluff), and add the push-ups line to BLOG_V2_SLUGS first."
     },
     {
       "id": "w3-fold-post-blog-breast-augmentation-miami-post-pregnancy-blog-best-age--34",
@@ -866,9 +889,9 @@
       "dependsOn": "PR-C",
       "metric": "Registry passes at 103 live. No folded BA URL ranks for 'breast augmentation miami' at day 28.",
       "rationale": "The before-after post ranks 19 for 'breast augmentation miami' against the page's 68 (28 days). The 10 folds hold 1,402 impressions and 3 clicks per 28 days.",
-      "status": "todo",
-      "notes": "",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: 9 folds. All 18 URLs answer 308 and the fold links ran. The folded rows are NOT deleted yet: the delete needs the user's run (prod-run/folds-delete/02-delete-folded.sql; rebuild first if anything changed). Re-read GSC for the destinations at day 28.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w3-rewrite-post-blog-breast-augmentation-candidate-quiz-blog-when-can-you-wo-35",
@@ -890,8 +913,8 @@
       "dependsOn": "PR-C deployed; contact sheet 2 days ahead; user runs psql; revalidate",
       "metric": "Day-28 (1 Dec): drive CTR from 0.35% to 0.8% or more. Batch clicks at or above the pre-rewrite level after adjusting by the holdout H's change.",
       "rationale": "Asymmetry FAQ: 5,955 impressions at 4.5, 94 clicks. Drop-fluff: 3,694 at 7.8. Drive: 13,892 per 90 days at 0.35%. Pain: 2,016 at 7.3. The size guide has 18,842 impressions and no BA-page links. Heroes follow the image policy, and the full SWEEP at 0 gates the batch.",
-      "status": "todo",
-      "notes": "",
+      "status": "doing",
+      "notes": "Quiz, work-out, pain and drive live 4 Nov 2026 on v2 (revision reason claude-blog-post). Swelling and drop and fluff wait for Run B, after the image canary readout on or after 18 Nov. Readouts day 28, 56, 90: 2 Dec, 30 Dec, 2 Feb. Baselines in the build folder.",
       "liveOn": null
     },
     {
@@ -1403,9 +1426,9 @@
       "dependsOn": "User runs psql",
       "metric": "Day-28 (29 Dec, holiday-flagged): bra CTR 0.8% or more, side-sleep at 9 or better. Day-56 (26 Jan).",
       "rationale": "Bra: 2,333 impressions at 8.7, 0.17% CTR. Side sleep: 526 at 12.8.",
-      "status": "todo",
-      "notes": "",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026 on v2, as full rewrites.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w7-page-fix-what-to-eat-after-liposuction-optional-blog-tummy-tuck-vs-li-61",
@@ -1935,7 +1958,7 @@
       "metric": "Gate (9 Feb): the 21-day click change minus the control's change is -5 points or better. Day-28 (16 Feb): size-guide CTR 0.9% or more. Day-56 (16 Mar).",
       "rationale": "Size guide: 18,842 impressions at 3.3, 0.55% CTR, a Perplexity miss. Stitches: 5,382 at 5.0. Every batch through R9 has its day-28 read by 12 Jan, and R10's read (19 Jan) lands before P2. Heroes were already replaced in week 2. The frozen control is the 9 protected posts not yet rewritten (P2-P4) plus the position-matched lipo set. No new BA post or sitewide link change ships in its window.",
       "status": "todo",
-      "notes": "",
+      "notes": "Rewrites built in PR #363; SQL waits for Run B after the image canary readout on or after 18 Nov 2026.",
       "liveOn": null
     },
     {

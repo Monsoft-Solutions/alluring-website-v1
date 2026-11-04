@@ -1,7 +1,7 @@
 {
   "slug": "how-long-do-breast-implants-last",
   "id": "6e3390f7-b4de-44be-8147-6ff2b2d04a16",
-  "mode": "new",
+  "mode": "rewrite",
   "reader": "deciding",
   "cluster": "breast-augmentation",
   "title": "How Long Do Breast Implants Last? When to Replace Them",
@@ -377,5 +377,7 @@
     "checkedAt": "2026-11-04T03:33:54.986Z",
     "overlay": 0,
     "database": "localhost:5432/alluring_wt_feat_breast_augmentation_page_module"
-  }
+  },
+  "base_md5": "f6386959ae6b0ee5cdb838fac43ae23b",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T15:01:49Z"
 }
