@@ -873,7 +873,7 @@
       "rationale": "Keyword Planner shows demand before surgery with no page: capsular contracture 12,100, saline vs silicone 5,400, how long implants last 3,600, over or under the muscle 2,900.",
       "status": "live",
       "liveOn": "2026-11-04",
-      "notes": "Live 4 Nov 2026 on v2, with 5 more rewrites: recovery hub, scars, implant illness, swim, massage. Push-ups diagram swapped at the same URL as the image canary; read on or after 18 Nov, then the other 6 images and Run B (size guide, 5 weeks, swelling, stitches, push-ups, drop and fluff), and add the push-ups line to BLOG_V2_SLUGS first."
+      "notes": "Live 4 Nov 2026 on v2, with 5 more rewrites: recovery hub, scars, implant illness, swim, massage. Push-ups diagram swapped at the same URL as the image canary; read on or after 18 Nov, then the other 6 images and Run B (size guide, 5 weeks, swelling, stitches, push-ups, drop and fluff), and add the push-ups line to BLOG_V2_SLUGS first. Swelling, stitches and drop and fluff also went live 4 Nov, ahead of the 18 Nov readout, by the user's decision: swelling and stitches keep no live image, and drop and fluff's 2 images, with 20 image clicks in the baseline, were swapped at the same URLs. Waiting for the readout: size guide, 5 weeks, push-ups."
     },
     {
       "id": "w3-fold-post-blog-breast-augmentation-miami-post-pregnancy-blog-best-age--34",

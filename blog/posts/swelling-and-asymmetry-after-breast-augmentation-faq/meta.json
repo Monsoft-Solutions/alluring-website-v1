@@ -1,8 +1,8 @@
 {
   "slug": "swelling-and-asymmetry-after-breast-augmentation-faq",
   "mode": "rewrite",
-  "base_md5": "b43d02ab15470926fb3a9eae6f4a3adc",
-  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T10:55:09Z",
+  "base_md5": "09144ff4fb01018fd11af70f5e24d010",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T16:52:02Z",
   "reader": "recovering",
   "cluster": "breast-augmentation",
   "title": "Swelling and Asymmetry After Breast Augmentation: FAQ",

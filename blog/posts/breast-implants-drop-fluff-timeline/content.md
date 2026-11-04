@@ -11,11 +11,11 @@ The phrase covers two changes that happen together:
 - **Drop:** as tight muscles relax, the implant moves to a lower, more natural-looking position on your chest.
 - **Fluff:** the implant fills out the lower part of the breast, and the shape becomes smoother, softer and rounder.
 
-![Three side-view line drawings of breast implant settling, labeled early post-op, drop and fluff, with the implant sitting lower and rounder from the first to the third.](IMAGE:sequence-diagram)
+![Breast implants drop and fluff sequence, with three side-view outlines of a torso in a plain high-neck top and a dashed implant shape, one per row. 1 Early Post-Op: the implant sits high. 2 Drop: it sits lower. 3 Fluff: it sits lower and rounder. Each drawing has lines to the upper pole, the implant pocket and the lower pole. Illustration only, and timing varies. Source: Dr. Eric Mariotti, article on the ASPS website.](IMAGE:sequence-diagram)
 
 Treat the dates on the drawing below as a rough guide, because the pace of healing varies.
 
-![Diagram of breast implant drop and fluff: the implant moves down, then the tissue relaxes and the shape softens and rounds out. A timeline runs from week 1, high and firm, through months 2–3 and 3–6 months to final shape at 6+ months.](IMAGE:drop-fluff-diagram)
+![Breast implants drop and fluff timeline, with two side-view outlines of a torso in a plain high-neck top and a dashed implant shape. The whole process can take 3–6 months. 1) Drop: the implant moves to a lower, more natural-looking position. 2) Fluff: the implant fills out the lower breast, and the shape gets softer and rounder. Week 1: high and tight. Weeks 2–3: starting to settle. Weeks 4–6: softer, may still sit high. Months 2–3: final results begin to show around month 3. Months 3–6: the process can finish. Up to 12 months: subtle changes only. Timing varies. Sources: articles on the ASPS website; University of Utah Health.](IMAGE:drop-fluff-diagram)
 
 ## Drop and fluff week by week
 
