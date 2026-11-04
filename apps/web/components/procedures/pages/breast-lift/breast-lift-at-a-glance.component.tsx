@@ -1,4 +1,11 @@
-import { moduleSectionPad } from '@/components/procedures/module-kit/module-ui.constant'
+import Link from 'next/link'
+import { cn } from '@workspace/ui/lib/utils'
+
+import {
+    moduleBody,
+    moduleLink,
+    moduleSectionPad,
+} from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
 import {
     FactTable,
@@ -27,7 +34,7 @@ export function BreastLiftAtAGlance() {
         { label: 'Your surgeon', value: KARLINSKY_NAME },
         {
             label: 'Surgery time',
-            value: `Usually ${breastLiftFigure('surgery-time')} (Cleveland Clinic); your surgeon tells you how long yours takes`,
+            value: `${breastLiftFigure('surgery-time')} in one Cleveland Clinic source, ${breastLiftFigure('surgery-time', 1)} in another; your surgeon tells you how long yours takes`,
         },
         {
             label: 'Anesthesia and setting',
@@ -67,6 +74,17 @@ export function BreastLiftAtAGlance() {
             className={moduleSectionPad}
             answer='A breast lift, or mastopexy, raises breasts that have dropped by removing loose skin and tightening the tissue around them, and moves the nipple and areola higher; ASPS says it can make an enlarged areola smaller too. It changes shape and position, not size: for more fullness, it is combined with implants.'
         >
+            <p className={cn(moduleBody, 'mt-4.5')}>
+                Doctors call sagging ptosis, and they grade it by where the
+                nipple sits against the breast crease.{' '}
+                <Link
+                    href='/blog/breast-lift-candidate-checklist'
+                    className={moduleLink}
+                >
+                    How to tell if you need a breast lift
+                </Link>
+                .
+            </p>
             <FactTable
                 caption='Breast lift at Alluring, at a glance'
                 facts={facts}

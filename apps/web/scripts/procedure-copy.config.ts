@@ -140,9 +140,8 @@ const breastLift: ProcedureCopyConfig = {
         // The gallery's alt text for a lift with implants and Lipo 360 calls
         // it "360 liposuction": the procedure's name, not a figure.
         [/\b360 liposuction\b/g, ' all-round liposuction '],
-        // A gallery photo whose alt text is a file label ("… lofman 05");
-        // the admin should give it a real description.
-        [/\blofman 0?5\b/g, ' lofman '],
+        // Gallery alt text says how long after surgery a photo was taken.
+        [/\b\d+ (?:weeks?|months?|years?) post-op\b/gi, ' post-op '],
     ],
     rules: [
         {

@@ -45,6 +45,7 @@ import { BreastLiftProcedureSteps } from './breast-lift-procedure-steps.componen
 import { BreastLiftRecovery } from './breast-lift-recovery.component'
 import { BreastLiftSafety } from './breast-lift-safety.component'
 import { BreastLiftSurgeon } from './breast-lift-surgeon.component'
+import { BreastLiftTypes } from './breast-lift-types.component'
 
 /** Gallery items read for the results rail; the gallery link has the rest. */
 const GALLERY_POOL = 24
@@ -103,9 +104,9 @@ function isCreditedElsewhere(...urls: string[]): boolean {
  * (`implementation-plans/2026-09-30-breast-lift-page-rebuild/README.md`):
  * real results straight after the hero and a two-field form after them,
  * then the four prices, because a lift alone or with implants decides what
- * she pays, then what a breast lift is and who it suits, then the page's
- * one dark band: the four incisions and the scar each leaves, how often a
- * lift goes wrong, and what Florida law and the FDA set.
+ * she pays, then what a breast lift is, its four types and who it suits, then
+ * the page's one dark band: how often a lift goes wrong, and what Florida law
+ * and the FDA set.
  *
  * The page owns a lift with implants (augmentation-mastopexy); the breast
  * augmentation page owns implants alone and links here.
@@ -154,6 +155,7 @@ export async function BreastLiftPage({ procedure }: ProcedurePageModuleProps) {
             ? [{ label: 'Results', href: '#results' } as const]
             : []),
         { label: 'Cost', href: '#pricing' },
+        { label: 'Types', href: '#types' },
         { label: 'Safety', href: '#safety' },
         { label: 'Surgeon', href: '#surgeon' },
         { label: 'Recovery', href: '#recovery' },
@@ -179,11 +181,12 @@ export async function BreastLiftPage({ procedure }: ProcedurePageModuleProps) {
                 breadcrumb='Breast lift'
                 lede={
                     <>
-                        A breast lift raises breasts that have dropped after
-                        pregnancy, nursing, weight loss or with age, by removing
-                        loose skin and moving the nipple higher. It can be done
-                        on its own or with implants. At Alluring, one surgeon
-                        performs every breast lift: {KARLINSKY_NAME}.
+                        A breast lift, or mastopexy, raises breasts that have
+                        dropped after pregnancy, nursing, weight loss or with
+                        age. Loose skin comes off and the nipple moves higher.
+                        You can have it with or without implants, and at
+                        Alluring one surgeon performs every breast lift:{' '}
+                        {KARLINSKY_NAME}.
                     </>
                 }
                 rating={rating}
@@ -220,6 +223,7 @@ export async function BreastLiftPage({ procedure }: ProcedurePageModuleProps) {
                     <BreastLiftCost pricing={procedure.pricing} />
                 )}
                 <BreastLiftAtAGlance />
+                <BreastLiftTypes />
                 <BreastLiftCandidate />
             </ModuleBand>
 
@@ -254,7 +258,7 @@ export async function BreastLiftPage({ procedure }: ProcedurePageModuleProps) {
             />
             <ModuleSources
                 sources={breastLiftSources}
-                answer="Every recovery, results and safety figure on this page, the Florida rules, the FDA's implant rules and the national average fee come from the sources below, checked in September 2026. Our own figures, the prices, are stated as ours. Your surgeon's instructions always come first, and they may differ from these general ranges."
+                answer="Every recovery, results and safety figure on this page, the Florida rules, the FDA's implant rules and the national average cost come from the sources below, checked in November 2026. Our own figures, the prices, are stated as ours. Your surgeon's instructions always come first, and they may differ from these general ranges."
                 updatedOn={procedure.dateModified}
             />
 

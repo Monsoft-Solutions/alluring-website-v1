@@ -5,13 +5,13 @@ import {
     KARLINSKY_NAME,
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
-// The 16:9 crop of the hero: og:image, the home cards, procedure cards, the
-// sitemap and the paid landing page hero. A local preview of candidate 2
-// (Coconut Grove banyan), picked 2026-10-28, until the final goes to Blob
-// and this becomes the URL the upload returns. The old `/images/procedures/
-// breast-lift.jpg` (a lingerie crop on the chest, which breaks the image
-// rules) is no longer read by this file; the quiz still reads it.
-const HERO_WIDE = '/_local-preview/breast-lift-hero-wide-candidate-2.jpg'
+// The 16:9 crop of the hero (candidate 2, the Coconut Grove banyan, picked
+// 2026-10-28): og:image, the home cards, procedure cards, the sitemap and the
+// paid landing page hero. The old `/images/procedures/breast-lift.jpg` (a
+// lingerie crop on the chest, which breaks the image rules) is no longer read
+// by this file; the quiz still reads it.
+const HERO_WIDE =
+    'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/breast-lift/2026-11/hero-wide-alluring-plastic-surgery-miami.jpg'
 
 const HERO_WIDE_ALT =
     'Woman with long chestnut waves in a white short-sleeved midi dress on a shaded Coconut Grove garden path, banyan roots and crotons around her'
@@ -42,11 +42,11 @@ export const breastLiftMiami: Procedure = {
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
     shortDescription: `Breast lift in Miami: ${breastLiftFigure('price-lift')} without implants, ${breastLiftFigure('price-lift-saline')} with saline and ${breastLiftFigure('price-lift-silicone')} with silicone implants. Every breast lift at Alluring is performed by ${KARLINSKY_NAME}. Your surgeon confirms your price at consultation.`,
-    heroSubtitle: 'Your shape back, with or without implants, by one surgeon',
+    heroSubtitle: 'A higher, firmer shape, with or without implants',
     category: 'breast',
     bodyLocation: 'Breast',
     image: HERO_WIDE,
-    dateModified: '2026-10-28T00:00:00.000Z',
+    dateModified: '2026-11-04T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing: a breast lift without implants. The modified lift
@@ -112,15 +112,14 @@ export const breastLiftMiami: Procedure = {
         'mastopexy miami',
         'breast lift cost miami',
         'breast lift with implants miami',
-        'breast lift without implants',
-        'breast lift scars',
-        'breast lift recovery',
-        'breast lift after pregnancy',
+        'breast lift surgeon miami',
+        'breast lift before and after miami',
     ],
     quickStats: {
-        // Cleveland Clinic's range (`breast-lift.facts.ts` surgery-time). How
-        // long a lift takes at Alluring is an owner question.
-        duration: '1 to 2 Hours, Usually',
+        // Cleveland Clinic's two pages give 1–2 and 2.5–3 hours
+        // (`breast-lift.facts.ts` surgery-time). How long a lift takes at
+        // Alluring is an owner question.
+        duration: 'About 1 to 3 Hours',
         anesthesia: 'General Anesthesia, Usually',
         // `breast-lift.facts.ts` work-about-1-week. Also the graph's
         // `followup`, the paid landing page's stats and `/llms-full.txt`.
@@ -202,6 +201,10 @@ export const breastLiftMiami: Procedure = {
             answer: "A breast lift raises breasts that have dropped and reshapes them with your own tissue, and ASPS says it doesn't significantly change their size. A breast augmentation adds size with implants but, on its own, isn't enough to lift breasts that sag (Lawrence Iteld, MD, on the ASPS website). When you want both, they are combined in a lift with implants.",
         },
         {
+            question: 'Can you get a breast lift without implants?',
+            answer: "Yes. A lift on its own raises and reshapes your own breast tissue and moves the nipple higher, and ASPS says it doesn't significantly change your size. It suits you if you like your size and want it higher and firmer. If you also want more fullness, your surgeon can tell you at your exam whether implants make sense.",
+        },
+        {
             question:
                 'Can I have a breast lift and implants in the same surgery?',
             answer: `Often, yes. ASPS says implants can go in during the lift or in a second surgery, depending on the surgeon, and with more sagging two surgeries can be the safer plan (Jaime Schwartz, MD, on the ASPS website). A 2014 review of ${breastLiftFigure('lift-with-implants-review')} found that ${breastLiftFigure('lift-with-implants-review', 1)} of patients had another operation after a lift with implants in one surgery (Khavanin and colleagues). Your surgeon tells you which plan is safer for you.`,
@@ -226,7 +229,7 @@ export const breastLiftMiami: Procedure = {
         },
         {
             question: 'Will I lose nipple sensation after a breast lift?',
-            answer: `You may, for a while. Cleveland Clinic says numbness in the nipples and breasts usually returns over a few weeks or months, some people are numb for up to ${breastLiftFigure('sensation-up-to-1-year')}, and rarely the loss is permanent. With the usual techniques the nipple stays attached to the tissue beneath it, which helps preserve sensation (The Aesthetic Society).`,
+            answer: `You may, for a while. Cleveland Clinic says feeling in the nipples and breasts gradually returns over a few weeks or months, some people are numb for up to ${breastLiftFigure('sensation-up-to-1-year')}, and rarely the loss is permanent. With the usual techniques the nipple stays attached to the tissue beneath it, which helps preserve sensation (The Aesthetic Society).`,
         },
         {
             question: 'Can I breastfeed after a breast lift?',
@@ -234,7 +237,7 @@ export const breastLiftMiami: Procedure = {
         },
         {
             question: 'How long do breast lift results last?',
-            answer: 'ASPS calls the results long-lasting, but your breasts keep changing with age and gravity, and a pregnancy can undo much of the lift. Keeping your weight stable helps, and Cleveland Clinic says the results should last several years. No source gives a set number of years.',
+            answer: 'ASPS calls the results long-lasting, but your breasts keep changing with age and gravity, and a pregnancy can undo much of the lift. Keeping your weight stable helps, and Cleveland Clinic says the results should last several years. The sources do not agree on a set number of years.',
         },
         {
             question:
@@ -244,7 +247,11 @@ export const breastLiftMiami: Procedure = {
         {
             question:
                 'What should I know about implants in a lift with implants?',
-            answer: `The FDA says implants are not lifetime devices: the longer you have them, the more likely you are to need them removed or replaced. They carry a boxed warning, and your surgeon must review the FDA patient decision checklist with you before surgery, for you both to sign. With silicone implants, the FDA recommends a first ultrasound or MRI ${breastLiftFigure('fda-silicone-screening')} after surgery, then every ${breastLiftFigure('fda-silicone-screening', 1)}.`,
+            answer: `The FDA says implants are not lifetime devices: the longer you have them, the more likely you are to need them removed or replaced. They carry a boxed warning, your health care provider must review the FDA patient decision checklist with you, and the doctor implanting them must sign it. With silicone implants, the FDA recommends a first ultrasound or MRI ${breastLiftFigure('fda-silicone-screening')} after surgery, then every ${breastLiftFigure('fda-silicone-screening', 1)}.`,
+        },
+        {
+            question: 'Can you lift breasts without surgery?',
+            answer: "Not the way surgery does. A surgical lift removes stretched skin and moves the nipple higher. The FDA describes non-invasive body contouring as procedures that don't remove any tissue, and says no such device is cleared or approved for the breasts. Creams and exercise haven't been shown to lift breasts either.",
         },
         {
             question: 'Does insurance cover a breast lift?',

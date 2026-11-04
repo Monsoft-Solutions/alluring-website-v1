@@ -5,8 +5,6 @@ import {
 } from '@/components/procedures/module-kit/module-scene.component'
 import { breastLiftFigure } from '@/lib/data/procedures/facts/breast-lift.facts'
 
-import { BreastLiftPatternsDiagram } from './breast-lift-patterns.component'
-
 const law: ModuleSceneItem[] = [
     {
         title: `No more than ${breastLiftFigure('florida-8-hours')} of surgery in an office`,
@@ -18,15 +16,15 @@ const law: ModuleSceneItem[] = [
     },
     {
         title: 'The hospital, in writing',
-        body: 'Before office surgery under sedation or general anesthesia, your surgeon must give you, in writing, the name and location of the hospital where they have privileges or a transfer agreement.',
+        body: 'Before office surgery under sedation or general anesthesia, your surgeon must give you, in writing, the name and location of the hospital where the surgeon has privileges, or where the surgeon or the facility has a transfer agreement.',
     },
     {
-        title: 'With implants, a checklist you both sign',
-        body: 'Since 2021, breast implants carry an FDA boxed warning, and your surgeon must review the FDA patient decision checklist with you before surgery, for you both to sign.',
+        title: 'With implants, an FDA checklist to review and sign',
+        body: 'Since 2021, breast implants carry an FDA boxed warning. Your health care provider must review the FDA patient decision checklist with you, you get the chance to sign it, and the doctor implanting the device must sign it.',
     },
     {
         title: 'Implant ages set by the FDA',
-        body: `The FDA approves saline implants for cosmetic breast surgery from ${breastLiftFigure('fda-ages')} and silicone gel implants from ${breastLiftFigure('fda-ages', 1)}.`,
+        body: `The FDA approves saline implants for breast augmentation from ${breastLiftFigure('fda-ages')} and silicone gel implants from ${breastLiftFigure('fda-ages', 1)}.`,
     },
 ]
 
@@ -43,7 +41,7 @@ const evidence: ModuleSceneEvidence[] = [
     },
     {
         title: 'A lift with implants',
-        body: `A 2014 review of ${breastLiftFigure('lift-with-implants-review')} found that ${breastLiftFigure('lift-with-implants-review', 1)} of patients had another operation after a lift with implants in one surgery, most often because the breast sagged again (${breastLiftFigure('lift-with-implants-review', 2)}). Most of its studies followed patients for under ${breastLiftFigure('lift-with-implants-review', 4)} (Khavanin and colleagues, Plastic and Reconstructive Surgery, 2014).`,
+        body: `A 2014 review of ${breastLiftFigure('lift-with-implants-review')} found that ${breastLiftFigure('lift-with-implants-review', 1)} of patients had another operation after a lift with implants in one surgery. The most common complication was the breast sagging again (${breastLiftFigure('lift-with-implants-review', 2)}). Most of its studies followed patients for under ${breastLiftFigure('lift-with-implants-review', 4)} (Khavanin and colleagues, Plastic and Reconstructive Surgery, 2014).`,
         sourceId: 'khavanin-2014',
     },
     {
@@ -53,7 +51,7 @@ const evidence: ModuleSceneEvidence[] = [
     },
     {
         title: 'Nipple sensation',
-        body: `Numbness in the nipples and breasts usually returns over a few weeks or months; some people are numb for up to ${breastLiftFigure('sensation-up-to-1-year')}, and rarely the loss is permanent (Cleveland Clinic).`,
+        body: `You may lose some feeling in your nipples and breasts. It gradually returns over a few weeks or months; some people are numb for up to ${breastLiftFigure('sensation-up-to-1-year')}, and rarely the loss is permanent (Cleveland Clinic).`,
         sourceId: 'cleveland-clinic-breast-lift-center',
     },
 ]
@@ -70,11 +68,11 @@ const checklist = [
 ]
 
 /**
- * "Is a breast lift safe?" The page's one dark band and its signature scene:
- * the four incisions, from the shortest scar to the longest, beside how
- * often a lift goes wrong and what Florida law and the FDA set. Laid out by
- * the kit's `ModuleSceneSection`: the drawing sits between the answer and
- * the law on phones, and stays pinned beside the reading column from `lg`.
+ * "Is a breast lift safe?" The page's one dark band: how often a lift goes
+ * wrong and what Florida law and the FDA set. Laid out by the kit's
+ * `ModuleSceneSection`, with no drawing: the four incisions have their own
+ * section, "What are the types of breast lift?", because people search for
+ * them by name.
  *
  * The law is stated as the law, and the research as the research. Where
  * Alluring operates, which implants it uses and whether it stages a lift
@@ -100,7 +98,6 @@ export function BreastLiftSafety() {
                     matters.
                 </>
             }
-            diagram={<BreastLiftPatternsDiagram />}
             tabularFigures
             law={{
                 heading: 'What Florida law and the FDA set',
@@ -119,7 +116,7 @@ export function BreastLiftSafety() {
             evidence={{
                 items: evidence,
                 link: {
-                    label: 'Breast lift scars: where they sit and how they heal',
+                    label: 'Breast lift scars: where they are and how they fade',
                     href: '/blog/breast-lift-scars-miami',
                 },
             }}

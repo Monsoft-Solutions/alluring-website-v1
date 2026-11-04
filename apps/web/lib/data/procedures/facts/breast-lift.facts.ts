@@ -8,9 +8,9 @@
  * age, study or patient figure that is not declared below, or states a
  * declared figure in a sentence about something else.
  *
- * Every source was read on 2026-09-30: the ASPS, Cleveland Clinic, Aesthetic
+ * Every source was read on 2026-11-03: the ASPS, Cleveland Clinic, Aesthetic
  * Society and FDA pages from their own text, the Florida rule from its
- * official .doc on flrules.org, the studies from their PubMed abstracts.
+ * official .doc on flrules.org, the studies from their PubMed abstracts (through NCBI's E-utilities, since PubMed's site put a cookie wall in front of the fetch).
  * Surgeon-written posts on the ASPS website are attributed to their author,
  * because ASPS says they are the author's views, not the society's; ASPS
  * news articles that quote a surgeon are attributed to that surgeon,
@@ -53,6 +53,7 @@ export type BreastLiftSourceId =
     | 'asps-iteld-2023'
     | 'asps-schwartz-2015'
     | 'asps-horton-2025'
+    | 'fda-body-contouring'
     | 'cleveland-clinic-breast-lift'
     | 'cleveland-clinic-breast-lift-center'
     | 'aesthetic-society-breast-lift-procedure'
@@ -77,7 +78,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2024-09-16',
         url: 'https://www.flrules.org/gateway/ruleNo.asp?id=64B8-9.009',
         attribution:
-            'Read on 2026-09-30 from the rule\'s official text (effective 9/16/2024). It has no provision specific to breast surgery or implants (the word "breast" does not appear), so its general office-surgery limits apply to a breast lift done in a physician\'s office. (2)(g): "the maximum planned duration of all surgical procedures combined must not exceed 8 hours" and "the patient must be discharged within 24 hours of presenting to the office for surgery". (2)(p): the surgeon gives the patient "in writing, prior to the procedure, the name and location of the hospital where the surgeon has privileges … or … a transfer agreement." All of it governs office surgery, not hospitals or licensed surgery centers. Never claim where Alluring operates until the owner confirms it.',
+            'Read on 2026-11-03 from the rule\'s official text (effective 9/16/2024). It has no provision specific to breast surgery or implants (the word "breast" does not appear), so its general office-surgery limits apply to a breast lift done in a physician\'s office. (2)(g): "the maximum planned duration of all surgical procedures combined must not exceed 8 hours" and "the patient must be discharged within 24 hours of presenting to the office for surgery". (2)(p): the surgeon gives the patient "in writing, prior to the procedure, the name and location of the hospital where the surgeon has privileges … or … a transfer agreement." All of it governs office surgery, not hospitals or licensed surgery centers. Never claim where Alluring operates until the owner confirms it.',
     },
     {
         id: 'fda-types-breast-implants',
@@ -86,7 +87,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2019-10-23',
         url: 'https://www.fda.gov/medical-devices/breast-implants/types-breast-implants',
         attribution:
-            'Content current as of 10/23/2019, read on 2026-09-30: "The FDA approved saline-filled breast implants for breast augmentation in women age 18 or older and for breast reconstruction in women of any age." "Silicone gel-filled breast implants are approved for breast augmentation in women age 22 or older". "Breast implants are not lifetime devices. The longer a woman has implants, the more likely it is that she will need to have surgery to remove or replace them." The FDA\'s ages, not the practice\'s policy.',
+            'Content current as of 10/23/2019, read on 2026-11-03: "The FDA approved saline-filled breast implants for breast augmentation in women age 18 or older and for breast reconstruction in women of any age." "Silicone gel-filled breast implants are approved for breast augmentation in women age 22 or older". "Breast implants are not lifetime devices. The longer a woman has implants, the more likely it is that she will need to have surgery to remove or replace them." The FDA\'s ages, not the practice\'s policy.',
     },
     {
         id: 'fda-things-to-consider',
@@ -95,7 +96,15 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2023-03-08',
         url: 'https://www.fda.gov/medical-devices/breast-implants/things-consider-getting-breast-implants',
         attribution:
-            'Content current as of 03/08/2023, read on 2026-09-30. On October 27, 2021 the FDA approved new labeling for all breast implants with a "Boxed warning" and a "Patient decision checklist, which must be reviewed with the prospective patient by the health care provider … The patient must be given the opportunity to initial and sign the patient decision checklist and it must be signed by the physician implanting the device." Also: "Breast implants are not lifetime devices. The longer you have your implants, the more likely it will be for you to have them removed or replaced." "Even if you have complications, the cost of implant removal or implant replacement may not be covered by insurance."',
+            'Content current as of 03/08/2023, read on 2026-11-03. On October 27, 2021 the FDA approved new labeling for all breast implants with a "Boxed warning" and a "Patient decision checklist, which must be reviewed with the prospective patient by the health care provider … The patient must be given the opportunity to initial and sign the patient decision checklist and it must be signed by the physician implanting the device." Also: "Breast implants are not lifetime devices. The longer you have your implants, the more likely it will be for you to have them removed or replaced." "Even if you have complications, the cost of implant removal or implant replacement may not be covered by insurance."',
+    },
+    {
+        id: 'fda-body-contouring',
+        publisher: 'U.S. Food and Drug Administration (FDA)',
+        title: 'Non-Invasive Body Contouring Technologies',
+        url: 'https://www.fda.gov/medical-devices/aesthetic-cosmetic-devices/non-invasive-body-contouring-technologies',
+        attribution:
+            'Read on 2026-11-03: non-invasive body contouring means "non-surgical procedures that do not remove any tissue (fat or skin) from the body." "There are no FDA cleared or approved non-invasive body contouring devices for treating the breasts in males or females."',
     },
     {
         id: 'fda-labeling-guidance-2020',
@@ -104,7 +113,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2020-09-29',
         url: 'https://www.fda.gov/media/131885/download',
         attribution:
-            'Guidance issued 2020-09-29, read on 2026-09-30. For silicone gel implants: "Even if you have no symptoms, you should have your first ultrasound or MRI at 5-6 years after your initial implant surgery and then every 2-3 years thereafter." Its checklist rates (sensation changes "up to 35%" and others) are the highest rates in any implant approval study, not breast lift rates: never publish them as lift risks.',
+            'Guidance issued 2020-09-29, read on 2026-11-03. For silicone gel implants: "Even if you have no symptoms, you should have your first ultrasound or MRI at 5-6 years after your initial implant surgery and then every 2-3 years thereafter." Its checklist rates (sensation changes "up to 35%" and others) are the highest rates in any implant approval study, not breast lift rates: never publish them as lift risks.',
     },
     {
         id: 'asps-breast-lift',
@@ -112,7 +121,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'Breast Lift (Mastopexy)',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift',
         attribution:
-            'Read on 2026-09-30: a breast lift "raises the breasts by removing excess skin and tightening the surrounding tissue to reshape and support the new breast contour"; "Sometimes the areola becomes enlarged over time, and a breast lift will reduce this as well." "Breast lift surgery does not significantly change the size of your breasts or round out the upper part of your breast. If you want your breasts to look fuller, consider breast lift and breast augmentation." No date shown.',
+            'Read on 2026-11-03: a breast lift "raises the breasts by removing excess skin and tightening the surrounding tissue to reshape and support the new breast contour"; "Sometimes the areola becomes enlarged over time, and a breast lift will reduce this as well." "Breast lift surgery does not significantly change the size of your breasts or round out the upper part of your breast. If you want your breasts to look fuller, consider breast lift and breast augmentation." No date shown.',
     },
     {
         id: 'asps-breast-lift-cost',
@@ -120,7 +129,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'How much does a breast lift cost?',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/cost',
         attribution:
-            'Read on 2026-09-30: "The average cost of a breast lift (mastopexy) is $6,816, according to the latest statistics from the American Society of Plastic Surgeons. This average cost is only part of the total price – it does not include anesthesia, operating room facilities or other related expenses." "Most health insurance plans do not cover breast lift surgery or its complications". The page gives no year, and the 2025 ASPS statistics report has no fee table, so the copy gives none.',
+            'Read on 2026-11-03: "The average cost of a breast lift (mastopexy) is $6,816, according to the latest statistics from the American Society of Plastic Surgeons. This average cost is only part of the total price – it does not include anesthesia, operating room facilities or other related expenses." "Most health insurance plans do not cover breast lift surgery or its complications". The page gives no year, and the 2025 ASPS statistics report has no fee table, so the copy gives none.',
     },
     {
         id: 'asps-breast-lift-candidates',
@@ -128,7 +137,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'Who is a good candidate for breast lift surgery?',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/candidates',
         attribution:
-            'Read on 2026-09-30: "You are physically healthy and maintain a stable weight", "You do not smoke", "When unsupported, your nipples fall below the breast crease", "Your nipples and areolas point downward", "You have stretched skin and enlarged areolas", "One breast is lower than the other". No BMI, age or weight-stability period.',
+            'Read on 2026-11-03: "You are physically healthy and maintain a stable weight", "You do not smoke", "When unsupported, your nipples fall below the breast crease", "Your nipples and areolas point downward", "You have stretched skin and enlarged areolas", "One breast is lower than the other". No BMI, age or weight-stability period.',
     },
     {
         id: 'asps-breast-lift-preparation',
@@ -136,7 +145,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'How should I prepare for breast lift surgery?',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/preparation',
         attribution:
-            'Read on 2026-09-30: arrange "for someone to drive you to and from surgery and to stay with you for at least the first night following surgery"; "Get a baseline mammogram before surgery and another one after surgery". Its sentence on where a lift may be performed is ASPS\'s general statement, never about Alluring.',
+            'Read on 2026-11-03: arrange "for someone to drive you to and from surgery and to stay with you for at least the first night following surgery"; "Get a baseline mammogram before surgery and another one after surgery". Its sentence on where a lift may be performed is ASPS\'s general statement, never about Alluring.',
     },
     {
         id: 'asps-breast-lift-procedure',
@@ -144,7 +153,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'Breast lift procedure steps',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/procedure',
         attribution:
-            'Read on 2026-09-30: "intravenous sedation and general anesthesia"; "There are three common incision patterns:" around the areola; around the areola and vertically down to the breast crease; and also horizontally along the crease. "The nipple and areola are repositioned to a natural, more youthful height." "If necessary, enlarged areolas are reduced". "Incision lines are permanent, but in most cases will fade and significantly improve over time." No surgery time and no scar length.',
+            'Read on 2026-11-03: "intravenous sedation and general anesthesia"; "There are three common incision patterns:" around the areola; around the areola and vertically down to the breast crease; and also horizontally along the crease. "The nipple and areola are repositioned to a natural, more youthful height." "If necessary, enlarged areolas are reduced". "Incision lines are permanent, but in most cases will fade and significantly improve over time." No surgery time and no scar length.',
     },
     {
         id: 'asps-breast-lift-results',
@@ -152,7 +161,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'Breast lift results',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/results',
         attribution:
-            'Read on 2026-09-30: "The results of your breast lift surgery are immediately visible." "The final results of your breast lift will appear over the next few months as breast shape and position continue to settle." "The results of your breast lift surgery will be long-lasting. Over time, your breasts can continue to change due to aging and gravity." "Breast surgery should be entertained after child bearing is completed." "Changes that occur in the breasts during pregnancy can minimize or reverse the improvement a breast lift provides." "significant weight loss after breast surgery can negatively impact breast appearance." No number of months or years.',
+            'Read on 2026-11-03: "The results of your breast lift surgery are immediately visible." "The final results of your breast lift will appear over the next few months as breast shape and position continue to settle." "The results of your breast lift surgery will be long-lasting. Over time, your breasts can continue to change due to aging and gravity." "Breast surgery should be entertained after child bearing is completed." "Changes that occur in the breasts during pregnancy can minimize or reverse the improvement a breast lift provides." "significant weight loss after breast surgery can negatively impact breast appearance." No number of months or years.',
     },
     {
         id: 'asps-breast-lift-safety',
@@ -160,7 +169,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'Breast lift risks and safety',
         url: 'https://www.plasticsurgery.org/cosmetic-procedures/breast-lift/safety',
         attribution:
-            'Read on 2026-09-30. Risks include "Changes in nipple or breast sensation, which may be temporary or permanent", "Breast asymmetry", "Poor healing of incisions", "Possibility of revisional surgery" and "Potential partial or total loss of nipple and areola". On implants: "An implant can provide improved upper breast fullness or cleavage. Implants can be placed at the same time or as a second procedure, depending on the experience of the surgeon." No rates.',
+            'Read on 2026-11-03. Risks include "Changes in nipple or breast sensation, which may be temporary or permanent", "Breast asymmetry", "Poor healing of incisions", "Possibility of revisional surgery" and "Potential partial or total loss of nipple and areola". On implants: "An implant can provide improved upper breast fullness or cleavage. Implants can be placed at the same time or as a second procedure, depending on the experience of the surgeon." No rates.',
     },
     {
         id: 'asps-salemy-2022',
@@ -170,7 +179,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2022-02-08',
         url: 'https://www.plasticsurgery.org/news/blog/better-breasts-after-pregnancy-and-breastfeeding',
         attribution:
-            'Read on 2026-09-30. A surgeon\'s post; ASPS says blog posts are the author\'s views. "For most women, it is best to wait up to six months after lactation has stopped before getting any kind of cosmetic surgery done on the breasts. This gives your body time to adjust and allows your breast tissue to "settle" into its final shape." Other surgeons quoted by ASPS give three months to a year.',
+            'Read on 2026-11-03. A surgeon\'s post; ASPS says blog posts are the author\'s views. "For most women, it is best to wait up to six months after lactation has stopped before getting any kind of cosmetic surgery done on the breasts. This gives your body time to adjust and allows your breast tissue to "settle" into its final shape." Other surgeons quoted by ASPS give three months to a year.',
     },
     {
         id: 'asps-salemy-2024',
@@ -180,7 +189,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2024-12-04',
         url: 'https://www.plasticsurgery.org/news/blog/common-myths-about-breast-lifts-debunked',
         attribution:
-            'Read on 2026-09-30. A surgeon\'s post. "While it\'s true that a breast lift can potentially affect breastfeeding, many women have been able to breastfeed successfully after the procedure." No rate.',
+            'Read on 2026-11-03. A surgeon\'s post. "While it\'s true that a breast lift can potentially affect breastfeeding, many women have been able to breastfeed successfully after the procedure." No rate.',
     },
     {
         id: 'asps-iteld-2023',
@@ -190,7 +199,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2023-08-10',
         url: 'https://www.plasticsurgery.org/news/blog/what-are-the-benefits-of-combining-breast-augmentation-and-a-breast-lift',
         attribution:
-            "Read on 2026-09-30. A surgeon's post. \"A lift done on its own won't significantly alter the size of the breasts, but augmentation on its own isn't enough to address sagging breasts.\"",
+            "Read on 2026-11-03. A surgeon's post. \"A lift done on its own won't significantly alter the size of the breasts, but augmentation on its own isn't enough to address sagging breasts.\"",
     },
     {
         id: 'asps-schwartz-2015',
@@ -200,7 +209,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2015-08-12',
         url: 'https://www.plasticsurgery.org/news/blog/misconceptions-about-breast-augmentation-and-lift',
         attribution:
-            'Read on 2026-09-30. A surgeon\'s post. "Depending on your goals and the degree of ptosis (sagging) you have, it may be safer to stage the procedures to allow for your body to recover in between operations."',
+            'Read on 2026-11-03. A surgeon\'s post. "Depending on your goals and the degree of ptosis (sagging) you have, it may be safer to stage the procedures to allow for your body to recover in between operations."',
     },
     {
         id: 'asps-horton-2025',
@@ -210,7 +219,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2025-10-30',
         url: 'https://www.plasticsurgery.org/news/articles/finding-comfort-after-breast-surgery-a-guide-to-compression-bras-and-postsurgical-garments',
         attribution:
-            'Read on 2026-09-30. Horton: "No underwire for at least three months". It speaks of breast surgery generally, and another surgeon in the same article says most women return to normal bras in about one month: attribute it to her, never as a rule.',
+            'Read on 2026-11-03. Horton: "No underwire for at least three months". It speaks of breast surgery generally, and another surgeon in the same article says most women return to normal bras in about one month: attribute it to her, never as a rule.',
     },
     {
         id: 'cleveland-clinic-breast-lift',
@@ -219,7 +228,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2022-06-19',
         url: 'https://my.clevelandclinic.org/health/treatments/23298-breast-lift',
         attribution:
-            'Medically reviewed, last updated 06/19/2022, read on 2026-09-30: "A breast lift alone won\'t change the size of your breasts." "The procedure usually lasts an hour or two, depending on how much work is being done." Crescent: "usually only used for breast augmentation in women who have little sagging"; anchor: "often used in people with more sagging or who are also having breast reduction". "Almost all mastopexy scars are hidden in the: Borders of your areolas. Breast crease. Natural contours of your breasts. Yet you may see some scars on the surface of your breast. They\'re permanent but fade a lot over time." "Most people who have mastopexy go home the same day." "These effects get better over time and last about two weeks." "Some surgeons prefer you to sleep on your back for a few weeks." "Many women go back to desk work and gentle activities such as walking about a week afterward." "You may not be cleared for vigorous activities, such as lifting things, exercising and having sex, for up to six weeks." "Usually, women can wear a regular bra about eight weeks after surgery." Risks include "Inability to lactate (breastfeed) in the future." Results "should last for several years".',
+            'Medically reviewed, last updated 06/19/2022, read on 2026-11-03: "A breast lift alone won\'t change the size of your breasts." "The procedure usually lasts an hour or two, depending on how much work is being done." Crescent: "usually only used for breast augmentation in women who have little sagging"; anchor: "often used in people with more sagging or who are also having breast reduction". "Almost all mastopexy scars are hidden in the: Borders of your areolas. Breast crease. Natural contours of your breasts. Yet you may see some scars on the surface of your breast. They\'re permanent but fade a lot over time." "Most people who have mastopexy go home the same day." "These effects get better over time and last about two weeks." "Some surgeons prefer you to sleep on your back for a few weeks." "Many women go back to desk work and gentle activities such as walking about a week afterward." "You may not be cleared for vigorous activities, such as lifting things, exercising and having sex, for up to six weeks." "Usually, women can wear a regular bra about eight weeks after surgery." Risks include "Inability to lactate (breastfeed) in the future." Results "should last for several years".',
     },
     {
         id: 'cleveland-clinic-breast-lift-center',
@@ -227,7 +236,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         title: 'Breast Lift',
         url: 'https://my.clevelandclinic.org/cosmetic-plastic-surgery/procedures/breast-lift',
         attribution:
-            'No date shown, read on 2026-09-30. The department describing its own practice: "You\'ll need to wear a surgical bra for the first week after surgery, followed by a support bra for several weeks after that." "You may experience some loss of sensation in your nipples and breasts following mastopexy surgery, with sensation gradually returning over a few weeks or months. However, some patients experience numbness for up to a year. On rare occasions, loss of sensation can be permanent." Scars "will fade with time (with maximum fading occurring in around one year)." Its "two-and-a-half to three hours" conflicts with the Health Library\'s "an hour or two" and is not used.',
+            'No date shown, read on 2026-11-03. The department describing its own practice: "You\'ll need to wear a surgical bra for the first week after surgery, followed by a support bra for several weeks after that." "You may experience some loss of sensation in your nipples and breasts following mastopexy surgery, with sensation gradually returning over a few weeks or months. However, some patients experience numbness for up to a year. On rare occasions, loss of sensation can be permanent." Scars "will fade with time (with maximum fading occurring in around one year)." Its "two-and-a-half to three hours" conflicts with the Health Library\'s "an hour or two", so the copy gives both.',
     },
     {
         id: 'aesthetic-society-breast-lift-procedure',
@@ -236,7 +245,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2021-12-22',
         url: 'https://www.theaestheticsociety.org/procedures/breast/breast-lift/detailed-procedure-information',
         attribution:
-            'Modified 12/22/2021, read on 2026-09-30. Anchor: "If you have a severe degree of sagging or are getting a breast reduction with your breast lift, your surgeon will likely recommend this approach. This technique produces the greatest lift, but also leaves the most scars." Lollipop: "If you have a moderate degree of sagging and do not want breast implants". Donut: "If you have a mild degree of sagging or asymmetric areolas … This technique produces the least amount of scarring." Crescent: "This technique is less common." "Your nipples and areolas will remain attached to underlying mounds of tissue to preserve sensation and the ability to breastfeed." "Mastopexy is typically an outpatient procedure."',
+            'Modified 12/22/2021, read on 2026-11-03. Anchor: "If you have a severe degree of sagging or are getting a breast reduction with your breast lift, your surgeon will likely recommend this approach. This technique produces the greatest lift, but also leaves the most scars." Lollipop: "If you have a moderate degree of sagging and do not want breast implants". Donut: "If you have a mild degree of sagging or asymmetric areolas … This technique produces the least amount of scarring." Crescent: "This technique is less common." "Your nipples and areolas will remain attached to underlying mounds of tissue to preserve sensation and the ability to breastfeed." "Mastopexy is typically an outpatient procedure."',
     },
     {
         id: 'aesthetic-society-breast-lift-recovery',
@@ -245,7 +254,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2021-12-22',
         url: 'https://www.theaestheticsociety.org/procedures/breast/breast-lift/aftercare-recovery',
         attribution:
-            'Modified 12/22/2021, read on 2026-09-30: "Your chest region may feel stiff and sore for two to five days." "Rest and sleep on your back in an inclined position … for the initial postoperative days or if you have significant swelling." "You must not lift, drive, do laundry, or clean during the first two weeks." "Incisions will initially be red or pink. They will remain this way for many months following surgery." Its incline in degrees is not used (no unit for degrees).',
+            'Modified 12/22/2021, read on 2026-11-03: "Your chest region may feel stiff and sore for two to five days." "Rest and sleep on your back in an inclined position … for the initial postoperative days or if you have significant swelling." "You must not lift, drive, do laundry, or clean during the first two weeks." "Incisions will initially be red or pink. They will remain this way for many months following surgery." Its incline in degrees is not used (no unit for degrees).',
     },
     {
         id: 'aesthetic-society-breast-lift-preparation',
@@ -254,7 +263,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2021-12-22',
         url: 'https://www.theaestheticsociety.org/procedures/breast/breast-lift/preparing-your-procedure',
         attribution:
-            'Modified 12/22/2021, read on 2026-09-30: "If you have children less than five years of age, you must have someone to take care of them for at least a week."',
+            'Modified 12/22/2021, read on 2026-11-03: "If you have children less than five years of age, you must have someone to take care of them for at least a week."',
     },
     {
         id: 'aesthetic-society-breast-lift-safety',
@@ -263,7 +272,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2021-12-22',
         url: 'https://www.theaestheticsociety.org/procedures/breast/breast-lift/safety-considerations',
         attribution:
-            'Modified 12/22/2021, read on 2026-09-30: "Fortunately, significant complications from mastopexy are infrequent." It lists numbness "usually temporary but can be permanent for some" and "Difficulty breastfeeding if you have a child after your surgery".',
+            'Modified 12/22/2021, read on 2026-11-03: "Fortunately, significant complications from mastopexy are infrequent." It lists numbness "usually temporary but can be permanent for some" and "Difficulty breastfeeding if you have a child after your surgery".',
     },
     {
         id: 'cdc-breast-surgery-breastfeeding',
@@ -272,7 +281,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2025-12-08',
         url: 'https://www.cdc.gov/breastfeeding-special-circumstances/hcp/illnesses-conditions/breast-surgery.html',
         attribution:
-            'Page updated Dec. 8, 2025, read on 2026-09-30 through a fetch tool (the site refuses plain requests): "Breast augmentation, lift, and reduction procedures may affect the nerves and ducts within the breast and thus affect lactation." "Most mothers who have had breast or nipple surgery can produce some milk, but they may not produce a full milk supply." Paraphrase it; re-check the live wording before quoting it.',
+            'Page updated Dec. 8, 2025, read on 2026-11-03 through a fetch tool (the site refuses plain requests): "Breast augmentation, lift, and reduction procedures may affect the nerves and ducts within the breast and thus affect lactation." "Most mothers who have had breast or nipple surgery can produce some milk, but they may not produce a full milk supply." Paraphrase it; re-check the live wording before quoting it.',
     },
     {
         id: 'ali-2021',
@@ -282,7 +291,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2021',
         url: 'https://pubmed.ncbi.nlm.nih.gov/34699429/',
         attribution:
-            'Ann Plast Surg 2021;87(5):493–500, abstract read in PubMed (34699429) on 2026-09-30. ACS-NSQIP, 2005–2018: 1,508 lifts alone and 534 lifts with implants. "Rates of any complications … (0.8% vs 2.5% vs 1.5%" for augmentation, lift alone and lift with implants; reoperation "1.2% vs 1.4% vs 1.5%", not significantly different. 30-day outcomes only; NSQIP draws mostly on hospital programs.',
+            'Ann Plast Surg 2021;87(5):493–500, abstract read in PubMed (34699429) on 2026-11-03. ACS-NSQIP, 2005–2018: 1,508 lifts alone and 534 lifts with implants. "Rates of any complications … (0.8% vs 2.5% vs 1.5%" for augmentation, lift alone and lift with implants; reoperation "1.2% vs 1.4% vs 1.5%", not significantly different. 30-day outcomes only; NSQIP draws mostly on hospital programs.',
     },
     {
         id: 'di-summa-2019',
@@ -292,7 +301,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2019',
         url: 'https://pubmed.ncbi.nlm.nih.gov/30527707/',
         attribution:
-            'J Plast Reconstr Aesthet Surg 2019;72(2):243–272, abstract read in PubMed (30527707) on 2026-09-30: "Thirty-four studies … represented 1888 treated patients." "The overall complication rate was 10.4%. The most represented complications were scar-related (3% …) and nipple-areola-related problems (2.9%; including distortion, asymmetry, and reduction in sensation)." Mixed designs and techniques, 1980–2016; minor complications included.',
+            'J Plast Reconstr Aesthet Surg 2019;72(2):243–272, abstract read in PubMed (30527707) on 2026-11-03: "Thirty-four studies … represented 1888 treated patients." "The overall complication rate was 10.4%. The most represented complications were scar-related (3% …) and nipple-areola-related problems (2.9%; including distortion, asymmetry, and reduction in sensation)." Mixed designs and techniques, 1980–2016; minor complications included.',
     },
     {
         id: 'khavanin-2014',
@@ -302,7 +311,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2014',
         url: 'https://pubmed.ncbi.nlm.nih.gov/25347628/',
         attribution:
-            'Plast Reconstr Surg 2014;134(5):922–931, abstract read in PubMed (25347628) on 2026-09-30: "Twenty-three studies met inclusion criteria. Average follow-up varied from 16 to 173 weeks, with a majority under 1 year. The pooled total complication rate was 13.1 percent … The most common individual complication was recurrent ptosis, with an incidence of 5.2 percent". "The reoperation rate obtained from 13 studies was 10.7 percent". High heterogeneity; mostly short follow-up.',
+            'Plast Reconstr Surg 2014;134(5):922–931, abstract read in PubMed (25347628) on 2026-11-03: "Twenty-three studies met inclusion criteria. Average follow-up varied from 16 to 173 weeks, with a majority under 1 year. The pooled total complication rate was 13.1 percent … The most common individual complication was recurrent ptosis, with an incidence of 5.2 percent". "The reoperation rate obtained from 13 studies was 10.7 percent". High heterogeneity; mostly short follow-up.',
     },
     {
         id: 'calobrace-2013',
@@ -312,7 +321,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2013',
         url: 'https://pubmed.ncbi.nlm.nih.gov/22965238/',
         attribution:
-            'Plast Reconstr Surg 2013;131(1):145–156, abstract read in PubMed (22965238) on 2026-09-30. One practice: "The overall reoperation rate was 23.2 percent"; "The mastopexy-only reoperation rate of 10.2 percent was comparable to the tissue-related reoperation rate of 13.3 percent"; "the revision rate of combining the procedures was not more than additive." About a third were secondary cases.',
+            'Plast Reconstr Surg 2013;131(1):145–156, abstract read in PubMed (22965238) on 2026-11-03. One practice: "The overall reoperation rate was 23.2 percent"; "The mastopexy-only reoperation rate of 10.2 percent was comparable to the tissue-related reoperation rate of 13.3 percent"; "the revision rate of combining the procedures was not more than additive." About a third were secondary cases.',
     },
     {
         id: 'rinker-2010',
@@ -322,7 +331,7 @@ export const breastLiftSources: readonly BreastLiftSource[] = [
         date: '2010',
         url: 'https://pubmed.ncbi.nlm.nih.gov/20354434/',
         attribution:
-            'Ann Plast Surg 2010;64(5):579–584, abstract read in PubMed (20354434) on 2026-09-30. 132 consecutive patients: "age, history of significant … weight loss, higher body mass index, larger bra cup size, number of pregnancies, and smoking history were found to be significant risk factors for breast ptosis". "History of breast-feeding … [was] not found to be [a] significant risk factor". One center; its weight-loss threshold is in pounds and is not published.',
+            'Ann Plast Surg 2010;64(5):579–584, abstract read in PubMed (20354434) on 2026-11-03. 132 consecutive patients: "age, history of significant … weight loss, higher body mass index, larger bra cup size, number of pregnancies, and smoking history were found to be significant risk factors for breast ptosis". "History of breast-feeding … [was] not found to be [a] significant risk factor". One center; its weight-loss threshold is in pounds and is not published.',
     },
     {
         id: 'alluring-practice',
@@ -393,9 +402,9 @@ export const breastLiftFacts = [
         concepts: ['average', 'surgeon'],
         figures: [{ value: 6816, unit: 'usd' }],
         statement:
-            "The American Society of Plastic Surgeons puts the average cost of a breast lift at $6,816, a surgeon's fee that does not include anesthesia, operating room facilities or other related expenses.",
+            'The American Society of Plastic Surgeons puts the average cost of a breast lift at $6,816, which does not include anesthesia, operating room facilities or other related expenses.',
         sourceIds: ['asps-breast-lift-cost'],
-        caveat: "A national surgeon-fee average, not a Miami price and not an all-in price: always say what it leaves out. No year. The Aesthetic Society's $5,324 includes facility fees, so the two are never set side by side.",
+        caveat: "A national average, not a Miami price and not an all-in price: always say what it leaves out. ASPS's page doesn't call it a surgeon's fee, so the copy doesn't either. No year. The Aesthetic Society's $5,324 includes facility fees, so the two are never set side by side.",
     },
 
     // ── Procedure ────────────────────────────────────────────────────────
@@ -403,9 +412,12 @@ export const breastLiftFacts = [
         id: 'surgery-time',
         topic: 'procedure',
         concepts: ['hour', 'take', 'surgery', 'last'],
-        figures: [{ min: 1, max: 2, unit: 'hour' }],
+        figures: [
+            { min: 1, max: 2, unit: 'hour' },
+            { min: 2.5, max: 3, unit: 'hour' },
+        ],
         statement:
-            'Cleveland Clinic says a breast lift usually takes 1–2 hours, depending on how much work is being done.',
+            "Cleveland Clinic's health library says a breast lift usually takes 1–2 hours, depending on how much work is being done, and its surgery center says 2.5 to 3 hours.",
         sourceIds: ['cleveland-clinic-breast-lift'],
         caveat: "The sources disagree: Cleveland Clinic's own surgery center says two and a half to three hours. Not Alluring's time, which is an owner question; the copy attributes the range and says the surgeon tells you yours.",
     },
@@ -532,7 +544,7 @@ export const breastLiftFacts = [
         concepts: ['sensation', 'numb'],
         figures: [{ value: 1, unit: 'year' }],
         statement:
-            'Numbness in the nipples and breasts usually returns over a few weeks or months; some people are numb for up to 1 year, and rarely the loss is permanent, Cleveland Clinic says.',
+            'You may lose some feeling in your nipples and breasts. It gradually returns over a few weeks or months; some people are numb for up to 1 year, and rarely the loss is permanent, Cleveland Clinic says.',
         sourceIds: ['cleveland-clinic-breast-lift-center'],
         caveat: 'No source gives a rate for a lift alone: a 2014 review found the data insufficient (Ducic and colleagues). The FDA checklist\'s "up to 35%" is a worst case from implant studies and is never published as a lift risk.',
     },
@@ -595,7 +607,7 @@ export const breastLiftFacts = [
             { value: 1, unit: 'year' },
         ],
         statement:
-            'A 2014 review of 23 studies found that 10.7% of patients had another operation after a lift with implants in one surgery, most often because the breast sagged again (5.2%); complications of any kind followed 13.1%. Most of its studies followed patients for under 1 year (Khavanin and colleagues, Plastic and Reconstructive Surgery, 2014).',
+            'A 2014 review of 23 studies found that 10.7% of patients had another operation after a lift with implants in one surgery. The most common complication was the breast sagging again (5.2%), and complications of any kind followed 13.1%. Most of its studies followed patients for under 1 year (Khavanin and colleagues, Plastic and Reconstructive Surgery, 2014).',
         sourceIds: ['khavanin-2014'],
         caveat: 'The reoperation rate comes from 13 of the 23 studies. High heterogeneity, short follow-up.',
     },
@@ -611,7 +623,7 @@ export const breastLiftFacts = [
         statement:
             "In one practice's review, reoperations after a lift with implants in one surgery (23.2%) were no more than the two operations' risks added together; after a lift alone, 10.2% had a reoperation (Calobrace and colleagues, Plastic and Reconstructive Surgery, 2013).",
         sourceIds: ['calobrace-2013'],
-        caveat: 'One practice, about a third secondary cases. ASPS: implants go in at the same time or in a second procedure, depending on the surgeon; whether Alluring stages is an owner question.',
+        caveat: 'One practice, some of them secondary cases. ASPS: implants go in at the same time or in a second procedure, depending on the surgeon; whether Alluring stages is an owner question.',
     },
     {
         id: 'complications-infrequent',
@@ -633,7 +645,7 @@ export const breastLiftFacts = [
             { value: 22, unit: 'age' },
         ],
         statement:
-            'The FDA approves saline implants for cosmetic breast surgery from age 18 and silicone gel implants from age 22.',
+            'The FDA approves saline implants for breast augmentation from age 18 and silicone gel implants from age 22.',
         sourceIds: ['fda-types-breast-implants'],
         caveat: "The FDA's approved ages for augmentation, not the practice's own age policy, which is an owner question.",
     },
@@ -644,7 +656,7 @@ export const breastLiftFacts = [
         years: [2021],
         figures: [],
         statement:
-            'Since 2021, breast implants carry an FDA boxed warning, and your surgeon must review the FDA patient decision checklist with you before surgery, for you both to sign.',
+            'Since 2021, breast implants carry an FDA boxed warning. Your health care provider must review the FDA patient decision checklist with you, you get the chance to sign it, and the doctor implanting the device must sign it.',
         sourceIds: ['fda-things-to-consider'],
         caveat: 'The labeling orders of October 27, 2021.',
     },
@@ -656,7 +668,7 @@ export const breastLiftFacts = [
         statement:
             'The FDA says breast implants are not lifetime devices: the longer you have them, the more likely you are to need them removed or replaced.',
         sourceIds: ['fda-things-to-consider', 'fda-types-breast-implants'],
-        caveat: 'The FDA says implant life "cannot be predicted": never give a number of years.',
+        caveat: 'Never give a number of years.',
     },
     {
         id: 'fda-silicone-screening',
@@ -695,7 +707,7 @@ export const breastLiftFacts = [
         concepts: ['hospital', 'writing'],
         figures: [],
         statement:
-            'Before office surgery under sedation or general anesthesia, the surgeon must give you, in writing, the name and location of the hospital where they have privileges or a transfer agreement.',
+            'Before office surgery under sedation or general anesthesia, the surgeon must give you, in writing, the name and location of the hospital where the surgeon has privileges, or where the surgeon or the facility has a transfer agreement.',
         sourceIds: ['florida-rule-64b8-9-009'],
     },
 ] as const satisfies readonly BreastLiftFact[]

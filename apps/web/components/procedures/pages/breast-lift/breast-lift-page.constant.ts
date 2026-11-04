@@ -17,15 +17,14 @@ const HERO_ALT =
 
 /**
  * The 2026-09 hero: candidate 2 of four (`gpt_image_2_5`, job
- * `5d5dfc82-7595-4f3b-b409-a611f7852a44`), picked 2026-10-28 and served as a
- * local preview until the final is exported, uploaded to Blob and this
- * `src` replaced with the URL the upload returns. Candidates and prompts:
+ * `5d5dfc82-7595-4f3b-b409-a611f7852a44`), picked 2026-10-28. Candidates and
+ * prompts:
  * `implementation-plans/2026-09-30-breast-lift-page-rebuild/images/README.md`.
  */
 export const breastLiftImages = {
     /** 4:5. The page hero. */
     hero: {
-        src: '/_local-preview/breast-lift-hero-candidate-2.jpg',
+        src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/procedures/breast-lift/2026-11/hero-alluring-plastic-surgery-miami.jpg',
         width: 1440,
         height: 1800,
         alt: HERO_ALT,

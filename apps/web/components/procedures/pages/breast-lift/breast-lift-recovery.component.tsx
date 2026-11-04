@@ -24,61 +24,61 @@ import { breastLiftFigure } from '@/lib/data/procedures/facts/breast-lift.facts'
 const milestones: ModuleMilestone[] = [
     {
         when: 'Day of surgery',
-        body: 'You usually go home the same day, in a surgical bra or dressing (Cleveland Clinic). Someone drives you home and stays with you for at least the first night, as ASPS advises. If you have young children, have someone care for them for at least the first week (The Aesthetic Society).',
+        body: 'You usually go home the same day, in a surgical bra or dressing. Someone drives you home and stays with you for at least the first night. If you have young children, have someone care for them for at least the first week.',
     },
     {
         when: `First ${breastLiftFigure('sore-2-5-days')}`,
-        body: 'Your chest may feel stiff and sore (The Aesthetic Society). Sleep on your back, and keep your elbows by your sides rather than reaching overhead, as your surgeon advises (Cleveland Clinic).',
+        body: 'Your chest may feel stiff and sore. Sleep on your back, and keep your elbows by your sides rather than reaching overhead, as your surgeon advises.',
     },
     {
         when: 'About a week',
-        body: 'Most people go back to desk work and gentle activity, such as walking. After the first week, the surgical bra gives way to a support bra, worn for several weeks (Cleveland Clinic).',
+        body: 'Most people go back to desk work and gentle activity, such as walking. After the first week, the surgical bra gives way to a support bra, worn for several weeks.',
     },
     {
         when: `First ${breastLiftFigure('no-lifting-2-weeks')}`,
-        body: 'No lifting, driving, laundry or cleaning (The Aesthetic Society), while the swelling and bruising ease (Cleveland Clinic).',
+        body: 'No lifting, driving, laundry or cleaning, while the swelling and bruising ease.',
     },
     {
         when: `Up to ${breastLiftFigure('vigorous-up-to-6-weeks')}`,
-        body: 'Lifting, exercise and sex wait until your surgeon clears them (Cleveland Clinic).',
+        body: 'Lifting, exercise and sex wait until your surgeon clears them.',
     },
     {
         when: `About ${breastLiftFigure('regular-bra-8-weeks')}`,
-        body: `Most women can wear a regular bra again (Cleveland Clinic). Karen Horton, MD, quoted on the ASPS website, advises no underwire for at least ${breastLiftFigure('regular-bra-8-weeks', 1)}.`,
+        body: `Most women can wear a regular bra again. Karen Horton, MD, quoted on the ASPS website, advises no underwire for at least ${breastLiftFigure('regular-bra-8-weeks', 1)}.`,
     },
     {
         when: 'A few months',
-        body: 'The breasts settle into their final shape and position (ASPS).',
+        body: 'The breasts settle into their final shape and position.',
     },
     {
         when: `Up to ${breastLiftFigure('scar-fades-1-year')}`,
-        body: 'Numbness in the nipples has usually returned, though for some it takes up to a year (Cleveland Clinic). The scars, pink for many months (The Aesthetic Society), have done most of their fading (Cleveland Clinic).',
+        body: 'Feeling in the nipples returns gradually over weeks or months, though some people are numb for up to a year. The scars, pink for many months, have done most of their fading.',
     },
 ]
 
 const guides: ModuleGuide[] = [
     {
-        label: 'Breast lift scars: where they sit and how they fade',
+        label: 'Breast lift scars: where they are and how they fade',
         href: '/blog/breast-lift-scars-miami',
     },
     {
-        label: 'How to prepare for a breast lift',
-        href: '/blog/breast-lift-prep-miami',
+        label: 'What to expect after breast implants',
+        href: '/weeks-post-op-breast-augmentation-what-to-expect',
     },
     {
         label: 'Sleeping on your side after breast surgery',
         href: '/when-can-i-sleep-on-my-side-after-breast-reduction',
     },
     {
-        label: 'A breast lift after weight loss',
-        href: '/blog/breast-lift-recovery-weight-loss-miami',
+        label: 'Sleeping without a bra after breast surgery',
+        href: '/when-can-i-sleep-without-a-bra-after-breast-augmentation',
     },
 ]
 
 /**
  * "What is breast lift recovery like?" The timeline gives the milestones;
- * the blog posts that rank for each recovery question (scars, sleeping,
- * weight loss) own the details and are linked, not repeated. The scars,
+ * the blog posts that rank for each recovery question (scars, sleeping) own
+ * the details and are linked, not repeated. The scars,
  * breastfeeding and how long a lift lasts, three of her top questions, get
  * their own H3s here.
  */
@@ -94,6 +94,10 @@ export function BreastLiftRecovery() {
                 label='Breast lift recovery timeline'
                 milestones={milestones}
             />
+            <p className='mt-3 max-w-[41.25rem] text-sm leading-[1.5] text-stone-500'>
+                From Cleveland Clinic, The Aesthetic Society and ASPS. Your
+                surgeon&apos;s instructions come first.
+            </p>
 
             <h3 className={cn(moduleH3, 'mt-6')}>Where will my scars be?</h3>
             <p className={cn(moduleBody, 'mt-3')}>

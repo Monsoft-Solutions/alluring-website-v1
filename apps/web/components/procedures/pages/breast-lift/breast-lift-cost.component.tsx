@@ -49,7 +49,7 @@ const quoteLines = [
  * the owner confirms it.
  *
  * The ASPS national average makes the price concrete without "affordable".
- * It is a surgeon's fee only, so the comparison always says what it leaves
+ * It leaves out anesthesia and the facility, so the comparison always says what it leaves
  * out.
  */
 export function BreastLiftCost({ pricing }: { pricing: ProcedurePricing }) {
@@ -69,6 +69,27 @@ export function BreastLiftCost({ pricing }: { pricing: ProcedurePricing }) {
                 note='List prices from our price sheet. Prices are estimates and may change.'
             />
 
+            <h3 className={cn(moduleH3, 'mt-10 md:mt-11')}>
+                Breast lift with or without implants: which do you need?
+            </h3>
+            <p className={cn(moduleBody, 'mt-3')}>
+                It comes down to whether you also want more fullness. Read more
+                about{' '}
+                <Link
+                    href='/blog/breast-lift-implants-miami'
+                    className={moduleLink}
+                >
+                    a breast lift with implants
+                </Link>{' '}
+                and{' '}
+                <Link
+                    href='/blog/breast-lift-without-implants'
+                    className={moduleLink}
+                >
+                    a breast lift without implants
+                </Link>
+                .
+            </p>
             <ModuleComparison
                 caption='A lift alone, or a lift with implants?'
                 columns={[
@@ -133,10 +154,10 @@ export function BreastLiftCost({ pricing }: { pricing: ProcedurePricing }) {
                 <p className='mt-1.5 text-[1.0625rem] leading-[1.6] text-stone-700 tabular-nums md:text-base'>
                     The American Society of Plastic Surgeons puts the average
                     cost of a breast lift at{' '}
-                    {breastLiftFigure('asps-average-fee')}, a surgeon&apos;s fee
-                    that does not include anesthesia, operating room facilities
-                    or other related expenses. Ask what any quote, ours
-                    included, leaves out.{' '}
+                    {breastLiftFigure('asps-average-fee')}, which does not
+                    include anesthesia, operating room facilities or other
+                    related expenses. Ask what any quote, ours included, leaves
+                    out.{' '}
                     <a
                         href={`#${sourceAnchorId('asps-breast-lift-cost')}`}
                         className='text-sm whitespace-nowrap text-stone-500 underline decoration-stone-300 underline-offset-4 hover:text-stone-900'
@@ -190,7 +211,12 @@ export function BreastLiftCost({ pricing }: { pricing: ProcedurePricing }) {
                 offers also leave out anesthesia, the facility or follow-up
                 visits, or run as a special that ends this week. Compare
                 itemized quotes for the same lift, with or without the same
-                implants, and ask who performs the surgery and where.
+                implants, and ask who performs the surgery and where. For a
+                line-by-line guide, see{' '}
+                <Link href='/blog/breast-lift-cost' className={moduleLink}>
+                    what a breast lift costs and what a quote should list
+                </Link>
+                .
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
                 Financing is available through {getFinancingPartnersString()}{' '}

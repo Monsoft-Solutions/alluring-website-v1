@@ -116,10 +116,10 @@ const PATTERNS: {
 ]
 
 /**
- * The breast lift page's signature scene: the four incision patterns, from
+ * The breast lift page's signature drawing: the four incision patterns, from
  * the smallest scar to the longest, and what each one lifts. More lift needs
- * a longer scar, which is the trade every breast lift makes, so the drawing
- * sits in the safety band beside the risks.
+ * a longer scar, which is the trade every breast lift makes. It sits under
+ * "What are the types of breast lift?", as a dark card on the light band.
  *
  * The drawings are decoration (`aria-hidden`); the names, the scars and who
  * each suits are real text, read, translated and quoted like the rest of
@@ -128,8 +128,11 @@ const PATTERNS: {
  */
 export function BreastLiftPatternsDiagram() {
     return (
-        <figure aria-label='The four breast lift incisions, from the shortest scar to the longest'>
-            <p className='text-sm font-semibold tracking-[0.08em] text-stone-300 uppercase'>
+        <figure
+            aria-label='The four breast lift incisions, from the shortest scar to the longest'
+            className='mt-9 md:mt-10'
+        >
+            <p className='text-sm font-semibold tracking-[0.08em] text-stone-600 uppercase'>
                 Four lifts, four scars
             </p>
             <ol className='mt-4 border border-stone-700 bg-[#191614] px-4 md:px-5'>
@@ -151,21 +154,21 @@ export function BreastLiftPatternsDiagram() {
                 ))}
             </ol>
             <ul className='mt-4 flex flex-wrap gap-x-5 gap-y-2'>
-                <li className='flex items-center gap-2 text-sm text-stone-400'>
+                <li className='flex items-center gap-2 text-sm text-stone-600'>
                     <span
                         aria-hidden='true'
                         className='block size-3 rounded-full border-[1.5px] border-stone-300 bg-stone-700'
                     />
                     Areola
                 </li>
-                <li className='flex items-center gap-2 text-sm text-stone-400'>
+                <li className='flex items-center gap-2 text-sm text-stone-600'>
                     <span
                         aria-hidden='true'
                         className='bg-gold-400 block h-0.5 w-5'
                     />
                     Incision
                 </li>
-                <li className='flex items-center gap-2 text-sm text-stone-400'>
+                <li className='flex items-center gap-2 text-sm text-stone-600'>
                     <span
                         aria-hidden='true'
                         className='block w-5 border-t-[1.5px] border-dashed border-stone-400'
@@ -173,7 +176,7 @@ export function BreastLiftPatternsDiagram() {
                     Breast crease
                 </li>
             </ul>
-            <figcaption className='mt-3.5 text-sm leading-[1.45] text-stone-400'>
+            <figcaption className='mt-3.5 text-sm leading-[1.45] text-stone-600'>
                 Not to scale. From The Aesthetic Society and Cleveland Clinic;
                 The Aesthetic Society adds that the more incisions a surgeon
                 makes, the more the breast can be reshaped. Your surgeon

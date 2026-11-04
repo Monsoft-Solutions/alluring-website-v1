@@ -134,9 +134,10 @@ export type ModuleSceneSectionProps = {
     /**
      * The procedure's signature diagram, page-owned: it sits between the
      * answer and the law on phones and stays pinned beside the reading
-     * column from `lg`.
+     * column from `lg`. A page whose drawing belongs in another section
+     * leaves it out, and the band is one reading column.
      */
-    diagram: ReactNode
+    diagram?: ReactNode
     diagramWidth?: keyof typeof DIAGRAM_COLUMNS
     /** Tabular figures in the answer and the law's titles, for copy full of numbers. */
     tabularFigures?: boolean
@@ -190,7 +191,7 @@ export function ModuleSceneSection({
             <section
                 id={id}
                 aria-labelledby={headingId}
-                className={`answer-block grid scroll-mt-32 lg:scroll-mt-40 ${DIAGRAM_COLUMNS[diagramWidth]} lg:grid-rows-[auto_auto_1fr] lg:justify-between lg:gap-x-16`}
+                className={`answer-block grid scroll-mt-32 lg:scroll-mt-40 ${diagram ? DIAGRAM_COLUMNS[diagramWidth] : 'lg:grid-cols-[minmax(0,40rem)]'} lg:grid-rows-[auto_auto_1fr] lg:justify-between lg:gap-x-16`}
             >
                 <h2
                     id={headingId}
@@ -209,9 +210,11 @@ export function ModuleSceneSection({
                 >
                     {answer}
                 </p>
-                <div className='mt-8 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0'>
-                    <div className='lg:sticky lg:top-40'>{diagram}</div>
-                </div>
+                {diagram ? (
+                    <div className='mt-8 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0'>
+                        <div className='lg:sticky lg:top-40'>{diagram}</div>
+                    </div>
+                ) : null}
                 <div className='lg:col-start-1 lg:row-start-3'>
                     <h3 className={cn(moduleH3Dark, 'mt-10 md:mt-12')}>
                         {law.heading}

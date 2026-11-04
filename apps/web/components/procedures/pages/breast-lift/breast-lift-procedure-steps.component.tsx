@@ -28,7 +28,7 @@ export function BreastLiftProcedureSteps({
             id='procedure'
             question='What happens on the day of a breast lift?'
             className={moduleSectionPad}
-            answer={`A breast lift is usually done under general anesthesia, and it usually takes ${breastLiftFigure('surgery-time')}, Cleveland Clinic says. Your surgeon makes the incision your lift needs, lifts and reshapes the breast, moves the nipple and areola higher, removes the loose skin, places implants when your plan includes them and closes. You usually go home the same day.`}
+            answer={`A breast lift is usually done under general anesthesia. Cleveland Clinic's sources give ${breastLiftFigure('surgery-time')} or ${breastLiftFigure('surgery-time', 1)}, so ask how long yours will take. Your surgeon makes the incision your lift needs, lifts and reshapes the breast, moves the nipple higher, removes loose skin, places any planned implants and closes. You usually go home the same day.`}
         >
             <p className={cn(moduleBody, 'mt-4.5')}>
                 Before surgery day, your surgeon examines you, reviews your

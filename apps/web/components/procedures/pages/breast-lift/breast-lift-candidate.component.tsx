@@ -69,20 +69,28 @@ export function BreastLiftCandidate() {
             elsewhere={elsewhere}
             guides={[
                 {
+                    label: 'Do I need a breast lift? The pencil test and ptosis grades',
+                    href: '/blog/breast-lift-candidate-checklist',
+                },
+                {
                     label: 'Breast augmentation or breast lift: which do you need?',
                     href: '/blog/breast-augmentation-vs-breast-lift',
                 },
                 {
-                    label: 'Breast lift or breast reduction: how to tell',
+                    label: 'Breast lift or breast reduction: which one, or both?',
                     href: '/blog/breast-lift-vs-reduction-miami',
                 },
                 {
-                    label: 'A breast lift after pregnancy',
+                    label: 'A breast lift after pregnancy: when to have it, when to wait',
                     href: '/blog/breast-lift-miami-post-pregnancy',
                 },
                 {
-                    label: 'Breast lift candidate checklist',
-                    href: '/blog/breast-lift-candidate-checklist',
+                    label: 'A breast lift after weight loss or Ozempic',
+                    href: '/blog/breast-lift-recovery-weight-loss-miami',
+                },
+                {
+                    label: 'Can you lift breasts without surgery?',
+                    href: '/blog/non-surgical-breast-lift',
                 },
             ]}
         />
