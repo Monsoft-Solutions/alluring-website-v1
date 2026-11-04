@@ -1155,7 +1155,7 @@ const nextConfig = {
                 destination: '/how-to-reduce-swelling-after-liposuction',
                 permanent: true,
             },
-            // Tummy tuck blog consolidation (#357, the 2026-11-03 plan). Eight posts
+            // Tummy tuck blog consolidation (#357, the 2026-11-03 plan). Seven posts
             // fold into the page, the recovery post and the Ozempic post, which
             // both keep their URLs. mini-tummy-tuck-miami-recovery points at the
             // recovery post until /blog/mini-vs-full-tummy-tuck is live.
@@ -1186,16 +1186,6 @@ const nextConfig = {
             },
             {
                 source: '/tummy-tuck-miami-candidate-checklist',
-                destination: '/procedures/tummy-tuck-miami',
-                permanent: true,
-            },
-            {
-                source: '/blog/tummy-tuck-mommy-makeover-miami',
-                destination: '/procedures/tummy-tuck-miami',
-                permanent: true,
-            },
-            {
-                source: '/tummy-tuck-mommy-makeover-miami',
                 destination: '/procedures/tummy-tuck-miami',
                 permanent: true,
             },

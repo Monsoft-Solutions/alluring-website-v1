@@ -21,7 +21,7 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (115 live posts)', () => {
+    it('contains every published post exactly once (116 live posts)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
@@ -47,10 +47,10 @@ describe('registry integrity', () => {
         // (breast-implants-over-or-under-the-muscle,
         // saline-vs-silicone-breast-implants, how-long-do-breast-implants-last,
         // capsular-contracture, breast-implant-rippling-bottoming-out,
-        // mammograms-breastfeeding-with-breast-implants), and the eight tummy
+        // mammograms-breastfeeding-with-breast-implants), and the seven tummy
         // tuck posts folded in #357. The plan's three new posts add 3 in the PR
         // that registers them.
-        expect(liveBlog.length).toBe(115)
+        expect(liveBlog.length).toBe(116)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -131,7 +131,6 @@ describe('resolveQueryOwner', () => {
             ['best-age-tummy-tuck-miami', page],
             ['tummy-tuck-myths-miami-moms', page],
             ['tummy-tuck-miami-candidate-checklist', page],
-            ['tummy-tuck-mommy-makeover-miami', page],
             ['tummy-tuck-recovery-time-miami', recovery],
             ['tummy-tuck-recovery-myths-miami-moms', recovery],
             ['mini-tummy-tuck-miami-recovery', recovery],
@@ -151,7 +150,6 @@ describe('resolveQueryOwner', () => {
     it('gives each tummy tuck question one owner (#357)', () => {
         const owners: Array<[string, string]> = [
             ['tummy tuck in miami', '/procedures/tummy-tuck-miami'],
-            ['tummy tuck or mommy makeover', '/procedures/tummy-tuck-miami'],
             ['best age for tummy tuck', '/procedures/tummy-tuck-miami'],
             ['tummy tuck recovery time', '/how-long-to-recover-tummy-tuck'],
             ['mini tummy tuck recovery', '/how-long-to-recover-tummy-tuck'],

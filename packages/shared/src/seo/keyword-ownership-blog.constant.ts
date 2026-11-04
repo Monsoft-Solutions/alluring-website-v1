@@ -1917,11 +1917,31 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
         slug: 'tummy-tuck-mommy-makeover-miami',
         kind: 'blog',
         intent: 'informational',
-        status: 'retired',
-        primaryKeyword: 'tummy tuck vs mommy makeover',
-        ownsQueries: [],
-        redirectsTo: '/procedures/tummy-tuck-miami',
-        notes: 'Re-scoped in #309, then folded in the 2026-11-03 tummy tuck plan (#357, decision 3): it still outranked the page on the cost term. The page FAQ answers the comparison and owns "tummy tuck or mommy makeover".',
+        status: 'live',
+        primaryKeyword: 'tummy tuck or mommy makeover',
+        ownsQueries: [
+            'tummy tuck vs mommy makeover',
+            'mommy makeover vs tummy tuck',
+        ],
+        mustNotTarget: [
+            {
+                query: 'tummy tuck cost miami',
+                ownedBy: '/procedures/tummy-tuck-miami',
+            },
+            {
+                query: 'mommy makeover cost',
+                ownedBy: '/procedures/mommy-makeover-miami',
+            },
+            {
+                query: 'mommy makeover miami',
+                ownedBy: '/procedures/mommy-makeover-miami',
+            },
+            {
+                query: 'how much is a mommy makeover in miami',
+                ownedBy: '/procedures/mommy-makeover-miami',
+            },
+        ],
+        notes: 'Re-scoped to the comparison in #309 (D3 of the wave-two brief). It held 90% of "tummy tuck cost miami" and outranked /procedures/mommy-makeover-miami on "mommy makeover miami"; the procedure pages own both. On 2026-11-03 it became a pure comparison: no Miami, cost or price terms in its title or meta, and those queries sit on the page. If the mommy makeover page still trails it at day 56, fold it in with a 301. primary_keyword is empty in the database, so a regeneration drops this entry; restore it from git diff.',
     },
     {
         url: '/blog/breast-augmentation-safety-miami',

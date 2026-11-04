@@ -95,7 +95,6 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'best-age-tummy-tuck-miami',
     'tummy-tuck-myths-miami-moms',
     'tummy-tuck-miami-candidate-checklist',
-    'tummy-tuck-mommy-makeover-miami',
     'tummy-tuck-recovery-time-miami',
     'tummy-tuck-recovery-myths-miami-moms',
     'mini-tummy-tuck-miami-recovery',

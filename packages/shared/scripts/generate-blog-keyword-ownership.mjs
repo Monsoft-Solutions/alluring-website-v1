@@ -181,7 +181,6 @@ const RETIRED = {
     '/blog/tummy-tuck-myths-miami-moms': '/procedures/tummy-tuck-miami',
     '/blog/tummy-tuck-miami-candidate-checklist':
         '/procedures/tummy-tuck-miami',
-    '/blog/tummy-tuck-mommy-makeover-miami': '/procedures/tummy-tuck-miami',
     '/blog/tummy-tuck-recovery-time-miami': '/how-long-to-recover-tummy-tuck',
     '/blog/tummy-tuck-recovery-myths-miami-moms':
         '/how-long-to-recover-tummy-tuck',
