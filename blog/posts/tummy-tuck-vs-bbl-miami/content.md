@@ -76,7 +76,7 @@ Adding a BBL makes the plan larger. It doesn't change the rules above:
 
 ## BBL vs butt implants: which one suits you?
 
-It mostly comes down to how much fat you have. [Cleveland Clinic](https://my.clevelandclinic.org/health/treatments/23353-butt-implants) says implants may be a good option for people with a smaller, leaner frame who don't have enough fat for a BBL. It also says a BBL tends to look and feel more natural than implants and may have a lower risk of complications.
+It mostly comes down to [how much fat you have](/blog/do-i-have-enough-fat-for-a-bbl). [Cleveland Clinic](https://my.clevelandclinic.org/health/treatments/23353-butt-implants) says implants may be a good option for people with a smaller, leaner frame who don't have enough fat for a BBL. It also says a BBL tends to look and feel more natural than implants and may have a lower risk of complications.
 
 | | BBL | Butt implants |
 | --- | --- | --- |

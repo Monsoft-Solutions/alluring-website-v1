@@ -1,8 +1,8 @@
 {
   "slug": "what-age-can-you-get-a-bbl",
   "mode": "rewrite",
-  "base_md5": "6c48da1b15d3f893562db4c7b1229a4e",
-  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:32Z",
+  "base_md5": "d8a3f132b78fb3cdaf8cdf54ea35896f",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T22:10:49Z",
   "reader": "deciding",
   "cluster": "bbl",
   "title": "What Age Can You Get a BBL? 18 Minimum, and What Else Counts",

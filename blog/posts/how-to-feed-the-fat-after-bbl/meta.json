@@ -1,8 +1,8 @@
 {
   "slug": "how-to-feed-the-fat-after-bbl",
   "mode": "rewrite",
-  "base_md5": "a7459d331f43f84008af0d99596c6bf4",
-  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:28Z",
+  "base_md5": "d7c678dc46b848bbbefae9df3b78d553",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T22:10:46Z",
   "reader": "recovering",
   "cluster": "bbl",
   "title": "How to Feed the Fat After a BBL: What to Eat, What's Myth",

@@ -23,7 +23,7 @@ You may also read that the mid-20s is the ideal time. We didn't find a source fo
 
 ## Can you get a BBL over 40 or over 50?
 
-Age alone doesn't rule you out. No source we rely on sets an upper limit, and the questions are the same as at any age: your health, your weight, whether you smoke and how much fat you have.
+Age alone doesn't rule you out. No source we rely on sets an upper limit, and the questions are the same as at any age: your health, your weight, whether you smoke and [how much fat you have](/blog/do-i-have-enough-fat-for-a-bbl).
 
 We also found no study of BBL results or complications by age, so we can't give you a figure for your age group. The closest evidence is about a different surgery: in a [large insurance database study of tummy tucks](https://pubmed.ncbi.nlm.nih.gov/26505716/), age 55 or older was one of the risk factors for major complications, along with a BMI of 30 or more and several procedures at once. That isn't a BBL finding, and a risk factor isn't a cutoff. It is a reason for a careful exam.
 

@@ -1,8 +1,8 @@
 {
   "slug": "tummy-tuck-vs-bbl-miami",
   "mode": "rewrite",
-  "base_md5": "710317610d879b7356c46fc58dbd98b4",
-  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T20:11:31Z",
+  "base_md5": "170b5572f957672914d5519123755372",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-04T22:10:47Z",
   "reader": "deciding",
   "cluster": "bbl",
   "title": "BBL vs Tummy Tuck: Which Fixes What, and Can You Do Both?",

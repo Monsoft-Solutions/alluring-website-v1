@@ -93,6 +93,43 @@ describe('evaluateTopicCandidate', () => {
         expect(verdict.warnings).toEqual([])
     })
 
+    describe('near-duplicates and procedures', () => {
+        const verdictFor = (query: string) =>
+            evaluateTopicCandidate({ title: query, primaryKeyword: query })
+                .verdict
+
+        it('does not block a topic because it reads like another procedure', () => {
+            expect(verdictFor('can you fly after a rhinoplasty')).toBe('new')
+            expect(verdictFor('when can you sit after a facelift')).toBe('new')
+        })
+
+        it('still catches a variant about the same procedure', () => {
+            expect(verdictFor('can you fly after a bbl')).toBe('refresh')
+            expect(verdictFor('can you fly after a bbl in miami')).not.toBe(
+                'new'
+            )
+        })
+
+        it('treats a procedure and its other names as the same', () => {
+            expect(
+                verdictFor('can you fly after a brazilian butt lift')
+            ).not.toBe('new')
+        })
+
+        it('still catches a near-duplicate that names no procedure', () => {
+            expect(
+                evaluateTopicCandidate({
+                    title: 'How long until you can fly after surgery',
+                    primaryKeyword: 'can you fly after a surgery',
+                }).verdict
+            ).not.toBe('new')
+        })
+
+        it('compares a two-procedure query on what they share', () => {
+            expect(verdictFor('tummy tuck vs bbl recovery')).not.toBe('new')
+        })
+    })
+
     it('warns when a secondary keyword is owned elsewhere', () => {
         const verdict = evaluateTopicCandidate({
             title: 'Packing List for Your Rhinoplasty Trip',

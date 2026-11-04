@@ -144,11 +144,52 @@ export function getOwnerForUrl(
     return getIndexes(extraEntries).byUrl.get(url) ?? null
 }
 
+/** Procedure names as they appear in normalized queries, by procedure. */
+const PROCEDURE_ALIASES: Readonly<Record<string, readonly string[]>> = {
+    bbl: ['bbl', 'bbls', 'brazilian butt lift', 'brazilian butt lifts'],
+    'butt implants': ['butt implant', 'butt implants', 'buttock implants'],
+    'tummy tuck': ['tummy tuck', 'tummy tucks', 'abdominoplasty'],
+    liposuction: ['liposuction', 'lipo', 'lipo 360', 'lipo360'],
+    'breast augmentation': [
+        'breast augmentation',
+        'breast aug',
+        'boob job',
+        'breast implant',
+        'breast implants',
+    ],
+    'breast lift': ['breast lift', 'breast lifts', 'mastopexy'],
+    'breast reduction': ['breast reduction', 'breast reductions'],
+    'mommy makeover': ['mommy makeover', 'mommy makeovers'],
+    rhinoplasty: ['rhinoplasty', 'nose job'],
+    facelift: ['facelift', 'face lift', 'facelifts'],
+    blepharoplasty: ['blepharoplasty', 'eyelid surgery'],
+    'arm lift': ['arm lift', 'brachioplasty'],
+    'thigh lift': ['thigh lift'],
+    'neck lift': ['neck lift'],
+}
+
+/** The procedures a query names, as PROCEDURE_ALIASES keys. */
+function proceduresIn(query: string): Set<string> {
+    const padded = ` ${normalizeQuery(query)} `
+    const found = new Set<string>()
+    for (const [procedure, aliases] of Object.entries(PROCEDURE_ALIASES)) {
+        if (aliases.some((alias) => padded.includes(` ${alias} `))) {
+            found.add(procedure)
+        }
+    }
+    return found
+}
+
 /**
  * Score a query against every owned query and return matches above the
  * threshold, best first. Token-set Jaccard similarity — cheap,
  * deterministic, good enough to catch "-quiz"/"-checklist"/"-for-moms"
  * persona-variants of an identical query.
+ *
+ * An owned query about a different procedure is not a match: "can you fly
+ * after rhinoplasty" shares most of its words with "can you fly after a bbl",
+ * but it is a different topic. Both queries must name a procedure, with none
+ * in common, for the pair to be skipped.
  */
 export function findSimilarOwnedQueries(
     query: string,
@@ -161,6 +202,7 @@ export function findSimilarOwnedQueries(
     const { threshold = 0.6, limit = 10, extraEntries } = options
     const target = queryTokens(query)
     if (target.size === 0) return []
+    const targetProcedures = proceduresIn(query)
 
     const entries = extraEntries
         ? [...getKeywordRegistry(), ...extraEntries]
@@ -175,6 +217,15 @@ export function findSimilarOwnedQueries(
         )
         for (const owned of ownedQueries(entry)) {
             if (exactOnly.has(owned)) continue
+            if (targetProcedures.size > 0) {
+                const ownedProcedures = proceduresIn(owned)
+                if (
+                    ownedProcedures.size > 0 &&
+                    ![...ownedProcedures].some((p) => targetProcedures.has(p))
+                ) {
+                    continue
+                }
+            }
             const tokens = queryTokens(owned)
             if (tokens.size === 0) continue
             let intersection = 0

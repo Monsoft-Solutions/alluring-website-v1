@@ -71,7 +71,7 @@ If you take a weight-loss medication such as a GLP-1, or plan to start one, tell
 
 The same plan. A BBL already starts with liposuction: [Cleveland Clinic](https://my.clevelandclinic.org/health/treatments/23308-brazilian-butt-lift) describes removing fat from other parts of your body and moving it to your buttocks. That is true for Lipo 360 with a BBL as well. The sources we read give no separate diet for it. Our [week-by-week BBL recovery guide](/how-long-to-recover-from-bbl) shows how food fits with everything else in those weeks.
 
-If you are still deciding, you may be more worried about whether you have enough fat to move. You can read [what decides whether you're a candidate](/procedures/brazilian-butt-lift-bbl-miami#candidate) and [how much of the transferred fat survives](/procedures/brazilian-butt-lift-bbl-miami#faq) on our BBL page. At Alluring, Dr. Victoria Karlinsky, MD, FACS, examines you first and tells you what she sees.
+If you are still deciding, you may be more worried about [whether you have enough fat to move](/blog/do-i-have-enough-fat-for-a-bbl). You can read [what decides whether you're a candidate](/procedures/brazilian-butt-lift-bbl-miami#candidate) and [how much of the transferred fat survives](/procedures/brazilian-butt-lift-bbl-miami#faq) on our BBL page. At Alluring, Dr. Victoria Karlinsky, MD, FACS, examines you first and tells you what she sees.
 
 ## Frequently asked questions
 

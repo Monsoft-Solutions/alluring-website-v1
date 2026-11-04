@@ -38,7 +38,7 @@ So a decision made before 3 to 6 months is based on a result that is still chang
 
 ## Do you have enough fat for a double BBL?
 
-Maybe not, and that is the first thing to check. A second BBL needs fat again, and your first surgery already took some from your donor areas. Cleveland Clinic says you need enough excess fat in other parts of your body. ASPS says a surgeon may remove up to 3 times as much fat as is actually injected.
+Maybe not, and that is the first thing to check. A second BBL needs fat again, and your first surgery already took some from your donor areas. Cleveland Clinic says you need [enough excess fat](/blog/do-i-have-enough-fat-for-a-bbl) in other parts of your body. ASPS says a surgeon may remove up to 3 times as much fat as is actually injected.
 
 No source we read gives a minimum amount, so only an exam can tell you. Your surgeon looks at what is left and where it could come from, and tells you what a realistic result would be.
 
