@@ -123,6 +123,14 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'tummy tuck cost',
             'tummy tuck prices in miami',
         ],
+        mustNotTarget: [
+            {
+                query: 'mini vs full tummy tuck',
+                ownedBy: '/blog/mini-vs-full-tummy-tuck',
+                pendingPost: true,
+            },
+        ],
+        notes: 'Owns the mini tummy tuck head and price terms. /blog/mini-vs-full-tummy-tuck owns only the comparison (#357).',
     },
     {
         url: '/procedures/breast-augmentation-miami',

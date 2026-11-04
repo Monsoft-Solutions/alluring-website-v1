@@ -51,6 +51,11 @@ export type MustNotTarget = {
     query: string
     /** URL of the page that owns this query */
     ownedBy: string
+    /**
+     * The owner is a post in a later PR of the same plan, so it has no registry
+     * entry yet. Remove this flag in the PR that adds the entry.
+     */
+    pendingPost?: boolean
 }
 
 /** One entry in the keyword ownership registry */
