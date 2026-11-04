@@ -1126,6 +1126,24 @@
       "liveOn": null
     },
     {
+      "id": "w4-compliance-remove-former-surgeon-photos",
+      "week": 4,
+      "type": "compliance",
+      "cluster": "breast-lift",
+      "url": "/gallery/breast-lift, /gallery/breast-reduction, /procedures/breast-augmentation-miami",
+      "title": "Remove a former surgeon's photos and testimonial from production",
+      "targetQueries": [],
+      "readerStage": "n/a",
+      "owner": "claude-code",
+      "effort": "S",
+      "dependsOn": "",
+      "metric": "No page in the sitemap shows his name, the review or the photos, and the deleted files return 404.",
+      "rationale": "The surgeon no longer works at the practice. Requested by the user on 4 Nov 2026.",
+      "status": "live",
+      "notes": "Done 4 Nov 2026 on production, no code change. Permanently deleted 11 gallery photos and their files (7 breast lift, 1 breast reduction, 3 from one Instagram post), that post's unpublished row, and 1 before-and-after pair featured on the breast augmentation page. Unpublished 1 Google review with is_published = false, because the sync would import a deleted review again. The review stays on Google. Sweep of 206 live URLs was clean. Left in place, not public: 11 draft gallery rows, 4 unpublished Instagram posts and 5 draft or expired promotions that mention him. Log of deleted rows (local, gitignored): implementation-plans/2026-11-04-remove-lofman-images/deleted-photos-log.json.",
+      "liveOn": "2026-11-04"
+    },
+    {
       "id": "w5-page-fix-procedures-breast-lift-miami-48",
       "week": 5,
       "type": "page-fix",
@@ -1143,35 +1161,35 @@
       "dependsOn": "BL hero pick by 4 Nov; 20% answer; PR-A merged; user merges",
       "metric": "Page-level position for 'breast lift miami', against the week-1 28-day baseline (62.7): 30 or better at day 28 (14 Dec), 20 or better at day 56 (11 Jan).",
       "rationale": "For 'breast lift miami' the page ranks 62.4 over 90 days (733 impressions) and 62.7 over 28 days. The query averages 55.1 (1,013 impressions) because posts rank higher. Ads show paid demand for 'breast lift'. Under the single price rule, the 20% answer gates every BL figure (title, #pricing body, financing line), and price-in-title needs no separate counsel gate. The worktree sits 13 commits behind origin/master, so it is rebased and passed through the site-claims check and the procedure-page skill checks before merge.",
-      "status": "rehearsed",
-      "notes": "Built 3 Nov on feat/breast-lift-page-module, verified locally on a production content copy; not committed or deployed. Plan changed: https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu. The page keeps Miami cost terms only; national 'breast lift cost' moved to the new post /blog/breast-lift-cost. New #types section. 20% answer still open.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. The earlier dates in the metric assumed a later launch; the reads count from 4 Nov. Same release: taxonomy cleanup, and the /gallery/breast-lift alt text no longer names a former surgeon. Before this:  Built 3 Nov on feat/breast-lift-page-module, verified locally on a production content copy; not committed or deployed. Plan changed: https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu. The page keeps Miami cost terms only; national 'breast lift cost' moved to the new post /blog/breast-lift-cost. New #types section. 20% answer still open.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-fold-post-blog-breast-lift-implants-miami-blog-breast-lift-candidate-c-49",
       "week": 5,
       "type": "fold-post",
       "cluster": "breast-lift",
-      "url": "/blog/breast-lift-implants-miami, /blog/breast-lift-candidate-checklist, /blog/breast-lift-miami-quiz -> /procedures/breast-lift-miami; /blog/breast-lift-prep-miami -> /blog/breast-lift-recovery-guide-miami; /blog/breast-lift-recovery-weight-loss-miami, /blog/breast-lift-myths-busted, /blog/best-age-breast-lift-miami -> /blog/breast-lift-miami-post-pregnancy",
-      "title": "PR-E fold batch, BL (7)",
+      "url": "/blog/breast-lift-miami-quiz -> /blog/breast-lift-candidate-checklist; /blog/breast-lift-prep-miami -> /blog/breast-lift-recovery-guide-miami; /blog/best-age-breast-lift-miami, /blog/breast-lift-myths-busted -> /blog/breast-lift-miami-post-pregnancy",
+      "title": "PR-E fold batch, BL (4)",
       "targetQueries": [],
       "readerStage": "deciding",
       "owner": "claude-code",
       "effort": "S",
       "dependsOn": "PR-E",
-      "metric": "Registry passes at 86 live.",
+      "metric": "All 8 folded URL forms answer 308 to their destinations and the 4 rows are gone.",
       "rationale": "The 11 BL posts drew 708 impressions and 1 click per 28 days. /blog/breast-lift-implants-miami ranks in the 60s and 90s on the page's commercial intent.",
-      "status": "rehearsed",
-      "notes": "Plan changed, 3 Nov (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu): 4 folds instead of 7. Quiz -> candidate checklist; prep -> recovery guide; best-age and myths -> post-pregnancy. Implants, candidate checklist and weight loss are rewritten, not folded, because Keyword Planner shows national demand for them. Live-post count stays 132, not 86. SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: redirects in PR #358 (merge 32e3eeb2). All 8 URL forms answered 308 before the delete, and the 4 rows were deleted from production that day with run.sh delete-folded. The delete also removed their 4 category, 23 tag and 15 image links, 4 refresh rows and 1 analysis, and cleared the post link on 79 Search Console rows. No published post links them. Backup (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/delete/02-folded-backup.json. Destination reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  Plan changed, 3 Nov (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu): 4 folds instead of 7. Quiz -> candidate checklist; prep -> recovery guide; best-age and myths -> post-pregnancy. Implants, candidate checklist and weight loss are rewritten, not folded, because Keyword Planner shows national demand for them. Live-post count stays 132, not 86. SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-rewrite-post-blog-breast-augmentation-vs-breast-lift-blog-breast-lift-rec-50",
       "week": 5,
       "type": "rewrite-post",
       "cluster": "breast-lift / breast-reduction",
-      "url": "/blog/breast-augmentation-vs-breast-lift, /blog/breast-lift-recovery-guide-miami, /blog/breast-lift-scars-miami, /blog/breast-lift-miami-post-pregnancy, /blog/breast-lift-vs-reduction-miami",
-      "title": "R5: delete the BL fold rows, rewrite the 4 BL survivors, and retarget lift-vs-reduction to a pure comparison (mustNotTarget, exact strings, on both head terms)",
+      "url": "/blog/breast-augmentation-vs-breast-lift, /blog/breast-lift-recovery-guide-miami, /blog/breast-lift-scars-miami, /blog/breast-lift-miami-post-pregnancy, /blog/breast-lift-vs-reduction-miami, /blog/breast-lift-implants-miami, /blog/breast-lift-candidate-checklist, /blog/breast-lift-recovery-weight-loss-miami",
+      "title": "R5: rewrite the 8 kept BL posts, and retarget lift-vs-reduction to a pure comparison (mustNotTarget, exact strings, on both head terms)",
       "targetQueries": [
         "breast lift vs augmentation",
         "breast lift recovery",
@@ -1183,11 +1201,11 @@
       "owner": "claude-code",
       "effort": "M",
       "dependsOn": "PR-E deployed; contact sheet 2 days ahead; user runs psql",
-      "metric": "Day-28 (15 Dec): all 4 BL posts indexed, and 'breast lift miami' served by the page. Batch read against the holdout H.",
+      "metric": "Day-28 (2 Dec): all 8 BL posts indexed, and 'breast lift miami' served by the page. Batch read against the holdout H.",
       "rationale": "Lift-vs-reduction ranks 7.9 for 'breast lift miami' against the page's 62.4. The recovery guide is 'Discovered - not indexed'.",
-      "status": "rehearsed",
-      "notes": "Plan changed, 3 Nov (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu): 8 rewrites instead of 5, adding implants, candidate checklist and weight loss. Slugs kept, 'Miami' dropped from titles. Applied on a production copy, undo tested. SQL and run sheet: implementation-plans/2026-11-03-breast-lift-blog-rewrite/.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  Plan changed, 3 Nov (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu): 8 rewrites instead of 5, adding implants, candidate checklist and weight loss. Slugs kept, 'Miami' dropped from titles. Applied on a production copy, undo tested. SQL and run sheet: implementation-plans/2026-11-03-breast-lift-blog-rewrite/.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-decision-blog-check-surgeon-board-certification-florida-proposed-51",
@@ -2714,9 +2732,9 @@
       "dependsOn": "PR-E deployed; user runs psql",
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
-      "status": "rehearsed",
-      "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-new-post-breast-lift-without-implants",
@@ -2736,9 +2754,9 @@
       "dependsOn": "PR-E deployed; user runs psql",
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
-      "status": "rehearsed",
-      "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-new-post-breast-lift-cost",
@@ -2759,9 +2777,9 @@
       "dependsOn": "PR-E deployed; user runs psql",
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
-      "status": "rehearsed",
-      "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w5-new-post-non-surgical-breast-lift",
@@ -2781,9 +2799,9 @@
       "dependsOn": "PR-E deployed; user runs psql",
       "metric": "Indexed by day 28; impressions on the target queries at day 28, 56 and 90 after liveOn.",
       "rationale": "Added 3 Nov from Keyword Planner US demand that Search Console could not show (https://claude.ai/artifact/7gGFCYTHx2CRrNxBYUwANu).",
-      "status": "rehearsed",
-      "notes": "SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Live 4 Nov 2026: code in PR #358 (merge 32e3eeb2), deployed that day. Build folder (local, gitignored): implementation-plans/2026-11-03-breast-lift-blog-rewrite/. Revision reason: claude-blog-post. Day-28, 56 and 90 reads: 2 Dec 2026, 30 Dec 2026, 2 Feb 2027. Before this:  SQL: implementation-plans/2026-11-03-breast-lift-blog-rewrite/sql/clone/.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w8-measurement-breast-lift-rewrite-batch",
@@ -2806,7 +2824,7 @@
       "metric": "Baseline, 5 Oct-1 Nov: 12 posts had 0 web clicks. Read clicks, impressions, CTR and position by post, and form leads, against the lipo batch.",
       "rationale": "The go-live date is not set yet, so the existing w10 and w14 read dates may move with it.",
       "status": "todo",
-      "notes": "",
+      "notes": "liveOn is 4 Nov 2026 on the w5 breast lift items. Reads due 2 Dec 2026, 30 Dec 2026 and 2 Feb 2027.",
       "liveOn": null
     },
     {

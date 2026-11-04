@@ -1,7 +1,9 @@
 {
   "slug": "breast-lift-without-implants",
   "id": "db4c2f32-02eb-4ee4-9731-77a4660fa79e",
-  "mode": "new",
+  "mode": "rewrite",
+  "base_md5": "9b79caf5c853b906172889bd2ae8a9c5",
+  "base_from": "production 2026-11-04",
   "reader": "deciding",
   "cluster": "breast-lift",
   "title": "Breast Lift Without Implants: Who It Suits and Results",
