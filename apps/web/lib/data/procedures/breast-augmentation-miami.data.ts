@@ -3,9 +3,16 @@ import { breastAugmentationFigure } from '@/lib/data/procedures/facts/breast-aug
 import {
     KARLINSKY_CREDENTIALS,
     KARLINSKY_NAME,
+    KARLINSKY_SHORT_NAME,
 } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 const figure = breastAugmentationFigure
+
+const HERO_WIDE =
+    'https://sarpxxbehh1ep7ka.public.blob.vercel-storage.com/procedures/breast-augmentation/2026-11/hero-wide-alluring-plastic-surgery-miami.jpg'
+
+const HERO_WIDE_ALT =
+    'Woman with dark hair in a low ponytail, in an ivory knit top and an open camel blazer, walking past a sculptural white facade with a palm on the left'
 
 export const breastAugmentationMiami: Procedure = {
     title: 'Breast Augmentation Miami',
@@ -14,7 +21,7 @@ export const breastAugmentationMiami: Procedure = {
     // landing page. Prices from the practice's price sheet of 2026-09-15
     // (`docs/pricing/practice-price-list.md`); AI engines were quoting the
     // page's old saline "$4,500–$6,500" and silicone "$5,500–$8,500" (#309).
-    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants, and your surgeon confirms your price at consultation.`,
+    description: `Breast augmentation uses saline or silicone implants to add size and shape to the breasts. At Alluring in Miami, one surgeon performs every breast augmentation: ${KARLINSKY_NAME}. Breast augmentation starts at ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants, and your surgeon confirms your price at consultation.`,
 
     // Hand-written metadata (D4 of the wave-two brief). The generated title
     // ended "| Board-Certified Surgeons", a certification claim naming no
@@ -22,25 +29,27 @@ export const breastAugmentationMiami: Procedure = {
     // term and the year stay first, as on the liposuction and tummy tuck
     // pages, so the day-28 read can tell a ranking change from a
     // click-through change. After the "|": the lower of the two prices
-    // (both would run to 64 characters and truncate). No surgeon's name, so
-    // a staffing change doesn't touch it.
-    seoTitle: `Breast Augmentation Miami ${new Date().getFullYear()} | Implants From ${figure('price-saline')}`,
+    // (both would run to 64 characters and truncate), named "Saline" as the
+    // sheet does, not "Implants": whether the implants are in the price is
+    // an open owner question. No surgeon's name, so a staffing change
+    // doesn't touch it.
+    seoTitle: `Breast Augmentation Miami ${new Date().getFullYear()} | Saline From ${figure('price-saline')}`,
     //
     // Written for the cost cluster, which the page now owns (D5): both
-    // prices and the one surgeon. Under the 160 `clampMetaDescription` limit.
-    metaDescription: `Breast augmentation in Miami: saline implants from ${figure('price-saline')}, silicone from ${figure('price-silicone')}. Every one by ${KARLINSKY_NAME}. Free consultation.`,
+    // prices, the one surgeon, and the real photos "before and after"
+    // searchers click for. 154 characters.
+    metaDescription: `Breast augmentation in Miami: saline from ${figure('price-saline')}, silicone from ${figure('price-silicone')}. Every one by ${KARLINSKY_NAME}. Real patient photos. Free consultation.`,
     // `/llms.txt`, `/llms-full.txt` and the procedure cards read this, so it
     // says what the page says.
-    shortDescription: `Breast augmentation in Miami with saline implants from ${figure('price-saline')} or silicone implants from ${figure('price-silicone')}. Every breast augmentation at Alluring is performed by ${KARLINSKY_NAME}.`,
+    shortDescription: `Breast augmentation in Miami starts at ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants. Every breast augmentation at Alluring is performed by ${KARLINSKY_NAME}.`,
     heroSubtitle: 'Implants sized to your frame, placed by one surgeon',
 
     category: 'breast',
     bodyLocation: 'Breast',
-    // og:image, the home cards, procedure cards and the sitemap. Replaced by
-    // the 16:9 crop of the new hero once the user picks it (Gate 4); until
-    // then it stays the image the live site serves.
-    image: '/images/procedures/breast-augmentation.jpg',
-    dateModified: '2026-10-28T00:00:00.000Z',
+    // og:image, the home cards, procedure cards and the sitemap: the 16:9
+    // crop of the page's hero.
+    image: HERO_WIDE,
+    dateModified: '2026-11-03T00:00:00.000Z',
     datePublished: '2024-06-15T00:00:00.000Z',
 
     // Paid-LP hero pricing: saline implants, the lower of the two
@@ -60,12 +69,12 @@ export const breastAugmentationMiami: Procedure = {
         includes: [],
         options: [
             {
-                label: 'Saline implants',
+                label: 'Breast augmentation with saline implants',
                 startingAt: 3500,
                 note: 'Filled with sterile salt water. A rupture shows, so no screening scans.',
             },
             {
-                label: 'Silicone implants',
+                label: 'Breast augmentation with silicone implants',
                 startingAt: 4500,
                 note: 'Filled with silicone gel, which feels a bit more like breast tissue.',
             },
@@ -73,7 +82,7 @@ export const breastAugmentationMiami: Procedure = {
         factors: [
             {
                 label: 'Saline or silicone',
-                description: `The implant is the main difference: breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone.`,
+                description: `The implant is the main difference: breast augmentation starts at ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone.`,
             },
             {
                 label: 'A lift with your implants',
@@ -84,6 +93,10 @@ export const breastAugmentationMiami: Procedure = {
                 label: 'Combined procedures',
                 description: `When procedures are combined in one surgery, ${figure('price-combination-discount')} comes off the total for two procedures and ${figure('price-combination-discount', 1)} for three.`,
             },
+            {
+                label: 'Replacing implants you already have',
+                description: `An implant exchange is its own surgery, listed from ${figure('price-implant-exchange')} with saline implants and ${figure('price-implant-exchange', 1)} with silicone. Your surgeon confirms what yours involves at an exam.`,
+            },
         ],
     },
 
@@ -93,11 +106,10 @@ export const breastAugmentationMiami: Procedure = {
         'boob job miami',
         'breast augmentation cost miami',
         'how much is a boob job in miami',
+        'breast augmentation prices miami',
         'silicone breast implants miami',
-        'saline vs silicone implants',
-        'breast implant safety',
-        'breast augmentation recovery',
-        'breast augmentation before and after',
+        'safe breast augmentation miami',
+        'natural breast augmentation miami',
     ],
     quickStats: {
         // `breast-augmentation.facts.ts` surgery-length (the FDA). How long
@@ -108,14 +120,15 @@ export const breastAugmentationMiami: Procedure = {
         // graph's `followup`, the paid landing page's stats and
         // `/llms-full.txt`.
         recovery: 'Back to Work in a Few Days to a Week',
-        // `breast-augmentation.facts.ts` final-result-weeks (ASPS).
-        results: 'Final Shape in a Few Weeks',
+        // `breast-augmentation.facts.ts` drop-fluff-3-6-months: no figure here,
+        // because a stat line has no room for who says it.
+        results: 'Implants Settle Over Several Months',
         inpatientOutpatient: 'Outpatient',
     },
     benefits: [
         {
-            title: 'Two implants, two prices',
-            description: `Saline implants at ${figure('price-saline')} or silicone implants at ${figure('price-silicone')}, both on the practice's price list, so you can compare before you book.`,
+            title: 'Two options, two prices',
+            description: `Breast augmentation starts at ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone, both on the practice's price list, so you can compare before you book.`,
         },
         {
             title: 'One surgeon you can check',
@@ -124,7 +137,7 @@ export const breastAugmentationMiami: Procedure = {
         {
             title: 'A size planned for your frame',
             description:
-                'Your surgeon plans the implant around your proportions and the look you want in clothes, not a cup letter, because a size you later want to change is the most common reason implants come out.',
+                "Your surgeon plans the implant around your proportions and the look you want in clothes, not a cup letter, because in Sientra's long-term study a wish for a different size or style was the most common reason implants came out.",
         },
         {
             title: 'The years ahead, explained',
@@ -150,7 +163,7 @@ export const breastAugmentationMiami: Procedure = {
             step: 3,
             title: 'The incision',
             description:
-                'The incision goes in the fold under the breast, along the edge of the areola or in the armpit, where the scar is least visible.',
+                'The incision goes in the fold under the breast, along the edge of the areola or in the armpit. Your surgeon recommends which at your exam.',
         },
         {
             step: 4,
@@ -178,24 +191,24 @@ export const breastAugmentationMiami: Procedure = {
     // price question: the landing page drops any FAQ that mentions one.
     faqs: [
         {
-            question: 'How much does breast augmentation cost in Miami?',
-            answer: `At Alluring, breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants. A lift with implants is a breast lift, a different procedure with its own price. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Prices are estimates and may change. Financing is available for qualified applicants.`,
+            question: 'How much is a boob job in Miami?',
+            answer: `At Alluring, a boob job, or breast augmentation, starts at ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants. A lift with implants is a breast lift, a different procedure with its own price. ${KARLINSKY_NAME} confirms your price at your consultation, after an exam. Prices are estimates and may change. Financing is available for qualified applicants, and ASPS says most health insurance plans won't cover cosmetic breast augmentation.`,
         },
         {
             question: 'How long do breast implants last?',
-            answer: `There's no set number. The FDA says breast implants are not lifetime devices and that how long they last varies by person and cannot be predicted. In the FDA's example patient checklist, as many as ${figure('removed-within-8-10-years')} of women who get implants for augmentation have them removed within ${figure('removed-within-8-10-years', 1)}, and yours may last a shorter or longer time.`,
+            answer: `There's no set number, and you don't have to replace them every ${figure('no-replacement-date')}. The FDA says implants are not lifetime devices and that how long they last varies by person and cannot be predicted. In the FDA's example patient checklist, as many as ${figure('removed-within-8-10-years')} of women who get implants for augmentation have them removed within ${figure('removed-within-8-10-years', 1)}. In Allergan's study of Natrelle silicone implants, ${figure('natrelle-original-implant')} of women still had an original implant after ${figure('natrelle-original-implant', 1)}.`,
         },
         {
-            question: 'Do breast implants have to be replaced every 10 years?',
-            answer: `No. The FDA gives no replacement date: the life of an implant varies by person and cannot be predicted. Implants come out when there is a reason, such as a rupture, firm scar tissue around them or a wish for a different size. In Allergan's study of Natrelle silicone implants, ${figure('natrelle-original-implant')} of women still had an original implant after ${figure('natrelle-original-implant', 1)}.`,
+            question: 'How old do you have to be to get breast implants?',
+            answer: `The FDA approved saline implants for breast augmentation in women ${figure('fda-ages')} or older, and silicone gel implants in women ${figure('fda-ages', 1)} or older; for reconstruction, both are approved at any age. Your surgeon reviews your health and history at your consultation and tells you which implant suits you.`,
         },
         {
-            question: 'How old do I have to be for silicone implants?',
-            answer: `The FDA approved silicone gel implants for breast augmentation in women ${figure('fda-ages', 1)} or older, and saline implants in women ${figure('fda-ages')} or older; for reconstruction, both are approved at any age. Your surgeon reviews your health and history at your consultation and tells you which implant suits you.`,
+            question: 'Will my breast implants look natural?',
+            answer: 'That depends mostly on the size of the implant against your frame and the breast tissue you have. Silicone gel feels a bit more like natural breast tissue, ASPS says, and smooth implants may show some rippling under the skin. Your surgeon recommends a size at consultation and talks through how each would look on your body. No surgeon can promise a result, and results differ from person to person.',
         },
         {
             question: 'Can I breastfeed after breast augmentation?',
-            answer: `Many women can. A 2023 review of ${figure('breastfeeding')} found that about ${figure('breastfeeding', 1)} of women with breast implants were able to breastfeed, against about ${figure('breastfeeding', 2)} of women without them (Chen and colleagues, Aesthetic Surgery Journal). The FDA says some women who have had breast augmentation can breastfeed and some cannot, and Cleveland Clinic says implants placed under the muscle usually affect milk production less.`,
+            answer: `Many women can, though implants may make it harder. A 2023 review of ${figure('breastfeeding')} found that about ${figure('breastfeeding', 1)} of women with breast implants were able to breastfeed, against about ${figure('breastfeeding', 2)} of women without them, and concluded there may be some impairment in the ability to breastfeed (Chen and colleagues, Aesthetic Surgery Journal). The FDA says some women who have had breast augmentation can breastfeed and some cannot, and Cleveland Clinic says implants placed under the muscle usually affect milk production less.`,
         },
         {
             question: 'Can I still get mammograms with breast implants?',
@@ -207,7 +220,7 @@ export const breastAugmentationMiami: Procedure = {
         },
         {
             question: 'What is BIA-ALCL, and does it affect smooth implants?',
-            answer: `BIA-ALCL is a cancer of the immune system, not breast cancer, that can develop in the scar tissue and fluid around an implant; the FDA considers an individual's risk low. Of the cases reported to the FDA through June 2024, ${figure('bia-alcl-textured')} involved textured implants and ${figure('bia-alcl-textured', 1)} smooth ones, and ASPS says there are no confirmed cases involving only a smooth implant. Symptoms such as swelling or a lump appear on average ${figure('bia-alcl-timing')} after surgery, ASPS says, and the FDA does not recommend removing implants that cause no symptoms.`,
+            answer: `BIA-ALCL is a cancer of the immune system, not breast cancer, that can develop in the scar tissue and fluid around an implant; the FDA considers an individual's risk low. It occurs more often with textured implants, the FDA says, but patients with smooth implants have also been diagnosed: of the cases reported to the FDA through June 2024, ${figure('bia-alcl-textured')} involved textured implants and ${figure('bia-alcl-textured', 1)} smooth ones. Symptoms such as swelling or a lump appear on average ${figure('bia-alcl-timing')} after surgery, ASPS says, and the FDA does not recommend removing implants that cause no symptoms.`,
         },
         {
             question: 'Do I need a breast lift with my implants?',
@@ -215,12 +228,17 @@ export const breastAugmentationMiami: Procedure = {
         },
         {
             question:
+                'Breast augmentation or breast reduction: which do I need?',
+            answer: 'They do opposite jobs. Breast augmentation adds size and volume with implants. A breast reduction removes skin and tissue and reshapes the breast to make it smaller, and ASPS says it can ease back pain from heavy breasts. If your breasts feel deflated, ask about augmentation; if they feel heavy, ask about a reduction. Your surgeon tells you which fits at your exam.',
+        },
+        {
+            question:
                 'When can I lift my child or work out after breast augmentation?',
-            answer: `Cleveland Clinic advises no heavy lifting for at least ${figure('heavy-lifting-4-weeks')}, and says returning to sports may take up to ${figure('sports-6-weeks')}. If you have small children, line up help with lifting them before surgery, and ask your surgeon when you can carry them again. Many people go back to a desk job within a few days to a week, The Aesthetic Society says.`,
+            answer: `Cleveland Clinic advises no heavy lifting for at least ${figure('heavy-lifting-4-weeks')}, and says returning to sports may take up to ${figure('sports-6-weeks')}. No source gives a single date for push-ups, and an article on the ASPS website says to avoid strenuous activity and upper-body movement for at least ${figure('chest-work-no-single-date')}, so your surgeon decides. If you have small children, line up help with lifting them before surgery, and ask your surgeon when you can carry them again. Many people go back to a desk job within a few days to a week, The Aesthetic Society says.`,
         },
         {
             question: 'When do breast implants drop and fluff?',
-            answer: 'Over the first weeks. ASPS says the final result may take a few weeks to show, as the swelling goes down and the skin stretches, and The Aesthetic Society says most remaining swelling resolves within a month. It varies from person to person, and your surgeon checks how your implants are settling at your follow-up visits.',
+            answer: `Implants sit high and look flat at first, then settle over months. University of Utah Health says you begin to notice your final results around ${figure('drop-fluff-3-6-months')}, with subtle changes through ${figure('drop-fluff-3-6-months', 2)}, and an article on the ASPS website says the whole drop and fluff process can take ${figure('drop-fluff-3-6-months', 1)}. It varies from person to person, and your surgeon checks how your implants are settling at your follow-up visits.`,
         },
         {
             question: 'Can I use my own fat instead of implants?',
@@ -229,20 +247,18 @@ export const breastAugmentationMiami: Procedure = {
         {
             question:
                 'How many nights should I stay in Miami after breast augmentation?',
-            answer: 'It depends on your surgery. Your surgeon tells you how many nights to stay in Miami before you fly home, and your surgery, pre-op and follow-up dates are confirmed in writing. You arrange the travel yourself, and you can start with a virtual consultation before you plan anything.',
+            answer: `It depends on your surgery. ${KARLINSKY_SHORT_NAME} tells you, in writing, how many nights to stay in Miami before you fly home, and your surgery, pre-op and follow-up dates are confirmed in writing. You arrange the travel yourself, and you can start with a virtual consultation before you plan anything.`,
         },
     ],
 
     // The paid landing page's hero reads the `hero` entry; nothing else here
     // is rendered since the breast augmentation page module retired the
-    // markdown body and its images (AI renders whose alt text called them
-    // "results", and two infographics with figures in pixels). The hero
-    // entry is replaced by the new 16:9 render once the user picks it.
+    // markdown body and its images.
     contentImages: [
         {
             id: 'hero',
-            src: 'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/images/procedures/breast-augmentation/hero-alluring-plastic-surgery-miami.webp',
-            alt: 'Woman in a white dress on a Miami rooftop at sunset',
+            src: HERO_WIDE,
+            alt: HERO_WIDE_ALT,
             section: 'hero',
             variant: 'full-width',
         },

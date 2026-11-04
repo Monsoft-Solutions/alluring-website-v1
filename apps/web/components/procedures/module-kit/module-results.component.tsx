@@ -128,6 +128,7 @@ export function ModuleResults({
                             id={railId}
                             aria-label={railLabel}
                             className='pm-rail'
+                            data-copy-check='data'
                         >
                             {photos.map((photo) => (
                                 <li

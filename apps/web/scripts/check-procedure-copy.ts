@@ -778,9 +778,19 @@ async function main(): Promise<void> {
 
     // The page body: every block of text, and the alt text of every image.
     const body = collectBlocks(page)
+    const dataElements = findAll(
+        page,
+        (el) => attr(el, 'data-copy-check') === 'data'
+    )
+    const dataImages = new Set(
+        dataElements.flatMap((el) => findAll(el, (e) => e.tagName === 'img'))
+    )
     const alts: CopyString[] = findAll(
         page,
-        (el) => el.tagName === 'img' && Boolean(attr(el, 'alt'))
+        (el) =>
+            el.tagName === 'img' &&
+            Boolean(attr(el, 'alt')) &&
+            !dataImages.has(el)
     ).map((img) => ({
         path: `img alt "${attr(img, 'alt')!.slice(0, 48)}…"`,
         text: attr(img, 'alt')!,

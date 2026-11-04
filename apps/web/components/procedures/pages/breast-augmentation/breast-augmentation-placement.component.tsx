@@ -1,9 +1,11 @@
+import Link from 'next/link'
 import { cn } from '@workspace/ui/lib/utils'
 
 import { ModuleComparison } from '@/components/procedures/module-kit/module-comparison.component'
 import {
     moduleBody,
     moduleH3,
+    moduleLink,
     moduleSectionPad,
 } from '@/components/procedures/module-kit/module-ui.constant'
 import { AnswerBlock } from '@/components/procedures/sections/answer-block.component'
@@ -123,6 +125,18 @@ function Incision({
         </g>
     )
 }
+
+/** The posts that own the comparison and the two questions under it. */
+const placementGuides = [
+    {
+        label: 'Over or under the muscle? Placement compared',
+        href: '/blog/breast-implants-over-or-under-the-muscle',
+    },
+    {
+        label: 'Mammograms, pregnancy and breastfeeding with implants',
+        href: '/blog/mammograms-breastfeeding-with-breast-implants',
+    },
+]
 
 const LEGEND = [
     { label: 'Ribs', swatch: 'bg-stone-300' },
@@ -250,6 +264,21 @@ export function BreastAugmentationPlacement() {
                     </>
                 }
             />
+            <ul className='mt-6 flex flex-col gap-1 border-t border-stone-200 pt-5'>
+                {placementGuides.map((guide) => (
+                    <li key={guide.href}>
+                        <Link
+                            href={guide.href}
+                            className={cn(
+                                moduleLink,
+                                'inline-flex min-h-11 items-center text-base font-bold'
+                            )}
+                        >
+                            {guide.label}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
 
             <h3 className={cn(moduleH3, 'mt-10 md:mt-11')}>
                 Where the incision goes
@@ -260,11 +289,17 @@ export function BreastAugmentationPlacement() {
                 <li>The armpit (axillary)</li>
             </ol>
             <p className={cn(moduleBody, 'mt-4')}>
-                ASPS says a belly-button approach is associated with a higher
-                complication rate, and the FDA lists an incision site it has not
-                approved, such as the belly button, among the causes of rupture.
-                The scar fades over several months, even a couple of years, ASPS
-                says.
+                ASPS says a belly-button (transumbilical) approach is associated
+                with a higher complication rate, and the FDA lists an incision
+                site it has not approved, such as the belly button, among the
+                causes of rupture. The scar fades over several months, even a
+                couple of years, ASPS says.{' '}
+                <Link
+                    href='/blog/breast-augmentation-scars-miami-timeline'
+                    className={moduleLink}
+                >
+                    Breast augmentation scars: where they are, how they fade
+                </Link>
             </p>
         </AnswerBlock>
     )

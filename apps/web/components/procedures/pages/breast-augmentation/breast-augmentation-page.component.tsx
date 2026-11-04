@@ -40,6 +40,7 @@ import type { GalleryMediaCard } from '@/lib/types/gallery/gallery-group.type'
 import type { ProcedurePageModuleProps } from '@/lib/types/procedure-page-module.type'
 
 import { BreastAugmentationAtAGlance } from './breast-augmentation-at-a-glance.component'
+import { BreastAugmentationCandidate } from './breast-augmentation-candidate.component'
 import { BreastAugmentationCost } from './breast-augmentation-cost.component'
 import { BreastAugmentationImplants } from './breast-augmentation-implants.component'
 import { breastAugmentationImages } from './breast-augmentation-page.constant'
@@ -119,12 +120,13 @@ function captionOf(photo: GalleryMediaCard): string {
  * The route keeps the metadata, the H1 text, the canonical URL and the
  * structured-data graph; this module lays out everything else, in the
  * 2026-09-28 brief's order (https://claude.ai/artifact/6SsAr3a8Zp7mzWUK4G8x2q,
- * the "Breast augmentation" tab): real results straight after the hero and
- * a two-field form after them, then the price, because the two prices are
- * what she came to compare, then the two choices that decide it (saline or
- * silicone, and the size), then the page's one dark band: the next ten
- * years with implants, the FDA's rules and the makers' long-term studies.
- * The surgeon, the placement and incision, surgery day and recovery follow.
+ * the "Breast augmentation" tab), revised 2026-11-03: real results straight
+ * after the hero and a two-field form after them, then the price, because
+ * the two prices are what she came to compare, then what it is and whether
+ * it suits her, then the two choices that decide it (saline or silicone, and
+ * the size), then the page's one dark band: the next ten years with
+ * implants, the FDA's rules and the makers' long-term studies. The surgeon,
+ * the placement and incision, surgery day and recovery follow.
  *
  * Sections shared with other procedure pages come from
  * `components/procedures/module-kit/` and take this page's copy as props;
@@ -182,7 +184,7 @@ export async function BreastAugmentationPage({
         <ModuleFactRail
             label={label}
             startingAt={figure('price-saline')}
-            priceNote={`Saline implants; silicone implants from ${figure('price-silicone')}. Set for each patient after an exam`}
+            priceNote={`Breast augmentation with saline; with silicone, from ${figure('price-silicone')}. Set for each patient after an exam`}
             surgeonName={KARLINSKY_NAME}
             updatedOn={procedure.dateModified}
         />
@@ -206,7 +208,7 @@ export async function BreastAugmentationPage({
                 rating={rating}
                 chips={[
                     {
-                        label: `Saline ${figure('price-saline')} · Silicone ${figure('price-silicone')}`,
+                        label: `From ${figure('price-saline')} saline · ${figure('price-silicone')} silicone`,
                     },
                     { label: 'Financing available' },
                     { label: 'Hablamos español', lang: 'es' },
@@ -222,7 +224,7 @@ export async function BreastAugmentationPage({
                 photos={photos}
                 gallerySlug={gallery.groupSlug}
                 question='Breast augmentation before and after: what do real results look like?'
-                answer='These are photos of real Alluring patients, shared with their consent, each captioned with what the gallery records about it. Results differ from person to person, and ASPS says the final result can take a few weeks to show, as the swelling goes down and the skin stretches.'
+                answer={`These are photos of real Alluring patients, shared with their consent, each captioned with what the gallery records about it. Results differ from person to person, and University of Utah Health says you begin to notice your final results around ${figure('drop-fluff-3-6-months')}, with subtle changes through ${figure('drop-fluff-3-6-months', 2)}.`}
                 railId='breast-augmentation-results-rail'
                 railLabel='Breast augmentation before and after photos from the gallery'
                 galleryLinkLabel='See every breast augmentation photo and video in the gallery'
@@ -241,6 +243,7 @@ export async function BreastAugmentationPage({
                     <BreastAugmentationCost pricing={procedure.pricing} />
                 )}
                 <BreastAugmentationAtAGlance />
+                <BreastAugmentationCandidate />
                 <BreastAugmentationImplants />
                 <BreastAugmentationSize />
             </ModuleBand>
@@ -280,7 +283,7 @@ export async function BreastAugmentationPage({
             />
             <ModuleSources
                 sources={breastAugmentationSources}
-                answer="Every safety, recovery and implant figure on this page, the FDA's requirements and the national average fee come from the sources below, checked in September 2026. Our own figures, the prices, are stated as ours. Your surgeon's instructions always come first, and they may differ from these general ranges."
+                answer="Every safety, recovery and implant figure on this page, the FDA's requirements and the ASPS average cost come from the sources below, checked in November 2026. Our prices are stated as ours. Your surgeon's instructions always come first, and they may differ from these general ranges."
                 updatedOn={procedure.dateModified}
             />
 
@@ -289,7 +292,7 @@ export async function BreastAugmentationPage({
             <StickyCtaBar className='pm-sticky-bar pr-[4.75rem]' />
 
             {/* `section_view` for every section with an id (results,
-                pricing, implants, size, safety, surgeon, placement,
+                pricing, candidate, implants, size, safety, surgeon, placement,
                 recovery, reviews, faq, book and the rest). The event carries
                 the page's procedure from its URL
                 (`lib/analytics/page-context.ts`). */}

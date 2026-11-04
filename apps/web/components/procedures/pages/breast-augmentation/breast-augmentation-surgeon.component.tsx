@@ -33,10 +33,11 @@ export function BreastAugmentationSurgeon() {
         >
             <p className={cn(moduleBody, 'mt-4.5')}>
                 Searching for breast augmentation in Miami turns up specials and
-                a wide spread of prices. What separates surgeons is whether they
-                help you choose a size you won&apos;t want to change, explain
-                the FDA&apos;s checklist and the scan schedule, and let you
-                check their credentials yourself.
+                a wide spread of prices. Three things tell surgeons apart:
+                whether they help you choose a size you won&apos;t want to
+                change, whether they walk you through the FDA&apos;s checklist
+                and the scan schedule, and whether you can check their
+                credentials yourself.
             </p>
 
             <ModuleSurgeonCredentials />

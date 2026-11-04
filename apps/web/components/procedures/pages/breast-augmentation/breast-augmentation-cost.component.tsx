@@ -30,7 +30,7 @@ const quoteLines = [
 ]
 
 /**
- * "How much is breast augmentation in Miami?" Keeps `id="pricing"`: blog
+ * "How much does breast augmentation cost in Miami?" Keeps `id="pricing"`: blog
  * posts and other pages link to it, and so does the retired
  * `/breast-augmentation-cost-miami` (D6 of the wave-two brief).
  *
@@ -43,7 +43,7 @@ const quoteLines = [
  * What the price includes, the implants among it, still waits on the owner,
  * so the section claims no inclusion: it lists what any quote should spell
  * out. `pricing.includes` fills the kit's list the day the owner confirms
- * it. The ASPS national average makes the price concrete without the word
+ * it. The ASPS average makes the price concrete without the word
  * "affordable", and the answer always says what it leaves out.
  */
 export function BreastAugmentationCost({
@@ -54,15 +54,15 @@ export function BreastAugmentationCost({
     return (
         <AnswerBlock
             id='pricing'
-            question='How much is breast augmentation in Miami?'
+            question='How much does breast augmentation cost in Miami?'
             className={moduleSectionPad}
-            answer={`At Alluring, breast augmentation is ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants, from our price list. Your surgeon confirms your price at your consultation, after an exam. For comparison, ASPS puts the national average surgeon's fee at ${figure('asps-average-fee')}, before anesthesia and the operating room, so ask what every quote includes.`}
+            answer={`At Alluring, breast augmentation starts at ${figure('price-saline')} with saline implants and ${figure('price-silicone')} with silicone implants. Your surgeon confirms your price after an exam. ASPS puts the average cost of breast augmentation with implants at ${figure('asps-average-fee')}, which it says is only part of the total price, before anesthesia and operating room facilities, so ask what every quote includes.`}
         >
             <ModulePriceTable
                 options={pricing.options ?? []}
-                heading='Prices by implant'
+                heading='Prices by implant type'
                 id='breast-augmentation-prices'
-                optionLabel='Implant'
+                optionLabel='Type'
                 priceLabel='Price'
                 note={
                     <>
@@ -119,12 +119,10 @@ export function BreastAugmentationCost({
                 Why some breast augmentation offers cost less
             </h3>
             <p className={cn(moduleBody, 'mt-3.5')}>
-                Advertised prices in Miami can start lower than ours. A low
-                price may be for saline implants only, or leave out the
-                implants, the anesthesia, the facility or follow-up visits, or
-                run as a special that ends this week. Compare itemized quotes
-                for the same implant, and ask who performs the surgery and
-                where.
+                Advertised prices in Miami vary widely. A low price may be for
+                saline implants only, or leave out the implants, the anesthesia,
+                the facility or follow-up visits. Compare itemized quotes for
+                the same implant, and ask who performs the surgery and where.
             </p>
             <p className={cn(moduleBody, 'mt-5')}>
                 Financing is available through {getFinancingPartnersString()}{' '}

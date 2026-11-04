@@ -1,9 +1,15 @@
+import Link from 'next/link'
+
 import {
     ModuleSceneSection,
     type ModuleSceneEvidence,
     type ModuleSceneItem,
 } from '@/components/procedures/module-kit/module-scene.component'
 import { breastAugmentationFigure as figure } from '@/lib/data/procedures/facts/breast-augmentation.facts'
+
+/** A link inside the dark band's body copy. */
+const darkLink =
+    'decoration-gold-400 text-stone-100 underline underline-offset-4 hover:text-white'
 
 const law: ModuleSceneItem[] = [
     {
@@ -30,18 +36,69 @@ const law: ModuleSceneItem[] = [
 
 const evidence: ModuleSceneEvidence[] = [
     {
+        title: 'The complications to know about',
+        body: (
+            <>
+                The FDA lists common ones, including capsular contracture,
+                rupture, breast pain, infection, a collection of blood or fluid
+                (hematoma or seroma), changes in nipple or breast sensation,
+                implants that shift, rippling you can see or feel, and a size or
+                style you aren&apos;t happy with. Tell your surgeon about any of
+                them early.{' '}
+                <Link
+                    href='/blog/breast-implant-rippling-bottoming-out'
+                    className={darkLink}
+                >
+                    Rippling and bottoming out: causes and fixes
+                </Link>
+            </>
+        ),
+        sourceId: 'fda-risks',
+    },
+    {
+        title: 'How long implants last',
+        body: (
+            <>
+                The FDA says their life varies by person and cannot be
+                predicted, and it sets no replacement date. In Allergan&apos;s
+                study of Natrelle silicone implants,{' '}
+                {figure('natrelle-original-implant')} of women still had an
+                original implant after {figure('natrelle-original-implant', 1)}.{' '}
+                <Link
+                    href='/blog/how-long-do-breast-implants-last'
+                    className={darkLink}
+                >
+                    How long breast implants last
+                </Link>
+            </>
+        ),
+        sourceId: 'spear-2014',
+    },
+    {
         title: 'Why implants come out',
         body: `In Sientra's core study, ${figure('sientra-reoperation')} of women who had a first breast augmentation had another operation within ${figure('sientra-reoperation', 1)}, and the most common reason implants were removed was a wish for a different size or style: ${figure('size-change-reason')} of the implants removed.`,
         sourceId: 'sientra-brochure',
     },
     {
         title: 'Firm scar tissue around the implant',
-        body: `In Mentor's study of its MemoryGel implants, ${figure('mentor-ten-year')} of women who had a first breast augmentation developed severe capsular contracture (Baker grade III or IV) within ${figure('mentor-ten-year', 2)}, and ${figure('mentor-ten-year', 1)} had another operation (Caplin and colleagues, Plastic and Reconstructive Surgery, 2021).`,
+        body: (
+            <>
+                In Mentor&apos;s study of its MemoryGel implants,{' '}
+                {figure('mentor-ten-year')} of women who had a first breast
+                augmentation developed severe capsular contracture (Baker grade
+                III or IV) within {figure('mentor-ten-year', 2)}, and{' '}
+                {figure('mentor-ten-year', 1)} had another operation (Caplin and
+                colleagues, Plastic and Reconstructive Surgery, 2021).{' '}
+                <Link href='/blog/capsular-contracture' className={darkLink}>
+                    Capsular contracture: symptoms, grades and treatment
+                </Link>
+            </>
+        ),
         sourceId: 'caplin-2021',
     },
     {
         title: 'BIA-ALCL, mostly with textured implants',
-        body: `Of the BIA-ALCL cases reported to the FDA through June 2024, ${figure('bia-alcl-textured')} involved textured implants and ${figure('bia-alcl-textured', 1)} smooth ones; for the rest, the surface wasn't reported.`,
+        body: `Of the BIA-ALCL cases reported to the FDA through June 2024, ${figure('bia-alcl-textured')} involved textured implants and ${figure('bia-alcl-textured', 1)} smooth ones; for the rest, the surface wasn't reported. New swelling or a lump around an implant, even years later, is a reason to call your surgeon.`,
         sourceId: 'fda-bia-alcl-reports',
     },
     {
@@ -186,7 +243,7 @@ function BreastAugmentationTenYears() {
                             className='fill-gold-300/70'
                         />
                     ))}
-                    <Marker x={yearX(9.75)} y={30} n={3} />
+                    <Marker x={yearX(9.1)} y={30} n={3} />
 
                     {/* 4 · removals within 8–10 years, a bracket under the axis. */}
                     <path
@@ -295,8 +352,8 @@ function Marker({ x, y, n }: { x: number; y: number; n: number }) {
 export function BreastAugmentationSafety() {
     return (
         <ModuleSceneSection
-            question='Are breast implants safe?'
-            answer={`The FDA approves them, and they aren't lifetime devices. Before surgery you read, initial and sign the FDA's patient checklist with your surgeon. For silicone implants, the FDA recommends a screening scan at ${figure('silicone-screening')} and every ${figure('silicone-screening', 1)} after, because a rupture can be silent. How long yours last can't be predicted.`}
+            question='Is breast augmentation safe?'
+            answer={`Breast implants are FDA-approved, and ASPS says the vast majority of people with them have no serious complications. But they aren't lifetime devices, and complications can mean more surgery. For silicone implants, the FDA recommends a screening scan at ${figure('silicone-screening')} and every ${figure('silicone-screening', 1)} after, because a rupture can be silent.`}
             diagram={<BreastAugmentationTenYears />}
             tabularFigures
             law={{
@@ -314,10 +371,10 @@ export function BreastAugmentationSafety() {
                 items: law,
             }}
             evidence={{
-                heading: 'What the long-term studies show',
+                heading: 'What the FDA and the long-term studies show',
                 items: evidence,
                 link: {
-                    label: 'Breast implant illness: symptoms and what to ask',
+                    label: "Breast implant illness: symptoms, what's known, what to do",
                     href: '/blog/breast-implant-illness-symptoms',
                 },
             }}
