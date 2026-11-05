@@ -75,24 +75,20 @@ export const authors: AuthorExtended[] = [
     {
         slug: 'editorial-team',
         name: 'Alluring Plastic Surgery Editorial Team',
-        jobTitle: 'Medical Content Team',
+        jobTitle: 'Editorial Team',
         shortBio:
             'Patient education from Alluring Plastic Surgery in Miami, written from named medical sources.',
         fullBio:
-            "The Alluring Plastic Surgery Editorial Team writes patient education about cosmetic procedures. Figures in our articles come from named sources, such as the American Society of Plastic Surgeons, The Aesthetic Society, Cleveland Clinic, the FDA and peer-reviewed journals, and each article links to them. Our articles are general information, not medical advice: your own surgeon's instructions always come first.",
+            "The Alluring Plastic Surgery Editorial Team writes patient education about cosmetic procedures. Figures in our articles come from named sources, such as the American Society of Plastic Surgeons, The Aesthetic Society, Cleveland Clinic, the FDA and peer-reviewed journals. Our articles are general information, not medical advice: your own surgeon's instructions always come first.",
         credentials: [],
         affiliations: [
             {
                 organization: 'Alluring Plastic Surgery',
                 role: 'Editorial Team',
-                url: 'https://alluringmiami.com',
+                url: 'https://www.alluringplasticsurgery.com',
             },
         ],
-        specialties: [
-            'Plastic Surgery Education',
-            'Patient Information',
-            'Medical Content',
-        ],
+        specialties: ['Plastic Surgery Education', 'Patient Information'],
         isPrimaryAuthor: true,
         schemaType: 'Person',
     },

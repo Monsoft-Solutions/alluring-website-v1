@@ -27,31 +27,31 @@ export function TummyTuckAtAGlance() {
         { label: 'Your surgeon', value: KARLINSKY_NAME },
         {
             label: 'Surgery time',
-            value: `${tummyTuckFigure('surgery-1-5-hours')}, depending on the type (Cleveland Clinic)`,
+            value: `${tummyTuckFigure('surgery-1-5-hours')}, depending on the result you want (Cleveland Clinic)`,
         },
         {
             label: 'Anesthesia and setting',
-            value: 'General anesthesia; usually outpatient, so you go home the same day with someone to stay with you',
+            value: 'General anesthesia; usually outpatient, so you usually go home the same day with someone to stay with you (Cleveland Clinic, ASPS)',
         },
         {
             label: 'Standing up straight',
-            value: `After ${tummyTuckFigure('bent-7-10-days')} of walking bent at the waist`,
+            value: `After ${tummyTuckFigure('bent-7-10-days')} of walking bent at the waist (Cindy Wu, MD)`,
         },
         {
-            label: 'Back to a desk job',
-            value: `About ${tummyTuckFigure('work-about-2-weeks')}`,
+            label: 'Back to non-strenuous work',
+            value: `About ${tummyTuckFigure('work-about-2-weeks')} (Cindy Wu, MD; Samir Rao, MD), or up to a month off (Shahram Salemy, MD)`,
         },
         {
             label: 'Compression garment',
-            value: `${tummyTuckFigure('garment-4-6-weeks')}`,
+            value: `${tummyTuckFigure('garment-4-6-weeks')} (Cindy Wu, MD, on the ASPS website), or as your surgeon directs`,
         },
         {
             label: 'Heavy lifting and strenuous exercise',
-            value: `Usually after ${tummyTuckFigure('heavy-lifting-4-8-weeks')}`,
+            value: `Usually after ${tummyTuckFigure('heavy-lifting-4-8-weeks')} (Cleveland Clinic); longer after an extended tummy tuck (Samir Rao, MD)`,
         },
         {
             label: 'Final result',
-            value: `Up to ${tummyTuckFigure('results-3-months')}; the scar fades over ${tummyTuckFigure('scar-fades-12-18-months')}`,
+            value: `Up to ${tummyTuckFigure('results-3-months')} (Cleveland Clinic); the scar turns thinner and lighter at around ${tummyTuckFigure('scar-fades-12-18-months')} (Cindy Wu, MD)`,
         },
         {
             label: 'Florida office limit',
@@ -68,7 +68,7 @@ export function TummyTuckAtAGlance() {
             answer="A tummy tuck, or abdominoplasty, is surgery that removes loose skin and fat from the abdomen and, in most cases, ASPS says, repairs weakened or separated abdominal muscles. It flattens and firms the abdomen after pregnancy or weight loss. It is not a weight-loss treatment, and it can't correct stretch marks, except those on the skin it removes."
         >
             <FactTable
-                caption='Tummy tuck at Alluring, at a glance'
+                caption='Tummy tuck at a glance: our prices and surgeon, with general ranges from the sources below'
                 facts={facts}
                 className='mt-10 md:mt-11'
             />

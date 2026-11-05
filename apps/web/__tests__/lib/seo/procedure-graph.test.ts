@@ -157,3 +157,25 @@ describe('procedureSchema pricing.options', () => {
         expect(result.success).toBe(false)
     })
 })
+
+describe('SurgicalProcedure alternateName', () => {
+    const procedureNode = (procedure: Procedure) =>
+        buildProcedureGraph({
+            procedure,
+            pageUrl: `${SITE}/procedures/${procedure.slug}`,
+            siteUrl: SITE,
+            breadcrumbs: [],
+        }).find((node) => node['@type'] === 'SurgicalProcedure')
+
+    it('survives the schema and reaches the node', () => {
+        const parsed = procedureSchema.parse({
+            ...tummyTuck,
+            alternateName: 'Abdominoplasty',
+        })
+        expect(procedureNode(parsed)?.alternateName).toBe('Abdominoplasty')
+    })
+
+    it('stays off a procedure that does not set it', () => {
+        expect(procedureNode(tummyTuck)).not.toHaveProperty('alternateName')
+    })
+})

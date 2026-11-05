@@ -1,0 +1,290 @@
+{
+  "slug": "how-to-reduce-tightness-after-tummy-tuck",
+  "mode": "rewrite",
+  "base_md5": "3ff4223c55470f8016a2a1506afaf810",
+  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:39:09Z",
+  "reader": "recovering",
+  "cluster": "tummy-tuck",
+  "title": "How to Reduce Tightness After Tummy Tuck?",
+  "meta_description": "Tightness comes from muscle repair, the closed skin and swelling, and eases over weeks or months. What helps, what to wear and when to call.",
+  "excerpt": "Why a tummy tuck feels tight, how long the pulling lasts, why the stomach can feel hard, what to wear and when stretching is safe, with the signs that mean a call to your surgeon.",
+  "quick_answer": "How do you reduce tightness after a tummy tuck?\n\nTightness comes from muscle repair, the closed skin and swelling, and eases as they heal. Walk bent at the waist for 7 to 10 days, wear your garment as directed, usually 4 to 6 weeks, and stretch only once your surgeon clears it. Swelling keeps easing until about 3 months (Cindy Wu, MD, on the ASPS website).",
+  "primary_keyword": "how to reduce tightness after tummy tuck",
+  "secondary_keywords": [
+    "tightness after tummy tuck",
+    "how long does the tightness last after a tummy tuck",
+    "how to relieve tightness after tummy tuck",
+    "what helps tightness after tummy tuck",
+    "pulling feeling after tummy tuck",
+    "what to wear after tummy tuck",
+    "what to wear after a tummy tuck",
+    "what to wear after tummy tuck surgery",
+    "tummy tuck clothes",
+    "hard stomach after tummy tuck",
+    "hard tummy after tummy tuck",
+    "stomach hard after tummy tuck",
+    "why is my stomach rock hard after tummy tuck",
+    "involuntary stretching after tummy tuck"
+  ],
+  "owns_queries": [
+    "how to reduce tightness after tummy tuck",
+    "tightness after tummy tuck",
+    "how long does the tightness last after a tummy tuck",
+    "how to relieve tightness after tummy tuck",
+    "what helps tightness after tummy tuck",
+    "pulling feeling after tummy tuck",
+    "what to wear after tummy tuck",
+    "what to wear after a tummy tuck",
+    "hard stomach after tummy tuck",
+    "why is my stomach rock hard after tummy tuck"
+  ],
+  "categories": [
+    "Post-Op Care",
+    "Recovery",
+    "Tummy Tuck"
+  ],
+  "tags": [
+    "Abdominoplasty",
+    "Compression Garments",
+    "Lymphatic Massage",
+    "Recovery",
+    "Recovery Timeline",
+    "Swelling",
+    "Tummy Tuck"
+  ],
+  "cta": "default",
+  "images": [
+    {
+      "key": "hero",
+      "type": "featured",
+      "aspect": "1:1",
+      "alt": "A woman in a beige compression garment and a robe while a clinician's hands adjust the garment.",
+      "prompt": "Tasteful, premium image of a patient (or model) in a discreet post-op compression garment or a nurse demonstrating proper fit/adjustment in a serene clinic setting",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/b322fbb5-9eaa-4f0c-8997-47a4d9d4fd4b/1768927379737-fei35i-0.jpg"
+    },
+    {
+      "key": "inline-2",
+      "type": "inline",
+      "aspect": "1:1",
+      "alt": "Simplified abdominal illustration showing muscle repair (diastasis recti), skin removal, swelling zones, and nerve sensation changes (tingling/burning)",
+      "prompt": "Simplified abdominal illustration showing muscle repair (diastasis recti), skin removal, swelling zones, and nerve sensation changes (tingling/burning)",
+      "reuse_url": "https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/blog-images/b322fbb5-9eaa-4f0c-8997-47a4d9d4fd4b/1768927303941-2ko8xt-0.jpg"
+    },
+    {
+      "key": "quick-guide-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Quick guide card titled Reduce tightness after a tummy tuck, with five line icons for a compression garment worn as your surgeon directs, usually for 4 to 6 weeks, staying hydrated, gentle walks, stretching only once your surgeon says it's safe, and avoiding high-sodium foods.",
+      "prompt": "SCENE: A clean editorial card on warm stone, with a porcelain background, thin brushed gold rules and generous margins. SUBJECT: A title and five short numbered rows, one simple line icon per row: a flat garment shape, a glass of water, a walking figure drawn as a plain symbol, a stretching symbol, and a crossed-out salt shaker. KEY DETAILS: Replaces the old quick guide at the same body position. No hydration count. The only figure is 4 to 6 weeks, credited in the small footer. CONSTRAINTS: Text only as given in text_in_image, word for word, with nothing added; every figure exactly as written; no phone number, practice name, logo or watermark; no body shape, torso, photograph, garment on a body, incision or drain; icons are simple flat line drawings; large text that reads on a phone.",
+      "text_in_image": "Reduce tightness after a tummy tuck\nCompression: as your surgeon directs, usually for 4 to 6 weeks\nHydration: stay hydrated\nGentle walks: to promote circulation\nStretching: only once your surgeon says it's safe\nSodium: avoid high-sodium foods\nSource for 4 to 6 weeks: Cindy Wu, MD, on the ASPS website"
+    },
+    {
+      "key": "timeline-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Four-step timeline card. 7 to 10 days: you are bent at the waist, then able to stand up straight. 1 to 2 weeks: you should be standing tall. About 8 weeks: most patients begin feeling more normal. About 3 months: swelling keeps going down until about now, and it takes around 3 months to fully recover.",
+      "prompt": "SCENE: A clean editorial card on warm stone, with a porcelain background, thin brushed gold rules and generous margins. SUBJECT: A title, then a simple vertical timeline with four steps joined by a thin gold line, then a small source footer. KEY DETAILS: Replaces the old timeline at the same body position. No Week 3, no Weeks 6–12 and no After 12 weeks. The footer is small but legible. CONSTRAINTS: Text only as given in text_in_image, word for word, with nothing added; every figure exactly as written; no phone number, practice name, logo or watermark; no body shape, torso, photograph, garment on a body, incision or drain; icons are simple flat line drawings; large text that reads on a phone.",
+      "text_in_image": "Recovery milestones after a tummy tuck\n7 to 10 days: You are bent at the waist, then able to stand up straight\n1 to 2 weeks: You should be standing tall\nAbout 8 weeks: Most patients begin feeling more normal\nAbout 3 months: Swelling keeps going down until about now, and it takes around 3 months to fully recover\nSources. 7 to 10 days and swelling: Cindy Wu, MD. 1 to 2 weeks: ASPS. 8 weeks: Shahram Salemy, MD. Full recovery: Samir Rao, MD. Wu, Salemy and Rao on the ASPS website."
+    },
+    {
+      "key": "nutrition-card",
+      "type": "inline",
+      "aspect": "4:5",
+      "alt": "Card titled Hydration and nutrition with line icons: a glass of water, lean proteins, berries and leafy greens, whole grains and vegetables for fiber, and a crossed-out salt shaker for high-sodium foods.",
+      "prompt": "SCENE: A clean editorial card on warm stone, with a porcelain background, thin brushed gold rules and generous margins. SUBJECT: A title and five short rows, one simple line icon per row: a glass of water, fish and legumes, berries and leaves, a bowl of grains, and a crossed-out salt shaker. KEY DETAILS: Replaces the old panel at the same body position. It states no figure, so there is no hydration count and no source footer. CONSTRAINTS: Text only as given in text_in_image, word for word, with nothing added; every figure exactly as written; no phone number, practice name, logo or watermark; no body shape, torso, photograph, garment on a body, incision or drain; icons are simple flat line drawings; large text that reads on a phone.",
+      "text_in_image": "Hydration and nutrition\nDrink enough water through the day\nLean proteins like chicken, fish, and legumes\nBerries and leafy greens\nFiber from whole grains and vegetables\nAvoid high-sodium foods"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/answers-to-common-tummy-tuck-questions",
+      "publisher": "ASPS website, a post by Cindy Wu, MD",
+      "title": "Answers to common tummy tuck questions (2019)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "After surgery, you will be placed in a compression garment, which will be worn for 4-6 weeks after surgery to help with reducing swelling.",
+        "You will be bent at the waist while standing or lying down for 7-10 days after surgery to protect the incision and to allow for your skin to adapt.",
+        "After this time, you will be able to stand up straight.",
+        "The bruising will subside in a couple of weeks, and the swelling will continue to diminish until approximately three months post-procedure.",
+        "You can walk the day of surgery.",
+        "In fact, most plastic surgeons encourage patients to walk three times the day of surgery to improve blood circulation to keep the risk of blood clots in the legs to a minimum.",
+        "Adequate hydration and ambulation are also important to lower the risk of blood clots after surgery."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+      "publisher": "ASPS",
+      "title": "Tummy Tuck",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Tummy tuck surgery, also known as abdominoplasty, removes excess fat and skin and, in most cases, restores weakened or separated muscles creating an abdominal profile that is smoother and firmer."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/results",
+      "publisher": "ASPS",
+      "title": "What results can I expect from a tummy tuck?",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Within a week or two, you should be standing tall and confident in your new slimmer profile."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/what-you-need-to-know-about-your-tummy-tuck-recovery",
+      "publisher": "ASPS website, a post by Shahram Salemy, MD",
+      "title": "What you need to know about your tummy tuck recovery (2019)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Some people experience numbness or a pulling sensation for weeks or months after a tummy tuck, but this is typically normal and often fades with time.",
+        "After the procedure is complete, your surgeon will discuss a more specific timeline for your recovery, but generally speaking, most patients begin feeling more normal around the eight-week mark.",
+        "You will have an abdominal support garment or wrap that will help with swelling and discomfort during recovery, so it's important to wear it for the recommended amount of time each day."
+      ]
+    },
+    {
+      "url": "https://www.plasticsurgery.org/news/blog/understanding-the-different-types-of-tummy-tucks",
+      "publisher": "ASPS website, a post by Samir Rao, MD",
+      "title": "Understanding the different types of tummy tucks (2024)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Most patients can return to nonstrenuous work after a couple of weeks, but it takes around three months to fully recover from a tummy tuck."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck (Abdominoplasty)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "You may feel a tightness or pulling sensation around your abdomen as you heal.",
+        "This will go away.",
+        "Achieving proper nutrition can help your body heal."
+      ]
+    },
+    {
+      "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+      "publisher": "Cleveland Clinic",
+      "title": "Tummy Tuck Scar",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Avoid heavy lifting, strenuous exercise, sexual activity and stretching until your provider says it’s safe to do these activities (usually four to eight weeks after the procedure)."
+      ]
+    },
+    {
+      "url": "https://www.theaestheticsociety.org/procedures/body/tummy-tuck/aftercare-recovery",
+      "publisher": "The Aesthetic Society",
+      "title": "Tummy Tuck Aftercare & Recovery",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Other red flags include shortness of breath, chest pains, and an unusual heartbeat.",
+        "Call your surgeon immediately if you notice an increase in swelling, pain, redness, drainage, or bleeding in the surgical area, or if you develop fever, dizziness, nausea, or vomiting.",
+        "You will also need to wear a wide elastic compression garment to reduce swelling and provide support to the skin as it tightens.",
+        "It is important to walk to discourage swelling and to prevent blood clots in the legs.",
+        "It is also important to know that the amount of time it takes for recovery varies greatly among individuals."
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30511162/",
+      "publisher": "Xia and colleagues, Aesthetic Plastic Surgery",
+      "title": "Safety of Lipoabdominoplasty Versus Abdominoplasty: A Systematic Review and Meta-analysis (2019)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Overall, 17 trials enrolling 14,061 adult patients were searched.",
+        "Of these patients, 577 (4.1%) developed seroma;"
+      ]
+    },
+    {
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42840808/",
+      "publisher": "Alsairefi and colleagues, Plastic and Reconstructive Surgery Global Open",
+      "title": "Efficacy of Manual Lymphatic Drainage in Reducing Postoperative Complications After Cosmetic Plastic Surgery: A Systematic Review (2026)",
+      "read_on": "2026-11-04",
+      "quotes": [
+        "Seven studies were included, primarily RCTs and prospective trials involving cosmetic procedures such as liposuction and abdominoplasty.",
+        "MLD provides moderate benefits for postoperative swelling reduction after cosmetic surgery, with inconsistent effects on pain and fibrosis.",
+        "High-quality RCTs are needed to refine protocols and confirm long-term efficacy."
+      ]
+    }
+  ],
+  "gsc": {
+    "basis": "baseline.mts total row (research/baselines/tummy-tuck-2026-11-04.csv) and its queries_for_page rows",
+    "window": "2026-08-03..2026-11-01",
+    "impressions": 16432,
+    "clicks": 306,
+    "position": 6.09,
+    "top_queries": [
+      {
+        "query": "what to wear after tummy tuck",
+        "impressions": 194,
+        "clicks": 0,
+        "position": 7.23
+      },
+      {
+        "query": "how to relieve tightness after tummy tuck",
+        "impressions": 189,
+        "clicks": 1,
+        "position": 2.17
+      },
+      {
+        "query": "how to reduce tightness after tummy tuck",
+        "impressions": 175,
+        "clicks": 8,
+        "position": 1.95
+      },
+      {
+        "query": "pulling feeling after tummy tuck",
+        "impressions": 171,
+        "clicks": 0,
+        "position": 5.15
+      },
+      {
+        "query": "what to wear after a tummy tuck",
+        "impressions": 118,
+        "clicks": 0,
+        "position": 6.03
+      },
+      {
+        "query": "how long does the tightness last after a tummy tuck",
+        "impressions": 96,
+        "clicks": 8,
+        "position": 1.38
+      },
+      {
+        "query": "hard stomach after tummy tuck",
+        "impressions": 67,
+        "clicks": 0,
+        "position": 13.21
+      },
+      {
+        "query": "what to wear after tummy tuck surgery",
+        "impressions": 65,
+        "clicks": 0,
+        "position": 5.72
+      },
+      {
+        "query": "tummy tuck clothes",
+        "impressions": 61,
+        "clicks": 0,
+        "position": 5.97
+      },
+      {
+        "query": "what helps tightness after tummy tuck",
+        "impressions": 55,
+        "clicks": 0,
+        "position": 2.13
+      }
+    ]
+  },
+  "notes": "Batch 2 gentle fix (issue #357), text only apart from the new cards below. Title, slug, publish date and all 7 topic H2s kept word for word and in order. Added: the opening H2 question the kit requires, above the live opening; new H2s on what to wear and why the stomach feels hard; FAQ and Sources; a #procedure link and a closing planning line to #pricing. The existing first-line link moved from the bare \"Tummy Tuck\" to \"muscle repair\". Cut: six to twelve weeks, significant improvement by the third week, six weeks of garment wear, 8-10 glasses, 3-4 weeks of swelling, massage timing, beyond 12 weeks, the uncited research sentence, phone and tel: links, #contactus, board-certified, countless and the Learn More block. Reworded only what the sweep requires: bold, journey, guarantee. \"Effective\" came off the massage sentence, which no source read supports. A sourced milestone table replaces the old six to twelve weeks answer, because this query earns clicks and the post needs a table. IMAGES: the count stays at 5 body positions plus the hero, to protect Google Images. Three live cards had figures the post no longer supports and left the body, with their files kept on Blob: duc606, the quick guide (\"8-10 glasses/day\", phone), cbxw2n, the timeline (\"Week 3\", \"Weeks 6-12\", \"After 12 weeks\", phone), and dm686b, the nutrition panel (\"8-10 glasses water/day\"). New briefs quick-guide-card, timeline-card and nutrition-card take the same positions at new URLs and must be rendered and uploaded before check_post --final and the SQL build can pass. Their text states only figures the post states, credited in a footer, with no phone or practice name. Kept with reuse_url and no pixel change (hero alt corrected on 2026-11-04): hero and garment inline fei35i, muscle repair illustration 2ko8xt (the canary). They state no retired figure, but break image rules to fix later: fei35i is a post-op garment on a body with cleavage, a wall sign in the photo, and its live alt said \"patient\"; 2ko8xt carries the practice name. Those replacement briefs are in later-images.json, which the kit ignores. QUICK ANSWER deviates from the card: \"slightly\" removed, because Wu says \"bent at the waist\". The fifth FAQ is reworded so it does not repeat the new H2. SOURCES: every quote re-read on 2026-11-03, PubMed abstract by efetch. Xia's PubMed title differs from tummy-tuck.facts.ts, which calls it \"Comparison of Complications...\"; the PMID, 14,061 and 4.1% match. OPEN: (1) No source read times tightness itself, and the post says so; \"weeks or months\" rests on Salemy and Cleveland Clinic. (2) Fontes de Moraes, Aesthet Surg J 2023 (PMID 36282895), found less edema after day 24 without a garment; it is not in the post, and the coordinator is raising it with the owner. (3) What-to-wear advice is practical, unsourced and labeled as such. The new hard-stomach H2 explains the firmness in the plan's words without a source for the mechanism; only its seroma figure is sourced, so a surgeon should confirm it. (4) The 8 FAQs in the faqs column are replaced by the 5 on the card; their topics are covered in the body. FACT-CHECK 2026-11-04 (factcheck/earners-bbl.md): live claims that stretching, massage, food or water relieve tightness, the invented garment schedule and the predictable-pattern line were corrected with the smallest wording change. Added ASPS Tummy Tuck and Alsairefi 2026 as sources. All quotes re-read on 2026-11-04. Skipped as style only: removing \"Even\" from \"Even firmness\" in the hard-stomach section and FAQ 2; there \"even\" means uniform, in contrast with a hard area on one side. OWNER items left as they are: the garment evidence (Fontes de Moraes, Bruno, Arkoubi) and the unsourced lines passed as common knowledge.",
+  "gate": {
+    "verdict": "refresh",
+    "reason": "Cluster already owned by /how-to-reduce-tightness-after-tummy-tuck — refresh that post instead of creating a competing URL",
+    "owningUrl": "/how-to-reduce-tightness-after-tummy-tuck",
+    "owningSlug": "how-to-reduce-tightness-after-tummy-tuck",
+    "matchedQuery": "how to reduce tightness after tummy tuck",
+    "similarityScore": null,
+    "claimedQueries": [],
+    "warnings": [],
+    "checkedAt": "2026-11-04T05:00:21.855Z",
+    "overlay": 0,
+    "database": "localhost:5432/alluring_wt_tt_rewrite"
+  }
+}

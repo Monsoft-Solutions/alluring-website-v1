@@ -14,8 +14,9 @@ describe('isBlogV2', () => {
     it('releases the top 15 posts (epic #293, phase 3) and the cluster rewrites', () => {
         // 32 through the breast lift and mommy makeover rewrites, plus 13
         // breast augmentation rewrites and 6 new posts of #319 (the push-ups
-        // post joins with its rewrite), plus 11 BBL rewrites and 2 new posts.
-        expect(BLOG_V2_SLUGS.size).toBe(64)
+        // post joins with its rewrite), plus 11 BBL rewrites and 2 new posts,
+        // plus 10 of the tummy tuck cluster (#357; the pain post came with BBL).
+        expect(BLOG_V2_SLUGS.size).toBe(74)
         expect(BLOG_V2_SLUGS.has(SLUG)).toBe(false)
     })
 

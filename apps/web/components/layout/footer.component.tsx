@@ -4,6 +4,7 @@ import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import { surgeons } from '@/lib/data/surgeons/surgeons-data'
 import { procedureNavItems } from '@/lib/data/procedure-nav.data'
 import { footerSections } from '@/lib/data/footer'
@@ -60,9 +61,8 @@ export const Footer = () => {
                             />
                         </Link>
                         <p className='mb-8 text-base leading-relaxed text-stone-400'>
-                            Premier plastic surgery center in Miami, FL
-                            providing world-class aesthetic results with
-                            concierge care.
+                            A plastic surgery clinic in Miami, FL, led by{' '}
+                            {KARLINSKY_NAME}.
                         </p>
                         <div className='flex space-x-6'>
                             {siteConfig.social

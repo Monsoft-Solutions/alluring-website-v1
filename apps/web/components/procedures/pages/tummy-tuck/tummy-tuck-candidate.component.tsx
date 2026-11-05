@@ -31,7 +31,7 @@ const elsewhere: ModuleCandidateAlternative[] = [
     },
     {
         concern: 'You may want another pregnancy',
-        body: 'ASPS advises waiting until you are done, because weight changes can undo much of the result.',
+        body: 'ASPS advises waiting until you are done, because significant changes in weight can greatly diminish the result.',
     },
     {
         concern: 'You are still losing weight',
@@ -60,11 +60,11 @@ export function TummyTuckCandidate() {
                     href: '/blog/tummy-tuck-vs-liposuction',
                 },
                 {
-                    label: 'Tummy tuck or mommy makeover: which one do you need?',
-                    href: '/blog/tummy-tuck-mommy-makeover-miami',
+                    label: 'When a mommy makeover fits better',
+                    href: '/procedures/mommy-makeover-miami',
                 },
                 {
-                    label: 'Separated muscles after pregnancy and the tummy tuck',
+                    label: 'Diastasis recti surgery: when a tummy tuck repairs it',
                     href: '/blog/tummy-tuck-diastasis-recti-miami',
                 },
             ]}

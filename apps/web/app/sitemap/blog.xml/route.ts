@@ -92,6 +92,14 @@ const SITEMAP_EXCLUDED_SLUGS = new Set([
     'how-long-to-recover-from-mommy-makeover',
     'mommy-makeover-miami-candidate-checklist',
     'mommy-makeover-questions-miami',
+    // Tummy tuck blog consolidation (#357)
+    'best-age-tummy-tuck-miami',
+    'tummy-tuck-myths-miami-moms',
+    'tummy-tuck-miami-candidate-checklist',
+    'tummy-tuck-recovery-time-miami',
+    'tummy-tuck-recovery-myths-miami-moms',
+    'mini-tummy-tuck-miami-recovery',
+    'tummy-tuck-recovery-ozempic-miami',
     // Anti-cannibalization redirects (blog → procedure pages)
     'what-is-the-mommy-makeover-procedure',
     'liposuction-cost-miami',

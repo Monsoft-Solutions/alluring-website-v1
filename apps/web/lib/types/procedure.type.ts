@@ -117,6 +117,8 @@ export interface ProcedurePricing {
 
 export interface Procedure {
     title: string
+    /** Another name for the procedure, for `SurgicalProcedure.alternateName`. */
+    alternateName?: string
     slug: string
     description: string
     shortDescription?: string
@@ -195,6 +197,7 @@ export interface Procedure {
  */
 export const procedureSchema = z.object({
     title: z.string().min(1, 'Title is required'),
+    alternateName: z.string().optional(),
     slug: z
         .string()
         .min(1, 'Slug is required')

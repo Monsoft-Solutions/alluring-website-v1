@@ -1,11 +1,11 @@
 import type { Procedure } from '@/lib/types/procedure.type'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import { KARLINSKY_NAME } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 export const faceliftMiami: Procedure = {
     title: 'Facelift (Rhytidectomy) Miami',
     slug: 'facelift-miami',
-    description:
-        'Rejuvenate your appearance with a customized facelift in Miami. Turn back time with expert rhytidectomy surgery from board-certified plastic surgeons.',
+    description: `Rejuvenate your appearance with a customized facelift in Miami, performed by ${KARLINSKY_NAME}.`,
     shortDescription:
         'Restore your youthful appearance and turn back the clock on aging with advanced facelift techniques that deliver natural, long-lasting results.',
     heroSubtitle:
@@ -211,7 +211,7 @@ At **Alluring Plastic Surgery**, we're committed to helping you achieve your aes
         },
         {
             question: 'Will I have visible scars after my facelift?',
-            answer: 'Our expert surgeons, including Dr. Victoria Karlinsky, use advanced techniques to minimize scarring. Most scars are discreetly placed along the hairline and behind the ears, and they fade over time.',
+            answer: 'Your surgeon places incisions to minimize visible scarring. Most scars are discreetly placed along the hairline and behind the ears, and they fade over time.',
         },
         {
             question: 'How long does the procedure take?',

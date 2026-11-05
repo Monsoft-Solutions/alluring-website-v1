@@ -34,6 +34,10 @@ export type FigureUnit =
     | 'bmi'
     /** A length, e.g. an incision. */
     | 'inch'
+    /** A length a source states in metric, e.g. a muscle gap. */
+    | 'centimeter'
+    /** "6 in 10": `min` in `max`. */
+    | 'ratio'
     /** A minimum or maximum age, e.g. "22 or older". */
     | 'age'
 
@@ -105,6 +109,8 @@ const UNIT_LABELS: Record<FigureUnit, [singular: string, plural: string]> = {
     cc: ['cc', 'cc'],
     bmi: ['BMI', 'BMI'],
     inch: ['inch', 'inches'],
+    centimeter: ['centimeter', 'centimeters'],
+    ratio: ['in', 'in'],
     age: ['age', 'ages'],
 }
 
@@ -116,7 +122,7 @@ function formatNumber(value: number, unit: FigureUnit): string {
 /**
  * A figure as copy writes it: "$5,500", "$5,500–$10,000", "10–14 days",
  * "50–80%", "8 weeks", "300 cc", "BMI 30", "3 nights", "2 inches",
- * "age 22". The copy sweep also reads an age as "22 or older" or "22 years
+ * "age 22", "6 in 10". The copy sweep also reads an age as "22 or older" or "22 years
  * old", and an inch as "2-inch".
  */
 export function formatProcedureFigure(figure: ProcedureFigure): string {
@@ -128,6 +134,11 @@ export function formatProcedureFigure(figure: ProcedureFigure): string {
         return 'value' in figure
             ? `${formatNumber(figure.value, 'percent')}%`
             : `${range(figure.min, figure.max)}%`
+    }
+    if (figure.unit === 'ratio') {
+        return 'value' in figure
+            ? `1 in ${formatNumber(figure.value, 'ratio')}`
+            : `${formatNumber(figure.min, 'ratio')} in ${formatNumber(figure.max, 'ratio')}`
     }
     if (figure.unit === 'usd') {
         return 'value' in figure

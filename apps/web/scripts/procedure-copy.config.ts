@@ -203,6 +203,8 @@ const tummyTuck: ProcedureCopyConfig = {
         // The drug class, not a figure.
         [/\bglp-1\b/g, ' glp '],
     ],
+    // The question people search (#357), not a claim that anything is best.
+    neutralNames: [/\bbest age\b/g],
     rules: [
         {
             rule: 'drain-claim',

@@ -1,7 +1,8 @@
 # Blog post images
 
 Every post gets a hero (featured image) and 0–2 inline images, rendered
-with GPT Image 2.5 on Higgsfield the way the 17 liposuction posts were
+with GPT Image 2.5 on Higgsfield or on fal (`--provider fal`), using the method
+of the 17 liposuction posts
 (2026-09-23, 34 images). The rules come from the procedure-images skill
 (`.claude/skills/procedure-images/SKILL.md`); the mechanics are the
 `blog/tools/images/` kit.
@@ -9,8 +10,11 @@ with GPT Image 2.5 on Higgsfield the way the 17 liposuction posts were
 ## Rules (repeated in every prompt's constraints block)
 
 - **Editorial, not glamour.** Calm, well lit, documentary. Modest everyday
-  clothing or loungewear. No swimwear, lingerie, bodycon, cleavage, bare
-  midriff, nudity.
+  clothing or loungewear. No lingerie, bodycon, cleavage, bare midriff,
+  nudity. A swimsuit is allowed only in a whole-person lifestyle photo, never
+  near a scar, anatomy or a result.
+- **Text only on cards.** A photo carries no words; an infographic card may.
+  Never a phone number in any image.
 - **No body-part framing.** Never from behind for a body procedure, no crops
   on breasts, buttocks, abdomen or eyes as objects. The person is whole and
   at ease.
@@ -61,7 +65,7 @@ infographic, when it still meets every rule above and, for an infographic,
 every word and figure in it still matches the new text word for word. Set
 that image's `reuse_url` in `meta.json` to its live Blob URL (from the
 post's `images` row) and keep its `alt` and `prompt`. `generate.py` and
-`export_upload.mjs` skip it (no credits, no upload, no pick);
+`export_upload.mjs` skip it (no render, no upload, no pick);
 `build_sql.py` requires the URL to be an `images` row in the database it
 builds for, keeps that row's size and generation prompt, and asserts the
 row exists when the SQL runs. Render a new image whenever the old one breaks
@@ -70,13 +74,17 @@ longer states).
 
 ## Workflow
 
-1. **Balance.** `mcp__claude_ai_Higgsfields__balance`. About 3 credits per
-   2k/high render; a hero gets two candidates (variants `flare` and
-   `sunburst`), an inline image one. Say the estimate before rendering.
+1. **Estimate.** On Higgsfield, check `mcp__claude_ai_Higgsfields__balance`:
+   about 3 credits per 2k/high render. On fal, about $0.25 per high-quality
+   render (an estimate, not a quote). A hero gets two candidates (variants
+   `flare` and `sunburst`), an inline image one. Say the estimate before
+   rendering.
 2. **Render.** `python3 blog/tools/images/generate.py <slug>… --dry-run`
    lists the renders and the credits; without `--dry-run` it reads each
-   `blog/posts/<slug>/meta.json` `images[]`, renders with the `higgsfield`
-   CLI (`gpt_image_2_5`, 2k, high) and saves
+   `blog/posts/<slug>/meta.json` `images[]`, renders with the `higgsfield` CLI
+   (`gpt_image_2_5`, 2k, high) or, with `--provider fal`, through fal's queue
+   API (`openai/gpt-image-2.5/{flare,sunburst}/text-to-image`, high quality,
+   `FAL_KEY` from `apps/admin/.env`), and saves
    `blog/images/work/<slug>/<key>-<variant>.{json,png}` (gitignored;
    `--work DIR` elsewhere). Re-runs skip existing renders; `--redo slug:key`
    forces one; `--heroes-only` skips inline images.
@@ -102,10 +110,15 @@ longer states).
    gitignored, so another machine's never are) is reported as "already in
    the manifest (job <id>), nothing to export" and keeps its entry.
    `build_sql.py` reads it to
-   create the `images` rows (alt NOT NULL, `generated_by`
-   `higgsfield/gpt_image_2_5`, `generation_prompt`) and the
+   create the `images` rows (alt NOT NULL, `generated_by` from `GENERATED_BY`
+   in `blog/tools/lib/bloglib.py`, `generation_prompt`) and the
    `blog_post_images` rows (`prompt` NOT NULL), and to set
    `featured_image_id`.
+   To replace an image that ranks in Google Images at its current address,
+   use `blog/tools/images/overwrite_same_path.mjs`, with the live URL, the local
+   JPEG and `--backup-dir DIR`. It keeps the URL, backs up the old file first,
+   and changes nothing until you pass `--apply`. Then invalidate the optimizer's
+   copies, as "Keeping an image's URL" below says.
 6. **Keep old images** on Blob until the new rows are live; the previous
    featured image stays referenced by `blog_post_images` history, so
    nothing is deleted. Uploads a re-pick superseded are listed and kept;

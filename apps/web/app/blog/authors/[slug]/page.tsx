@@ -327,7 +327,7 @@ export default async function AuthorPage(props: AuthorPageProps) {
             {/* Articles by Author */}
             <BlogPostsSection
                 title={`Articles by ${author.name}`}
-                description='Expert insights and educational content'
+                description='Patient information and guides'
                 badge='Latest Articles'
                 variant='muted'
                 limit={6}
@@ -337,7 +337,7 @@ export default async function AuthorPage(props: AuthorPageProps) {
             {/* CTA Section */}
             <CTASection
                 heading='Have Questions?'
-                description='Schedule a consultation to discuss your cosmetic surgery goals with our expert team.'
+                description='Schedule a consultation to discuss your cosmetic surgery goals with your surgeon.'
                 primaryButton={{
                     text: 'Book Consultation',
                     href: '/free-consultation',

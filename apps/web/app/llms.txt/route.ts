@@ -19,7 +19,7 @@ import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
  * The file's one-line summary. Not `siteConfig.business.description`, whose
- * "World-class" and "Where luxury meets affordability" answer engines repeat.
+ * superlatives answer engines repeat.
  */
 const SUMMARY = `${siteConfig.business.tagline} Cosmetic surgery in Miami, Florida, with personalized care and financing available.`
 
@@ -111,7 +111,7 @@ ${siteConfig.business.name} is a plastic surgery practice in Miami, Florida, off
 **Surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${
         siteConfig.trustStats
             ? `
-**Patient Rating**: ${siteConfig.trustStats.rating} stars`
+**Published Patient Rating**: ${siteConfig.trustStats.rating} out of 5`
             : ''
     }
 
@@ -147,10 +147,10 @@ ${categories.combined.map((p) => `- [${p.title}](/procedures/${p.slug}): ${p.sho
 }
 ## Patient Resources
 
-- [Free Consultation](/free-consultation): Schedule a complimentary consultation with our surgeon
+- [Free Consultation](/free-consultation): Schedule a consultation with our surgeon
 - [Financing Options](/plastic-surgery-financing-miami): Payment plans through Cherry, CareCredit, and United Credit
 - [Before & After Gallery](/gallery): Real patient results and transformation photos
-- [Blog](/blog): Expert plastic surgery guides, recovery tips, and educational content
+- [Blog](/blog): Plastic surgery guides, recovery tips, and educational content
 - [FAQs](/faqs): Frequently asked questions about plastic surgery
 
 ${
@@ -163,14 +163,14 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
 }
 ## Why Choose ${siteConfig.business.name}
 
-1. **One surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${
+1. **One surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
+2. **Flexible Financing**: Financing is offered through Cherry, CareCredit, and United Credit, subject to credit approval
+3. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base${
         siteConfig.trustStats
             ? `
-2. **${siteConfig.trustStats.rating}-Star Rating**: Across review platforms`
+4. **Published Rating**: ${siteConfig.trustStats.rating} out of 5 from patient reviews`
             : ''
     }
-3. **Flexible Financing**: Multiple payment options including 0% APR plans through Cherry, CareCredit, and United Credit
-4. **Bilingual Staff**: English and Spanish speaking team to serve our diverse patient base
 
 ## Contact Information
 

@@ -216,5 +216,69 @@
     "normal-vs-call": "flare",
     "types": "flare",
     "what-affects": "flare"
+  },
+  "how-long-to-recover-tummy-tuck": {
+    "hero": "flare",
+    "timeline": "flare",
+    "kids-work": "sunburst",
+    "helper": "flare",
+    "normal-or-call": "sunburst"
+  },
+  "ozempic-tummy-tuck-myths-miami": {
+    "hero": "sunburst",
+    "skin-vs-fat": "sunburst",
+    "timing": "sunburst",
+    "tell-your-team": "flare"
+  },
+  "tummy-tuck-scars-miami": {
+    "hero": "flare",
+    "placement": "flare",
+    "timeline": "flare",
+    "sun": "flare"
+  },
+  "tummy-tuck-diastasis-recti-miami": {
+    "hero": "flare",
+    "separation": "flare",
+    "finger-check": "flare",
+    "pt-or-surgery": "flare",
+    "core-exercise": "flare"
+  },
+  "what-is-a-tummy-tuck-without-muscle-repair-called": {
+    "hero": "sunburst",
+    "layers": "flare",
+    "sidebyside": "flare",
+    "placement": "flare",
+    "suits": "sunburst"
+  },
+  "exercises-after-tummy-tuck-miami": {
+    "hero": "sunburst",
+    "weekbyweek": "flare",
+    "walking": "flare",
+    "toomuch": "flare"
+  },
+  "tummy-tuck-drains-what-they-are-how-long-they-stay": {
+    "how-to-empty": "flare",
+    "normal-vs-call": "flare"
+  },
+  "how-to-reduce-pubic-swelling-after-tummy-tuck": {
+    "nutrition-card": "flare",
+    "timeline-card": "sunburst"
+  },
+  "how-to-reduce-tightness-after-tummy-tuck": {
+    "quick-guide-card": "sunburst",
+    "timeline-card": "flare",
+    "nutrition-card": "flare"
+  },
+  "pregnancy-after-tummy-tuck": {
+    "hero": "flare",
+    "review": "flare"
+  },
+  "tummy-tuck-after-c-section": {
+    "hero": "flare",
+    "placement": "sunburst"
+  },
+  "mini-vs-full-tummy-tuck": {
+    "hero": "sunburst",
+    "comparison": "sunburst"
   }
 }

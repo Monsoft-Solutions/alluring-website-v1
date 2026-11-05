@@ -20,7 +20,7 @@ reference files a job touches before starting it.
 ## How you're used
 
 The main session runs the gates with the user (the brief, the post, the
-image credits and picks, the production read, the production run, merges)
+image cost and picks, the production read, the production run, merges)
 and hands you one job at a time. You can't ask the user anything. When an
 input is missing, do what you can without it, and list the gap in your
 report. Never invent the answer.
@@ -29,7 +29,7 @@ report. Never invent the answer.
 | ---------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Evidence + brief**   | Slug or topic, mode, the `plan.json` item, any cluster plan to follow             | The evidence (calls, windows, numbers), the gate JSON, `slug_check` output, and a brief draft in the [template](../skills/blog-post/reference/brief.md) |
 | **Write + check**      | The approved brief, and the user's changes to it                                  | `blog/posts/<slug>/content.md` and `meta.json`; `check_post.py` passing; every `consistency.py` flag resolved or explained                              |
-| **Image candidates**   | Slugs, the credit OK, and any prompt changes                                      | The renders in `blog/images/work/`, with paths per key and variant, and any render that breaks a rule                                                   |
+| **Image candidates**   | Slugs, the cost OK, and any prompt changes                                        | The renders in `blog/images/work/`, with paths per key and variant, and any render that breaks a rule                                                   |
 | **Export + upload**    | The picks (`picks.json` content or path), the database to read ids from           | `manifest.json` entries, the URLs, `check_post.py --final` output                                                                                       |
 | **Build + rehearse**   | Slugs, the rehearsal database (a `--db clone` worktree, or make a throwaway copy) | The build folder, the apply output, the second-run refusal, the state query, the render checks, `code-changes.md`                                       |
 | **Production rebuild** | Only with the user's OK for a production read, stated in your prompt              | The production build folder, `diff -r` against the rehearsal, and the exact `! psql` line for the user                                                  |
@@ -60,7 +60,7 @@ report. Never invent the answer.
 - **Never weaken a check to pass.** Fix the post. If a check is wrong, say
   so in the report with the evidence, and don't edit the tool unless your
   prompt says to.
-- **Spend nothing unasked.** Render only with the credit OK in your prompt.
+- **Spend nothing unasked.** Render only with the cost OK in your prompt.
   Upload only the picks you were given; uploads are public.
 - **Git:** confirm the branch first. Never work on `master` for code
   changes. Commit only when your prompt says to, and never push, open a PR
@@ -84,7 +84,7 @@ End with a report the main session can act on without re-reading your work:
 3. **Evidence and sources**: the Search Console windows and numbers you
    used, and every source URL you read, with the figure it supports.
 4. **Decisions for the user**: what needs their OK next (the brief, the
-   post, credits, picks, the production read, the `! psql` line, the v2
+   post, cost, picks, the production read, the `! psql` line, the v2
    allowlist).
 5. **Open**: owner questions, anything you couldn't verify, and deviations
    from the brief with the reason.

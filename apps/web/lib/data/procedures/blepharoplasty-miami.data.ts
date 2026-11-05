@@ -199,7 +199,7 @@ At **Alluring Plastic Surgery**, we combine surgical precision with artistic sen
     faqs: [
         {
             question: 'How much does eyelid surgery cost?',
-            answer: 'The cost of this cosmetic surgery varies depending on the type and complexity of the procedure. We offer flexible financing options to make it more affordable. During your consultation, we will provide a personalized cost estimate.',
+            answer: 'The cost of this cosmetic surgery varies depending on the type and complexity of the procedure. We offer flexible financing options. During your consultation, we will provide a personalized cost estimate.',
         },
         {
             question: 'How long does the eyelid surgery procedure take?',

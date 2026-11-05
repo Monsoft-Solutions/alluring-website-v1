@@ -84,6 +84,9 @@ describe('extractFigures: inches', () => {
         ['An incision 1 to 2 inches long', 'inch:1-2'],
         ['about 1.5 inches', 'inch:1.5-1.5'],
         ['1 inch above the crease', 'inch:1-1'],
+        ['a gap wider than 2 centimeters', 'centimeter:2-2'],
+        ['affects 6 in 10 women', 'ratio:6-10'],
+        ['about 1 in 3,000 cases', 'ratio:1-3000'],
     ])('%s', (text, key) => {
         expect(read(text)).toEqual({ figures: [key], stray: [] })
     })
@@ -131,6 +134,8 @@ describe('formatProcedureFigure: the new units', () => {
         [{ min: 5, max: 7, unit: 'night' } as const, '5–7 nights'],
         [{ value: 2, unit: 'inch' } as const, '2 inches'],
         [{ value: 1, unit: 'inch' } as const, '1 inch'],
+        [{ value: 2, unit: 'centimeter' } as const, '2 centimeters'],
+        [{ min: 6, max: 10, unit: 'ratio' } as const, '6 in 10'],
         [{ value: 22, unit: 'age' } as const, 'age 22'],
         [{ min: 18, max: 22, unit: 'age' } as const, 'ages 18–22'],
         [{ value: 300, unit: 'cc' } as const, '300 cc'],

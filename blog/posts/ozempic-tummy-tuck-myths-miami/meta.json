@@ -1,0 +1,396 @@
+{
+    "slug": "ozempic-tummy-tuck-myths-miami",
+    "mode": "rewrite",
+    "base_md5": "029cdbbeaae6091eecca44ca0a196524",
+    "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:46:53Z",
+    "reader": "deciding",
+    "cluster": "tummy-tuck",
+    "title": "Tummy Tuck After Ozempic: Timing, Loose Skin and GLP-1s",
+    "meta_description": "Loose belly skin after Ozempic or another GLP-1? When a tummy tuck makes sense, how long to keep a stable weight, what to tell your surgeon about the drug.",
+    "excerpt": "GLP-1 weight loss can leave loose skin that exercise can't remove. When a tummy tuck makes sense, how long to wait at a stable weight, what current guidance and recent studies say about the drug before surgery, and what recovery looks like.",
+    "quick_answer": "Can you get a tummy tuck after Ozempic?\n\nYes, once your weight settles. A tummy tuck removes loose skin left by GLP-1 weight loss, but be close to your goal weight for 6 to 12 months (Paul Vitenas, MD, on the ASPS website). Tell your surgeon and anesthesia team: 2024 multi-society guidance suggests most patients stay on it, but some surgeons ask for a pause.",
+    "primary_keyword": "ozempic tummy tuck myths miami",
+    "secondary_keywords": [
+        "tummy tuck after ozempic",
+        "ozempic tummy tuck",
+        "ozempic after tummy tuck",
+        "glp-1 after tummy tuck",
+        "tummy tuck after ozempic weight loss",
+        "glp-1 tummy tuck candidate",
+        "tummy tuck after weight loss jabs",
+        "is it worth getting a tummy tuck after ozempic weight loss",
+        "ozempic loose skin surgery",
+        "post ozempic body",
+        "ozempic makeover",
+        "tummy tuck after weight loss",
+        "tummy tuck recovery after ozempic"
+    ],
+    "owns_queries": [
+        "top 7 tummy tuck myths after ozempic miami",
+        "tummy tuck after ozempic",
+        "ozempic tummy tuck",
+        "ozempic after tummy tuck",
+        "glp-1 after tummy tuck",
+        "tummy tuck after ozempic weight loss",
+        "glp-1 tummy tuck candidate",
+        "tummy tuck after weight loss jabs",
+        "tummy tuck recovery after ozempic"
+    ],
+    "categories": [
+        "Tummy Tuck"
+    ],
+    "tags": [
+        "Abdominoplasty",
+        "Post-Op Care",
+        "Recovery",
+        "Recovery Timeline",
+        "Swelling",
+        "Tummy Tuck"
+    ],
+    "cta": "default",
+    "images": [
+        {
+            "key": "hero",
+            "type": "featured",
+            "aspect": "3:2",
+            "alt": "A woman in her late forties sits at a small table on a shaded limestone terrace, wearing a soft ivory blouse, holding a blank page with a calm, thoughtful look.",
+            "prompt": "SCENE: Early morning on a shaded limestone terrace in Miami, a small round stone table, palm shadows on a warm white wall, an arched doorway behind. Palette of stone, sand, warm white and brushed gold. SUBJECT: A woman in her late 40s with warm brown skin and shoulder-length dark hair with some gray, wearing a soft ivory high-neck blouse and navy trousers, sitting at the table with a blank page in her hand and a cup of coffee, looking up with a calm, thoughtful expression. KEY DETAILS: Framed from the waist up with generous space above her head and her face in the upper two thirds of the frame; the lower third is the quiet stone table so a title can sit over it. Editorial documentary photography, 50mm, natural color, real skin texture, gentle depth of field, fine film grain. No medicine, injection pens, scales, tape measures or oversized clothing. CONSTRAINTS: 3:2 landscape. Modest everyday clothing fully covering the torso; no swimwear, lingerie, cleavage or bare midriff; no post-op garments, bandages, drains, incisions or skin markings; no before-and-after framing; no crop on the abdomen; not photographed from behind; no clinician or staff; no text, letters, numbers, logos or watermarks, including on any book or paper; not glamour, not a fashion ad; photorealistic."
+        },
+        {
+            "key": "skin-vs-fat",
+            "type": "inline",
+            "aspect": "4:5",
+            "alt": "Card on warm stone titled Loose skin or fat? Loose skin: a tummy tuck removes it; exercise can't. Mostly fat: liposuction, though skin can only contract so much. Hanging lower skin: a panniculectomy doesn't tighten muscles or move the belly button. A large amount of excess skin: ask about a fleur-de-lis tummy tuck. Your surgeon decides at consultation. Sources: ASPS; ASPS website article, 2025; Cleveland Clinic.",
+            "prompt": "SCENE: A clean editorial card on a warm off-white (stone-50) background with a thin muted-gold rule at the top. SUBJECT: Four stacked rows under a serif headline, each with a short bold label and one line of text, then a closing line. KEY DETAILS: Flat editorial layout, serif headline in dark stone (stone-900), clean sans-serif rows with generous spacing, muted gold (gold-500) only for thin rules and small markers, large legible type for phones, small source footer. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra words or numbers.",
+            "text_in_image": "Loose skin or fat?\n\nLoose skin: a tummy tuck removes it; exercise can't\nMostly fat: liposuction, though skin can only contract so much\nHanging lower skin: a panniculectomy doesn't tighten muscles or move the belly button\nA large amount of excess skin: ask about a fleur-de-lis tummy tuck\n\nYour surgeon decides at consultation\n\nSources: ASPS; ASPS website article, 2025; Cleveland Clinic"
+        },
+        {
+            "key": "timing",
+            "type": "inline",
+            "aspect": "4:5",
+            "alt": "Timing card on warm stone titled When a tummy tuck fits after a GLP-1. Weight: close to your goal for 6 to 12 months. Dose: not while it is still rising, a phase that typically lasts 4 to 8 weeks. Stomach: nausea, vomiting, pain or constipation cleared first. The drug: agree a plan with your surgeon, anesthesia team and prescriber.",
+            "prompt": "SCENE: A clean editorial card on a warm off-white (stone-50) background with a thin muted-gold rule at the top. SUBJECT: Four stacked checkpoints joined by a thin gold line under a serif headline, each with a short bold label and one line of text. KEY DETAILS: Flat editorial layout, serif headline in dark stone (stone-900), clean sans-serif rows with generous spacing, muted gold (gold-500) only for thin rules and small markers, large legible type for phones, small source footer. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra words or numbers.",
+            "text_in_image": "When a tummy tuck fits after a GLP-1\n\nWeight: close to your goal for 6 to 12 months\nDose: not while it is still rising, a phase that typically lasts 4 to 8 weeks\nStomach: nausea, vomiting, pain or constipation cleared first\nThe drug: agree a plan with your surgeon, anesthesia team and prescriber\n\nSources: Paul Vitenas, MD, on the ASPS website; American Society of Anesthesiologists"
+        },
+        {
+            "key": "tell-your-team",
+            "type": "inline",
+            "aspect": "4:5",
+            "alt": "Checklist card on warm stone titled Tell your surgeon and anesthesia team: which GLP-1 you take and your dose; weekly or daily; when your dose last went up and your last dose; any nausea, vomiting, belly pain or constipation; other conditions that slow your stomach; how much you are eating, including protein. Sources: multi-society guidance, 2024; ASPS website article, 2025.",
+            "prompt": "SCENE: A clean editorial card on a warm off-white (stone-50) background with a thin muted-gold rule at the top. SUBJECT: A six-line checklist with small empty gold check boxes under a serif headline. KEY DETAILS: Flat editorial layout, serif headline in dark stone (stone-900), clean sans-serif rows with generous spacing, muted gold (gold-500) only for thin rules and small markers, large legible type for phones, small source footer. Text exactly as given in text_in_image, with no other words. CONSTRAINTS: 4:5 portrait. No people, no body, no anatomy, no practice name, no logo, no phone number, no website address. Spell every word exactly as supplied; no extra words or numbers.",
+            "text_in_image": "Tell your surgeon and anesthesia team\n\nWhich GLP-1 you take and your dose\nWeekly or daily\nWhen your dose last went up, and your last dose\nAny nausea, vomiting, belly pain or constipation\nOther conditions that slow your stomach\nHow much you are eating, including protein\n\nSources: multi-society guidance, 2024; ASPS website article, 2025"
+        }
+    ],
+    "sources": [
+        {
+            "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck",
+            "publisher": "American Society of Plastic Surgeons",
+            "title": "Tummy Tuck",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "A tummy tuck is not a substitute for weight loss or an appropriate exercise program.",
+                "Although the results of a tummy tuck are technically permanent, the positive outcome can be greatly diminished by significant fluctuations in your weight. For this reason, individuals who are planning substantial weight loss or women who may be considering future pregnancies would be advised to postpone a tummy tuck.",
+                "\"Liposuction is effective in treating stubborn areas of fat, but your skin can only contract so much with the liposuction procedure. If there's additional skin, then it might require excision with an abdominoplasty.\""
+            ]
+        },
+        {
+            "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/candidates",
+            "publisher": "American Society of Plastic Surgeons",
+            "title": "Are you a good candidate for a tummy tuck?",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "You are physically healthy and at a stable weight"
+            ]
+        },
+        {
+            "url": "https://www.plasticsurgery.org/cosmetic-procedures/tummy-tuck/cost",
+            "publisher": "American Society of Plastic Surgeons",
+            "title": "How much does a tummy tuck cost?",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Most health insurance plans do not cover tummy tuck surgery or its complications, but many plastic surgeons offer patient financing plans, so be sure to ask."
+            ]
+        },
+        {
+            "url": "https://www.plasticsurgery.org/news/articles/move-over-mommy-makeover-the-ozempic-makeover-may-be-the-hottest-new-trend",
+            "publisher": "ASPS website, an article by Alia Willson, freelance writer",
+            "title": "Move over, mommy makeover: The \"Ozempic makeover\" may be the hottest new trend",
+            "read_on": "2026-11-04",
+            "quotes": [
+                "\"Ozempic makeover\" is the catchy name given to a set of plastic surgery procedures that address the physical issues that can come from rapid or significant weight loss.",
+                "Gradual weight loss gives skin and other tissues time to adjust. Rapid weight loss doesn't, which can lead to sagging, drooping or loose skin, especially around the arms, legs and belly.",
+                "\"After the fat melts away, these patients are left with a substantial amount of excess skin that cannot be 'exercised' away.",
+                "As such, I ask patients to choose up to two areas to treat at a time, and we stage their operations.",
+                "First, although you may continue to take medication to help you maintain your weight, you'll want to consider surgery when you are at or near your \"goal weight.\" Additional significant weight loss after plastic surgery can significantly alter your plastic surgery results.",
+                "\"Patients should be at or near the end of their weight loss journey before having surgery,\" said Dr. Hamilton. \"If they continue to lose significant weight after their operations, then they may look a little 'loose' again if they deflate further.\"",
+                "Without necessary calories and food intake, these drugs can also potentially deplete the body of essential vitamins, minerals and nutrients needed for healing following surgery.",
+                "\"I ask them to stop their GLP-1s one month in advance so that they can work on their nutrition,\" said Dr. Hamilton.",
+                "\"As always with rapid weight loss, we recommend a lot of protein intake and regular weightlifting so there is no loss of muscle mass,\" said Dr. Amalfi.",
+                "they should be maintaining a high protein diet and – when surgically appropriate – pursuing strength and resistance training to build muscle",
+                "For their abdomen, there's loose skin, and a tummy tuck is an obvious next step.",
+                "\"Often patients need a breast lift procedure and sometimes the addition of volume with fat grafting or a breast implant ,\" said Dr. Amalfi.",
+                "Even in thin patients, it may be necessary to lift their buttocks .",
+                "Patients must also understand that they will need to discontinue the use of their weight loss medication before surgery."
+            ]
+        },
+        {
+            "url": "https://www.plasticsurgery.org/news/articles/understanding-how-medications-interact-with-anesthesia-and-when-to-stop-before-plastic-surgery",
+            "publisher": "ASPS website, an article by Alia Willson, freelance writer",
+            "title": "Understanding how medications interact with anesthesia and when to stop before plastic surgery",
+            "read_on": "2026-11-04",
+            "quotes": [
+                "\"Most anesthesiologists require patients to stop weight loss medications for at least two to three weeks prior to general anesthesia,\" said ASPS Member Surgeon Anna Steve, MD .",
+                "Dr. Steve also noted that some surgeons may ask patients to hold off on taking their weight loss medications for a specific period following surgery so they can optimize the nutrition available for optimal wound healing.",
+                "\"Anesthesiologists have found that the way these drugs work is that they keep you feeling full for longer because they slow digestion,\" said Dr. Preminger. \"When digestion gets slowed, your stomach stays full for longer and when you go to sleep for surgery, it puts you at increased risk for aspiration. Aspiration is when the contents of your stomach come up and go into your lungs.\"",
+                "Aspiration can cause serious complications including pneumonia, lung damage and even death."
+            ]
+        },
+        {
+            "url": "https://www.plasticsurgery.org/news/blog/five-things-to-consider-before-getting-a-tummy-tuck",
+            "publisher": "ASPS website, a post by Paul Vitenas, Jr., MD",
+            "title": "Five things to consider before getting a tummy tuck",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "It is important that you be close to your desired weight for six to twelve months before undergoing a tummy tuck.",
+                "This is important as gaining or losing additional weight can undo the contoured shape achieved through your surgery."
+            ]
+        },
+        {
+            "url": "https://www.plasticsurgery.org/news/blog/understanding-the-different-types-of-tummy-tucks",
+            "publisher": "ASPS website, a post by Samir S. Rao, MD",
+            "title": "Understanding the different types of tummy tucks",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "An extended tummy tuck is best if you have a lot of excess and sagging skin on your abdomen and flanks."
+            ]
+        },
+        {
+            "url": "https://www.asahq.org/about-asa/newsroom/news-releases/2024/10/new-multi-society-glp-1-guidance",
+            "publisher": "American Society of Anesthesiologists",
+            "title": "New Multi-Society GLP-1 Clinical Practice Guidance Released (October 29, 2024)",
+            "read_on": "2026-11-04",
+            "quotes": [
+                "Most patients should continue taking their glucagon-like peptide-1 (GLP-1) receptor agonists before elective surgery, suggests new clinical guidance released by the American Society of Anesthesiologists (ASA), American Gastroenterological Association, American Society for Metabolic and Bariatric Surgery, International Society of Perioperative Care of Patients with Obesity, and the Society of American Gastrointestinal and Endoscopic Surgeons.",
+                "Patients at the highest risk for significant gastrointestinal (GI) side effects should follow a liquid diet for 24 hours before the procedure or other measures, depending on the specific circumstances .",
+                "The escalation phase (when the patient is given increasing doses of the GLP-1 drug) typically lasts four to eight weeks, depending on the drug and the reason it has been prescribed. Elective surgery should be deferred and only proceed once the escalation phase has passed and GI side effects have dissipated.",
+                "Patients who have GI symptoms, including nausea, vomiting, abdominal pain, shortness of breath or constipation should wait until their symptoms have dissipated before proceeding with elective surgery.",
+                "However, the guidance notes the potential benefit of withholding the medication so patients can have surgery needs to be balanced with the potential risks, such as increasing blood sugar levels in those with diabetes.",
+                "which can cause potentially fatal aspiration pneumonia.",
+                "Patients should work with their health care team, i.e., their anesthesiologist, surgeon and prescribing care team",
+                "About one in eight U.S. adults use GLP-1 drugs such as Ozempic ® (semaglutide), Wegovy ® (semaglutide), Saxenda ® (liraglutide) and Trulicity ® (dulaglutide)"
+            ]
+        },
+        {
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11666732/",
+            "publisher": "Surgical Endoscopy",
+            "title": "Multi-society clinical practice guidance for the safe use of glucagon-like peptide-1 receptor agonists in the perioperative period (Kindel and colleagues, 2024)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "If the decision to hold GLP-1RAs is indicated given an unacceptable safety profile following shared-decision making in the pre-operative period, the duration to hold therapy is unknown",
+                "At this time, it is suggested to follow the original guidance of the American Society of Anesthesiologists, holding the day of surgery for daily formulations, and a week prior to surgery for weekly formulations",
+                "Higher dose: The higher the dose of GLP-1RA, the more likely the risk of gastrointestinal side effects",
+                "Weekly dosing: Gastrointestinal side effects are more common with weekly compared to daily formulation compounds",
+                "Patients on GLP-1RA should be evaluated for other medical conditions which may exacerbate gastrointestinal symptoms and delay gastric emptying, such as but not limited to bowel dysmotility, gastroparesis, and Parkinson’s disease."
+            ]
+        },
+        {
+            "url": "https://my.clevelandclinic.org/health/procedures/11017-tummy-tuck",
+            "publisher": "Cleveland Clinic",
+            "title": "Abdominoplasty (Tummy Tuck)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Panniculectomy : A panniculectomy removes hanging skin and fat from your lower abdominal region. This procedure doesn’t tighten muscles, move your belly button or address fullness in your upper abdomen."
+            ]
+        },
+        {
+            "url": "https://my.clevelandclinic.org/health/treatments/24004-tummy-tuck-scar",
+            "publisher": "Cleveland Clinic",
+            "title": "Tummy Tuck Scar",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "A second vertical scar runs from your lower breastbone to your pubic bone. A fleur-de-lis tummy tuck is usually for people with a large amount of excess skin due to major weight loss or multiple pregnancies.",
+                "Talk to your healthcare provider or a registered dietitian about the best way to get all the vitamins and minerals you need."
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/26505716/",
+            "publisher": "Plastic and Reconstructive Surgery",
+            "title": "Abdominoplasty: Risk Factors, Complication Rates, and Safety of Combined Procedures (Winocour and colleagues, 2015; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "The authors identified 25,478 abdominoplasties from 183,914 procedures in the database.",
+                "The number of complications recorded was 1,012 (4.0 percent overall rate versus 1.4 percent in other aesthetic surgery procedures).",
+                "significant risk factors (p < 0.05) included male sex (relative risk, 1.8), age 55 years or older (1.4), body mass index greater than or equal to 30 (1.3), multiple procedures (1.5)",
+                "Combined procedures increased the risk of complication (abdominoplasty alone, 3.1 percent; with liposuction, 3.8 percent; breast procedure, 4.3 percent; liposuction and breast procedure, 4.6 percent; body-contouring procedure, 6.8 percent; liposuction and body-contouring procedure, 10.4 percent).",
+                "A cohort of patients who underwent abdominoplasty between 2008 and 2013 was identified from the CosmetAssure database."
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/41364427/",
+            "publisher": "Plastic and Reconstructive Surgery",
+            "title": "Impact of GLP-1 Agonist on Surgical Wound Complications after Plastic and Reconstructive Surgery: A Propensity-Matched Cohort Large Database Analysis (Lee and colleagues, 2026; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Postoperative outcomes, specifically surgical wound infections, breakdown, or dehiscence within 30 days after the procedure, were assessed based on GLP-1 RA use status.",
+                "9.8% versus 3.6% for abdominoplasty ( P = 0.001)"
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/39665435/",
+            "publisher": "Aesthetic Surgery Journal",
+            "title": "Semaglutide and Postoperative Outcomes in Nondiabetic Patients Following Body Contouring Surgery (Lewis and colleagues, 2025; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Nondiabetic patients who underwent body contouring surgery between 2021 and 2024 after bariatric procedures were included.",
+                "Semaglutide patients had higher rates of wound dehiscence (5.19% vs 2.78%, P < .0001)"
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/39960861/",
+            "publisher": "Aesthetic Surgery Journal",
+            "title": "Postoperative Outcomes in Body Contouring Procedures Following Glucagon-Like Peptide-1 Receptor Agonist Use: A 10-Year Analysis (Liang and colleagues, 2025; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Propensity score-matched analysis paired 72 GLP-1ra and 143 non-GLP-1ra patients.",
+                "Duration of GLP-1ra use and timing of discontinuation before surgery did not predict the incidence of wound dehiscence, seromas, or hematomas.",
+                "Compared with non-GLP-1ra controls, GLP-1ra users have similar postoperative outcomes following body contouring surgery."
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/41403207/",
+            "publisher": "Aesthetic Surgery Journal",
+            "title": "Abdominoplasty After Bariatric Surgery and GLP-1 Receptor Agonists: Independent vs Combined Complication Risks (Boukind and colleagues, 2026; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Glucagon-like peptide-1 receptor agonists use heightened hypertrophic scarring risk (RR = 1.79; 95% CI 1.374-2.352)"
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42286330/",
+            "publisher": "Aesthetic Plastic Surgery",
+            "title": "Impact of Preoperative Semaglutide Discontinuation Timing on Postoperative Outcomes in Aesthetic Abdominoplasty: A Retrospective Comparative Study (Bruno and colleagues, 2026; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-04",
+            "quotes": [
+                "Eighty patients who underwent primary lipoabdominoplasty were divided into four groups: continued semaglutide until surgery (Group A), 2-week discontinuation (Group B), 4-week discontinuation (Group C), and semaglutide-naïve controls (Group D).",
+                "Group A exhibited the highest complication rate (45%), including wound dehiscence, infection, and seroma formation. Group B showed moderate improvement (30% complication rate), while Group C demonstrated a significant reduction in adverse outcomes (10%), comparable to the control group (10%).",
+                "Gastrointestinal intolerance and prolonged drain duration were also more frequent in patients with ongoing semaglutide use."
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42716982/",
+            "publisher": "Aesthetic Plastic Surgery",
+            "title": "Anesthetic Safety and Perioperative Outcomes in GLP-1 Receptor Agonist-Treated Patients Undergoing Lipoabdominoplasty (Albanese and colleagues, 2026; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "A total of 196 patients were included (98 per group).",
+                "These findings should not be interpreted as evidence of equivalence, as the study was not designed for non-inferiority or equivalence testing and may be underpowered for rare events."
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/40835770/",
+            "publisher": "Aesthetic Plastic Surgery",
+            "title": "Plastic Surgery in the Ozempidemic: Considerations for the Timing of Body Contouring Surgery in Patients with Semaglutide-Associated Weight Loss (Garbaccio and colleagues, 2025; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "Of 555 studies, 12 met inclusion criteria (n=13,947 patients).",
+                "Two studies assessed WR following drug discontinuation.",
+                "By the end of the observation period, participants regained 62.7 and 74.3% of greatest on-treatment WL, respectively",
+                "This systematic review and meta-analysis suggests weight stabilizes after 8-12 months of semaglutide use, at which time BCS may be appropriate.",
+                "surgeons should approach BCS cautiously until further research clarifies the impact of WR on surgical outcomes."
+            ]
+        },
+        {
+            "url": "https://pubmed.ncbi.nlm.nih.gov/42892081/",
+            "publisher": "Journal of Plastic, Reconstructive and Aesthetic Surgery",
+            "title": "Perioperative GLP-1 analog management in abdominoplasty: A multicenter comparative study of cessation and resumption timing on weight outcomes and complications (Ahmedov and colleagues, 2026; abstract read through PubMed E-utilities)",
+            "read_on": "2026-11-03",
+            "quotes": [
+                "This multicenter retrospective study included 91 female patients who underwent abdominoplasty following GLP-1-induced weight loss",
+                "Although long-term complication rates were comparable, early resumption was associated with a higher rate of short-term complications."
+            ]
+        }
+    ],
+    "gsc": {
+        "basis": "baseline.mts total + url-queries-L90.json",
+        "window": "2026-08-03..2026-11-01",
+        "impressions": 1428,
+        "clicks": 3,
+        "position": 10.01,
+        "top_queries": [
+            {
+                "query": "tummy tuck after ozempic: phase-2 body contouring for glp-1 weight loss patients",
+                "impressions": 66,
+                "clicks": 0,
+                "position": 9.3
+            },
+            {
+                "query": "glp-1 after tummy tuck",
+                "impressions": 62,
+                "clicks": 0,
+                "position": 14.4
+            },
+            {
+                "query": "is it worth getting a tummy tuck after ozempic weight loss?",
+                "impressions": 41,
+                "clicks": 0,
+                "position": 7.0
+            },
+            {
+                "query": "ozempic tummy tuck",
+                "impressions": 35,
+                "clicks": 0,
+                "position": 12.7
+            },
+            {
+                "query": "glp-1 tummy tuck candidate",
+                "impressions": 33,
+                "clicks": 0,
+                "position": 23.9
+            },
+            {
+                "query": "tummy tuck after ozempic weight loss",
+                "impressions": 25,
+                "clicks": 0,
+                "position": 12.9
+            },
+            {
+                "query": "tummy tuck after weight loss jabs",
+                "impressions": 24,
+                "clicks": 0,
+                "position": 34.9
+            },
+            {
+                "query": "tummy tuck shady rest",
+                "impressions": 15,
+                "clicks": 0,
+                "position": 31.3
+            },
+            {
+                "query": "ozempic after tummy tuck",
+                "impressions": 9,
+                "clicks": 0,
+                "position": 10.8
+            },
+            {
+                "query": "post ozempic body",
+                "impressions": 8,
+                "clicks": 0,
+                "position": 8
+            }
+        ]
+    },
+    "notes": "Rewrite for #357, Batch 1. Absorbs tummy-tuck-recovery-ozempic-miami; adds \"tummy tuck after weight loss\". primary_keyword stays the registry entry. Cost section gone: one line links to #pricing and financing, no figures. Beyond the plan card: a PubMed search on 3 Nov found recent studies the 5 Oct text did not have, including abdominoplasty wound outcomes in GLP-1 users (Lee 2026, Lewis 2025, Liang 2025, Bruno 2026, Albanese 2026, Boukind 2026), timing of stopping and restarting (Ahmedov 2026) and semaglutide weight plateau and regain (Garbaccio 2025). They replace K8's \"same timeline as any tummy tuck\" and \"no study\", and they conflict, so the post says so. After fact-check the recovery lead no longer says \"usual timeline\": no source gives one for GLP-1 users, and Bruno reports longer drain time with ongoing semaglutide. Quick answer changed from the plan draft to add \"some surgeons ask for a pause\". Corrections to K8: ASPS article claims are attributed to the article or the surgeon it quotes, not to ASPS; \"liposuction\" removed from the Ozempic makeover definition because the article does not list it; \"Usually, once you are eating normally\" and \"most people need a full or extended\" removed as unsourced; \"side to side\" removed from fleur-de-lis because Cleveland Clinic does not say it; 1-week pause stated only as the guidance's suggestion if a hold is chosen. The sweep flags \"anesthesiologist\" outside the society name, so Steve's line reads \"anesthesia doctors\"; the exact sentence is in sources[]. Hamilton's quote is paraphrased in the body to avoid a flagged word; exact sentence in sources[]. Dropped: 171,064, 2.1%, Miami humidity, hydration, arnica, SPF 50, satisfaction and quality-of-life statistics, \"$8,000+\" and all prices. Live images are not reused: hero alt says \"sculpted tummy tuck results\", and inline files carry retired figures or financing logos. consistency.py flags 9 sentences, each resolved by its own quote in sources[]: 8 to 12 months and 62.7%, 74.3% are Garbaccio; 4 to 8 weeks and 24 hours are the ASA release; 9.8%, 3.6%, 30 days are Lee; 5.19%, 2.78% are Lewis; 45%, 30%, 10%, 2 and 4 weeks are Bruno; 4.3%, 6.8%, 10.4% are Winocour. Open: no restart date exists in any source read; the owner has not confirmed a practice GLP-1 protocol, so the post states none. Base read on 2026-11-03 from the production-filled clone; rebuild against production before the run.",
+    "gate": {
+        "verdict": "refresh",
+        "reason": "Cluster already owned by /blog/ozempic-tummy-tuck-myths-miami — refresh that post instead of creating a competing URL",
+        "owningUrl": "/blog/ozempic-tummy-tuck-myths-miami",
+        "owningSlug": "ozempic-tummy-tuck-myths-miami",
+        "matchedQuery": "ozempic tummy tuck myths miami",
+        "similarityScore": null,
+        "claimedQueries": [],
+        "warnings": [],
+        "checkedAt": "2026-11-04T04:55:59.724Z",
+        "overlay": 0,
+        "database": "localhost:5432/alluring_wt_tt_rewrite"
+    }
+}

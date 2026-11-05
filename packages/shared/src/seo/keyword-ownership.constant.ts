@@ -122,7 +122,24 @@ const PROCEDURE_PAGE_ENTRIES: OwnedPage[] = [
             'abdominoplasty cost',
             'tummy tuck cost',
             'tummy tuck prices in miami',
+            // The head, Miami price and folded-post queries (#357).
+            'tummy tuck in miami',
+            'miami tummy tuck',
+            'mini tummy tuck miami',
+            'tummy tuck miami price',
+            'how much is a tummy tuck in miami',
+            'tummy tuck cost in miami',
+            'abdominoplastia miami',
+            'best age for tummy tuck',
         ],
+        mustNotTarget: [
+            {
+                query: 'mini vs full tummy tuck',
+                ownedBy: '/blog/mini-vs-full-tummy-tuck',
+                pendingPost: true,
+            },
+        ],
+        notes: 'Owns the mini tummy tuck head and price terms. /blog/mini-vs-full-tummy-tuck owns only the comparison (#357).',
     },
     {
         url: '/procedures/breast-augmentation-miami',

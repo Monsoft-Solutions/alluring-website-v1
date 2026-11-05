@@ -50,7 +50,7 @@ that a person runs with `psql`.
 | `node blog/tools/slug_check.mjs <slug> [--db D]`                                               | Is the slug free: database, redirect sources (`/slug`, `/blog/slug`), app routes, public files, `/blog` subroutes, surgeon pages, the registry. Exit 1 on a collision                                                                                                                 |
 | `python3 blog/tools/check_post.py <slug>… \| --all [--db D] [--final]`                         | The lint: the writing standard, the claims sweep, links, images, figures, MDX. Exit 1 on any problem                                                                                                                                                                                  |
 | `python3 blog/tools/consistency.py <slug>… \| --cluster C [--strict]`                          | Report: every sentence whose figure (hours, days, weeks, %, cc…) is on a topic the facts file covers but isn't one of its figures. Read each flag                                                                                                                                     |
-| `python3 blog/tools/images/generate.py <slug>… [--dry-run]`                                    | Renders each post's images with GPT Image 2.5 (Higgsfield CLI) into `images/work/`                                                                                                                                                                                                    |
+| `python3 blog/tools/images/generate.py <slug>… [--dry-run]`                                    | Renders each post's images with GPT Image 2.5 (Higgsfield CLI, or fal with `--provider fal`) into `images/work/`                                                                                                                                                                      |
 | `node blog/tools/images/export_upload.mjs [<slug>…] [--db D] [--id slug=uuid]`                 | JPEG export of the picks and upload to Vercel Blob; writes `images/manifest.json`. Images with `reuse_url` are skipped; a pick already uploaded (in the manifest) whose render isn't on this machine is kept as it is. `--delete-superseded` refuses a local database                 |
 | `python3 blog/tools/rewrite_base.py <slug> --db D [--out F] [--save [--rebase [--old F0]]]`    | Reads the live row a rewrite starts from, writes its text to `F` and the rest of the row to `F.row.json`, and records its md5 as `meta.json` `base_md5` (refuses `--save` on the shared dev database, and replacing a different `base_md5` without `--rebase`, which prints the diff) |
 | `python3 blog/tools/build_sql.py <D> <out_dir> (--slug S … \| --all) [--check] [--manifest P]` | One guarded SQL file per post, a backup, and the code changes that go with it. One of `--slug` and `--all` is required                                                                                                                                                                |
@@ -66,7 +66,8 @@ file's docstring).
 `$TSX` is the repo's own tsx: `TSX=$(ls -d node_modules/.pnpm/tsx@*/node_modules/tsx/dist/cli.mjs | tail -1)`.
 `gate.mjs` and the MDX check import the TypeScript source through it, so they
 need no build step. The tools need python3, node, `psql` on the PATH, `sips`
-(macOS) for image export, and the `higgsfield` CLI for renders. They add no
+(macOS) for image export, and for renders the `higgsfield` CLI or, with
+`--provider fal`, `FAL_KEY` in `apps/admin/.env`. They add no
 dependencies.
 
 `blog/tools/clusters.json` maps each cluster (`lipo`, `bbl`, `tummy-tuck`, …)
@@ -125,7 +126,7 @@ Start from Search Console, not guesses: the `search-console` MCP
    read `python3 blog/tools/consistency.py <slug>`: every flagged figure either
    matches the facts file, or has its own source in `meta.json`, or goes.
 6. **Images:** `python3 blog/tools/images/generate.py <slug> --dry-run` (say the
-   credit estimate), then without `--dry-run`. The user picks hero variants;
+   credit or cost estimate), then without `--dry-run`. The user picks hero variants;
    write them to `images/picks.json`; proofread infographic text word for word.
    `node blog/tools/images/export_upload.mjs <slug>` uploads them. A new post
    has no row yet, so the upload pre-generates its id into `meta.json` "id"

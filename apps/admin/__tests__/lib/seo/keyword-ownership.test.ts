@@ -21,7 +21,7 @@ describe('registry integrity', () => {
         expect(getRegistryIntegrityIssues()).toEqual([])
     })
 
-    it('contains every published post exactly once (127 live posts)', () => {
+    it('contains every published post exactly once (116 live posts)', () => {
         const liveBlog = BLOG_POST_ENTRIES.filter(
             (e) => e.status === 'live' && e.slug
         )
@@ -47,8 +47,10 @@ describe('registry integrity', () => {
         // (breast-implants-over-or-under-the-muscle,
         // saline-vs-silicone-breast-implants, how-long-do-breast-implants-last,
         // capsular-contracture, breast-implant-rippling-bottoming-out,
-        // mammograms-breastfeeding-with-breast-implants).
-        expect(liveBlog.length).toBe(123)
+        // mammograms-breastfeeding-with-breast-implants), and the seven tummy
+        // tuck posts folded in #357. The plan's three new posts add 3 in the PR
+        // that registers them.
+        expect(liveBlog.length).toBe(116)
         expect(new Set(liveBlog.map((e) => e.slug)).size).toBe(liveBlog.length)
     })
 
@@ -115,11 +117,59 @@ describe('resolveQueryOwner', () => {
     })
 
     it('follows duplicateOf to the canonical cluster owner', () => {
-        const result = resolveQueryOwner('tummy tuck recovery myths miami moms')
-        expect(result?.owner.slug).toBe('tummy-tuck-recovery-myths-miami-moms')
+        const result = resolveQueryOwner('choose plastic surgeons miami')
+        expect(result?.owner.slug).toBe('choose-plastic-surgeons-miami')
         expect(result?.canonicalOwner.url).toBe(
-            '/blog/tummy-tuck-myths-miami-moms'
+            '/how-to-choose-the-best-plastic-surgeon-in-miami-10-things-to-look-for'
         )
+    })
+
+    it('marks the folded tummy tuck posts retired with their 308 target (#357)', () => {
+        const page = '/procedures/tummy-tuck-miami'
+        const recovery = '/how-long-to-recover-tummy-tuck'
+        const folded: Array<[string, string]> = [
+            ['best-age-tummy-tuck-miami', page],
+            ['tummy-tuck-myths-miami-moms', page],
+            ['tummy-tuck-miami-candidate-checklist', page],
+            ['tummy-tuck-recovery-time-miami', recovery],
+            ['tummy-tuck-recovery-myths-miami-moms', recovery],
+            ['mini-tummy-tuck-miami-recovery', recovery],
+            [
+                'tummy-tuck-recovery-ozempic-miami',
+                '/blog/ozempic-tummy-tuck-myths-miami',
+            ],
+        ]
+        for (const [slug, redirectsTo] of folded) {
+            const entry = BLOG_POST_ENTRIES.find((e) => e.slug === slug)
+            expect(entry?.status, slug).toBe('retired')
+            expect(entry?.redirectsTo, slug).toBe(redirectsTo)
+            expect(entry?.ownsQueries, slug).toEqual([])
+        }
+    })
+
+    it('gives each tummy tuck question one owner (#357)', () => {
+        const owners: Array<[string, string]> = [
+            ['tummy tuck in miami', '/procedures/tummy-tuck-miami'],
+            ['best age for tummy tuck', '/procedures/tummy-tuck-miami'],
+            ['tummy tuck recovery time', '/how-long-to-recover-tummy-tuck'],
+            ['mini tummy tuck recovery', '/how-long-to-recover-tummy-tuck'],
+            ['tummy tuck scar', '/blog/tummy-tuck-scars-miami'],
+            [
+                'diastasis recti surgery',
+                '/blog/tummy-tuck-diastasis-recti-miami',
+            ],
+            [
+                'tummy tuck after ozempic',
+                '/blog/ozempic-tummy-tuck-myths-miami',
+            ],
+            ['tummy tuck pain', '/what-is-more-painful-bbl-or-tummy-tuck'],
+            ['tummy tuck workout', '/blog/exercises-after-tummy-tuck-miami'],
+        ]
+        for (const [query, url] of owners) {
+            expect(resolveQueryOwner(query)?.canonicalOwner.url, query).toBe(
+                url
+            )
+        }
     })
 
     it('gives every BBL recovery query to the one recovery page', () => {
@@ -382,7 +432,7 @@ describe('findSimilarOwnedQueries', () => {
         })
         expect(
             matches.some(
-                (m) => m.owner.slug === 'tummy-tuck-recovery-time-miami'
+                (m) => m.owner.slug === 'how-long-to-recover-tummy-tuck'
             )
         ).toBe(true)
     })

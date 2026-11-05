@@ -19,7 +19,7 @@ import { getBlogPostUrl } from '@/lib/utils/blog-url.util'
 
 /**
  * The file's one-line summary. Not `siteConfig.business.description`, whose
- * "World-class" and "Where luxury meets affordability" answer engines repeat.
+ * superlatives answer engines repeat.
  */
 const SUMMARY = `${siteConfig.business.tagline} Cosmetic surgery in Miami, Florida, with personalized care and financing available.`
 
@@ -99,11 +99,11 @@ This is the comprehensive information file for ${siteConfig.business.name}, a pl
             : ''
     }
 
-### Surgeon and Credentials
+### Surgeon and Rating
 - **Surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}${
         siteConfig.trustStats
             ? `
-- **Patient Rating**: ${siteConfig.trustStats.rating}/5 stars`
+- **Published Patient Rating**: ${siteConfig.trustStats.rating} out of 5`
             : ''
     }
 ${
@@ -178,9 +178,7 @@ A: ${faq.answer}
 ### Financing Options
 - **URL**: /plastic-surgery-financing-miami
 - **Partners**: Cherry, CareCredit, United Credit
-- 0% APR financing plans available
-- Flexible payment schedules
-- Instant approval process
+- Financing is subject to credit approval
 
 ### Before & After Gallery
 - **URL**: /gallery
@@ -190,10 +188,9 @@ A: ${faq.answer}
 
 ### Educational Blog
 - **URL**: /blog
-- Expert plastic surgery guides
+- Plastic surgery guides
 - Recovery tips and advice
 - Procedure comparisons
-- Patient stories
 
 ${
     recentPosts.length > 0
@@ -207,20 +204,20 @@ ${recentPosts.map((post) => `- [${post.title}](${getBlogPostUrl(post.slug, post.
 
 ## Why Choose ${siteConfig.business.name}
 
-1. **One Surgeon**: ${KARLINSKY_NAME}, is the practice's one surgeon. ${KARLINSKY_CREDENTIALS}
+1. **One Surgeon**: ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}
+
+2. **Flexible Financing**: Our financing options, subject to credit approval, spread the cost of surgery over time.
+
+3. **Bilingual Services**: Our English and Spanish speaking staff ensures clear communication with our diverse patient base.
+
+4. **Miami Location**: Located in Miami, we serve patients from South Florida and across the United States.
 ${
     siteConfig.trustStats
         ? `
-2. **Patient-Centered Care**: Our ${siteConfig.trustStats.rating}-star rating reflects our commitment to patient satisfaction and care throughout the entire surgical journey.
+5. **Published Rating**: ${siteConfig.trustStats.rating} out of 5 from patient reviews.
 `
         : ''
 }
-3. **Financing**: Flexible financing options make procedures accessible.
-
-4. **Bilingual Services**: Our English and Spanish speaking staff ensures clear communication with our diverse patient base.
-
-5. **Miami Location**: Located in the heart of Miami, we serve patients from South Florida and across the United States.
-
 ---
 
 ## Service Area

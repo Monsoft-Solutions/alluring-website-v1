@@ -95,6 +95,18 @@ export const BLOG_V2_SLUGS: ReadonlySet<string> = new Set<string>([
     'capsular-contracture',
     'breast-implant-rippling-bottoming-out',
     'mammograms-breastfeeding-with-breast-implants',
+    // The tummy tuck cluster (#357): its kept posts and its three new ones are
+    // rewritten for this template, so they don't wait for phase 4.
+    'tummy-tuck-drains-what-they-are-how-long-they-stay',
+    'how-long-to-recover-tummy-tuck',
+    'what-is-a-tummy-tuck-without-muscle-repair-called',
+    'ozempic-tummy-tuck-myths-miami',
+    'exercises-after-tummy-tuck-miami',
+    'tummy-tuck-scars-miami',
+    'tummy-tuck-diastasis-recti-miami',
+    'pregnancy-after-tummy-tuck',
+    'tummy-tuck-after-c-section',
+    'mini-vs-full-tummy-tuck',
     // The 2026-11-04 BBL rewrite: on v2 with their rewrites, so they aren't
     // published beside the old sidebar's claims.
     'bbl-compression-garment-timeline',

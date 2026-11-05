@@ -36,21 +36,116 @@ export function normalizeQuery(query: string): string {
         .trim()
 }
 
-/** Tokens for similarity scoring (drops 1–2 char noise words).
- * Trailing-s plurals fold to singular ("bbls" ⇒ "bbl") so pluralized
- * candidates still match owned vocabulary; both sides tokenize through
- * here, so the folding is always symmetric. */
-function queryTokens(query: string): Set<string> {
-    return new Set(
-        normalizeQuery(query)
-            .split(' ')
-            .filter((t) => t.length > 2)
-            .map((t) =>
-                t.length >= 4 && t.endsWith('s') && !t.endsWith('ss')
-                    ? t.slice(0, -1)
-                    : t
-            )
-    )
+/**
+ * Words that say nothing about a topic, so they are never evidence of a
+ * duplicate: "after", "how" and "long" must not make two unrelated questions
+ * look alike. "much" stays out of this list on purpose: "how much" is price
+ * intent.
+ */
+const STOP_TOKENS = new Set(
+    (
+        'about after all also and any are before best between but can compare compared ' +
+        'could did difference does doing done for from get getting had happen has ' +
+        'have how into its just long more most not one our over should than that the ' +
+        'their them then there these they this those too versus very was way were ' +
+        'what whats when where which while who why will with without would you your ' +
+        'complete explained guide know need really things tips truth wait'
+    ).split(' ')
+)
+
+/**
+ * Words that name a procedure rather than a topic inside it. Every post in a
+ * cluster shares them, so they are never evidence of a duplicate either.
+ */
+const GENERIC_PROCEDURE_TOKENS = new Set(
+    (
+        'tummy tuck abdominoplasty surgery surgical procedure operation plastic ' +
+        'cosmetic breast lift augmentation reduction implant mommy makeover ' +
+        'brazilian butt nose job fat transfer bbl lipo liposuction ' +
+        'rhinoplasty facelift'
+    ).split(' ')
+)
+
+/** Places. A candidate that is only a procedure and a place is a head term. */
+const LOCATION_TOKENS = new Set(['miami', 'florida', 'near'])
+
+/** Words of price intent, which a comparison does not get out of. */
+const PRICE_TOKENS = new Set(['cost', 'price', 'much', 'financing'])
+
+/** Folds a trailing-s plural to singular ("bbls" ⇒ "bbl") */
+function foldPlural(token: string): string {
+    return token.length >= 4 && token.endsWith('s') && !token.endsWith('ss')
+        ? token.slice(0, -1)
+        : token
+}
+
+/** A query prepared for similarity scoring */
+type ScoredQuery = {
+    /** Every word: what the Jaccard and overlap scores count */
+    tokens: Set<string>
+    /** The words that say what the query is about, beyond the procedure */
+    topic: Set<string>
+    /** "A vs B", "A or B", "the difference between A and B" */
+    isComparison: boolean
+}
+
+/**
+ * Tokens for similarity scoring (drops 1–2 char noise words).
+ * Trailing-s plurals fold to singular so pluralized candidates still match
+ * owned vocabulary; both sides tokenize through here, so the folding is always
+ * symmetric. In the topic, "before and after" and "C-section" are single ideas,
+ * so they become one word each.
+ */
+function scoredQuery(query: string): ScoredQuery {
+    const normalized = normalizeQuery(query)
+    const words = normalized.split(' ').filter((t) => t.length > 2)
+    return {
+        tokens: new Set(words.map(foldPlural)),
+        topic: new Set(
+            normalized
+                .replace(/\bbefore (and )?after\b/g, 'beforeafter')
+                .replace(/\bc sections?\b/g, 'csection')
+                .split(' ')
+                .filter((t) => t.length > 2 && !STOP_TOKENS.has(t))
+                .map(foldPlural)
+                .filter((t) => !GENERIC_PROCEDURE_TOKENS.has(t))
+        ),
+        isComparison: /\b(vs|versus|or|compared|difference between)\b/.test(
+            normalized
+        ),
+    }
+}
+
+/**
+ * Do the two queries share evidence of being the same topic, rather than only
+ * the words any two posts in a cluster share? This can only veto a score.
+ *
+ * - A comparison and a non-comparison are different intents unless they share
+ *   two topic words or a price word: "mini vs full tummy tuck" clears "mini
+ *   tummy tuck", while "mini vs full tummy tuck cost" still hits "mini tummy
+ *   tuck cost".
+ * - A candidate that is only a procedure and a place is a head term, and any
+ *   page containing it competes with it.
+ * - No shared topic word: not a duplicate. "pregnancy after tummy tuck" shares
+ *   only the procedure with "tummy tuck before and after".
+ * - One shared topic word: a duplicate only if that word is at least half of
+ *   the longer side's topic. "tummy tuck drains" passes against "tummy tuck
+ *   drains how long they stay"; "is a tummy tuck safe" does not against
+ *   "exercises after tummy tuck miami safe timeline".
+ */
+function sharesTopicEvidence(target: ScoredQuery, owned: ScoredQuery): boolean {
+    const shared = [...target.topic].filter((t) => owned.topic.has(t))
+    if (
+        target.isComparison !== owned.isComparison &&
+        shared.length < 2 &&
+        !shared.some((t) => PRICE_TOKENS.has(t))
+    ) {
+        return false
+    }
+    if ([...target.topic].every((t) => LOCATION_TOKENS.has(t))) return true
+    if (shared.length === 0) return false
+    if (shared.length >= 2) return true
+    return 1 / Math.max(target.topic.size, owned.topic.size) >= 0.5
 }
 
 /** All queries an entry claims (primaryKeyword + ownsQueries), normalized */
@@ -146,7 +241,8 @@ export function getOwnerForUrl(
 
 /**
  * Score a query against every owned query and return matches above the
- * threshold, best first. Token-set Jaccard similarity — cheap,
+ * threshold, best first. Token-set Jaccard similarity, kept only where the
+ * shared words are evidence of the same topic (sharesTopicEvidence) — cheap,
  * deterministic, good enough to catch "-quiz"/"-checklist"/"-for-moms"
  * persona-variants of an identical query.
  */
@@ -159,8 +255,8 @@ export function findSimilarOwnedQueries(
     } = {}
 ): SimilarOwnedQuery[] {
     const { threshold = 0.6, limit = 10, extraEntries } = options
-    const target = queryTokens(query)
-    if (target.size === 0) return []
+    const target = scoredQuery(query)
+    if (target.tokens.size === 0) return []
 
     const entries = extraEntries
         ? [...getKeywordRegistry(), ...extraEntries]
@@ -175,11 +271,12 @@ export function findSimilarOwnedQueries(
         )
         for (const owned of ownedQueries(entry)) {
             if (exactOnly.has(owned)) continue
-            const tokens = queryTokens(owned)
-            if (tokens.size === 0) continue
+            const scored = scoredQuery(owned)
+            if (scored.tokens.size === 0) continue
             let intersection = 0
-            for (const t of target) if (tokens.has(t)) intersection++
-            const union = target.size + tokens.size - intersection
+            for (const t of target.tokens)
+                if (scored.tokens.has(t)) intersection++
+            const union = target.tokens.size + scored.tokens.size - intersection
             const jaccard = union === 0 ? 0 : intersection / union
             // Jaccard punishes length mismatch: "bbl smell" scores 0.29
             // against a 7-token title query that fully contains it. When one
@@ -187,10 +284,14 @@ export function findSimilarOwnedQueries(
             // the overlap coefficient (intersection over the smaller set)
             // also counts — guarded to sets of 2+ tokens so a single shared
             // word can never claim a match on its own.
-            const smaller = Math.min(target.size, tokens.size)
+            const smaller = Math.min(target.tokens.size, scored.tokens.size)
             const overlap = smaller >= 2 ? intersection / smaller : 0
             const score = Math.max(jaccard, overlap)
-            if (score >= threshold && (!best || score > best.score)) {
+            if (
+                score >= threshold &&
+                (!best || score > best.score) &&
+                sharesTopicEvidence(target, scored)
+            ) {
                 best = { query: owned, score }
             }
         }
@@ -233,7 +334,7 @@ export function getRegistryIntegrityIssues(): string[] {
             issues.push(`${entry.url}: retired without redirectsTo`)
         }
         for (const mnt of entry.mustNotTarget ?? []) {
-            if (!urlSet.has(mnt.ownedBy)) {
+            if (!mnt.pendingPost && !urlSet.has(mnt.ownedBy)) {
                 issues.push(
                     `${entry.url}: mustNotTarget.ownedBy not in registry: ${mnt.ownedBy}`
                 )

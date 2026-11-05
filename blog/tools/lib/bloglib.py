@@ -45,7 +45,7 @@ SITE = 'https://www.alluringplasticsurgery.com'
 SITE_HOST_RX = r'(?:https?://)?(?:www\.)?alluringplasticsurgery\.com'
 AUTHOR_NAME = 'Alluring Editorial Team'
 REVISION_REASON = 'claude-blog-post'
-GENERATED_BY = 'higgsfield/gpt_image_2_5'
+GENERATED_BY = 'fal/openai/gpt-image-2.5'
 BLOG_PREFIX_CUTOFF = dt.datetime(2026, 1, 1)
 FAQ_H2 = '## Frequently asked questions'
 

@@ -27,12 +27,12 @@ const law: ModuleSceneItem[] = [
 const evidence: ModuleSceneEvidence[] = [
     {
         title: 'How often serious problems happen',
-        body: `In an insurance database of ${tummyTuckFigure('major-complications')}, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone and ${tummyTuckFigure('major-complications', 2)} of those combined with liposuction. Of those complications, ${tummyTuckFigure('complication-types')} were hematomas (bleeding under the skin), ${tummyTuckFigure('complication-types', 1)} infections and ${tummyTuckFigure('complication-types', 2)} suspected or confirmed blood clots (Winocour and colleagues, Plastic and Reconstructive Surgery, 2015).`,
+        body: `In an insurance database of ${tummyTuckFigure('major-complications')}, major complications followed ${tummyTuckFigure('major-complications', 1)} of tummy tucks done alone and ${tummyTuckFigure('major-complications', 2)} of those combined with liposuction. Of all the major complications in the study, combined surgeries included, ${tummyTuckFigure('complication-types')} were hematomas (bleeding under the skin), ${tummyTuckFigure('complication-types', 1)} infections and ${tummyTuckFigure('complication-types', 2)} suspected or confirmed blood clots (Winocour and colleagues, Plastic and Reconstructive Surgery, 2015).`,
         sourceId: 'winocour-2015',
     },
     {
-        title: 'What raises the risk',
-        body: `The same study found higher risk at ${tummyTuckFigure('risk-factors')} or older, with a BMI of 30 or more, and when several procedures were combined.`,
+        title: 'What is linked to higher risk',
+        body: `The same study linked a higher risk to ${tummyTuckFigure('risk-factors')} or older, a BMI of 30 or more, and several procedures combined.`,
         sourceId: 'winocour-2015',
     },
     {
@@ -44,6 +44,16 @@ const evidence: ModuleSceneEvidence[] = [
         title: 'Fluid under the skin',
         body: `A 2019 review of studies covering ${tummyTuckFigure('seroma-rate')} found a seroma, fluid collecting under the skin, in ${tummyTuckFigure('seroma-rate', 1)} (Xia and colleagues, Aesthetic Plastic Surgery, 2019).`,
         sourceId: 'xia-2019',
+    },
+    {
+        title: 'Numbness and pulling',
+        body: 'Some people have numbness or a pulling sensation for weeks or months, which is typically normal and often fades (Shahram Salemy, MD, on the ASPS website).',
+        sourceId: 'asps-salemy-2019',
+    },
+    {
+        title: 'A second surgery',
+        body: 'ASPS says good results are expected but cannot be promised, and that another surgery may sometimes be necessary.',
+        sourceId: 'asps-tummy-tuck-results',
     },
 ]
 
@@ -162,7 +172,7 @@ function WallSection({ repaired }: { repaired: boolean }) {
 }
 
 /**
- * What a full tummy tuck repairs, drawn as a cross-section of the abdominal
+ * What a muscle repair does, drawn as a cross-section of the abdominal
  * wall: before, the two long muscles have drifted apart and the abdomen
  * bulges; after, they are stitched together at the midline. The captions
  * and legend are real text, so they are read, translated and quoted like
@@ -170,9 +180,9 @@ function WallSection({ repaired }: { repaired: boolean }) {
  */
 function TummyTuckRepairDiagram() {
     return (
-        <figure aria-label='What a full tummy tuck repairs, drawn as a cross-section of the abdominal wall'>
+        <figure aria-label='What a muscle repair does, drawn as a cross-section of the abdominal wall'>
             <p className='text-sm font-semibold tracking-[0.08em] text-stone-300 uppercase'>
-                What a full tummy tuck repairs
+                What a muscle repair does
             </p>
             <div className='mt-4 grid gap-5 border border-stone-700 bg-[#191614] p-4 md:p-5'>
                 <div>
@@ -210,7 +220,8 @@ function TummyTuckRepairDiagram() {
             <figcaption className='mt-3.5 text-sm leading-[1.45] text-stone-400'>
                 A cross-section of the abdominal wall, not to scale. The mini
                 and extended mini tummy tucks on our price list don&apos;t
-                include the muscle repair.
+                include the muscle repair. For any other type, ask your surgeon
+                whether your price covers it.
             </figcaption>
         </figure>
     )
@@ -234,15 +245,18 @@ export function TummyTuckSafety() {
             question='Is a tummy tuck safe?'
             answer={
                 <>
-                    Serious problems are uncommon. In an insurance database of{' '}
+                    Most people don&apos;t have a serious problem, but a tummy
+                    tuck has a higher complication rate than other cosmetic
+                    surgery. In an insurance database of{' '}
                     {tummyTuckFigure('major-complications')}, major
                     complications followed{' '}
-                    {tummyTuckFigure('major-complications', 1)} of tummy tucks
-                    done alone and {tummyTuckFigure('major-complications', 2)}{' '}
-                    of those combined with liposuction. Blood clots happen more
-                    often after a tummy tuck than after other cosmetic surgery,
-                    so the plan to prevent them matters, and Florida limits
-                    liposuction with a tummy tuck in an office.
+                    {tummyTuckFigure('major-complications', 3)} of tummy tucks,
+                    against {tummyTuckFigure('major-complications', 4)} of other
+                    cosmetic procedures:{' '}
+                    {tummyTuckFigure('major-complications', 1)} done alone and{' '}
+                    {tummyTuckFigure('major-complications', 2)} with
+                    liposuction. Blood clots are more common too, so ask about
+                    preventing them.
                 </>
             }
             diagram={<TummyTuckRepairDiagram />}
