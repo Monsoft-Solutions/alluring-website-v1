@@ -1,8 +1,8 @@
 {
   "slug": "exercises-after-tummy-tuck-miami",
   "mode": "rewrite",
-  "base_md5": "42289274d7f5a1a5336b6448370297fe",
-  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T17:28:20Z",
+  "base_md5": "80cf9449dda4cad645e46be9bd7226c9",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-05T00:23:29Z",
   "reader": "recovering",
   "cluster": "tummy-tuck",
   "title": "Exercise After a Tummy Tuck: A Week-by-Week Plan",
