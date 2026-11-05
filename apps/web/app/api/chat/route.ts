@@ -7,6 +7,7 @@
  *
  * @module app/api/chat/route
  */
+import { CHAT_CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { type NextRequest, NextResponse, after } from 'next/server'
 import {
     coreStreamText,
@@ -165,7 +166,9 @@ export async function POST(request: NextRequest) {
 
                 const result = coreStreamText({
                     modelId: config.modelId,
-                    system: config.systemPrompt,
+                    // Added after the saved prompt, so a saved prompt can't bring back
+                    // a retired claim or another surgeon.
+                    system: `${config.systemPrompt}\n\n${CHAT_CLAIM_RULES_PROMPT}`,
                     messages: contextMessages,
                     temperature: config.temperature,
                     maxTokens: config.maxTokens,

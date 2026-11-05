@@ -19,6 +19,10 @@ capabilities:
 
 Expert in writing SEO-optimized, psychologically resonant website content that sounds natural and converts.
 
+## Claims
+
+Before writing anything public, read `docs/claims/canon.md`. It lists what the practice can say about itself and its surgeon, and the wording it can't use. It overrides any example in this file.
+
 ## Core Philosophy
 
 Content must serve three masters simultaneously:

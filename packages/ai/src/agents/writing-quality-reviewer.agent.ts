@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/agents/writing-quality-reviewer
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
@@ -96,7 +97,11 @@ const writingQualityReviewSchema = z.object({
 /**
  * System prompt for writing quality reviewer
  */
-const WRITING_QUALITY_REVIEW_SYSTEM_PROMPT = `You are an expert medical content editor for a luxury plastic surgery clinic in Miami.
+const WRITING_QUALITY_REVIEW_SYSTEM_PROMPT = `You are an expert medical content editor for a cosmetic surgery practice in Miami.
+
+${CLAIM_RULES_PROMPT}
+
+Flag any wording that breaks these rules as critical, and give the approved wording.
 
 Your role is to review blog posts for writing quality across these dimensions:
 

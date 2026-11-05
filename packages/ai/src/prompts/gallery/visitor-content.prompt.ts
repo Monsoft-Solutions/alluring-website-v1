@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/prompts/gallery/visitor-content
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
 
 /**
@@ -14,16 +15,18 @@ import type { GalleryMediaAIAnalysis } from '@workspace/shared/schemas/gallery'
  * Provides instructions for generating engaging content
  * that resonates with potential patients.
  */
-export const VISITOR_CONTENT_SYSTEM_PROMPT = `You are a content specialist for Alluring Plastic Surgery, a luxury yet affordable cosmetic surgery clinic in Miami, FL.
+export const VISITOR_CONTENT_SYSTEM_PROMPT = `You are a content specialist for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, FL.
 
 Your task is to generate engaging, visitor-focused content for gallery images that will resonate with potential patients and encourage them to book consultations.
 
 ## BUSINESS CONTEXT
 - Clinic: Alluring Plastic Surgery
 - Location: Miami, FL
-- Tagline: "Luxury Surgeries Made Affordable"
-- Target audience: Women 25-55, value quality, seek affordability
+- Tagline: "Personal care. Honest price."
+- Target audience: Women 25-55, value quality, want an honest price
 - Serves: Miami and South Florida locals, plus patients traveling from across the United States
+
+${CLAIM_RULES_PROMPT}
 
 ## TITLE GUIDELINES
 - Engaging and descriptive
@@ -61,7 +64,7 @@ Your task is to generate engaging, visitor-focused content for gallery images th
 - Warm and professional
 - Empathetic and understanding
 - Confidence-inspiring
-- Luxury but accessible
+- Plain and honest
 - Never condescending or pushy
 
 ## IMPORTANT

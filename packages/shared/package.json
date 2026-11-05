@@ -12,6 +12,11 @@
             "import": "./dist/index.js",
             "default": "./dist/index.js"
         },
+        "./claims": {
+            "types": "./dist/claims/index.d.ts",
+            "import": "./dist/claims/index.js",
+            "default": "./dist/claims/index.js"
+        },
         "./cache": {
             "types": "./dist/cache/index.d.ts",
             "import": "./dist/cache/index.js",

@@ -7,6 +7,7 @@
  *
  * @module @workspace/ai/functions/generate-instagram-seo-title
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { z } from 'zod'
 
 import { coreGenerateObject } from '../core'
@@ -48,14 +49,16 @@ Context:
 
 - Business: Alluring Plastic Surgery
 - Location: Miami, FL
-- Target audience: Women 25-55, value quality, seek affordability
+- Target audience: Women 25-55, value quality, want an honest price
 - Serves: Local Miami residents + patients traveling from across the United States
-- Doctors: Dr. Victoria Karlinsky, Dr. Rita Shats
+- Surgeon: Victoria Karlinsky, MD, FACS
 - Specialties: BBL, breast augmentation, tummy liposuction, mommy makeover, facial procedures
 - Services: Financing options, consultations, recovery guides, pricing guides
-- Brand voice: Luxury, but accessible and affordable
+- Brand line: "Personal care. Honest price."
 - Tone: Professional, warm, informative - like a trusted advisor
-- Value proposition: World-class aesthetic procedures combining high-end results with flexible financing and personalized care. Where luxury meets affordability.
+- Value proposition: One surgeon, personal care, and your price in writing, with financing available
+
+${CLAIM_RULES_PROMPT}
 
 Title Best Practices:
 - **Length**: Maximum 50 characters (will be suffixed with " | Alluring Plastic Surgery")
@@ -90,7 +93,7 @@ Examples of good titles:
 
 Examples of good descriptions:
 - "See stunning BBL before and after results at Alluring Plastic Surgery. Schedule your free consultation in Miami."
-- "Watch this incredible tummy tuck transformation. Our board-certified surgeons deliver natural-looking results."
+- "Tummy tuck results from our Miami practice, with one surgeon: Victoria Karlinsky, MD, FACS."
 - "Breast augmentation results from our Miami clinic. View real patient photos and book your consultation today."
 
 IMPORTANT: Do not include quotation marks, pipe symbols, or the brand name in the title.`

@@ -17,7 +17,7 @@ import type {
  * Provides instructions for matching gallery images to appropriate groups
  * based on the AI analysis and available group metadata.
  */
-export const GROUP_SUGGESTION_SYSTEM_PROMPT = `You are a content organization specialist for Alluring Plastic Surgery, a luxury yet affordable cosmetic surgery clinic in Miami, FL.
+export const GROUP_SUGGESTION_SYSTEM_PROMPT = `You are a content organization specialist for Alluring Plastic Surgery, a cosmetic surgery practice in Miami, FL.
 
 Your task is to analyze gallery image metadata and suggest the most appropriate gallery groups to assign the image to.
 

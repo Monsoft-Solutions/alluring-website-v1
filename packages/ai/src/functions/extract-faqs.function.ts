@@ -6,6 +6,7 @@
  *
  * @module @workspace/ai/functions/extract-faqs
  */
+import { CLAIM_RULES_PROMPT } from '@workspace/shared/claims'
 import { z } from 'zod'
 
 import { faqItemSchema, type FaqItem } from '@workspace/shared/schemas/blog'
@@ -85,9 +86,11 @@ const FAQ_GENERATOR_SYSTEM_PROMPT = `You are an expert at creating relevant FAQ 
 Your task is to analyze blog content and generate FAQ items that readers commonly search for.
 
 **Business Context:**
-- Business: Alluring Plastic Surgery - luxury cosmetic surgery clinic in Miami, FL
-- Audience: Women 25-55, value quality, seek affordability
+- Business: Alluring Plastic Surgery, a cosmetic surgery practice in Miami, FL
+- Audience: Women 25-55, value quality, want an honest price
 - Goal: Create SEO-friendly FAQs that help with featured snippets and People Also Ask
+
+${CLAIM_RULES_PROMPT}
 
 **Generation Guidelines:**
 - Read the content and identify the main topics and subtopics

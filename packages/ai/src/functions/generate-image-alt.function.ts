@@ -19,6 +19,8 @@ const MODEL_FOR_IMAGE_ALT_TEXT_GENERATION = 'gpt-4.1-mini'
  */
 const ALT_TEXT_SYSTEM_PROMPT = `You are an expert in writing accessible, SEO-optimized image alt text.
 
+Describe only what the image shows. Never use marketing words ("luxury", "premium", "best"), and never mention a credential, price or result.
+
 Your role is to:
 1. Generate concise, descriptive alt text for images
 2. Follow web accessibility (WCAG) best practices

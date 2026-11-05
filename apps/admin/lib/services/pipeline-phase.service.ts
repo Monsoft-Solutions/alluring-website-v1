@@ -8,6 +8,7 @@
  */
 import { eq } from 'drizzle-orm'
 import { SpanStatusCode, trace } from '@opentelemetry/api'
+import { findClaimHits } from '@workspace/shared/claims'
 import { db } from '@workspace/db/client'
 import {
     blogPost,
@@ -501,6 +502,7 @@ export async function runGenerationPhaseForPost(
                 // run leaves no noise in pipelineState.
                 ...(sanitizationActions.length > 0 && { sanitizationActions }),
             },
+            claimHits: findClaimHits(linkCheck.content),
         }
 
         await db
@@ -685,7 +687,10 @@ export async function runReviewPhaseForPost(
                 pipelineProcessingStatus: 'idle',
                 processingError: null,
                 processingStartedAt: null,
-                pipelineState: updatedPipelineState,
+                pipelineState: {
+                    ...updatedPipelineState,
+                    claimHits: findClaimHits(finalContent),
+                },
                 status: 'generate_metadata',
             })
             .where(eq(blogPost.id, postId))

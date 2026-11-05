@@ -22,6 +22,8 @@
 
 **Sales Model**: Consultation-first. Every page drives to booking. No fluff.
 
+**Claims**: `docs/claims/canon.md` lists what the practice can say about itself and its surgeon. AI prompts get the same rules from `@workspace/shared/claims`. Don't state a credential, volume, tenure, accreditation or financing figure that isn't in it.
+
 ---
 
 ## Design Philosophy
