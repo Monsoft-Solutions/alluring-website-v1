@@ -1,8 +1,8 @@
 {
   "slug": "how-to-reduce-tightness-after-tummy-tuck",
   "mode": "rewrite",
-  "base_md5": "3ff4223c55470f8016a2a1506afaf810",
-  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:39:09Z",
+  "base_md5": "34ef43f347707a8f2ef6cd2830e80964",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-05T00:23:30Z",
   "reader": "recovering",
   "cluster": "tummy-tuck",
   "title": "How to Reduce Tightness After Tummy Tuck?",

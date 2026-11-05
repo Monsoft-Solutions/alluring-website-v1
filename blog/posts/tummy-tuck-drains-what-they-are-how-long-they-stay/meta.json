@@ -1,8 +1,8 @@
 {
   "slug": "tummy-tuck-drains-what-they-are-how-long-they-stay",
   "mode": "rewrite",
-  "base_md5": "acbdce76c517b9627564c3728733cee3",
-  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T04:39:12Z",
+  "base_md5": "bef2ee80c485aa51d5d32ee85af547fa",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-05T00:23:28Z",
   "reader": "recovering",
   "cluster": "tummy-tuck",
   "title": "How Long Do Drains Stay In After a Tummy Tuck?",

@@ -1,8 +1,8 @@
 {
   "slug": "tummy-tuck-scars-miami",
   "mode": "rewrite",
-  "base_md5": "96acb4b608411d8ab23a39638e61bb1b",
-  "base_from": "localhost:5432/alluring_wt_tt_rewrite 2026-11-04T17:28:19Z",
+  "base_md5": "7c51606b7dbf2a37471158cb0cabaeac",
+  "base_from": "aws-0-us-west-2.pooler.supabase.com:5432/postgres 2026-11-05T00:23:27Z",
   "reader": "deciding",
   "cluster": "tummy-tuck",
   "title": "Tummy Tuck Scar: Where It Sits and How It Fades",

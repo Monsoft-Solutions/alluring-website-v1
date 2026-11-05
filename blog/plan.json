@@ -1030,9 +1030,9 @@
       "dependsOn": "TT day-28 read; TT-MM destination decision; user merges",
       "metric": "Day-28 (7 Dec): 'tummy tuck cost miami' served by the TT page at 10 or better (ownership only; /plastic-surgery-financing-miami tracked as a possible owner). Day-56 (4 Jan): TT page clicks from 1 to 15 or more per 28 days.",
       "rationale": "The TT-MM post serves 'tummy tuck cost miami' at 8.4 while the page sits at 61.6 (90 days). Those impressions look automated, so the point is which URL owns the query. The same post is also the site's best URL for 'mommy makeover miami' (994 impressions at 26.9 against the MM page's 71.7) and serves 'mommy makeover precio en miami' at 9.1. A 308 to the TT page therefore sends MM head-term and Spanish MM equity to a TT URL. The MM cluster review recommended folding it into the MM page around 23 Nov. If the user picks that route, it leaves this batch (9 TT folds) and folds with PR-H; the registry counts shift by one between PR-D and PR-H, and the end count stays 74. /blog/affordable-plastic-surgery-miami ranked 4.7 for the cost query (770 impressions) and now 308s to the financing page, which may pick the query up. The diastasis post ranks 11 for 'tummy tuck miami' against the page's 75. The 9 Feb pair fixes and a Lofman 308 (if needed) ride in this PR.",
-      "status": "in-progress",
-      "notes": "3 Nov 2026 plan: /blog/tummy-tuck-mommy-makeover-miami stays live as the comparison for now (w4-rewrite-post-tummy-tuck-mommy-makeover-miami-132), so it is not part of this batch yet. Status left for the TT work to set. Replaced by the 2026-11-03 tummy tuck plan (implementation-plans/2026-11-03-tummy-tuck-rewrite, artifact 1taxwq...). Seven folds, not nine: scars and diastasis are retargeted, not folded, and tummy-tuck-mommy-makeover-miami stays live as the comparison post after the mommy makeover release. Built and rehearsed on 4 Nov; waiting on the owner's production run.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Run as 7 folds from the 3 Nov plan, not this list: 14 redirects deployed, rows deleted, 118 published after. tummy-tuck-mommy-makeover-miami stays live as a comparison; on 30 Dec fold it if the mommy makeover page, or the tummy tuck page on \"tummy tuck cost miami\", still trails it. tummy-tuck-diastasis-recti-miami was kept and rewritten.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-technical-pr-d-ga4-event-cta-mapping-ci-test-scripts-site-claims-wired-42",
@@ -1072,9 +1072,9 @@
       "dependsOn": "PR-D deployed; contact sheet 2 days ahead; user runs psql",
       "metric": "Day-28 (8 Dec): recovery post at 15 or better, pain-post CTR 0.8% or more, and the exercises prompt cited in the week-8 panel. Batch read against the holdout H.",
       "rationale": "Recovery post: 622 impressions at 55.7 (3,922 per 90 days at 0.03%). It also covers query gaps no page serves, such as 'whats the recovery time for a tummy tuck' (683 at 64). Muscle repair: 3,068 at 5.8. Pain: 1,863 at 3.9, 0.32% CTR. Drains: 2,326 at 7.1. Exercises: 1,549 at 9, a Perplexity miss.",
-      "status": "in-progress",
-      "notes": "Rewritten under the 2026-11-03 tummy tuck plan, fact-checked and rehearsed on 4 Nov. Batch 1: recovery, Ozempic, diastasis, scar. Batch 3: muscle repair, pain, drains, exercise. Waiting on the owner's production run.",
-      "liveOn": null
+      "status": "live",
+      "notes": "Recovery, Ozempic, muscle repair, drains and exercise rewritten on 4 Nov, with scars and diastasis (PR #368). The pain post went live the same day through the BBL release (#367), not this plan.",
+      "liveOn": "2026-11-04"
     },
     {
       "id": "w4-geo-24-prompt-perplexity-panel-x3-chatgpt-gemini-44",
@@ -2219,7 +2219,7 @@
       "metric": "Gate (9 Mar): -5 points or better against the control. Day-28 (16 Mar): combined clicks at 347 or more.",
       "rationale": "Pubic swelling: 7,063 impressions at 5.0, 149 clicks. Tightness: 4,774 at 5.4, 108 clicks. BR bra: 10,676 at 4.8, 90 clicks. The frozen control is the 6 P3 and P4 posts plus the lipo set.",
       "status": "in-progress",
-      "notes": "The tummy tuck posts in this item (pubic swelling, tightness) are done under the 2026-11-03 tummy tuck plan: Batch 2, text only, with a measurement gate; images behind a same-address canary. Other posts in this item are unchanged.",
+      "notes": "Tightness rewritten 4 Nov (text only). Pubic swelling follows after a 7-day read against the controls, from 11 Nov. Baseline, 90 days: tightness 306 clicks, 16,432 impressions, position 6.09; pubic 560, 22,843, 5.17.",
       "liveOn": null
     },
     {
@@ -3070,7 +3070,7 @@
       "metric": "Indexed, and read at day 28, 56 and 90 with readout.mts.",
       "rationale": "Keyword Planner demand with no post on the site; see implementation-plans/2026-11-03-tummy-tuck-rewrite/plan.html.",
       "status": "in-progress",
-      "notes": "Written and fact-checked 4 Nov; not published.",
+      "notes": "Built and rehearsed. Held on 4 Nov: the owner has not said whether an obstetrician reads it first. Ships together with the C-section post.",
       "liveOn": null
     },
     {
@@ -3090,7 +3090,7 @@
       "metric": "Indexed, and read at day 28, 56 and 90 with readout.mts.",
       "rationale": "Keyword Planner demand with no post on the site; see implementation-plans/2026-11-03-tummy-tuck-rewrite/plan.html.",
       "status": "in-progress",
-      "notes": "Written and fact-checked 4 Nov; not published.",
+      "notes": "Built and rehearsed. Ships together with the pregnancy post, which is held pending the obstetrician decision.",
       "liveOn": null
     },
     {
@@ -3110,7 +3110,7 @@
       "metric": "Indexed, and read at day 28, 56 and 90 with readout.mts.",
       "rationale": "Keyword Planner demand with no post on the site; see implementation-plans/2026-11-03-tummy-tuck-rewrite/plan.html.",
       "status": "in-progress",
-      "notes": "Written and fact-checked 4 Nov; not published.",
+      "notes": "Built and rehearsed. Ships about 18 Nov, after the page mini rank holds 14 days. Links to the pregnancy post, so that must be live first.",
       "liveOn": null
     }
   ]
