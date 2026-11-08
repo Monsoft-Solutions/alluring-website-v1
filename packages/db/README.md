@@ -12,7 +12,7 @@ Create `packages/db/.env.local` with two connection strings (see
 POSTGRES_URL="postgresql://user:password@localhost:5432/alluring-autopilot-dev"
 
 # Optional — reached only by the :prod command variants.
-POSTGRES_URL_PROD="postgresql://alluring:...@15.204.231.178:25432/alluring_session?sslmode=require"
+POSTGRES_URL_PROD="postgresql://alluring:...@<ovh_24-host>:<pgbouncer-port>/alluring_session?sslmode=require"
 ```
 
 Two rules the commands enforce for you (issue #186):
@@ -26,7 +26,7 @@ Two rules the commands enforce for you (issue #186):
 
 Production runs on **ovh_24** (Dokploy project "Alluring Plastic Surgery",
 OVH Vint Hill, Virginia) since 2026-11-08: Postgres 17 (`alluring-db`, no
-public port) behind PgBouncer (`alluring-pgbouncer`, `15.204.231.178:25432`,
+public port) behind PgBouncer (`alluring-pgbouncer`,
 TLS required). Backups: pg_dump every 6 hours to the R2 bucket
 `alluring-db-backups`, 7 days kept. The database's `TimeZone` is
 `America/New_York` — `created_at`/`updated_at` are `timestamp without time
