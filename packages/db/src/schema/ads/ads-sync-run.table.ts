@@ -6,8 +6,8 @@
  *
  * The lock follows the gsc_sync_run pattern: a partial unique index allows at
  * most one `running` row per job, so acquiring the lock IS inserting the
- * running row. DB-backed on purpose: the app runs serverless and the Supabase
- * transaction pooler makes advisory locks unreliable.
+ * running row. DB-backed on purpose: the app runs serverless and the PgBouncer
+ * transaction pool makes advisory locks unreliable.
  *
  * @module packages/db/src/schema/ads/ads-sync-run.table
  */

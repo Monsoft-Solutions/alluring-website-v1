@@ -194,14 +194,16 @@ command (issue #186).
 pnpm db:generate       # after editing a schema file
 pnpm db:migrate        # apply to the LOCAL database
 pnpm db:check:prod     # is production behind?
-pnpm db:migrate:prod   # apply to Supabase (confirms the host first)
+pnpm db:migrate:prod   # apply to production (confirms the host first)
 ```
 
 **Migrations go through the tool.** Applying schema changes by hand with
 psql is what left production seven migrations behind its journal; that
 workaround is retired. `db:seed` and `db:push` are hard-blocked from any
-non-localhost database. The DigitalOcean database is retired — do not
-reintroduce it. See `packages/db/README.md`.
+non-localhost database. Production Postgres runs on **ovh_24** (Dokploy,
+Virginia) behind PgBouncer since 2026-11-08; the web functions are pinned to
+`iad1` to sit ~2 ms from it. Supabase and the DigitalOcean database are
+retired — do not reintroduce them. See `packages/db/README.md`.
 
 ---
 

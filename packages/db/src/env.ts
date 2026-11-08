@@ -11,7 +11,7 @@ export const env = createEnv({
     server: {
         POSTGRES_URL: z.url(),
         /**
-         * The remote (Supabase) database. Optional so a fresh clone with no
+         * The remote (production, PgBouncer on ovh_24) database. Optional so a fresh clone with no
          * production credentials can still run every local command; the
          * `:prod` variants fail with a setup message when it is missing.
          */

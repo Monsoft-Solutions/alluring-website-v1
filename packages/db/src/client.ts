@@ -6,7 +6,7 @@ import * as schema from './schema'
 
 // Shared client configuration - safe for both web and admin
 const client = postgres(env.POSTGRES_URL, {
-    // Required for Supabase pgBouncer transaction mode
+    // Required for PgBouncer transaction mode (the `alluring` pool on ovh_24)
     prepare: false,
 
     // Conservative timeouts to prevent hangs
