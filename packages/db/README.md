@@ -12,7 +12,7 @@ Create `packages/db/.env.local` with two connection strings (see
 POSTGRES_URL="postgresql://user:password@localhost:5432/alluring-autopilot-dev"
 
 # Optional — reached only by the :prod command variants.
-POSTGRES_URL_PROD="postgresql://...@aws-0-us-west-2.pooler.supabase.com:5432/postgres?sslmode=require"
+POSTGRES_URL_PROD="postgresql://alluring:...@<ovh_24-host>:<pgbouncer-port>/alluring_session?sslmode=require"
 ```
 
 Two rules the commands enforce for you (issue #186):
@@ -20,12 +20,21 @@ Two rules the commands enforce for you (issue #186):
 - **`POSTGRES_URL` must be localhost.** Every default command refuses a
   remote host, so `db:seed` and `db:push` cannot reach production by
   misconfiguration.
-- **`POSTGRES_URL_PROD` must use the session pooler (`:5432`).** Migrations
-  cannot run over Supabase's transaction pooler (`:6543`); the command
-  refuses it up front rather than failing mid-run.
+- **`POSTGRES_URL_PROD` must use PgBouncer's session pool (`alluring_session`).**
+  Migrations cannot run over the transaction pool (`alluring`, what the apps
+  use); the command refuses it up front rather than failing mid-run.
 
-The DigitalOcean database this package used to point at is **retired**. Do
-not reintroduce it.
+Production runs on **ovh_24** (Dokploy project "Alluring Plastic Surgery",
+OVH Vint Hill, Virginia) since 2026-11-08: Postgres 17 (`alluring-db`, no
+public port) behind PgBouncer (`alluring-pgbouncer`,
+TLS required). Backups: pg_dump every 6 hours to the R2 bucket
+`alluring-db-backups`, 7 days kept. The database's `TimeZone` is
+`America/New_York` — `created_at`/`updated_at` are `timestamp without time
+zone` written by `now()`, so they read as Miami wall time; keep that setting
+on any new database.
+
+The Supabase project and the DigitalOcean database this package used to point
+at are **retired**. Do not reintroduce them.
 
 ## Usage
 
@@ -54,7 +63,7 @@ Local is the default; production is always a separate, named command.
 | --------------------------------------- | ---------- | ----------------------------------------------------- |
 | `pnpm db:generate`                      | none       | Diffs the schema against `migrations/`                |
 | `pnpm db:migrate`                       | local      | Applies pending migrations                            |
-| `pnpm db:migrate:prod`                  | Supabase   | Requires typing the host to confirm; `--yes` to skip  |
+| `pnpm db:migrate:prod`                  | Production | Requires typing the host to confirm; `--yes` to skip  |
 | `pnpm db:check` / `db:check:prod`       | either     | Read-only; exits non-zero when the database is behind |
 | `pnpm db:baseline` / `db:baseline:prod` | either     | Records already-applied migrations — see below        |
 | `pnpm db:push`                          | local only | Guarded; dev convenience, bypasses migrations         |

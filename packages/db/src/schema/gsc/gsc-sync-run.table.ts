@@ -7,7 +7,7 @@
  * The lock follows the autopilot_run pattern: a partial unique index allows
  * at most one `running` row, so acquiring the lock IS inserting the running
  * row (a unique violation means another pull holds it). DB-backed on purpose:
- * the app runs serverless and the Supabase transaction pooler makes advisory
+ * the app runs serverless and the PgBouncer transaction pool makes advisory
  * locks unreliable.
  *
  * @module packages/db/src/schema/gsc/gsc-sync-run.table

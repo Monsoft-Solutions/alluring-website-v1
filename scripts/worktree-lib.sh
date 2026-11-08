@@ -51,7 +51,7 @@ cow_copy() {
 }
 
 # Rewrite the database name inside every uncommented localhost POSTGRES_URL
-# line of a file. Remote (Supabase) URLs and commented lines are left alone.
+# line of a file. Remote (production) URLs and commented lines are left alone.
 rewrite_local_db_name() {
   local file="$1" db_name="$2"
   [[ -f "$file" ]] || return 0

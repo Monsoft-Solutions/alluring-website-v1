@@ -26,7 +26,7 @@ const nextConfig = {
         // Prerendering the 155 blog posts (issue #198) turned the build into a
         // heavy database client: every post fires its detail, related, adjacent
         // and inline-image queries, across 17 export workers each holding up to
-        // 5 pooled connections (packages/db `max: 5`), all aimed at the Supabase
+        // 5 pooled connections (packages/db `max: 5`), all aimed at the PgBouncer
         // transaction pooler. That produced an intermittent `read ETIMEDOUT`
         // mid-prerender — one failed build in five, measured on this branch.
         // Next defaults to no retries, so a single transient pooler timeout

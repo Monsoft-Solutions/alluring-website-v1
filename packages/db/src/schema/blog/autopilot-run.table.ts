@@ -8,7 +8,7 @@
  * kind. Acquiring the lock IS inserting the running row — a unique-violation
  * means another run holds it, so there is no check-then-write race. This is
  * deliberately DB-backed: the app runs serverless (no shared memory) and the
- * Supabase transaction pooler makes advisory locks unreliable.
+ * PgBouncer transaction pool makes advisory locks unreliable.
  *
  * @module packages/db/src/schema/blog/autopilot-run.table
  */

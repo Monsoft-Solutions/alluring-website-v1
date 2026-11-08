@@ -8,7 +8,7 @@
  *
  * Two targets, both explicit:
  * - `local` (default) — `POSTGRES_URL`, which must be a localhost host.
- * - `prod`            — `POSTGRES_URL_PROD`, the Supabase session pooler.
+ * - `prod`            — `POSTGRES_URL_PROD`, PgBouncer's session pool on ovh_24.
  *
  * Both directions are validated. A `local` target pointing at a remote host
  * is the accident that motivated the issue, so it fails rather than
@@ -33,12 +33,19 @@ export type DbTarget = {
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '::1', '0.0.0.0'])
 
 /**
- * Supabase's transaction pooler. It does not support the session-level
- * behaviour postgres-js relies on, and it is already known-bad here for
- * `pg_dump` — so refuse it with the fix in the message rather than dying
- * halfway through a migration.
+ * Transaction pooling does not support the session-level behaviour
+ * postgres-js relies on, and it is known-bad here for `pg_dump` — so refuse
+ * it with the fix in the message rather than dying halfway through a
+ * migration.
+ *
+ * Production is PgBouncer on ovh_24 (Dokploy). One port serves two pools,
+ * told apart by database name: `alluring` (transaction, the apps) and
+ * `alluring_session` (session, migrations and tools). `:6543` is the retired
+ * Supabase transaction pooler, still refused in case an old URL lingers.
  */
 const TRANSACTION_POOLER_PORT = '6543'
+const TRANSACTION_POOL_DATABASE = 'alluring'
+const SESSION_POOL_DATABASE = 'alluring_session'
 const SESSION_POOLER_PORT = '5432'
 
 class DbTargetError extends Error {
@@ -95,13 +102,21 @@ export function resolveTarget(name: DbTargetName): DbTarget {
     if (!url) {
         throw new DbTargetError(
             'POSTGRES_URL_PROD is not set.\n' +
-                'Add the Supabase connection string to packages/db/.env.local — use the\n' +
-                `session pooler on port ${SESSION_POOLER_PORT}, not the transaction pooler.`
+                'Add the production connection string to packages/db/.env.local — use\n' +
+                `PgBouncer's session pool (database "${SESSION_POOL_DATABASE}"), not the transaction pool.`
         )
     }
 
     const { host, label } = describe(url)
     const port = new URL(url).port
+    const database = new URL(url).pathname.replace(/^\//, '')
+
+    if (database === TRANSACTION_POOL_DATABASE) {
+        throw new DbTargetError(
+            `POSTGRES_URL_PROD uses PgBouncer's transaction pool ("${TRANSACTION_POOL_DATABASE}").\n` +
+                `Migrations need the session pool — change the database to "${SESSION_POOL_DATABASE}".`
+        )
+    }
 
     if (port === TRANSACTION_POOLER_PORT) {
         throw new DbTargetError(

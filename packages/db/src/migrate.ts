@@ -4,7 +4,7 @@
  * Applies pending drizzle migrations to a named target (issue #186):
  *
  *   pnpm db:migrate                  → the local database
- *   pnpm db:migrate:prod             → Supabase, after a typed confirmation
+ *   pnpm db:migrate:prod             → production (ovh_24), after a typed confirmation
  *   pnpm db:check / db:check:prod    → read-only; non-zero when behind
  *
  * The target is always named in the output before anything runs, and the
