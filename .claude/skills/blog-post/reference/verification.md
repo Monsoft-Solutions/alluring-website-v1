@@ -23,16 +23,16 @@ SELECT slug, status, published_at::timestamp(0), content_updated_at::timestamp(0
   FROM blog_post p WHERE slug = '<slug>' AND refresh_of_post_id IS NULL;
 ```
 
-| Column               | New post                                                                 | Rewrite                                    |
-| -------------------- | ------------------------------------------------------------------------ | ------------------------------------------ |
-| `status`             | `published`                                                              | unchanged (`published`)                    |
-| `published_at`       | `meta.json` `published_at`, else the run time (UTC wall time), from 2026 | unchanged                                  |
-| `content_updated_at` | equals `published_at`                                                    | the run time (the trigger stamped it)      |
-| `featured`           | true                                                                     | true                                       |
-| `image_links`        | the number of `images[]`                                                 | the old links plus the new ones            |
-| `open_refresh`       | 0                                                                        | 0 (dismissed, or a dismissed row inserted) |
-| `kit_revisions`      | 0                                                                        | one more than before                       |
-| `faqs`               | the FAQ entries in `content.md`                                          | same                                       |
+| Column               | New post                                                                                                                   | Rewrite                                    |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `status`             | `published` (`scheduled` with `meta.json` `scheduled_at`)                                                                  | unchanged (`published`)                    |
+| `published_at`       | `meta.json` `published_at`, else the run time (UTC wall time), from 2026; scheduled: null until the cron sets the run time | unchanged                                  |
+| `content_updated_at` | equals `published_at` (scheduled: `scheduled_at`)                                                                          | the run time (the trigger stamped it)      |
+| `featured`           | true                                                                                                                       | true                                       |
+| `image_links`        | the number of `images[]`                                                                                                   | the old links plus the new ones            |
+| `open_refresh`       | 0                                                                                                                          | 0 (dismissed, or a dismissed row inserted) |
+| `kit_revisions`      | 0                                                                                                                          | one more than before                       |
+| `faqs`               | the FAQ entries in `content.md`                                                                                            | same                                       |
 
 **The second run must refuse.** Apply the same file again. A rewrite fails
 on the md5 guard ("edited since the build"); a new post fails because the

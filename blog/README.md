@@ -300,6 +300,7 @@ Start from Search Console, not guesses: the `search-console` MCP
     "categories": ["existing blog_category names"],
     "tags": ["blog_tag names; new ones need build_sql.py --create-tags"],
     "published_at": "new posts only, ISO 8601, optional (default: now)",
+    "scheduled_at": "new posts only, ISO 8601 with an offset, optional: insert as 'scheduled' and let the cron publish it then",
     "base_md5": "rewrites: md5 of the live row the rewrite was written from (rewrite_base.py --save)",
     "base_from": "written with base_md5: which database, when",
     "cta": "default | consultation | bbl | breast | body | facial",
@@ -404,7 +405,9 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
 - **Mode:** a new post needs a free slug, a saved gate verdict `new`, the
   gate re-run now saying `new` with no warnings (no secondary keyword or
   owned query that another page owns), and a `published_at` (if set) from
-  2026 that isn't in the future; a rewrite needs a live post and the gate
+  2026 that isn't in the future, or a `scheduled_at` (if set, not both) with
+  a UTC offset; a post that links to a new post in the same batch must not
+  go live before it; a rewrite needs a live post and the gate
   saying `refresh` with this post as the owner, with no secondary keyword or
   owned query that another page owns. A rewrite without `base_md5` is a
   warning here; `build_sql.py` refuses it.
@@ -457,8 +460,21 @@ questions` with 4–9 `### Question?` entries of 30–80 words, one paragraph
 - **Registry drift.** The registry is hand-edited for new and folded posts,
   and the test pins the live-post count. Regenerating it drops hand-written
   notes and ownsQueries: restore them from the git diff.
-- **"scheduled" never publishes.** No cron publishes scheduled posts. The kit
-  inserts posts as `published` with an explicit `published_at`.
+- **Scheduled posts go live on an hourly cron.** A new post whose `meta.json`
+  has `scheduled_at` is inserted as `scheduled`, with no `published_at`, and
+  is a 404 until then. The admin's `publish-scheduled` cron (#374, minute 2 of
+  every hour, UTC) publishes every `scheduled` row whose `scheduled_at` has
+  passed. It sets `published_at` to the run time and clears the website's
+  `blog-posts`, `sitemap-urls` and `blog-post-<slug>` tags itself, so there is
+  no `revalidate.sh` step. Write `scheduled_at` with an offset
+  (`2026-11-14T08:00:00-05:00`): the database's `now()` is Miami time, the
+  columns hold UTC. The byline shows the UTC date of `published_at`, so
+  schedule mornings, Miami time: an evening time shows tomorrow's date. A
+  `scheduled` row with no `scheduled_at`, no slug, no content, or one that is
+  a refresh working copy or mid-pipeline, never publishes; the cron log
+  counts them (`held`, `noScheduledAt`). If the log says
+  `published-revalidation-failed`, the post is live but the caches were not
+  cleared: run the `revalidate.sh` line it prints (the next run won't retry).
 - **Sitemap lag.** `/sitemap/blog.xml` is cached for up to 3 hours unless
   `sitemap-urls` is revalidated, which expires it by path. A stale sitemap means
   that tag wasn't sent: send it, or wait for the timer.

@@ -23,8 +23,13 @@ type RevalidationResponse = {
  * the public website immediately reflects the updates without waiting for
  * the cache TTL to expire.
  *
+ * Never throws: a failure is logged and reported as `false`, so a caller
+ * that must surface it (the publish-scheduled cron) can, and the rest can
+ * keep ignoring it.
+ *
  * @param tags - Array of cache tags to revalidate
- * @returns Promise that resolves when revalidation is complete
+ * @returns true when the web app confirmed the revalidation (or there was
+ *   nothing to revalidate), false when the call failed
  *
  * @example
  * // After creating/updating/deleting a promotion:
@@ -34,10 +39,10 @@ type RevalidationResponse = {
  * // After updating a specific promotion:
  * await revalidateWebAppCache(['promotions', 'promotion-summer-sale'])
  */
-export async function revalidateWebAppCache(tags: string[]): Promise<void> {
+export async function revalidateWebAppCache(tags: string[]): Promise<boolean> {
     // Skip if no tags provided
     if (tags.length === 0) {
-        return
+        return true
     }
 
     const webUrl = env.NEXT_PUBLIC_WEB_URL
@@ -64,7 +69,7 @@ export async function revalidateWebAppCache(tags: string[]): Promise<void> {
                     ? `Invalid tags: ${data.invalidTags.join(', ')}`
                     : ''
             )
-            return
+            return false
         }
 
         const data = (await response.json()) as RevalidationResponse
@@ -74,12 +79,14 @@ export async function revalidateWebAppCache(tags: string[]): Promise<void> {
                 `[Revalidation] Successfully revalidated tags: ${data.revalidated.join(', ')}`
             )
         }
+        return true
     } catch (error) {
         // Log error but don't throw - revalidation failure shouldn't break admin operations
         console.error(
             `[Revalidation] Error calling revalidation API:`,
             error instanceof Error ? error.message : 'Unknown error'
         )
+        return false
     }
 }
 
