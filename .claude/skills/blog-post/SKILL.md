@@ -435,8 +435,10 @@ read the results; this skill writes it.
 - Write production yourself unless the user said "run it yourself" for that
   file. Never `db:seed` or `db:push`. Never write content to the shared dev
   database (`alluring-autopilot-dev`).
-- Leave a post as `draft` or `scheduled`. Drafts block autopilot, and
-  nothing publishes `scheduled`.
+- Leave a post as `draft`: drafts block autopilot. `scheduled` is fine only
+  with a `scheduled_at` (set `meta.json` `scheduled_at` on a new post): the
+  admin's hourly `publish-scheduled` cron publishes it then. A `scheduled`
+  row without one never goes live.
 - Change a live post's slug, `published_at` or status, or edit generated SQL
   by hand. Change the post and rebuild.
 - State a figure without a source read this session, or invent a practice

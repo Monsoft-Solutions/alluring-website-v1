@@ -24,6 +24,7 @@ import {
 } from '@/lib/services/autopilot.service'
 import { reapStuckPosts } from '@/lib/services/stuck-post-reaper.service'
 import { runPromotionBoundaryJob } from '@/lib/services/promotion-boundary.service'
+import { runPublishScheduledJob } from '@/lib/services/publish-scheduled.service'
 import { runGscSnapshotJob } from '@/lib/services/gsc-snapshot.service'
 import { runCannibalizationReportJob } from '@/lib/services/cannibalization-report.service'
 import { runDecayDetectionJob } from '@/lib/services/decay-detection.service'
@@ -96,6 +97,15 @@ const JOBS: Record<string, () => Promise<CronJobResult>> = {
      */
     'promotion-boundaries': async () => {
         const result = await runPromotionBoundaryJob()
+        return { ...result }
+    },
+
+    /**
+     * Turns 'scheduled' blog posts live once scheduled_at has passed and
+     * clears the website's blog caches (#374).
+     */
+    'publish-scheduled': async () => {
+        const result = await runPublishScheduledJob()
         return { ...result }
     },
 

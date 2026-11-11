@@ -59,13 +59,14 @@ class Ctx:
     writer_components: list
     batch: dict = field(default_factory=dict)   # slug -> mode, for posts checked or built together
     manifest: list = field(default_factory=list)
+    go_live: dict = field(default_factory=dict)  # slug -> meta.json scheduled_at, for new posts in the batch that have one
 
     @property
     def paths(self) -> dict:
         return {v['path']: k for k, v in self.published.items()}
 
 
-def make_ctx(db: str | None, batch: dict, manifest: list) -> Ctx:
+def make_ctx(db: str | None, batch: dict, manifest: list, go_live: dict | None = None) -> Ctx:
     published, source = bl.published_posts(db)
     return Ctx(
         db=db, published=published, published_from=source,
@@ -73,8 +74,21 @@ def make_ctx(db: str | None, batch: dict, manifest: list) -> Ctx:
         money=bl.money_pages(), clusters=bl.clusters(),
         taxonomy=bl.db_taxonomy(db) if db else None,
         credentials=bl.credentials_sentence(), cta_ids=bl.cta_ids(),
-        writer_components=bl.writer_components(), batch=batch, manifest=manifest,
+        writer_components=bl.writer_components(), batch=batch, manifest=manifest, go_live=go_live or {},
     )
+
+
+def _go_live_at(ctx: Ctx, slug: str) -> dt.datetime | None:
+    """When a new post in the batch goes live: its scheduled_at, or None when it
+    goes live with the SQL run itself (or the time does not parse; the
+    scheduled_at check reports that)."""
+    raw = ctx.go_live.get(slug)
+    if not raw:
+        return None
+    try:
+        return bl.parse_iso(str(raw))
+    except ValueError:
+        return None
 
 
 @dataclass
@@ -361,7 +375,16 @@ def check(post: bl.Post, ctx: Ctx, final: bool = False) -> Result:
             if ctx.taxonomy is None: W.append(f'{path} not verified (no database)')
             elif path.rsplit('/', 1)[-1] not in tax.get('gallery', []): P.append(f'unknown gallery page {path}')
         elif path.rsplit('/', 1)[-1] in ctx.batch and ctx.batch[path.rsplit('/', 1)[-1]] == 'new' and path.startswith('/blog/'):
-            W.append(f'{path} is a new post in this batch: it must go live in the same run')
+            # A scheduled post goes live at its own time (the publish-scheduled
+            # cron): the post it links to must not go live after it, or the
+            # link is a 404 in between.
+            target, mine = _go_live_at(ctx, path.rsplit('/', 1)[-1]), _go_live_at(ctx, post.slug)
+            if target is None:
+                W.append(f'{path} is a new post in this batch: it must go live in the same run'
+                         + (' (its SQL file must run before this post\'s scheduled_at)' if mine else ''))
+            elif target and (mine is None or mine < target):
+                P.append(f'links to {path}, which is scheduled for {ctx.go_live[path.rsplit("/", 1)[-1]]}, after this post '
+                         f'goes live ({ctx.go_live.get(post.slug) or "with the SQL run"}): schedule it no later than this one')
         else:
             P.append(f'unknown internal link {href} ("{anchor}")')
         if page and path == page:
@@ -421,6 +444,7 @@ def check(post: bl.Post, ctx: Ctx, final: bool = False) -> Result:
         if post.slug not in ctx.published:
             P.append(f'rewrite: {post.slug} is not a live post ({ctx.published_from})')
         if m.get('published_at'): W.append('rewrite: published_at is ignored (a rewrite never moves the URL or the date)')
+        if m.get('scheduled_at'): P.append('rewrite: scheduled_at is for new posts only (a rewrite never changes status)')
         if not m.get('base_md5'):
             W.append('rewrite: meta.json has no base_md5 (python3 blog/tools/rewrite_base.py <slug> --db <production, '
                      'or a production-filled copy> --save); build_sql.py refuses a rewrite without it')
@@ -444,10 +468,31 @@ def check(post: bl.Post, ctx: Ctx, final: bool = False) -> Result:
             try:
                 pa = bl.parse_iso(m['published_at'])
                 if pa < bl.BLOG_PREFIX_CUTOFF: P.append('new: published_at before 2026-01-01 (new posts live at /blog/slug)')
-                if pa > bl.utc_now(): P.append('new: published_at is in the future ("scheduled" never publishes)')
+                if pa > bl.utc_now(): P.append('new: published_at is in the future; to release the post later, '
+                                               'set scheduled_at instead')
                 elif (bl.utc_now() - pa).days > 7: W.append('new: published_at is more than a week ago (do not backdate)')
             except ValueError:
                 P.append(f'new: published_at "{m["published_at"]}" is not ISO 8601')
+        if m.get('scheduled_at'):
+            # Inserted as 'scheduled'; the admin's publish-scheduled cron (#374)
+            # publishes it at the first hourly run after this time.
+            sa_raw = str(m['scheduled_at'])
+            if m.get('published_at'):
+                P.append('new: set published_at or scheduled_at, not both')
+            if not re.search(r'(Z|[+-]\d{2}:?\d{2})$', sa_raw):
+                P.append(f'new: scheduled_at "{sa_raw}" needs a UTC offset (e.g. 2026-11-14T13:00:00Z or '
+                         '2026-11-14T08:00:00-05:00); a bare time is ambiguous between Miami and UTC')
+            else:
+                try:
+                    sa = bl.parse_iso(sa_raw)
+                    if sa < bl.BLOG_PREFIX_CUTOFF:
+                        P.append('new: scheduled_at before 2026-01-01')
+                    elif sa <= bl.utc_now():
+                        W.append('new: scheduled_at is already past: the cron publishes it at its next hourly run')
+                    elif (sa - bl.utc_now()).days > 90:
+                        W.append('new: scheduled_at is more than 90 days out')
+                except ValueError:
+                    P.append(f'new: scheduled_at "{sa_raw}" is not ISO 8601')
         gate = m.get('gate') or {}
         if gate.get('verdict') != 'new':
             P.append(f'new: meta.json gate verdict is {gate.get("verdict")!r}; run blog/tools/gate.mjs --from {post.slug} --save')

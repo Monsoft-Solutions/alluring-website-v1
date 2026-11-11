@@ -210,5 +210,7 @@ describe them; in `content.md`, place inline images as
 FAQs are parsed from the content's FAQ section by the build script.
 `categories`, `tags` and `cta` are required by `blog/tools/check_post.py`;
 `id` and `gate` are written by the tools; `published_at` is optional for a
-new post (default: the run time). The full format is in `blog/README.md`
+new post (default: the run time). `scheduled_at` (a new post only, with a
+UTC offset, not with `published_at`) inserts it as `scheduled`; the admin's
+hourly `publish-scheduled` cron puts it live after that time. The full format is in `blog/README.md`
 ("Post files").

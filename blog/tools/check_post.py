@@ -82,7 +82,8 @@ def main() -> int:
         print(f'note: reading a remote database ({bl.describe_db(db)}); reads only', file=sys.stderr)
     posts = [bl.load_post(s) for s in slugs]
     manifest = bl.load_manifest(Path(a.manifest) if a.manifest else None)
-    ctx = checks.make_ctx(db, {p.slug: p.mode for p in posts}, manifest)
+    ctx = checks.make_ctx(db, {p.slug: p.mode for p in posts}, manifest,
+                          {p.slug: p.meta['scheduled_at'] for p in posts if p.mode == 'new' and p.meta.get('scheduled_at')})
 
     results = [checks.check(p, ctx, final=a.final) for p in posts]
 

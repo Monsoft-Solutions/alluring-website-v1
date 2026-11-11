@@ -58,7 +58,12 @@ meta.json "mode" decides the SQL:
            in_progress. The content_updated_at trigger stamps the post.
   new      asserts the slug (and the pre-generated id) are absent; INSERTs the
            post as published with published_at (meta.json, else now(), as UTC
-           wall time like the admin), author 'Alluring Editorial Team' looked up
+           wall time like the admin), or, when meta.json has "scheduled_at"
+           (ISO 8601 with an offset, e.g. "2026-11-14T13:00:00Z"), as
+           'scheduled' with that scheduled_at and no published_at: the admin's
+           hourly publish-scheduled cron (#374) turns it live at the first run
+           after that time and clears the website's caches. Each post in a
+           batch carries its own date. Author 'Alluring Editorial Team' looked up
            by name, planning_data.ideationGate from meta.json "gate" (re-run
            here against this database: anything but "new", or any warning, a
            secondary keyword or owned query another page owns, stops the build),
@@ -258,7 +263,8 @@ def header(p: dict, lines: list[str]) -> str:
         *[f'-- {x}' for x in lines],
         '--',
         f"-- Run:  psql \"$DATABASE_URL\" -X -v ON_ERROR_STOP=1 -f {p['file']}",
-        f'-- Then: bash blog/tools/revalidate.sh {tags}',
+        ('-- Then: nothing; the publish-scheduled cron clears the caches when it publishes'
+         if p.get('scheduled_at') else f'-- Then: bash blog/tools/revalidate.sh {tags}'),
         '', ''])
 
 
@@ -433,7 +439,7 @@ BEGIN
 
     -- The restore stamped content_updated_at; put back the one the post had (only this column
     -- changes, so the trigger keeps the value).
-    UPDATE blog_post SET content_updated_at = {cua} WHERE id = post;
+    UPDATE blog_post SET content_updated_at = {'scheduled_at' if sched else 'published_at'} WHERE id = post;
 
     SELECT count(*) INTO n FROM blog_post b
      WHERE b.id = post AND md5(coalesce(b.content, '')) = '{p['old_md5']}' AND {FINGERPRINT_SQL} = '{row['fingerprint']}'
@@ -449,18 +455,44 @@ COMMIT;
 """
 
 
+def utc_wall(s: str) -> str:
+    """An ISO datetime with an offset as a UTC wall-time timestamp literal.
+
+    The database's now() and session time zone are Miami; the admin stores
+    UTC wall time. Converting here, not in SQL, keeps the file independent
+    of the session's time zone."""
+    return f"'{bl.parse_iso(s).strftime('%Y-%m-%d %H:%M:%S')}'::timestamp"
+
+
 def new_sql(p: dict, create_tags: bool) -> str:
     f = post_fields_sql(p)
     decl, imgs, _ = images_sql(p)
-    pa = (f"({bl.lit(p['published_at'])}::timestamptz AT TIME ZONE 'UTC')" if p['published_at']
-          else "(now() AT TIME ZONE 'UTC')")
+    sched = p.get('scheduled_at')
+    if sched:
+        status, pa, sa, cua = 'scheduled', 'NULL', utc_wall(sched), utc_wall(sched)
+        landed = (f"status = 'scheduled' AND published_at IS NULL AND scheduled_at = {sa} "
+                  'AND content_updated_at = scheduled_at')
+        what = 'a scheduled post'
+    else:
+        pa = (f"({bl.lit(p['published_at'])}::timestamptz AT TIME ZONE 'UTC')" if p['published_at']
+              else "(now() AT TIME ZONE 'UTC')")
+        status, sa, cua = 'published', 'NULL', pa
+        landed = "status = 'published' AND published_at >= '2026-01-01' AND content_updated_at = published_at"
+        what = 'a published 2026 post'
     planning = json.dumps(p['planning'], ensure_ascii=False, sort_keys=True)
-    lines = [
-        f"Guard: slug {p['slug']} and id {p['id']} must not exist yet; a second run fails.",
-        "Inserts the post as 'published' (never 'scheduled': nothing publishes those), author 'Alluring Editorial Team',",
-        f"published_at {p['published_at'] or 'now()'} as UTC wall time (the admin's convention), so it lives at /blog/{p['slug']}.",
-        f"Gate verdict recorded in planning_data.ideationGate: {p['planning']['ideationGate']['verdict']}.",
-    ]
+    lines = [f"Guard: slug {p['slug']} and id {p['id']} must not exist yet; a second run fails."]
+    if sched:
+        lines += [
+            "Inserts the post as 'scheduled', author 'Alluring Editorial Team', with published_at NULL and",
+            f"scheduled_at {sched} ({sa[1:20]} UTC wall time, the admin's convention). The admin's hourly",
+            f"publish-scheduled cron (#374) publishes it at the first run after that time; until then /blog/{p['slug']} is a 404.",
+        ]
+    else:
+        lines += [
+            "Inserts the post as 'published', author 'Alluring Editorial Team',",
+            f"published_at {p['published_at'] or 'now()'} as UTC wall time (the admin's convention), so it lives at /blog/{p['slug']}.",
+        ]
+    lines.append(f"Gate verdict recorded in planning_data.ideationGate: {p['planning']['ideationGate']['verdict']}.")
     return header(p, lines) + f"""BEGIN;
 
 DO $do$
@@ -483,14 +515,14 @@ BEGIN
     SELECT id INTO v_author FROM author WHERE name = '{bl.AUTHOR_NAME}';
 
     INSERT INTO blog_post (id, slug, title, meta_title, meta_description, excerpt, quick_answer, faqs, content,
-        reading_time, primary_keyword, secondary_keywords, status, published_at, content_updated_at, author_id,
+        reading_time, primary_keyword, secondary_keywords, status, published_at, scheduled_at, content_updated_at, author_id,
         priority, processing_status, idea_approval, planning_data, updated_at)
     VALUES (post, {bl.lit(p['slug'])}, {f['title']}, {f['meta_title']}, {f['meta_description']}, {f['excerpt']},
         {f['quick_answer']},
         {f['faqs']},
         {f['content']},
         {f['reading_time']}, {f['primary_keyword']}, {f['secondary_keywords']},
-        'published', {pa}, {pa}, v_author,
+        '{status}', {pa}, {sa}, {cua}, v_author,
         'medium', 'idle', 'approved', {bl.lit(planning)}::jsonb, now());
     GET DIAGNOSTICS n = ROW_COUNT;
     IF n <> 1 THEN RAISE EXCEPTION '{p['slug']}: insert wrote % rows', n; END IF;
@@ -498,19 +530,19 @@ BEGIN
 {taxonomy_sql(p, create_tags)}
 
     -- Setting the featured image stamped content_updated_at with now(); a new
-    -- post was last changed when it was published. (Only this column changes,
-    -- so the trigger keeps the value.)
-    UPDATE blog_post SET content_updated_at = published_at WHERE id = post;
+    -- post was last changed when it was published (or, scheduled, at its
+    -- scheduled time). Only this column changes, so the trigger keeps the value.
+    UPDATE blog_post SET content_updated_at = {'scheduled_at' if sched else 'published_at'} WHERE id = post;
 
     SELECT count(*) INTO n FROM blog_post
-     WHERE id = post AND slug = {bl.lit(p['slug'])} AND status = 'published' AND published_at >= '2026-01-01'
-       AND content_updated_at = published_at
+     WHERE id = post AND slug = {bl.lit(p['slug'])} AND {landed}
        AND author_id IS NOT NULL AND md5(content) = '{p['new_md5']}';
-    IF n <> 1 THEN RAISE EXCEPTION '{p['slug']}: the new post did not land as a published 2026 post'; END IF;
+    IF n <> 1 THEN RAISE EXCEPTION '{p['slug']}: the new post did not land as {what}'; END IF;
 END
 $do$;
 
-SELECT slug, '/blog/' || slug AS url, left(title, 60) AS title, reading_time, published_at, content_updated_at
+SELECT slug, '/blog/' || slug AS url, status, left(title, 60) AS title, reading_time, published_at, scheduled_at,
+       content_updated_at
   FROM blog_post WHERE id = '{p['id']}';
 
 COMMIT;
@@ -580,7 +612,8 @@ def main() -> int:
     print(f'database {bl.describe_db(db)}' + ('' if bl.is_local_db(db) else '  (REMOTE: reads only; prod reads need the user\'s OK)'))
     posts = [bl.load_post(s) for s in slugs]
     manifest = bl.load_manifest(Path(a.manifest) if a.manifest else None)
-    ctx = checks.make_ctx(db, {p.slug: p.mode for p in posts}, manifest)
+    ctx = checks.make_ctx(db, {p.slug: p.mode for p in posts}, manifest,
+                          {p.slug: p.meta['scheduled_at'] for p in posts if p.mode == 'new' and p.meta.get('scheduled_at')})
 
     problems: dict[str, list[str]] = {}
     built: list[dict] = []
@@ -646,7 +679,7 @@ def main() -> int:
         else:
             pid = ensure_new_id(post, write=not a.check)
             p.update(id=pid or '00000000-0000-0000-0000-000000000000', path=f'/blog/{post.slug}',
-                     published_at=m.get('published_at'), state=None)
+                     published_at=m.get('published_at'), scheduled_at=m.get('scheduled_at'), state=None)
             gate, err = gate_now(db, post.slug)
             if gate is None:
                 probs.append(f'new: gate.mjs failed: {err}')
@@ -774,8 +807,20 @@ def main() -> int:
                 if add:
                     md += ['- ownsQueries the entry lacks (from meta.json owns_queries):', *[f'  - "{q}"' for q in add]]
                 md += ['']
-    md += ['## After each SQL file', '', '```bash',
-           *[f'bash blog/tools/revalidate.sh blog-posts sitemap-urls blog-post-{p["slug"]}' for p in built], '```', '']
+    now_live = [p for p in built if not p.get('scheduled_at')]
+    later = [p for p in built if p.get('scheduled_at')]
+    if now_live:
+        md += ['## After each SQL file', '', '```bash',
+               *[f'bash blog/tools/revalidate.sh blog-posts sitemap-urls blog-post-{p["slug"]}' for p in now_live], '```', '']
+    if later:
+        md += ['## Scheduled posts: nothing to revalidate after the run', '',
+               'These go in as `scheduled`. The admin\'s hourly `publish-scheduled` cron (#374) publishes each one at '
+               'the first run after its time and clears the website\'s caches itself; until then the URL is a 404. '
+               'The v2 line above must be deployed before the first of these times, and the registry entry and count '
+               'go in after the SQL run like any new post (the topic gate already counts scheduled rows). After each '
+               'time passes, open the URL; if the cron log says `published-revalidation-failed`, run the '
+               '`revalidate.sh` line it prints.', '',
+               *[f'- `/blog/{p["slug"]}`: {p["scheduled_at"]}' for p in later], '']
     (out / 'code-changes.md').write_text('\n'.join(md), encoding='utf-8')
 
     for p in built:
