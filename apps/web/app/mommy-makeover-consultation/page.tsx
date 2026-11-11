@@ -147,9 +147,7 @@ export default async function MommyMakeoverConsultationPage() {
                 {/* Section 6: Mid-Page Lead Capture */}
                 <MiniLeadCapture id='mini-capture' />
 
-                {/* Section 7: Final CTA. Not the luxury variant: its stats card
-                    always prints "5,000+ Happy Patients", "15+ Years Experience"
-                    and "100% Board-Certified", and no prop turns it off. */}
+                {/* Section 7: Final CTA (primary variant). */}
                 <CTASection
                     id='final-cta'
                     variant='primary'

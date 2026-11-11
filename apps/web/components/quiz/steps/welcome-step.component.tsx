@@ -133,10 +133,6 @@ export function WelcomeStep({ onStart, className }: WelcomeStepProps) {
                 transition={{ delay: 0.8 }}
                 className='mt-12 flex flex-col items-center gap-4'
             >
-                <p className='text-sm text-stone-500'>
-                    Trusted by {siteConfig.trustStats?.patients ?? '5,000+'}{' '}
-                    patients in Miami
-                </p>
                 <div className='flex items-center gap-1'>
                     {[1, 2, 3, 4, 5].map((star) => (
                         <svg
@@ -149,7 +145,7 @@ export function WelcomeStep({ onStart, className }: WelcomeStepProps) {
                         </svg>
                     ))}
                     <span className='ml-2 text-sm font-medium text-stone-700'>
-                        {siteConfig.trustStats?.rating ?? '4.7'}/5 rating
+                        {siteConfig.trustStats?.rating ?? '4.7'}/5 Google rating
                     </span>
                 </div>
             </motion.div>

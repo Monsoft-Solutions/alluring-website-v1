@@ -12,13 +12,7 @@
  *     the photograph so the highest-intent action lives in the first fold
  *   - trust ribbon under the submit button uses gold hairline dividers
  */
-import {
-    BadgeCheck,
-    Languages,
-    ShieldCheck,
-    Sparkles,
-    Star,
-} from 'lucide-react'
+import { Languages, ShieldCheck, Sparkles, Star } from 'lucide-react'
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
@@ -74,7 +68,6 @@ export function ProcedureLandingHero({
 
     const procedureFormValue = getProcedureFormValue(procedure.slug)
     const rating = siteConfig.trustStats?.rating
-    const patients = siteConfig.trustStats?.patients
 
     return (
         <section
@@ -273,23 +266,6 @@ export function ProcedureLandingHero({
                                             Google
                                         </span>
                                     </li>
-                                )}
-                                {patients && (
-                                    <>
-                                        <li
-                                            aria-hidden='true'
-                                            className='h-3 w-px bg-amber-200/20'
-                                        />
-                                        <li className='inline-flex items-center gap-1.5'>
-                                            <BadgeCheck className='h-3 w-3 text-amber-300' />
-                                            <span className='font-serif text-base leading-none text-white tabular-nums'>
-                                                {patients}
-                                            </span>
-                                            <span className='tracking-[0.12em] text-stone-400 uppercase'>
-                                                Patients
-                                            </span>
-                                        </li>
-                                    </>
                                 )}
                                 <li
                                     aria-hidden='true'

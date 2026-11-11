@@ -4,9 +4,8 @@
  * verified credentials.
  *
  * This page's own copy of the shared `FearBusters` layout. `FearBusters` takes
- * no content props and still carries the weekly payment, "Double
- * Board-Certified" and "5,000+" lines on eight other pages, so it isn't rendered
- * here. Once it accepts its items as a prop, this section can pass them instead.
+ * no content props and still carries the weekly payment line on eight other
+ * pages, so it isn't rendered here. Once it accepts its items as a prop, this section can pass them instead.
  */
 import { CreditCard, Heart, ShieldCheck, Sparkles } from 'lucide-react'
 import Link from 'next/link'

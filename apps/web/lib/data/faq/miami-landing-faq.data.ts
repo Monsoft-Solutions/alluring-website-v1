@@ -45,8 +45,8 @@ export const miamiLandingFaqData: Record<string, FaqItem[]> = {
     ],
     experience: [
         {
-            question: 'How long have you been serving Miami?',
-            answer: `Alluring Plastic Surgery has been part of the Miami community for over 15 years. Our surgeons have deep roots in South Florida and understand the unique aesthetic preferences and lifestyle of our local patients.`,
+            question: 'Are you a local Miami practice?',
+            answer: `Yes. Alluring Plastic Surgery is part of the Miami community. Our surgeons have deep roots in South Florida and understand the unique aesthetic preferences and lifestyle of our local patients.`,
         },
         {
             question: 'Do your surgeons speak Spanish?',

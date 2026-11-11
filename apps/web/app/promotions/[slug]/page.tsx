@@ -372,13 +372,6 @@ export default async function PromotionDetailPage({
                                                         <span className='text-gold-500'>
                                                             ✓
                                                         </span>
-                                                        Double Board-Certified
-                                                        Surgeons
-                                                    </li>
-                                                    <li className='flex items-start gap-2'>
-                                                        <span className='text-gold-500'>
-                                                            ✓
-                                                        </span>
                                                         Flexible Financing
                                                         Options
                                                     </li>

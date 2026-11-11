@@ -22,6 +22,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import { KARLINSKY_ABS_CERTIFIED_ON } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { ProcedureId, ProcedureRecommendation } from '../lib/quiz-types'
 import { QUIZ_QUESTIONS } from '../lib/quiz-questions.data'
 import { getProcedureDetails } from '../lib/quiz-pricing.data'
@@ -59,7 +60,7 @@ export function ConfirmationStep({
 
     const benefits = [
         'Complimentary, no-obligation consultation',
-        'Meet with our double board-certified surgeon',
+        'Meet with our board-certified surgeon',
         'Get personalized pricing and financing options',
         'See before & after photos of similar patients',
         'Tour our state-of-the-art facility',
@@ -279,23 +280,18 @@ export function ConfirmationStep({
             >
                 <div className='text-center'>
                     <p className='text-2xl font-bold text-stone-800'>
-                        {siteConfig.trustStats?.patients ?? '5,000+'}
-                    </p>
-                    <p className='text-xs text-stone-500'>Happy Patients</p>
-                </div>
-                <div className='h-8 w-px bg-stone-200' />
-                <div className='text-center'>
-                    <p className='text-2xl font-bold text-stone-800'>
-                        {siteConfig.trustStats?.years ?? '15+'}
-                    </p>
-                    <p className='text-xs text-stone-500'>Years Experience</p>
-                </div>
-                <div className='h-8 w-px bg-stone-200' />
-                <div className='text-center'>
-                    <p className='text-2xl font-bold text-stone-800'>
                         {siteConfig.trustStats?.rating ?? '4.7'}
                     </p>
-                    <p className='text-xs text-stone-500'>Star Rating</p>
+                    <p className='text-xs text-stone-500'>Google Rating</p>
+                </div>
+                <div className='h-8 w-px bg-stone-200' />
+                <div className='text-center'>
+                    <p className='text-2xl font-bold text-stone-800'>
+                        {KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)}
+                    </p>
+                    <p className='text-xs text-stone-500'>
+                        Board certified in general surgery since
+                    </p>
                 </div>
             </motion.div>
 

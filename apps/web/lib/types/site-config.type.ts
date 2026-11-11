@@ -167,20 +167,12 @@ export type BusinessInfo = {
 }
 
 /**
- * Trust statistics for displaying business credibility metrics
- * Used in CTA sections and trust badges
+ * Trust statistics for displaying business credibility metrics.
+ * Trust figures retired in #376; only the Google rating remains.
  */
 export type TrustStats = {
-    /** Number of patients (e.g., "5,000+") */
-    patients: string
-    /** Years of experience (e.g., "15+") */
-    years: string
-    /** Certification percentage (e.g., "100%") */
-    certified: string
-    /** Star rating (e.g., "4.9" or "5.0") */
+    /** Published Google rating (e.g., "4.7") */
     rating: string
-    /** Accreditation/certification (e.g., "Double Board-Certified") */
-    accreditation?: string
 }
 
 /**

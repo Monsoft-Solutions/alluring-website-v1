@@ -32,13 +32,13 @@ const siteUrl = env.NEXT_PUBLIC_SITE_URL ?? siteConfig.seo.siteUrl
  * About Page Metadata
  *
  * Implements SEO best practices for the About page including:
- * - Experience-focused title with trust signals
+ * - Location-focused title
  * - Compelling meta description with key differentiators
  * - Open Graph tags for social sharing
  * - Twitter Card configuration
  * - Canonical URL
  */
-const pageTitle = 'Meet Our Surgeons | 15+ Years | Alluring Plastic Surgery'
+const pageTitle = 'Meet Our Surgeons in Miami | Alluring Plastic Surgery'
 
 export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Canonical URL for about page
@@ -47,13 +47,13 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
     // Page-specific metadata optimized for trust and CTR
     title: pageTitle,
     description:
-        "Miami's trusted plastic surgery team. 5,000+ successful procedures. Double Board-Certified surgeons. 4.7-star reviews. Luxury care, affordable pricing.",
+        "Miami's trusted plastic surgery team. Board-certified surgeons. 4.7-star reviews. Luxury care, affordable pricing.",
 
     // Open Graph tags for social sharing
     openGraph: {
         title: pageTitle,
         description:
-            "Miami's trusted plastic surgery team. 5,000+ successful procedures. Double Board-Certified surgeons. 4.7-star reviews. Luxury care, affordable pricing.",
+            "Miami's trusted plastic surgery team. Board-certified surgeons. 4.7-star reviews. Luxury care, affordable pricing.",
         url: `${siteUrl}/about`,
         type: 'website',
         siteName: siteConfig.business.name,
@@ -72,7 +72,7 @@ export const metadata: Metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: pageTitle,
         description:
-            "Miami's trusted plastic surgery team. 5,000+ procedures. Double Board-Certified surgeons. 4.7-star reviews. Luxury care, affordable pricing.",
+            "Miami's trusted plastic surgery team. Board-certified surgeons. 4.7-star reviews. Luxury care, affordable pricing.",
         images: [`${siteUrl}/og-about.jpg`],
     },
 })

@@ -10,6 +10,7 @@ import { Sparkles } from 'lucide-react'
 
 import type { CTASectionProps } from '@/lib/types/sections/cta-section.type'
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_ABS_CERTIFIED_ON } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 import { ContentWrapper } from './content-wrapper.component'
 import { SectionContainer } from './section-container.component'
@@ -64,16 +65,9 @@ function LuxuryCTASection({
 }: CTASectionProps) {
     const containerRef = useRef<HTMLDivElement>(null)
 
-    // Use stats from props if provided, otherwise fall back to siteConfig
-    // Default values as fallback if neither is provided
-    const displayStats = stats ??
-        siteConfig.trustStats ?? {
-            patients: '5,000+',
-            years: '15+',
-            certified: '100%',
-            rating: '4.7',
-            accreditation: 'Double Board-Certified',
-        }
+    // Trust figures retired in #376; only the Google rating remains.
+    const displayStats = stats ?? siteConfig.trustStats
+    const absCertifiedYear = KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)
 
     const { scrollYProgress } = useScroll({
         target: backgroundImage ? containerRef : undefined,
@@ -318,13 +312,13 @@ function LuxuryCTASection({
                                 <div className='rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md'>
                                     <div className='mb-6 text-center'>
                                         <div className='mb-2 font-serif text-sm font-medium tracking-widest text-stone-400 uppercase'>
-                                            Trusted By
+                                            Rated on Google
                                         </div>
                                         <div className='text-gold-400 font-serif text-6xl font-bold'>
-                                            {displayStats.patients}
+                                            {displayStats.rating}
                                         </div>
                                         <div className='text-lg text-stone-300'>
-                                            Happy Patients
+                                            Stars
                                         </div>
                                     </div>
 
@@ -332,18 +326,20 @@ function LuxuryCTASection({
                                         <div className='grid grid-cols-2 gap-4'>
                                             <div className='text-center'>
                                                 <div className='text-gold-400 font-serif text-3xl font-bold'>
-                                                    {displayStats.years}
+                                                    FACS
                                                 </div>
                                                 <div className='text-sm text-stone-400'>
-                                                    Years Experience
+                                                    Fellow, American College of
+                                                    Surgeons
                                                 </div>
                                             </div>
                                             <div className='text-center'>
                                                 <div className='text-gold-400 font-serif text-3xl font-bold'>
-                                                    {displayStats.certified}
+                                                    {absCertifiedYear}
                                                 </div>
                                                 <div className='text-sm text-stone-400'>
-                                                    Board-Certified
+                                                    American Board of Surgery
+                                                    certified since
                                                 </div>
                                             </div>
                                         </div>

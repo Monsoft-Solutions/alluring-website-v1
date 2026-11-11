@@ -9,6 +9,10 @@
  * - Recovery: What to expect during recovery
  */
 import { siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { FaqCategory, FaqItem } from '@/lib/types/shared/faq.type'
 
 /**
@@ -46,11 +50,11 @@ export const landingFaqData: Record<string, FaqItem[]> = {
     safety: [
         {
             question: 'Are your surgeons board-certified?',
-            answer: `Yes, all of our surgeons are double board-certified by the American Board of Plastic Surgery and have extensive experience in cosmetic procedures. They maintain the highest standards of patient care and safety.`,
+            answer: `Yes. Your surgeon is ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
         },
         {
             question: 'Is plastic surgery safe?',
-            answer: `When performed by board-certified surgeons in an accredited facility, plastic surgery is very safe. We use hospital-grade protocols, advanced monitoring equipment, and follow strict safety standards. Our surgeons have performed over 5,000 procedures with an exceptional safety record.`,
+            answer: `When performed by board-certified surgeons in an accredited facility, plastic surgery is very safe. We use hospital-grade protocols, advanced monitoring equipment, and follow strict safety standards.`,
         },
         {
             question: 'What accreditations does your facility have?',

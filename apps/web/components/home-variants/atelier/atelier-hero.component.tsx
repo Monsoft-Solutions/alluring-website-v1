@@ -38,7 +38,7 @@ export function AtelierHero() {
                 {/* Left — the pitch */}
                 <div>
                     <span className='text-xs tracking-[0.3em] text-[#C4674D] uppercase'>
-                        Miami · Double board-certified
+                        Miami · Board-certified
                     </span>
 
                     <h1
@@ -67,10 +67,6 @@ export function AtelierHero() {
 
                     <dl className='mt-10 flex flex-wrap gap-x-10 gap-y-5 border-t border-[#3D2B23]/15 pt-8'>
                         {[
-                            [
-                                siteConfig.trustStats?.patients ?? '5,000+',
-                                'Patients',
-                            ],
                             [
                                 `${siteConfig.trustStats?.rating ?? '4.7'} ★`,
                                 'Google rating',

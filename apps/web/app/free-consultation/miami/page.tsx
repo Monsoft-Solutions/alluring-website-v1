@@ -55,12 +55,12 @@ export const metadata = toNextMetadata(seoConfig, {
     canonical: '/free-consultation/miami',
     title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
     description:
-        "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español. Free consultation.",
+        "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. Hablamos Español. Free consultation.",
 
     openGraph: {
         title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
         description:
-            "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. 15+ years serving Miami. Hablamos Español.",
+            "Miami's trusted plastic surgeons in Coral Gables. BBL, breast augmentation, mommy makeover & more. Hablamos Español.",
         url: `${seoConfig.siteUrl}/free-consultation/miami`,
         type: 'website',
         siteName: seoConfig.siteName,
@@ -79,7 +79,7 @@ export const metadata = toNextMetadata(seoConfig, {
         card: 'summary_large_image',
         title: 'Miami Plastic Surgery | Board-Certified Local Surgeons',
         description:
-            "Miami's trusted plastic surgeons in Coral Gables. 15+ years serving Miami. Hablamos Español. Free consultation.",
+            "Miami's trusted plastic surgeons in Coral Gables. Hablamos Español. Free consultation.",
         images: [`${seoConfig.siteUrl}/og-image.jpg`],
     },
 
@@ -126,7 +126,7 @@ export default async function MiamiConsultationPage() {
             <WebPageSchema
                 name={`Miami Plastic Surgery - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/free-consultation/miami`}
-                description="Miami's trusted plastic surgeons in Coral Gables. Board-certified surgeons with 15+ years serving the Miami community. BBL, breast augmentation, mommy makeover & more."
+                description="Miami's trusted plastic surgeons in Coral Gables. Board-certified surgeons serving the Miami community. BBL, breast augmentation, mommy makeover & more."
             />
 
             <FAQSchema items={faqSchemaItems} />

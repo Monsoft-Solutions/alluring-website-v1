@@ -33,11 +33,10 @@ export function generateStaticParams() {
 
 /**
  * Generate CTR-optimized meta description for procedure pages
- * Includes trust signals, financing mention, and clear CTA
+ * Includes a financing mention and a clear CTA
  */
 function generateProcedureDescription(procedureTitle: string): string {
-    const trustStats = siteConfig.trustStats
-    return `Get exceptional ${procedureTitle.toLowerCase()} results with Miami's top surgeons. ${trustStats?.patients ?? '5,000+'} procedures. Financing available. See real before & afters. Book free consultation.`
+    return `Get exceptional ${procedureTitle.toLowerCase()} results with Miami's top surgeons. Financing available. See real before & afters. Book free consultation.`
 }
 
 export async function generateMetadata(

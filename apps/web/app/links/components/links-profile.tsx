@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import { Shield } from 'lucide-react'
+import { Star } from 'lucide-react'
 
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel, siteConfig } from '@/lib/data/site-config'
 
 /**
  * LinksProfile Component
@@ -10,7 +10,7 @@ import { siteConfig } from '@/lib/data/site-config'
  * at the top of the links page with glassmorphic styling
  */
 export function LinksProfile() {
-    const { business, brand, trustStats } = siteConfig
+    const { business, brand } = siteConfig
 
     return (
         <div className='flex flex-col items-center text-center'>
@@ -39,14 +39,15 @@ export function LinksProfile() {
             </p>
 
             {/* Trust Badge */}
-            {trustStats?.accreditation && (
-                <div className='border-gold-500/30 bg-gold-500/10 inline-flex items-center gap-2 rounded-full border px-4 py-2'>
-                    <Shield className='text-gold-400 h-4 w-4' />
-                    <span className='text-gold-400 text-xs font-medium tracking-wide'>
-                        {trustStats.accreditation}
-                    </span>
-                </div>
-            )}
+            <div className='border-gold-500/30 bg-gold-500/10 inline-flex items-center gap-2 rounded-full border px-4 py-2'>
+                <Star
+                    className='text-gold-400 h-4 w-4 fill-current'
+                    aria-hidden='true'
+                />
+                <span className='text-gold-400 text-xs font-medium tracking-wide'>
+                    {getGoogleRatingLabel()}
+                </span>
+            </div>
         </div>
     )
 }

@@ -7,18 +7,11 @@
  *
  * Adapted from SpecialsHero for maximum lead generation conversions.
  */
-import {
-    Award,
-    ShieldCheck,
-    Clock,
-    CreditCard,
-    Quote,
-    MapPin,
-} from 'lucide-react'
+import { Award, Clock, CreditCard, Star, Quote, MapPin } from 'lucide-react'
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type LandingHeroProps = {
@@ -97,8 +90,8 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
                                 </span>
                             </h1>
                             <p className='text-lg leading-relaxed text-stone-300'>
-                                Join 5,000+ women who trusted Alluring to feel
-                                like themselves again. Free consultation. No
+                                Join the women who trusted Alluring to feel like
+                                themselves again. Free consultation. No
                                 obligation.
                             </p>
                         </div>
@@ -149,11 +142,9 @@ export function LandingHero({ id = 'hero' }: LandingHeroProps) {
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                    <ShieldCheck className='text-gold-400 h-5 w-5' />
+                                    <Star className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Double Board-Certified'}{' '}
-                                        Accredited
+                                        {getGoogleRatingLabel()}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>

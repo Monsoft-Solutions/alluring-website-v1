@@ -1,11 +1,11 @@
 import { BreadcrumbSchema, WebPageSchema } from '@workspace/seo/react'
-import { Award, Users, Building2 } from 'lucide-react'
+import { Award, Star } from 'lucide-react'
 
 import { GalleryMediaGrid } from '@/components/gallery/gallery-media-grid.component'
 import { GalleryIndexHero } from '@/components/gallery-page/gallery-index-hero.component'
 import { GalleryProcedureCards } from '@/components/gallery-page/gallery-procedure-nav.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel, siteConfig } from '@/lib/data/site-config'
 import { getGalleryOverview } from '@/lib/queries/gallery/gallery-overview.query'
 import { seoConfig } from '@/lib/seo-config'
 import { toNextMetadata } from '@/lib/seo/metadata'
@@ -187,12 +187,8 @@ export default async function GalleryPage() {
                         label: 'Board-certified surgeons',
                     },
                     {
-                        icon: <Users className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} patients`,
-                    },
-                    {
-                        icon: <Building2 className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.years ?? '15+'} years of experience`,
+                        icon: <Star className='h-5 w-5' />,
+                        label: getGoogleRatingLabel(),
                     },
                 ]}
             />
