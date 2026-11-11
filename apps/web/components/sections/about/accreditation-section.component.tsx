@@ -2,21 +2,25 @@
  * Accreditation Section Component
  *
  * Dark background section showcasing trust badges, certifications, and safety credentials.
- * Emphasizes Double Board-Certified surgeons and safety credentials.
+ * Emphasizes surgeon credentials and safety.
  */
 
-import { ShieldCheck, Award, Star, Users, Heart, Plane } from 'lucide-react'
+import { ShieldCheck, Award, Star, Plane } from 'lucide-react'
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_ABS_CERTIFIED_ON,
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 const accreditationBadges = [
     {
         icon: ShieldCheck,
-        title: 'Double Board-Certified',
-        description:
-            'Every surgeon on our team is Double Board-Certified with specialized training in cosmetic and reconstructive surgery.',
+        title: `Board Certified Since ${KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)}`,
+        description: `${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
     },
     {
         icon: Award,
@@ -25,22 +29,10 @@ const accreditationBadges = [
             'Our modern surgical facility meets the highest safety standards with hospital-grade protocols and advanced equipment.',
     },
     {
-        icon: Users,
-        title: `${siteConfig.trustStats?.patients} Patients`,
-        description:
-            'Over 5,000 successful procedures performed with consistently exceptional outcomes and patient satisfaction.',
-    },
-    {
         icon: Star,
-        title: `${siteConfig.trustStats?.rating} Star Rating`,
+        title: `${siteConfig.trustStats?.rating}-Star Google Rating`,
         description:
             'Consistently rated among the top plastic surgery practices in Miami on Google, RealSelf, and patient reviews.',
-    },
-    {
-        icon: Heart,
-        title: `${siteConfig.trustStats?.years} Years Experience`,
-        description:
-            'Over 15 years of combined surgical expertise serving Miami and patients travelling in from across the United States.',
     },
     {
         icon: Plane,
@@ -90,7 +82,7 @@ export function AccreditationSection() {
                 </div>
 
                 {/* Accreditation Grid */}
-                <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-3'>
+                <div className='grid gap-8 md:grid-cols-2'>
                     {accreditationBadges.map((badge, idx) => (
                         <div
                             key={idx}

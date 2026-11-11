@@ -10,13 +10,13 @@ import { ProcedureCard } from './procedure-card.component'
 import { ProcedureHero } from './procedure-hero.component'
 import { WhyChooseSection } from './why-choose-section.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel, siteConfig } from '@/lib/data/site-config'
 import {
     faqCategoriesProcedures,
     faqDataProcedures,
 } from '@/lib/data/faq/procedures-faq-data'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { Shield, Award, Users, Building2 } from 'lucide-react'
+import { Shield, Award, Star } from 'lucide-react'
 
 interface ProceduresPageContentProps {
     procedures: ProcedureSummary[]
@@ -193,12 +193,8 @@ export function ProceduresPageContent({
                         label: 'Accredited Facility',
                     },
                     {
-                        icon: <Users className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
-                    },
-                    {
-                        icon: <Building2 className='h-5 w-5' />,
-                        label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                        icon: <Star className='h-5 w-5' />,
+                        label: getGoogleRatingLabel(),
                     },
                 ]}
             />

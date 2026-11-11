@@ -18,6 +18,7 @@ import {
 } from '@react-email/components'
 
 import { siteConfig, getPhoneLink } from '@/lib/data/site-config'
+import { KARLINSKY_ABS_CERTIFIED_ON } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 import type { ContactConfirmationProps } from '@/lib/types/email/email-service.type'
 
 import { EmailButton } from '../components/email-button.component'
@@ -52,25 +53,19 @@ const resourceLinks = [
 ]
 
 /**
- * Trust statistics for credibility
- * Transformed from siteConfig.trustStats to match template format
+ * Trust statistics for credibility.
+ * Trust figures retired in #376; only the Google rating remains, next to the
+ * surgeon's American Board of Surgery certification year.
  */
-const trustStats = siteConfig.trustStats
-    ? [
-          {
-              value: siteConfig.trustStats.patients,
-              label: 'Happy Patients',
-          },
-          {
-              value: siteConfig.trustStats.years,
-              label: 'Years Experience',
-          },
-          {
-              value: siteConfig.trustStats.accreditation || '',
-              label: 'Accredited',
-          },
-      ]
-    : []
+const trustStats = [
+    ...(siteConfig.trustStats
+        ? [{ value: siteConfig.trustStats.rating, label: 'Google Rating' }]
+        : []),
+    {
+        value: KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4),
+        label: 'Board Certified Since',
+    },
+]
 
 /**
  * Contact confirmation email template

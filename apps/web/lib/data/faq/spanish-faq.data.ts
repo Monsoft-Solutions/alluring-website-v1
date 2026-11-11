@@ -63,7 +63,7 @@ export const spanishFaqData: Record<string, FaqItem[]> = {
         },
         {
             question: '¿Los cirujanos están certificados?',
-            answer: `Sí, todos nuestros cirujanos están certificados por la junta americana de cirugía plástica y tienen más de 15 años de experiencia. Nuestra clínica está acreditada y cumple con los más altos estándares de seguridad.`,
+            answer: `Sí, todos nuestros cirujanos están certificados por la junta americana de cirugía plástica. Nuestra clínica está acreditada y cumple con los más altos estándares de seguridad.`,
         },
     ],
     financiamiento: [

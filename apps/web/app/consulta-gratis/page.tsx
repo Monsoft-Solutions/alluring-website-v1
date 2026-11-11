@@ -130,7 +130,7 @@ export default async function ConsultaGratisPage() {
             <WebPageSchema
                 name={`Cirugía Plástica Miami - ${siteConfig.business.name}`}
                 url={`${seoConfig.siteUrl}/consulta-gratis`}
-                description='Cirugía plástica de clase mundial en Miami con equipo 100% bilingüe. BBL, aumento de senos, liposucción, mommy makeover. Cirujanos certificados con 15+ años de experiencia.'
+                description='Cirugía plástica de clase mundial en Miami con equipo 100% bilingüe. BBL, aumento de senos, liposucción, mommy makeover. Cirujanos certificados.'
             />
 
             <FAQSchema items={faqSchemaItems} />

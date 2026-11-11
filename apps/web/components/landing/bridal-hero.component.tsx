@@ -21,7 +21,6 @@ import {
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type BridalHeroProps = {
@@ -173,9 +172,7 @@ export function BridalHero({ id = 'hero' }: BridalHeroProps) {
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Board-Certified'}{' '}
-                                        Surgeons
+                                        Board-Certified Surgeons
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>

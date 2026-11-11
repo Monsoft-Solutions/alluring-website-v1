@@ -18,6 +18,11 @@ import type {
     FaqCtaConfig,
 } from '@/lib/types/shared/faq.type'
 import { getFinancingPartnersString, siteConfig } from '@/lib/data/site-config'
+import {
+    KARLINSKY_ABS_CERTIFIED_ON,
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * FAQ page categories
@@ -82,7 +87,7 @@ export const faqPageData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Where is the surgery performed?',
-            answer: 'All procedures are performed in our state-of-the-art surgical facility located right here in Miami by Double Board-Certified surgeons. We prioritize privacy, safety, and comfort.',
+            answer: 'All procedures are performed in our state-of-the-art surgical facility located right here in Miami by board-certified surgeons. We prioritize privacy, safety, and comfort.',
         },
     ],
     safety: [
@@ -92,7 +97,7 @@ export const faqPageData: Record<string, FaqItem[]> = {
         },
         {
             question: 'Is your surgical facility accredited?',
-            answer: 'Yes. All procedures are performed in our state-of-the-art surgical facility right here in Miami by Double Board-Certified surgeons. Our facility meets rigorous safety protocols, equipment standards, and staff qualifications.',
+            answer: 'Yes. All procedures are performed in our state-of-the-art surgical facility right here in Miami by board-certified surgeons. Our facility meets rigorous safety protocols, equipment standards, and staff qualifications.',
         },
         {
             question: 'What type of anesthesia do you use?',
@@ -207,9 +212,8 @@ export const featuredFaqs: Array<{
     },
     {
         question: 'Are your surgeons board-certified?',
-        answer: 'Yes, our surgeons are double board-certified by both the American Board of Plastic Surgery and the American Board of Surgery.',
-        details:
-            'This dual certification demonstrates the highest level of training and expertise in plastic surgery.',
+        answer: `Yes. Your surgeon is ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS}`,
+        details: `Board certified in general surgery since ${KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)}.`,
     },
     {
         question: 'What is the recovery time for plastic surgery?',

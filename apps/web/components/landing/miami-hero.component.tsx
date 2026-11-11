@@ -11,9 +11,9 @@
  */
 import {
     Award,
-    ShieldCheck,
     Clock,
     CreditCard,
+    Star,
     Quote,
     MapPin,
     Building2,
@@ -22,7 +22,7 @@ import {
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel, siteConfig } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type MiamiHeroProps = {
@@ -108,13 +108,13 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
                                 <Building2 className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    15+ Years in Miami
+                                    Located in {siteConfig.contact.city}
                                 </span>
                             </div>
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
                                 <Heart className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    5,000+ Miami Patients
+                                    Hablamos Espa&ntilde;ol
                                 </span>
                             </div>
                         </div>
@@ -166,11 +166,9 @@ export function MiamiHero({ id = 'hero' }: MiamiHeroProps) {
                             {/* Trust Indicators */}
                             <div className='flex flex-wrap justify-center gap-6 lg:justify-start'>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                    <ShieldCheck className='text-gold-400 h-5 w-5' />
+                                    <Star className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Double Board-Certified'}{' '}
-                                        Accredited
+                                        {getGoogleRatingLabel()}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>

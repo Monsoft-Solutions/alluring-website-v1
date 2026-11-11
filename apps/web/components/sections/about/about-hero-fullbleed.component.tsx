@@ -6,7 +6,7 @@
  */
 
 import Image from 'next/image'
-import { ShieldCheck, Award, Star, Users } from 'lucide-react'
+import { Award, Star } from 'lucide-react'
 
 import { siteConfig } from '@/lib/data/site-config'
 
@@ -73,7 +73,7 @@ export function AboutHeroFullbleed() {
                             <p className='mb-10 max-w-lg text-xl leading-relaxed font-light text-stone-600'>
                                 Alluring Plastic Surgery combines world-class
                                 surgical expertise with a luxury concierge
-                                experience. Double Board-Certified surgeons,
+                                experience. Board-certified surgeons,
                                 state-of-the-art facility, and a promise that
                                 defines us:{' '}
                                 <strong className='font-bold text-stone-900'>
@@ -83,19 +83,7 @@ export function AboutHeroFullbleed() {
                             </p>
 
                             {/* Trust Badges */}
-                            <div className='grid grid-cols-2 gap-4 border-t border-stone-200 pt-8 md:grid-cols-4'>
-                                <div className='flex items-center gap-2'>
-                                    <ShieldCheck className='text-gold-500 h-6 w-6 shrink-0' />
-                                    <div>
-                                        <div className='text-sm font-bold text-stone-900'>
-                                            Double
-                                        </div>
-                                        <div className='text-xs text-stone-500'>
-                                            Board-Certified
-                                        </div>
-                                    </div>
-                                </div>
-
+                            <div className='grid grid-cols-2 gap-4 border-t border-stone-200 pt-8'>
                                 <div className='flex items-center gap-2'>
                                     <Award className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
@@ -109,25 +97,15 @@ export function AboutHeroFullbleed() {
                                 </div>
 
                                 <div className='flex items-center gap-2'>
-                                    <Users className='text-gold-500 h-6 w-6 shrink-0' />
-                                    <div>
-                                        <div className='text-sm font-bold text-stone-900'>
-                                            5,000+
-                                        </div>
-                                        <div className='text-xs text-stone-500'>
-                                            Patients
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className='flex items-center gap-2'>
                                     <Star className='text-gold-500 h-6 w-6 shrink-0' />
                                     <div>
                                         <div className='text-sm font-bold text-stone-900'>
-                                            4.7 Stars
+                                            {siteConfig.trustStats?.rating ??
+                                                '4.7'}{' '}
+                                            Stars
                                         </div>
                                         <div className='text-xs text-stone-500'>
-                                            Rating
+                                            Google Rating
                                         </div>
                                     </div>
                                 </div>

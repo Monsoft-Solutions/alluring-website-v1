@@ -47,11 +47,7 @@ const HERO_POSTER_MOBILE =
     'https://izzyzxqzbsra7zcm.public.blob.vercel-storage.com/videos/alluring-home-hero-v5-mobile-poster.jpg'
 
 /** Credibility markers shown directly beneath the headline. */
-const HERO_TRUST_POINTS = [
-    'Double Board-Certified',
-    `${siteConfig.trustStats?.patients ?? '5,000+'} Patients`,
-    '0% Financing Available',
-] as const
+const HERO_TRUST_POINTS = ['0% Financing Available'] as const
 
 export const Hero = () => {
     // Preload the poster this viewport will actually use, at high priority, in
@@ -175,9 +171,9 @@ export const Hero = () => {
                             data-speakable='true'
                         >
                             BBL, mommy makeover, breast augmentation and body
-                            contouring by double board-certified surgeons. Real
-                            prices, honest answers, and a plan built around your
-                            body — never a sales script.
+                            contouring by board-certified surgeons. Real prices,
+                            honest answers, and a plan built around your body —
+                            never a sales script.
                         </p>
 
                         {/* Trust points */}

@@ -10,10 +10,10 @@
  * Optimized for high-intent male cosmetic surgery searches.
  */
 import {
-    Award,
     ShieldCheck,
     Clock,
     CreditCard,
+    Star,
     Quote,
     UserCheck,
     Dumbbell,
@@ -22,7 +22,7 @@ import {
 import Image from 'next/image'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel } from '@/lib/data/site-config'
 import { CONTACT_SOURCES } from '@/lib/types/forms/contact-form.type'
 
 export type MensHeroProps = {
@@ -186,15 +186,13 @@ export function MensHero({ id = 'hero' }: MensHeroProps) {
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
                                     <ShieldCheck className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        {siteConfig.trustStats?.accreditation ??
-                                            'Board-Certified'}{' '}
-                                        Surgeons
+                                        Board-Certified Surgeons
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>
-                                    <Award className='text-gold-400 h-5 w-5' />
+                                    <Star className='text-gold-400 h-5 w-5' />
                                     <span className='text-sm font-medium'>
-                                        15+ Years Experience
+                                        {getGoogleRatingLabel()}
                                     </span>
                                 </div>
                                 <div className='flex items-center gap-2 text-stone-400 transition-colors hover:text-stone-300'>

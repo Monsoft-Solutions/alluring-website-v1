@@ -10,8 +10,7 @@ export const brazilianButtLiftBblMiami: Procedure = {
     title: 'Brazilian Butt Lift (BBL) Miami',
     slug: 'brazilian-butt-lift-bbl-miami',
     // Also the description in the page graph, `llms-full.txt` and the paid
-    // landing page. The "board-certified surgeons, 5,000+ procedures" claims
-    // it carried wait on the owner (#247), so they are out until confirmed.
+    // landing page.
     description:
         'BBL Miami starting at $5,500, priced for each patient, with financing available. One surgeon performs every BBL and examines you first. Free consultation.',
 

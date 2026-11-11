@@ -196,7 +196,8 @@ export const siteConfig: SiteConfig = {
 
     /**
      * Trust Statistics
-     * Business credibility metrics displayed in CTA sections and trust badges
+     * The published Google rating, shown in CTA sections and trust badges.
+     * Trust figures retired in #376; only the Google rating remains.
      *
      * `rating` must match the live Google Business Profile figure, which is
      * synced into `google_reviews_settings` and is what /reviews renders in its
@@ -205,11 +206,7 @@ export const siteConfig: SiteConfig = {
      * Last reconciled 2026-08-26 against a synced value of 4.7 across 81 reviews.
      */
     trustStats: {
-        patients: '5,000+',
-        years: '15+',
-        certified: '100%',
         rating: '4.7',
-        accreditation: 'Double Board-Certified',
     },
 
     /**
@@ -325,6 +322,13 @@ export function getFinancingPartnersString(): string {
     const lastPartner = partners[partners.length - 1]!
     const otherPartners = partners.slice(0, -1).join(', ')
     return `${otherPartners}, and ${lastPartner}`
+}
+
+/**
+ * The published Google rating as a short label, e.g. "4.7-star Google rating".
+ */
+export function getGoogleRatingLabel(): string {
+    return `${siteConfig.trustStats?.rating ?? '4.7'}-star Google rating`
 }
 
 /**

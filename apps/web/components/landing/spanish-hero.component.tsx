@@ -117,7 +117,7 @@ export function SpanishHero({ id = 'hero' }: SpanishHeroProps) {
                             <div className='bg-gold-500/20 border-gold-500/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5'>
                                 <Heart className='text-gold-400 h-4 w-4' />
                                 <span className='text-gold-300 text-sm font-medium'>
-                                    15+ A&ntilde;os en Miami
+                                    Ubicados en Miami
                                 </span>
                             </div>
                         </div>

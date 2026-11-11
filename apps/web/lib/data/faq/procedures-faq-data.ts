@@ -63,7 +63,7 @@ export const faqDataProcedures: Record<string, FaqItem[]> = {
         },
         {
             question: 'Is your surgical facility accredited?',
-            answer: 'Yes. All procedures are performed in our state-of-the-art surgical facility right here in Miami by Double Board-Certified surgeons. Our facility meets rigorous safety protocols, equipment standards, and staff qualifications.',
+            answer: 'Yes. All procedures are performed in our state-of-the-art surgical facility right here in Miami by board-certified surgeons. Our facility meets rigorous safety protocols, equipment standards, and staff qualifications.',
         },
         {
             question: 'What type of anesthesia do you use?',

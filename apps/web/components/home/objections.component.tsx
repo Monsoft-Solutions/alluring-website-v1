@@ -25,6 +25,10 @@ import {
 
 import { SectionContainer } from '@/components/shared/section-container.component'
 import { ContentWrapper } from '@/components/shared/content-wrapper.component'
+import {
+    KARLINSKY_CREDENTIALS,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 type Objection = {
     readonly icon: React.ReactNode
@@ -37,8 +41,8 @@ const OBJECTIONS: readonly Objection[] = [
     {
         icon: <ShieldCheck className='h-5 w-5' />,
         question: '“How do I know it’s safe?”',
-        answer: 'Your surgery happens in an accredited surgical facility with a dedicated anesthesia team — not an office suite. Our surgeons are double board-certified, which means their credentials were reviewed twice by independent boards, and every patient gets pre-op lab work before we clear them.',
-        proof: 'Double board-certified · Accredited facility',
+        answer: `Your surgery happens in an accredited surgical facility with a dedicated anesthesia team — not an office suite. Your surgeon is ${KARLINSKY_NAME}. ${KARLINSKY_CREDENTIALS} Every patient gets pre-op lab work before we clear them.`,
+        proof: 'Board certified, American Board of Surgery · Accredited facility',
     },
     {
         icon: <Sparkles className='h-5 w-5' />,
@@ -85,9 +89,8 @@ export function Objections() {
                         </span>
                     </h2>
                     <p className='text-lg leading-relaxed text-stone-600'>
-                        It&apos;s rarely the procedure. After 5,000+ patients,
-                        we know it&apos;s usually one of these four — so
-                        here&apos;s the honest answer to each.
+                        It&apos;s rarely the procedure. It&apos;s usually one of
+                        these four — so here&apos;s the honest answer to each.
                     </p>
                 </div>
 

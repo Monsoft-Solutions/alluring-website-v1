@@ -11,7 +11,7 @@
  * - Luxury CTA section
  * - Full SEO optimization with structured data
  */
-import { Award, Building2, Shield, Users } from 'lucide-react'
+import { Award, Shield, Star } from 'lucide-react'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
@@ -32,7 +32,7 @@ import { FeaturedPost } from '@/components/blog/featured-post.component'
 import { InfinitePostList } from '@/components/blog/infinite-post-list.component'
 import { PopularPosts } from '@/components/blog/popular-posts.component'
 import { CTASection } from '@/components/shared/cta-section.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel, siteConfig } from '@/lib/data/site-config'
 import {
     blogArticlesSectionData,
     blogCtaData,
@@ -262,12 +262,8 @@ export default async function BlogPage() {
                             label: 'Accredited Facility',
                         },
                         {
-                            icon: <Users className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
-                        },
-                        {
-                            icon: <Building2 className='h-5 w-5' />,
-                            label: `${siteConfig.trustStats?.years ?? '15+'} Years Experience`,
+                            icon: <Star className='h-5 w-5' />,
+                            label: getGoogleRatingLabel(),
                         },
                     ]}
                     size='lg'

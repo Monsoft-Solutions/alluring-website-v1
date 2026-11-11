@@ -27,7 +27,7 @@ const LOCAL_BENEFITS = [
         icon: Users,
         title: 'Ask Your Neighbors',
         description:
-            "We've served Miami families for 15+ years. Ask around—chances are someone you know has trusted us. Real results you can see in your own community.",
+            'Ask around—chances are someone you know has trusted us. Real results you can see in your own community.',
         highlight: 'Community Trust',
     },
     {

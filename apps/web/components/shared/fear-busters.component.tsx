@@ -26,8 +26,8 @@ const FEAR_BUSTERS = [
     {
         icon: ShieldCheck,
         question: 'Is it safe?',
-        answer: 'Double Board-Certified surgeons. State-of-the-art facility. 5,000+ procedures performed with exceptional safety record.',
-        highlight: 'Double Board-Certified',
+        answer: 'Board-certified surgeons. State-of-the-art facility.',
+        highlight: 'Board-Certified',
     },
     {
         icon: Sparkles,

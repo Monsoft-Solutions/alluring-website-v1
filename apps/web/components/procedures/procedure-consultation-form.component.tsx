@@ -7,16 +7,16 @@
  * Features:
  * - Dark background section styling
  * - Procedure-specific title
- * - Trust indicators (Board-Certified, Patient count, 24hr Response)
+ * - Trust indicators (Board-Certified, Google rating, 24hr Response)
  * - Testimonial quote for social proof
  * - Pre-populated procedure field
  */
 'use client'
 
-import { Award, Clock, Users } from 'lucide-react'
+import { Award, Clock, Star } from 'lucide-react'
 
 import { ConsultationForm } from '@/components/shared/forms/consultation-form.component'
-import { siteConfig } from '@/lib/data/site-config'
+import { getGoogleRatingLabel } from '@/lib/data/site-config'
 import {
     CONTACT_SOURCES,
     getProcedureFormValue,
@@ -35,8 +35,8 @@ const TRUST_INDICATORS = [
         label: 'Board-Certified Surgeons',
     },
     {
-        icon: Users,
-        label: `${siteConfig.trustStats?.patients ?? '5,000+'} Happy Patients`,
+        icon: Star,
+        label: getGoogleRatingLabel(),
     },
     {
         icon: Clock,

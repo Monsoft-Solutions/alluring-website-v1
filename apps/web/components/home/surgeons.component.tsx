@@ -3,13 +3,12 @@ import { ContentWrapper } from '../shared/content-wrapper.component'
 import { Button } from '@workspace/ui/components/button'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Award, BadgeCheck, ExternalLink, Sparkles } from 'lucide-react'
+
 import {
-    Award,
-    BadgeCheck,
-    ExternalLink,
-    Sparkles,
-    TrendingUp,
-} from 'lucide-react'
+    KARLINSKY_ABS_CERTIFIED_ON,
+    KARLINSKY_NAME,
+} from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 /**
  * Credential stat type
@@ -34,14 +33,14 @@ export const Surgeons = () => {
             label: 'BBL Procedures',
         },
         {
-            icon: <TrendingUp className='h-4 w-4' />,
-            value: '5,000+',
-            label: 'Total Surgeries',
+            icon: <Award className='h-4 w-4' />,
+            value: KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4),
+            label: 'Board certified since, American Board of Surgery',
         },
         {
-            icon: <Award className='h-4 w-4' />,
-            value: '15+',
-            label: 'Years Experience',
+            icon: <BadgeCheck className='h-4 w-4' />,
+            value: 'FACS',
+            label: 'Fellow, American College of Surgeons',
         },
     ]
 
@@ -63,7 +62,7 @@ export const Surgeons = () => {
                         <div className='animate-fade-in-up relative aspect-[3/4] w-full max-w-md'>
                             <Image
                                 src='/images/surgeons/dr-karlinsky.webp'
-                                alt='Dr. Victoria Karlinsky - Double Board-Certified Cosmetic Surgeon specializing in BBL, breast augmentation, and mommy makeover at Alluring Plastic Surgery Miami'
+                                alt='Dr. Victoria Karlinsky - Cosmetic Surgeon specializing in BBL, breast augmentation, and mommy makeover at Alluring Plastic Surgery Miami'
                                 fill
                                 className='object-cover grayscale transition-all duration-700 ease-in-out hover:grayscale-0'
                                 sizes='(max-width: 1024px) 100vw, 50vw'
@@ -114,10 +113,10 @@ export const Surgeons = () => {
                             </p>
                             <div className='flex flex-col gap-2'>
                                 <span className='text-base font-bold tracking-wider text-white uppercase'>
-                                    Dr. Victoria Karlinsky
+                                    {KARLINSKY_NAME}
                                 </span>
                                 <span className='text-base text-stone-500'>
-                                    Double Board-Certified Cosmetic Surgeon
+                                    Cosmetic Surgeon
                                 </span>
                             </div>
                         </div>

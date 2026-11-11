@@ -5,6 +5,7 @@ import { ContentWrapper } from '@/components/shared/content-wrapper.component'
 import { motion } from 'framer-motion'
 import { Shield, UserCheck, HeartHandshake, Star, Sparkles } from 'lucide-react'
 import { siteConfig } from '@/lib/data/site-config'
+import { KARLINSKY_ABS_CERTIFIED_ON } from '@/lib/data/surgeons/karlinsky-credentials.constant'
 
 const features = [
     {
@@ -89,19 +90,18 @@ export function WhyChooseSection() {
                         <div className='mt-12 hidden gap-8 lg:flex'>
                             <div>
                                 <div className='text-gold-600 font-serif text-4xl font-bold'>
-                                    {siteConfig.trustStats?.years ?? '15+'}
+                                    {KARLINSKY_ABS_CERTIFIED_ON.slice(0, 4)}
                                 </div>
                                 <div className='text-sm text-stone-500'>
-                                    Years Experience
+                                    American Board of Surgery certified since
                                 </div>
                             </div>
                             <div>
                                 <div className='text-gold-600 font-serif text-4xl font-bold'>
-                                    {siteConfig.trustStats?.patients ??
-                                        '5,000+'}
+                                    {siteConfig.trustStats?.rating ?? '4.7'}
                                 </div>
                                 <div className='text-sm text-stone-500'>
-                                    Happy Patients
+                                    Stars on Google
                                 </div>
                             </div>
                         </div>
