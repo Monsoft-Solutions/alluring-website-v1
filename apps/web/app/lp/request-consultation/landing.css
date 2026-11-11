@@ -820,6 +820,59 @@
         grid-auto-columns: 76vw;
     }
 }
+/*
+ * The tap-to-view card under the results: a plain panel with a notice and
+ * one pill. The photos it loads open on a rail like the one above.
+ */
+.aps-lp .ba-gate {
+    max-width: 34rem;
+    margin: 32px auto 0;
+    padding: 28px 26px 30px;
+    border: 1px solid var(--s200);
+    border-radius: 18px;
+    background: var(--s50);
+    text-align: center;
+}
+.aps-lp .ba-gate-solo {
+    margin-top: 0;
+}
+.aps-lp .ba-gate-notice {
+    margin: 0 auto 20px;
+    max-width: 26rem;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--s600);
+    text-wrap: pretty;
+}
+.aps-lp .ba-gate-btn {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--s50);
+}
+.aps-lp .ba-gate-btn:hover {
+    background: var(--ink-3);
+    border-color: var(--ink-3);
+}
+.aps-lp .ba-gate-btn[disabled] {
+    cursor: progress;
+    opacity: 0.75;
+}
+.aps-lp .ba-gate-retry {
+    margin: 14px 0 0;
+    font-size: 14px;
+    color: var(--error);
+}
+.aps-lp .ba-gate-open {
+    margin-top: 32px;
+}
+.aps-lp .ba-gate-open:focus {
+    outline: none;
+}
+@media (max-width: 640px) {
+    .aps-lp .ba-gate {
+        padding: 24px 20px 26px;
+    }
+}
 /* ---------- price & financing (the ?s=financing view) ---------- */
 /*
  * Since v6 (#292) financing is off the page and only the short view its

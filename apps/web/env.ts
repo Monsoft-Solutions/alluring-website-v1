@@ -84,6 +84,10 @@ export const env = createEnv({
         // Dr. Karlinsky's page hero test (#332), arch against pick:
         // 'arch:50,pick:50' when unset, 'arch:100' ends it on the arch. See `drk-hero-variant.ts`.
         DRK_HERO_SPLIT: z.string().optional(),
+        // The ads landing page's tap-to-view photo card (#378): views whose
+        // card is off, e.g. 'liposuction,tummy-tuck'. Empty shows it on every
+        // view that has photos behind it. See `lp-gated-photos.ts`.
+        LP_PHOTO_GATE_OFF: z.string().optional(),
 
         // Set by CI providers. Read by data-consistency assertions that should
         // fail a pipeline rather than only log — `NODE_ENV` is 'production'

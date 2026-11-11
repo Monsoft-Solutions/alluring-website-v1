@@ -65,6 +65,7 @@
                 "LP_FORM_SPLIT",
                 "LP_COPY_SPLIT",
                 "DRK_HERO_SPLIT",
+                "LP_PHOTO_GATE_OFF",
                 "BLOG_V2_PREVIEW",
                 "VERCEL_ENV"
             ]
@@ -158,6 +159,7 @@
                 "LP_FORM_SPLIT",
                 "LP_COPY_SPLIT",
                 "DRK_HERO_SPLIT",
+                "LP_PHOTO_GATE_OFF",
                 "BLOG_V2_PREVIEW",
                 "VERCEL_ENV",
                 "WEB_PORT",

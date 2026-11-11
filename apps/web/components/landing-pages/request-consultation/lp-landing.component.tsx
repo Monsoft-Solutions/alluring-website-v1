@@ -60,7 +60,12 @@ import type { LpProof } from './lp-proof'
 import { LP_STRIP_ID, LpQuestionStrip } from './lp-question-strip.component'
 import { LpResults } from './lp-results.component'
 import { LpReviews } from './lp-reviews.component'
-import { type LpSection, orderLpSections } from './lp-sections'
+import {
+    focusLpSection,
+    lpResultsMode,
+    type LpSection,
+    orderLpSections,
+} from './lp-sections'
 import { lpStepBeacon } from './lp-step-beacon'
 import { LpSurgeon } from './lp-surgeon.component'
 import { lpPageVariant, trackLpEvent, trackLpViewInGa4 } from './lp-tracking'
@@ -144,6 +149,9 @@ export function LpLanding({
     const reviewCount = proof.reviewCount
         ? String(proof.reviewCount)
         : FALLBACK_REVIEW_COUNT
+
+    const resultsMode = lpResultsMode(proof.photos.length, proof.photoGate)
+    const focus = focusLpSection(focusSection, resultsMode)
 
     const procedures = chat.copy[lang].procedures
     const adProcedure = VARIANT_PROCEDURE[adVariant]
@@ -279,8 +287,19 @@ export function LpLanding({
     const sections: Record<LpSection, ReactNode> = {
         results: (
             <LpResults
+                lang={lang}
                 copy={copy.results}
                 photos={proof.photos}
+                view={adVariant}
+                photoGate={proof.photoGate}
+                onGateEvent={(event) =>
+                    trackLpEvent(event, {
+                        lang,
+                        adVariant,
+                        formVariant,
+                        pageVariant,
+                    })
+                }
                 procedureLabel={procedureLabel}
             />
         ),
@@ -294,7 +313,7 @@ export function LpLanding({
                 reviewCount={proof.reviewCount}
                 liveReviews={proof.reviews}
                 adVariant={adVariant}
-                full={focusSection === 'reviews'}
+                full={focus === 'reviews'}
             />
         ),
         'fly-in': <LpFlyIn copy={copy.flyIn} />,
@@ -352,17 +371,19 @@ export function LpLanding({
                             prices={prices.tummyTuck}
                         />
                     )}
-                    {orderLpSections(focusSection).map((section) => (
-                        <Fragment key={section}>
-                            {section === focusSection && (
-                                <LpQuestionStrip
-                                    copy={copy.strip}
-                                    procedures={procedures}
-                                />
-                            )}
-                            {sections[section]}
-                        </Fragment>
-                    ))}
+                    {orderLpSections(focusSection, resultsMode).map(
+                        (section) => (
+                            <Fragment key={section}>
+                                {section === focus && (
+                                    <LpQuestionStrip
+                                        copy={copy.strip}
+                                        procedures={procedures}
+                                    />
+                                )}
+                                {sections[section]}
+                            </Fragment>
+                        )
+                    )}
                     <LpClosingCta copy={copy.closing} procedures={procedures} />
                 </main>
 

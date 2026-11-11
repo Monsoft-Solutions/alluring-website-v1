@@ -16,7 +16,9 @@ import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy
 import { LP_COPY_VARIANTS } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { lpQuoteIndex } from '@/components/landing-pages/request-consultation/lp-quote'
 import {
+    focusLpSection,
     LP_PAGE_ORDER,
+    lpResultsMode,
     orderLpSections,
     resolveLpSection,
 } from '@/components/landing-pages/request-consultation/lp-sections'
@@ -289,6 +291,45 @@ describe('?s= section views', () => {
             'surgeon',
             'faq',
         ])
+    })
+
+    it('puts the reviews before a results section that holds only the card', () => {
+        expect(orderLpSections(null, 'gated')).toEqual([
+            'reviews',
+            'results',
+            'surgeon',
+            'faq',
+        ])
+        expect(orderLpSections('results', 'gated')).toEqual([
+            'results',
+            'reviews',
+            'surgeon',
+            'faq',
+        ])
+    })
+
+    it('skips the results section when a view has nothing to show', () => {
+        expect(orderLpSections(null, 'none')).toEqual([
+            'surgeon',
+            'reviews',
+            'faq',
+        ])
+        // `?s=results` opens the reviews, still a view of its own.
+        expect(orderLpSections('results', 'none')).toEqual([
+            'reviews',
+            'surgeon',
+            'faq',
+        ])
+        expect(focusLpSection('results', 'none')).toBe('reviews')
+        expect(focusLpSection('results', 'gated')).toBe('results')
+        expect(focusLpSection('financing', 'none')).toBe('financing')
+    })
+
+    it('names the results mode from the photos and the card', () => {
+        expect(lpResultsMode(3, true)).toBe('open')
+        expect(lpResultsMode(2, false)).toBe('open')
+        expect(lpResultsMode(0, true)).toBe('gated')
+        expect(lpResultsMode(0, false)).toBe('none')
     })
 })
 
