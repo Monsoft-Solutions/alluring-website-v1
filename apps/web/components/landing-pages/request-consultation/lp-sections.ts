@@ -79,11 +79,56 @@ export function resolveLpSection(
 }
 
 /**
+ * What the results section holds for a view: photos in the page (and maybe
+ * the tap-to-view card under them), only the card, or nothing at all.
+ */
+export type LpResultsMode = 'open' | 'gated' | 'none'
+
+export function lpResultsMode(
+    openPhotos: number,
+    photoGate: boolean
+): LpResultsMode {
+    if (openPhotos > 0) return 'open'
+    return photoGate ? 'gated' : 'none'
+}
+
+/**
+ * The page with no `?s=` when the results section holds only the card: the
+ * reviews come first, then the card.
+ */
+const LP_GATED_ORDER: readonly LpSection[] = [
+    'reviews',
+    'results',
+    'surgeon',
+    'faq',
+]
+
+/**
+ * The section a view opens on. A view with no results section sends its
+ * `?s=results` link to the reviews, the nearest proof it has, so that view
+ * is still a page of its own.
+ */
+export function focusLpSection(
+    focus: LpSection | null,
+    results: LpResultsMode = 'open'
+): LpSection | null {
+    return focus === 'results' && results === 'none' ? 'reviews' : focus
+}
+
+/**
  * The page order with the requested section at the top — added for a
  * view-only section (financing, flying in), moved for one already there.
  */
-export function orderLpSections(focus: LpSection | null): readonly LpSection[] {
-    return focus
-        ? [focus, ...LP_PAGE_ORDER.filter((section) => section !== focus)]
-        : LP_PAGE_ORDER
+export function orderLpSections(
+    focus: LpSection | null,
+    results: LpResultsMode = 'open'
+): readonly LpSection[] {
+    const base =
+        results === 'open'
+            ? LP_PAGE_ORDER
+            : results === 'gated'
+              ? LP_GATED_ORDER
+              : LP_PAGE_ORDER.filter((section) => section !== 'results')
+    const top = focusLpSection(focus, results)
+    return top ? [top, ...base.filter((section) => section !== top)] : base
 }

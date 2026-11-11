@@ -168,8 +168,24 @@ export interface LpDictionary {
         readonly subtitle: string
         readonly beforeAfterTag: string
         readonly captions: Readonly<Record<string, LpResultCaption>>
+        /**
+         * Alt text for a photo whose framing differs from its procedure's
+         * caption alt, keyed by the photo's id in `lp-assets.ts`.
+         */
+        readonly photoAlts: Readonly<Record<string, string>>
+        /** The tag on a photo with the before above the after. */
+        readonly stackedTag: string
         readonly railLabel: string
         readonly swipeHint: string
+        /** The tap-to-view card over the photos that load after a tap. */
+        readonly gate: {
+            readonly notice: string
+            readonly button: string
+            /** After a failed load; the button stays to try again. */
+            readonly retry: string
+            /** Names the photos the tap revealed, for screen readers. */
+            readonly revealedLabel: string
+        }
     }
     /**
      * Price & financing: since v6 only the short view its sitelink opens
@@ -360,8 +376,24 @@ const en: LpDictionary = {
                 alt: 'Before and after Lipo 360, front view',
             },
         },
+        photoAlts: {
+            '02c': 'Before and after mommy makeover, abdomen, before above after',
+            '05c': 'Before and after Lipo 360, abdomen, before above after',
+            '06': 'Before and after Brazilian Butt Lift, back view',
+            '07': 'Before and after mommy makeover, mirror photo',
+            '08': 'Before and after mommy makeover, front view',
+            '08c': 'Before and after mommy makeover, abdomen, before above after',
+            '09': 'Before and after liposuction with abdominal etching, front view',
+        },
+        stackedTag: 'Before ↑ · After ↓',
         railLabel: 'Before-and-after photographs',
         swipeHint: 'Swipe for more results',
+        gate: {
+            notice: 'Before-and-after photos show surgical results and include nudity.',
+            button: 'I’m 18 or older · Show photos',
+            retry: 'The photos didn’t load. Please try again.',
+            revealedLabel: 'More before-and-after photographs',
+        },
     },
     financing: {
         eyebrow: 'Price & financing',
@@ -566,8 +598,24 @@ const es: LpDictionary = {
                 alt: 'Antes y después de una Lipo 360, vista frontal',
             },
         },
+        photoAlts: {
+            '02c': 'Antes y después de un mommy makeover, abdomen, el antes arriba del después',
+            '05c': 'Antes y después de una Lipo 360, abdomen, el antes arriba del después',
+            '06': 'Antes y después de un Brazilian Butt Lift, vista posterior',
+            '07': 'Antes y después de un mommy makeover, foto en el espejo',
+            '08': 'Antes y después de un mommy makeover, vista frontal',
+            '08c': 'Antes y después de un mommy makeover, abdomen, el antes arriba del después',
+            '09': 'Antes y después de una liposucción con marcación abdominal, vista frontal',
+        },
+        stackedTag: 'Antes ↑ · Después ↓',
         railLabel: 'Fotografías de antes y después',
         swipeHint: 'Desliza para ver más resultados',
+        gate: {
+            notice: 'Las fotos de antes y después muestran resultados de cirugía e incluyen desnudez.',
+            button: 'Tengo 18 años o más · Ver fotos',
+            retry: 'Las fotos no cargaron. Inténtalo de nuevo.',
+            revealedLabel: 'Más fotografías de antes y después',
+        },
     },
     financing: {
         eyebrow: 'Precio y financiamiento',

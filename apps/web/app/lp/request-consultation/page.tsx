@@ -20,9 +20,11 @@
  * and site navigation is a way out of it — so nothing on the page links to
  * the rest of the site either (#283).
  *
- * The before/after photographs past the curated five, the live Google rating
- * and the review rail are read here. They are cached queries, and a database
- * failure only drops them: the page never fails because of its proof.
+ * The live Google rating and the review rail are read here. They are cached
+ * queries, and a database failure only drops them: the page never fails
+ * because of its proof. The photographs are fixed per view (`lp-assets.ts`);
+ * the page names only the ones it shows, and learns from
+ * `lp-gated-photos.ts` whether the view has the tap-to-view card for more.
  *
  * The page renders per request because the language and the headline are
  * resolved from the query string and Accept-Language on the server — the HTML
@@ -49,7 +51,12 @@ import {
     toLpFormVariant,
 } from '@/components/landing-pages/request-consultation/lp-form-variant'
 import { LpLanding } from '@/components/landing-pages/request-consultation/lp-landing.component'
+import { LP_SURGEON_SHARE_IMAGE } from '@/components/landing-pages/request-consultation/lp-assets'
 import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy'
+import {
+    hasPhotoGate,
+    parsePhotoGateOff,
+} from '@/components/landing-pages/request-consultation/lp-gated-photos'
 import {
     resolveLpLanguage,
     type ResolvedLpLanguage,
@@ -61,7 +68,8 @@ import {
     lpTitle,
     resolveAdVariant,
 } from '@/components/landing-pages/request-consultation/lp-variants'
-import { getSpecialsFeaturedGalleryImages } from '@/lib/queries/gallery/specials-gallery.query'
+import { env } from '@/env'
+import { siteConfig } from '@/lib/data/site-config'
 import { getPublishedGoogleReviews } from '@/lib/queries/reviews/google-reviews.query'
 
 import './landing.css'
@@ -120,14 +128,34 @@ export async function generateMetadata({
     const params = await searchParams
     const { lang } = await resolveLang(params)
     const { meta } = LP_COPY[lang]
+    const title = lpTitle(lang, variantFrom(params))
+    // Setting `openGraph` replaces the root layout's whole object, so the
+    // title, site name and locale are given again with the share image.
+    const images = [
+        { ...LP_SURGEON_SHARE_IMAGE, alt: LP_COPY[lang].surgeon.portraitAlt },
+    ]
 
     return {
         // Absolute: the title already ends with the practice's name.
-        title: { absolute: lpTitle(lang, variantFrom(params)) },
+        title: { absolute: title },
         description: meta.description,
         // Paid traffic only. It must never compete with /free-consultation or
         // /consulta-gratis in organic search.
         robots: { index: false, follow: true },
+        openGraph: {
+            title,
+            description: meta.description,
+            type: 'website',
+            locale: lang === 'es' ? 'es_US' : 'en_US',
+            siteName: siteConfig.seo.siteName,
+            images,
+        },
+        twitter: {
+            card: 'summary',
+            title,
+            description: meta.description,
+            images,
+        },
     }
 }
 
@@ -146,10 +174,13 @@ export default async function RequestConsultationLandingPage({
     const formVariant = await formVariantFrom(params)
     const copyVariant = await copyVariantFrom(params)
 
-    const [gallery, reviews] = await Promise.all([
-        getSpecialsFeaturedGalleryImages().catch(() => []),
-        getPublishedGoogleReviews(REVIEWS_TO_READ).catch(() => null),
-    ])
+    const reviews = await getPublishedGoogleReviews(REVIEWS_TO_READ).catch(
+        () => null
+    )
+    const photoGate = hasPhotoGate(
+        adVariant,
+        parsePhotoGateOff(env.LP_PHOTO_GATE_OFF)
+    )
 
     return (
         <LpLanding
@@ -159,7 +190,7 @@ export default async function RequestConsultationLandingPage({
             formVariant={formVariant}
             copyVariant={copyVariant}
             chat={buildLpChat(adVariant, copyVariant)}
-            proof={selectLpProof(adVariant, gallery, reviews)}
+            proof={selectLpProof(adVariant, reviews, photoGate)}
             prices={buildLpPrices(adVariant)}
             focusSection={resolveLpSection(first(params.s))}
         />

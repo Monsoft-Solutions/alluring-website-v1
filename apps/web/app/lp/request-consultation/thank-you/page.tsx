@@ -18,6 +18,8 @@ import type { Metadata } from 'next'
 import { headers } from 'next/headers'
 
 import { LeadConfirmedEvent } from '@/components/analytics/lead-confirmed-event.component'
+import { LP_SURGEON_SHARE_IMAGE } from '@/components/landing-pages/request-consultation/lp-assets'
+import { LP_COPY } from '@/components/landing-pages/request-consultation/lp-copy'
 import { LP_THANK_YOU_COPY } from '@/components/landing-pages/request-consultation/lp-thank-you-copy'
 import { LpThankYou } from '@/components/landing-pages/request-consultation/lp-thank-you.component'
 import {
@@ -61,9 +63,17 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
     const { lang } = await resolveLang(await searchParams)
 
+    const title = LP_THANK_YOU_COPY[lang].meta.title
+    // Replaces the site-wide share image with the surgeon's portrait.
+    const images = [
+        { ...LP_SURGEON_SHARE_IMAGE, alt: LP_COPY[lang].surgeon.portraitAlt },
+    ]
+
     return {
-        title: LP_THANK_YOU_COPY[lang].meta.title,
+        title,
         robots: { index: false, follow: false },
+        openGraph: { title, type: 'website', images },
+        twitter: { card: 'summary', title, images },
     }
 }
 
