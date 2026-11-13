@@ -10,6 +10,8 @@ import {
 } from '@/lib/blog/post-mdx.util'
 import type { InlineImage } from '@/lib/queries/blog/post-images.query'
 
+import { POST_INTRO_ID } from './post-page.copy'
+
 type PostBodyProps = {
     /** Content before the split point, from `findCTAInsertionPoint`. */
     beforeCTA: string
@@ -56,7 +58,11 @@ export function PostBody({
         },
         [POST_INTRO_SLOT]: function PostIntroSlot() {
             if (!intro) return null
-            return <div className='bp-intro-slot not-prose'>{intro}</div>
+            return (
+                <div id={POST_INTRO_ID} className='bp-intro-slot not-prose'>
+                    {intro}
+                </div>
+            )
         },
     }
 

@@ -30,6 +30,24 @@ describe('validateBySource', () => {
         ).toEqual({ valid: true })
     })
 
+    it('requires a phone for the size calculator, even with an email', () => {
+        expect(CONTACT_SOURCES.SIZE_CALCULATOR).toBe('size-calculator')
+        expect(
+            validateBySource({
+                ...base,
+                source: 'size-calculator',
+                email: 'ana@example.com',
+            })
+        ).toEqual({ valid: false, error: 'Phone number is required' })
+        expect(
+            validateBySource({
+                ...base,
+                source: 'size-calculator',
+                phone: '+13055550123',
+            })
+        ).toEqual({ valid: true })
+    })
+
     it('keeps the general rule for other sources', () => {
         expect(validateBySource({ ...base, email: 'ana@example.com' })).toEqual(
             { valid: true }

@@ -26,6 +26,14 @@ export const POST_CONSULT_ID = 'post-consult'
 /** The closing band's id, which the sticky bar steps aside for. */
 export const POST_CLOSE_ID = 'post-close'
 
+/**
+ * The wrapper of a post's intro block (`post-intro-block.tsx`). The sticky
+ * bar watches this element, not the block inside it: a lazy block's own
+ * node is re-created when its chunk arrives, and an observer on it goes
+ * blind.
+ */
+export const POST_INTRO_ID = 'post-intro'
+
 /** "lipo" → "Lipo". Names already capitalised ("BBL") are unchanged. */
 export function capitalize(text: string): string {
     return text.charAt(0).toUpperCase() + text.slice(1)

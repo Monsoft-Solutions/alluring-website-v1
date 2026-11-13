@@ -120,3 +120,40 @@ export function calculatorEventParams(
             Math.round((estimate.lowCc + estimate.highCc) / 2 / 50) * 50,
     }
 }
+
+const CUP_COUNT_WORDS = ['', 'one', 'two', 'three', 'four', 'five', 'six']
+
+/** "two cup sizes", in words up to six. */
+export function cupSizesInWords(cupsAdded: number): string {
+    const count = CUP_COUNT_WORDS[cupsAdded] ?? String(cupsAdded)
+    return `${count} cup size${cupsAdded === 1 ? '' : 's'}`
+}
+
+/**
+ * The result in one line, for the lead's `offer` field. The CRM webhook
+ * carries `offer` and not the staff note, so this is the line a coordinator
+ * sees there. Well under the field's 200 characters.
+ */
+export function savedResultSummary(
+    input: ImplantSizeInput,
+    estimate: ImplantSizeEstimate
+): string {
+    return `Size calculator result by text: ${input.band}${input.currentCup} to ${input.band}${input.desiredCup}, ${estimate.lowCc}–${estimate.highCc} cc per breast`
+}
+
+/**
+ * The staff note on a lead who asked for the result by text: what the reader
+ * picked and what the calculator answered, so the first message can be about
+ * that answer. Goes to the lead record and the CRM, never to analytics.
+ */
+export function savedResultNote(
+    input: ImplantSizeInput,
+    estimate: ImplantSizeEstimate
+): string[] {
+    return [
+        'Size calculator: asked to get this result by text',
+        `Picked: ${input.band}${input.currentCup} today, would like ${input.band}${input.desiredCup} (${cupSizesInWords(estimate.cupsAdded)})`,
+        `Estimate shown: ${estimate.lowCc}–${estimate.highCc} cc per breast`,
+        'Promised by text: the range, the cc chart and real patient results',
+    ]
+}
