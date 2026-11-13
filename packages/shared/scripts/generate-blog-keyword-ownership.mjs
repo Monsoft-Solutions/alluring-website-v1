@@ -169,8 +169,8 @@ const RETIRED = {
     // nine posts to four
     '/blog/mommy-makeover-recovery-timeline-miami':
         '/blog/mommy-makeover-recovery-signs',
-    '/blog/mommy-makeover-recovery-miami':
-        '/blog/mommy-makeover-recovery-signs',
+    // Re-pointed to the page on 2026-11-12: it showed for the head term only
+    '/blog/mommy-makeover-recovery-miami': '/procedures/mommy-makeover-miami',
     '/how-long-to-recover-from-mommy-makeover':
         '/blog/mommy-makeover-recovery-signs',
     '/blog/mommy-makeover-miami-candidate-checklist':

@@ -1304,12 +1304,12 @@ const nextConfig = {
             },
             {
                 source: '/blog/mommy-makeover-recovery-miami',
-                destination: '/blog/mommy-makeover-recovery-signs',
+                destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
             {
                 source: '/mommy-makeover-recovery-miami',
-                destination: '/blog/mommy-makeover-recovery-signs',
+                destination: '/procedures/mommy-makeover-miami',
                 permanent: true,
             },
             {

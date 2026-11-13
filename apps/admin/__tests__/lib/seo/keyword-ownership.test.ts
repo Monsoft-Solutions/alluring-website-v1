@@ -37,11 +37,12 @@ describe('registry integrity', () => {
         // breast-lift-myths-busted) plus the four written that day
         // (types-of-breast-lift, breast-lift-without-implants, breast-lift-cost,
         // non-surgical-breast-lift), the five mommy makeover posts folded on
-        // 2026-11-03 (three into /blog/mommy-makeover-recovery-signs:
-        // mommy-makeover-recovery-timeline-miami, mommy-makeover-recovery-miami,
-        // how-long-to-recover-from-mommy-makeover; two into the procedure page:
-        // mommy-makeover-miami-candidate-checklist,
-        // mommy-makeover-questions-miami), the nine breast augmentation posts
+        // 2026-11-03 (two into /blog/mommy-makeover-recovery-signs:
+        // mommy-makeover-recovery-timeline-miami,
+        // how-long-to-recover-from-mommy-makeover; three into the procedure
+        // page: mommy-makeover-miami-candidate-checklist,
+        // mommy-makeover-questions-miami and, since 2026-11-12,
+        // mommy-makeover-recovery-miami), the nine breast augmentation posts
         // folded in the 2026-11-03 rewrite, and the never-published 5-weeks
         // entry, plus the six written that day
         // (breast-implants-over-or-under-the-muscle,
@@ -291,7 +292,8 @@ describe('resolveQueryOwner', () => {
         const page = '/procedures/mommy-makeover-miami'
         const folded: Array<[string, string]> = [
             ['mommy-makeover-recovery-timeline-miami', hub],
-            ['mommy-makeover-recovery-miami', hub],
+            // Re-pointed to the page on 2026-11-12 (head-term impressions only)
+            ['mommy-makeover-recovery-miami', page],
             ['how-long-to-recover-from-mommy-makeover', hub],
             ['mommy-makeover-miami-candidate-checklist', page],
             ['mommy-makeover-questions-miami', page],
