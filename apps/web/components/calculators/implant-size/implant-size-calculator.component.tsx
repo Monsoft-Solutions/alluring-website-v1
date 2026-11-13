@@ -2,8 +2,10 @@
 
 /**
  * Breast implant size calculator: band, cup today and the cup wanted in, an
- * estimated cc range per breast out (`implant-size.logic.ts`), with the
- * consultation one tap below the result.
+ * estimated cc range per breast out (`implant-size.logic.ts`). Once there is
+ * an estimate, the result panel offers to text it to the reader
+ * (`implant-size-save.component.tsx`, #382); the consultation thread stays
+ * one tap away as a plain link.
  *
  * The choices are native radio buttons styled as chips, so the server-rendered
  * form is usable before hydration and reads correctly to a screen reader. The
@@ -12,9 +14,13 @@
  * `calculator_use` goes to GA4 once per distinct set of answers, after the
  * reader has paused on it, with bucketed values only (`calculatorEventParams`).
  *
- * The CTA is a plain link to the consultation thread with `data-consult-*`
- * attributes, which the thread reads to answer its first question
- * (`use-consult-flow.hook.ts`). Pass the thread's `#id` as `consultHref`.
+ * The consultation link carries `data-consult-*` attributes, which the thread
+ * reads to answer its first question (`use-consult-flow.hook.ts`). Pass the
+ * thread's `#id` as `consultHref`.
+ *
+ * `practiceNote` is the line under the result that says whose calculator this
+ * is; `children` render under the panel (the post's result photos). Both come
+ * from the page, already rendered on the server.
  *
  * Reusable: nothing here knows about the blog. It renders on the light
  * (`stone-50`) band and brings its own dark result panel.
@@ -37,15 +43,15 @@ import {
 import {
     calculatorEventParams,
     cupIndex,
+    cupSizesInWords,
     estimateImplantSize,
 } from './implant-size.logic'
+import { ImplantSizeSave } from './implant-size-save.component'
 
 /** How long the answers must stay put before `calculator_use` is sent. */
 const TRACK_DELAY_MS = 1200
 
 const KING_2017_URL = 'https://pubmed.ncbi.nlm.nih.gov/28445356/'
-
-const CUP_WORDS = ['', 'one', 'two', 'three', 'four', 'five', 'six'] as const
 
 type ImplantSizeCalculatorProps = {
     /** The consultation thread's anchor, e.g. "#post-consult". */
@@ -54,6 +60,10 @@ type ImplantSizeCalculatorProps = {
     consultProcedure?: string
     /** `data-consult-entry`: where the funnel says the lead came from. */
     consultEntry?: string
+    /** Who offers the calculator and at what price, under the result. */
+    practiceNote?: ReactNode
+    /** Rendered under the result panel, e.g. real patient results. */
+    children?: ReactNode
     /** The section's id, for `aria-labelledby` and in-page links. */
     id?: string
     className?: string
@@ -63,6 +73,8 @@ export function ImplantSizeCalculator({
     consultHref,
     consultProcedure = 'breast-augmentation',
     consultEntry = 'calculator',
+    practiceNote,
+    children,
     id = 'implant-size-calculator',
     className,
 }: ImplantSizeCalculatorProps) {
@@ -201,9 +213,7 @@ export function ImplantSizeCalculator({
                             From a {input.band}
                             {input.currentCup} toward a {input.band}
                             {input.desiredCup}:{' '}
-                            {CUP_WORDS[estimate.cupsAdded] ??
-                                estimate.cupsAdded}{' '}
-                            cup size{estimate.cupsAdded > 1 ? 's' : ''}.
+                            {cupSizesInWords(estimate.cupsAdded)}.
                             {estimate.beyondStudy &&
                                 ' That is more cup sizes than the research measured, so read this range as rough.'}
                         </p>
@@ -226,17 +236,41 @@ export function ImplantSizeCalculator({
                     </>
                 )}
 
+                {estimate && input && (
+                    <ImplantSizeSave
+                        input={input}
+                        estimate={estimate}
+                        procedure={consultProcedure}
+                        className='mt-7'
+                    />
+                )}
+
                 <a
                     href={consultHref}
                     data-consult-procedure={consultProcedure}
                     data-consult-entry={consultEntry}
                     data-cta='calculator_consult'
-                    className='bg-gold-300 hover:bg-gold-200 mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.9375rem] font-semibold whitespace-nowrap text-stone-950 transition-colors'
+                    className={cn(
+                        'inline-flex min-h-11 items-center justify-center gap-2 text-[0.9375rem] font-semibold',
+                        estimate
+                            ? 'text-gold-300 hover:text-gold-200 mt-3 underline underline-offset-[0.3em]'
+                            : 'bg-gold-300 hover:bg-gold-200 mt-6 min-h-12 rounded-full px-6 whitespace-nowrap text-stone-950 transition-colors'
+                    )}
                 >
-                    Start my free sizing consult{' '}
+                    {estimate
+                        ? 'Or start a free consultation'
+                        : 'Start my free sizing consult'}{' '}
                     <span aria-hidden='true'>→</span>
                 </a>
+
+                {practiceNote && (
+                    <div className='mx-auto mt-5 max-w-[26rem] border-t border-white/15 pt-5 text-[0.9375rem] leading-[1.55] text-stone-300'>
+                        {practiceNote}
+                    </div>
+                )}
             </div>
+
+            {children}
 
             <div className='mt-5 grid gap-3 text-[0.875rem] leading-[1.6] text-stone-600'>
                 <p>

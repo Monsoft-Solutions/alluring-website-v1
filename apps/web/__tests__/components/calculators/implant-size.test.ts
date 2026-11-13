@@ -11,7 +11,10 @@ import {
     calculatorEventParams,
     ccPerCupForBand,
     cupsBetween,
+    cupSizesInWords,
     estimateImplantSize,
+    savedResultNote,
+    savedResultSummary,
 } from '@/components/calculators/implant-size/implant-size.logic'
 
 /**
@@ -179,5 +182,43 @@ describe('calculatorEventParams', () => {
         expect(
             calculatorEventParams(wide, estimateImplantSize(wide)!).band_bucket
         ).toBe('38+')
+    })
+})
+
+describe('cupSizesInWords', () => {
+    it('counts in words and keeps one cup singular', () => {
+        expect(cupSizesInWords(1)).toBe('one cup size')
+        expect(cupSizesInWords(2)).toBe('two cup sizes')
+        expect(cupSizesInWords(6)).toBe('six cup sizes')
+    })
+
+    it('falls back to digits past the words it knows', () => {
+        expect(cupSizesInWords(7)).toBe('7 cup sizes')
+    })
+})
+
+describe('savedResultNote', () => {
+    it('tells staff what the reader picked and what the calculator answered', () => {
+        const input = { band: 34, currentCup: 'B', desiredCup: 'D' } as const
+        const estimate = estimateImplantSize(input)!
+        const note = savedResultNote(input, estimate)
+        expect(note[0]).toMatch(/^Size calculator/)
+        expect(note).toContain(
+            'Picked: 34B today, would like 34D (two cup sizes)'
+        )
+        expect(note).toContain(
+            `Estimate shown: ${estimate.lowCc}–${estimate.highCc} cc per breast`
+        )
+    })
+})
+
+describe('savedResultSummary', () => {
+    it('fits the result in the lead offer field', () => {
+        const input = { band: 42, currentCup: 'AA', desiredCup: 'DDD' } as const
+        const estimate = estimateImplantSize(input)!
+        const summary = savedResultSummary(input, estimate)
+        expect(summary).toContain('42AA to 42DDD')
+        expect(summary).toContain(`${estimate.lowCc}–${estimate.highCc} cc`)
+        expect(summary.length).toBeLessThanOrEqual(200)
     })
 })

@@ -48,12 +48,13 @@ import { PostClose } from './post-close.component'
 import { PostConsult } from './post-consult.component'
 import { PostEnd } from './post-end.component'
 import { PostHeader } from './post-header.component'
-import { getPostIntroBlock } from './post-intro-block'
+import { getPostIntroBlock, postIntroHasForm } from './post-intro-block'
 import { postOfferIntro } from './post-offer.util'
 import {
     FAQ_HEADING,
     POST_CLOSE_ID,
     POST_CONSULT_ID,
+    POST_INTRO_ID,
     stickyLabel,
 } from './post-page.copy'
 import { PostProcedureStrip } from './post-procedure-strip.component'
@@ -126,6 +127,8 @@ export function BlogPostPage({
     )
     const dateModified = updatedAt?.toISOString() ?? publishedAt
 
+    const introHasForm = postIntroHasForm(post.slug)
+
     const quickAnswer = parseQuickAnswer(post.quickAnswer)
     const tocSections = getTocSections(tableOfContents)
 
@@ -175,7 +178,9 @@ export function BlogPostPage({
                             <PostBody
                                 beforeCTA={beforeCTA}
                                 afterCTA={afterCTA}
-                                intro={getPostIntroBlock(post.slug)}
+                                intro={getPostIntroBlock(post.slug, {
+                                    gallery,
+                                })}
                                 inlineImages={inlineImages}
                                 slot={
                                     <PostConsult
@@ -235,8 +240,12 @@ export function BlogPostPage({
                 reveal='away-from-chat'
                 procedure={procedure?.chatValue}
                 // The closing band asks the same thing; two identical buttons
-                // on one screen would compete.
-                hideWhile={[POST_CLOSE_ID]}
+                // on one screen would compete. So would the bar over an intro
+                // block that has a form of its own.
+                hideWhile={[
+                    POST_CLOSE_ID,
+                    ...(introHasForm ? [POST_INTRO_ID] : []),
+                ]}
             />
         </div>
     )

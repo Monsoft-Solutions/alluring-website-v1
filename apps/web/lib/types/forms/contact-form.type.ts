@@ -14,6 +14,7 @@
  * - landing-page: Lead generation landing page consultation form
  * - home-page: Home page consultation thread (phone required)
  * - dr-karlinsky-ig: Dr. Karlinsky's Instagram bio-link page, /lp/dr-karlinsky (phone required)
+ * - size-calculator: the implant size calculator's "text me my result" form (phone required)
  */
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
@@ -50,6 +51,8 @@ export const CONTACT_SOURCES = {
     MELISSA_JUVIER_LANDING: 'melissa-juvier-landing',
     /** /lp/dr-karlinsky, reached from the link in her Instagram bio (#332). */
     DR_KARLINSKY_IG: 'dr-karlinsky-ig',
+    /** The implant size calculator's saved result (#382). */
+    SIZE_CALCULATOR: 'size-calculator',
 } as const
 
 export type ContactSource =
