@@ -1412,8 +1412,8 @@ export const BLOG_POST_ENTRIES: OwnedPage[] = [
         status: 'retired',
         primaryKeyword: 'mommy makeover recovery miami',
         ownsQueries: [],
-        redirectsTo: '/blog/mommy-makeover-recovery-signs',
-        notes: 'Folded in the 2026-10-05 mommy makeover blog review, shipped per the 2026-11-03 plan: the recovery hub absorbs it (0 impressions in 28 days).',
+        redirectsTo: '/procedures/mommy-makeover-miami',
+        notes: 'Folded in the 2026-10-05 mommy makeover blog review, shipped per the 2026-11-03 plan. Re-pointed from the recovery hub to the procedure page on 2026-11-12: in the week of 4-10 Nov the still-indexed URL showed almost only for "mommy makeover miami" variants (118 impressions at position 18.5, ahead of the page), so its signals belong to the page.',
     },
     {
         url: '/blog/tummy-tuck-miami-candidate-checklist',
